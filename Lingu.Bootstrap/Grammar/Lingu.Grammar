@@ -58,6 +58,7 @@ grammar Lingu
         LITERAL_ANY             -> '.';
         LITERAL_TEXT            -> '~'? '\'' ( [^\\'] | '\\\'' | ESCAPEES )+ '\'';
         LITERAL_CLASS           -> '[' ( [^\\\[\]] | '\\[' | '\\]' | '\\-' | '\\^' | ESCAPEES )+ ']';
+
         UNICODE_BLOCK           -> 'ub' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
         UNICODE_CATEGORY        -> 'uc' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
         UNICODE_CODEPOINT       -> 'U+' [a-fA-F0-9]+;
@@ -71,83 +72,176 @@ grammar Lingu
 
         TREE_ACTION_PROMOTE     -> '^';
         TREE_ACTION_DROP        -> '!';
-
-        BLOCK_OPTIONS           -> 'options';
-        BLOCK_TERMINALS         -> 'terminals';
-        BLOCK_RULES             -> 'rules';
-        BLOCK_CONTEXT           -> 'context';
     }
     rules
     {
-        file                    -> cf_grammar;
+        file
+            -> cf_grammar
+            ;
 
-
-        cf_grammar              -> 'grammar'! NAME
-                                '{'!
-                                    grammar_options
-                                    grammar_terminals
-                                    grammar_rules
-                                '}'! ;
+        cf_grammar
+            -> 'grammar'! NAME '{'! grammar_options grammar_terminals grammar_rules '}'!
+            ;
 
         /* OPTIONS */
-            /* Options */
-            grammar_options             -> BLOCK_OPTIONS^ '{'! option* '}'! ;
+            grammar_options
+                -> 'options'^ '{'! option* '}'!
+                ;
 
-            /* Options section definition */
-            option                      -> NAME '='! LITERAL_STRING ';'! ;
-
+            option
+                -> NAME '='! LITERAL_STRING ';'!
+                ;
 
         /* TERMINALS *
             /* terminals */
-            grammar_terminals           -> BLOCK_TERMINALS^ '{'! terminal_item* '}'! ;
+            grammar_terminals
+                -> 'terminals'^ '{'! terminal_item* '}'!
+                ;
 
-            terminal_item               -> terminal_rule^ | terminal_fragment^ | terminal_context^ ;
-            terminal_rule               -> NAME '->'! terminal_definition ';'! ;
-            terminal_fragment           -> 'fragment'! NAME '->'! terminal_definition ';'! ;
-            terminal_context            -> BLOCK_CONTEXT^ NAME '{'! terminal_rule* '}'! ;
-            terminal_definition         -> terminal_def_restrict^ (OPERATOR_UNION^ terminal_def_restrict)*;
-            terminal_def_restrict       -> terminal_def_fragment^ (OPERATOR_DIFFERENCE^ terminal_def_fragment)* ;
-            terminal_def_fragment       -> terminal_def_repetition^ ("concat"^ terminal_def_repetition)*;
-            terminal_def_repetition     -> terminal_def_element^ terminal_def_cardinalilty^?;
-            terminal_def_element        -> terminal_def_atom^
-                                        | '('! terminal_definition^ ')'! ;
-            terminal_def_atom           -> LITERAL_ANY^
-                                        |  UNICODE_CODEPOINT^
-                                        |  LITERAL_TEXT^
-                                        |  LITERAL_CLASS^
-                                        |  UNICODE_CODEPOINT UNICODE_SPAN_MARKER^ UNICODE_CODEPOINT
-                                        |  UNICODE_BLOCK^
-                                        |  UNICODE_CATEGORY^
-                                        |  NAME^;
-            terminal_def_cardinalilty   -> OPERATOR_OPTIONAL^
-                                        |  OPERATOR_ZEROMORE^
-                                        |  OPERATOR_ONEMORE^
-                                        |  "range"^ '{'! INTEGER (','! INTEGER)? '}'! ;
+            terminal_item               
+                -> terminal_rule^
+                |  terminal_fragment^
+                |  terminal_context^
+                ;
+
+            terminal_rule
+                -> NAME '->'! terminal_definition ';'! 
+                ;
+
+            terminal_fragment
+                -> 'fragment'! NAME '->'! terminal_definition ';'!
+                ;
+
+            terminal_context
+                -> 'context'^ NAME '{'! terminal_rule* '}'!
+                ;
+
+            terminal_definition         
+                -> terminal_def_restrict^ (OPERATOR_UNION^ terminal_def_restrict)*
+                ;
+
+            terminal_def_restrict       
+                -> terminal_def_fragment^ (OPERATOR_DIFFERENCE^ terminal_def_fragment)*
+                ;
+
+            terminal_def_fragment       
+                -> terminal_def_repetition^ ("concat"^ terminal_def_repetition)*
+                ;
+
+            terminal_def_repetition     
+                -> terminal_def_element^ terminal_def_cardinalilty^?
+                ;
+
+            terminal_def_element
+                -> terminal_def_atom^
+                | '('! terminal_definition^ ')'! 
+                ;
+
+            terminal_def_atom
+                -> LITERAL_ANY^
+                |  UNICODE_CODEPOINT^
+                |  LITERAL_TEXT^
+                |  LITERAL_CLASS^
+                |  UNICODE_CODEPOINT UNICODE_SPAN_MARKER^ UNICODE_CODEPOINT
+                |  UNICODE_BLOCK^
+                |  UNICODE_CATEGORY^
+                |  NAME^
+                ;
+
+            terminal_def_cardinalilty
+                -> OPERATOR_OPTIONAL^
+                |  OPERATOR_ZEROMORE^
+                |  OPERATOR_ONEMORE^
+                |  "range"^ '{'! INTEGER (','! INTEGER)? '}'!
+                ;
 
         /* RULES */
-            grammar_rules               -> BLOCK_RULES^ '{'! cf_rule* '}'! ;
-            cf_rule                     -> cf_rule_simple^ | cf_rule_template^ ;
-            cf_rule_simple              -> NAME '->'! rule_definition ';'! ;
-            rule_definition             -> rule_def_choice^ (OPERATOR_UNION^ rule_def_choice)*;
-            rule_def_choice             -> rule_def_fragment^ | "emptypart"^ ;
-            rule_def_fragment           -> rule_def_repetition^ ("concat"^ rule_def_repetition)*;
-            rule_def_repetition         -> rule_def_tree_action^ (OPERATOR_OPTIONAL | OPERATOR_ONEMORE | OPERATOR_ZEROMORE)^?;
-            rule_def_tree_action        -> rule_def_element^ (TREE_ACTION_PROMOTE | TREE_ACTION_DROP)^?;
-            rule_def_element            -> rule_def_atom^ | rule_def_context^ | rule_def_sub^ | '('! rule_definition^ ')'!;
-            rule_def_atom               -> rule_sym_action^
-                                        |  rule_sym_virtual^
-                                        |  rule_sym_ref_simple^
-                                        |  rule_sym_ref_template^
-                                        |  LITERAL_TEXT^ ;
-            rule_def_context            -> '#'! NAME '{'! rule_definition '}'! ;
-            rule_def_sub                -> '{'! rule_definition '}'! ;
-            rule_sym_action             -> '@'! NAME ;
-            rule_sym_virtual            -> LITERAL_STRING ;
-            rule_sym_ref_simple         -> NAME;
-            rule_sym_ref_template       -> NAME rule_sym_ref_params ;
-            rule_sym_ref_params         -> '<'! rule_def_atom (','! rule_def_atom)* '>'! ;
+            grammar_rules
+                -> 'rules'^ '{'! rule* '}'!
+                ;
 
-            cf_rule_template            -> NAME rule_template_params '->'! rule_definition ';'! ;
-            rule_template_params        -> '<'! NAME (','! NAME)* '>'!;
+            rule                        
+                -> rule_simple^ | rule_template^
+                ;
+
+            rule_simple                 
+                -> NAME '->'! rule_definition ';'!
+                ;
+
+            rule_template
+                -> NAME rule_template_params '->'! rule_definition ';'!
+                ;
+
+            rule_definition
+                -> rule_def_choice^ (OPERATOR_UNION^ rule_def_choice)*
+                ;
+
+            rule_def_choice
+                -> rule_def_fragment^ | "emptypart"^
+                ;
+
+            rule_def_fragment
+                -> rule_def_repetition^ ("concat"^ rule_def_repetition)*
+                ;
+
+            rule_def_repetition
+                -> rule_def_tree_action^ rule_def_cardinality^?
+                ;
+
+            rule_def_tree_action
+                -> rule_def_element^ (TREE_ACTION_PROMOTE | TREE_ACTION_DROP)^?
+                ;
+
+            rule_def_element
+                -> rule_def_atom^
+                |  rule_def_context^
+                |  rule_def_sub^
+                |  '('! rule_definition^ ')'!
+                ;
+
+            rule_def_atom               
+                -> rule_sym_action^
+                |  rule_sym_virtual^
+                |  rule_sym_ref_simple^
+                |  rule_sym_ref_template^
+                |  LITERAL_TEXT^ ;
+
+            rule_def_cardinalilty
+                -> OPERATOR_OPTIONAL^
+                |  OPERATOR_ZEROMORE^
+                |  OPERATOR_ONEMORE^
+                ;
+
+            rule_def_context
+                -> '#'! NAME '{'! rule_definition '}'!
+                ;
+
+            rule_def_sub                
+                -> '{'! rule_definition '}'!
+                ;
+
+            rule_sym_action
+                -> '@'! NAME
+                ;
+
+            rule_sym_virtual
+                -> LITERAL_STRING
+                ;
+
+            rule_sym_ref_simple
+                -> NAME
+                ;
+
+            rule_sym_ref_template
+                -> NAME rule_sym_ref_params
+                ;
+
+            rule_sym_ref_params
+                -> '<'! rule_def_atom (','! rule_def_atom)* '>'!
+                ;
+
+            rule_template_params
+                -> '<'! NAME (','! NAME)* '>'!
+                ;
     }
 }

@@ -32,63 +32,56 @@ namespace Lingu.Bootstrap
                 outlines.Add($"public abstract class {VisitorName()}");
                 using (outlines.Indent())
                 {
-                    outlines.Add($"protected virtual void VisitNode(ASTNode node)");
-                    using (outlines.Indent())
+                    outlines.Block($"protected virtual void VisitNode(ASTNode node)", () =>
                     {
                         outlines.Add($"VisitNode<bool>(node);");
-                    }
-                    outlines.Add($"");
+                    });
 
-                    outlines.Add($"\t\tprotected virtual T VisitNode<T>(ASTNode node)");
-                    outlines.Add($"\t\t{{");
-                    Switch(inlines, outlines);
-                    outlines.Add($"\t\t}}");
-                    outlines.Add($"");
+                    outlines.Block($"protected virtual T VisitNode<T>(ASTNode node)", () =>
+                    {
+                        Switch(inlines, outlines);
+                    });
 
-                    outlines.Add($"\t\tprotected virtual IEnumerable<object> VisitChildren(ASTNode node)");
-                    outlines.Add($"\t\t{{");
-                    outlines.Add($"\t\t\tfor (var i = 0; i < node.Children.Count; i++)");
-                    outlines.Add($"\t\t\t{{");
-                    outlines.Add($"\t\t\t\tyield return VisitNode<object>(node.Children[i]);");
-                    outlines.Add($"\t\t\t}}");
-                    outlines.Add($"\t\t}}");
+                    outlines.Block($"protected virtual IEnumerable<object> VisitChildren(ASTNode node)", () =>
+                    {
+                        outlines.Block($"foreach (var child in node.Children)", () =>
+                        {
+                            outlines.Add($"yield return VisitNode<object>(child);");
+                        });
+                    });
 
-                    outlines.Add($"\t\tprotected virtual IEnumerable<T> VisitChildren<T>(ASTNode node)");
-                    outlines.Add($"\t\t{{");
-                    outlines.Add($"\t\t\tfor (var i = 0; i < node.Children.Count; i++)");
-                    outlines.Add($"\t\t\t{{");
-                    outlines.Add($"\t\t\t\tyield return VisitNode<T>(node.Children[i]);");
-                    outlines.Add($"\t\t\t}}");
-                    outlines.Add($"\t\t}}");
-
-                    outlines.Add($"");
+                    outlines.Block($"protected virtual IEnumerable<T> VisitChildren<T>(ASTNode node)", () =>
+                        {
+                            outlines.Block($"foreach (var child in node.Children)", () =>
+                            {
+                                outlines.Add($"yield return VisitNode<T>(child);");
+                            });
+                        });
 
                     Virtuals(inlines, outlines);
 
-                    outlines.Add($"");
-
-                    outlines.Add($"\t\tpartial class OnTerminal");
-                    outlines.Add($"\t\t{{");
-                    outlines.Add($"\t\t\tprotected OnTerminal({VisitorName()} visitor)");
-                    outlines.Add($"\t\t\t{{");
-                    outlines.Add($"\t\t\t}}");
-                    outlines.Add($"\t\t}}");
-
-                    outlines.Add($"");
-
-                    outlines.Add($"\t\tpartial class OnVariable");
-                    outlines.Add($"\t\t{{");
-                    outlines.Add($"\t\t}}");
+                    outlines.Add($"partial class OnTerminal");
+                    using (outlines.Indent())
+                    {
+                        outlines.Add($"protected OnTerminal({VisitorName()} visitor)");
+                        using (outlines.Indent())
+                        {
+                        }
+                    }
 
                     outlines.Add($"");
 
-                    outlines.Add($"\t\tpartial class OnVirtual");
-                    outlines.Add($"\t\t{{");
-                    outlines.Add($"\t\t}}");
+                    outlines.Add($"partial class OnVariable");
+                    using (outlines.Indent())
+                    {
+                    }
 
-                    //outlines.Add($"\t}}");
+                    outlines.Add($"");
 
-                    //outlines.Add($"}}");
+                    outlines.Add($"partial class OnVirtual");
+                    using (outlines.Indent())
+                    {
+                    }
                 }
             }
 
@@ -106,22 +99,26 @@ namespace Lingu.Bootstrap
                 }
             }
 
-            for (; start < inlines.Count; ++start)
+            outlines.Add("switch(node.Symbol.ID)");
+            using (outlines.Indent())
             {
-                var line = inlines[start];
-
-                if (line == "\t\t\t}")
+                for (start += 2; start < inlines.Count; ++start)
                 {
-                    outlines.Add("\t\t\t\tdefault:");
-                    outlines.Add("\t\t\t\t\tthrow new NotImplementedException();");
+                    var line = inlines[start];
+
+                    if (line == "\t\t\t}")
+                    {
+                        outlines.Add("default:");
+                        outlines.Add2("throw new NotImplementedException();");
+                        break;
+                    }
+
+                    line = line.Replace("visitor.", "return (T)");
+                    line = line.Replace(" break;", string.Empty);
+                    line = line.TrimStart('\t');
+
                     outlines.Add(line);
-                    break;
                 }
-
-                line = line.Replace("visitor.", "return (T)");
-                line = line.Replace(" break;", string.Empty);
-
-                outlines.Add(line);
             }
         }
 
@@ -155,13 +152,14 @@ namespace Lingu.Bootstrap
         {
             line = line.Substring(1); // remove '\t'
             line = line.Replace(" {}", string.Empty);
-            line = line.Replace("public virtual void", "public virtual object");
+            line = line.Replace("public virtual void", "protected virtual object");
+            line = line.TrimStart('\t');
             outlines.Add($"{line}");
-#if true
-            outlines.Add($"\t\t{{");
-            outlines.Add($"\t\t\treturn VisitChildren(node).FirstOrDefault();");
-            outlines.Add($"\t\t}}");
-#endif
+
+            using (outlines.Indent())
+            {
+                outlines.Add($"return VisitChildren(node).FirstOrDefault();");
+            }
         }
 
         private string Namespace(IReadOnlyCollection<string> lines)

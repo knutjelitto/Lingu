@@ -126,7 +126,5 @@ namespace Lingu.Bootstrap
                 inputFile = inputFile.Substring(1, inputFile.Length - 2);
             task.AddInputFile(inputFile);
         }
-
-
     }
 }

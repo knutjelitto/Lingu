@@ -95,22 +95,6 @@ namespace Lingu.Bootstrap
 			/// The unique identifier for terminal TREE_ACTION_DROP
 			/// </summary>
 			public const int TerminalTreeActionDrop = 0x001A;
-			/// <summary>
-			/// The unique identifier for terminal BLOCK_OPTIONS
-			/// </summary>
-			public const int TerminalBlockOptions = 0x001B;
-			/// <summary>
-			/// The unique identifier for terminal BLOCK_TERMINALS
-			/// </summary>
-			public const int TerminalBlockTerminals = 0x001C;
-			/// <summary>
-			/// The unique identifier for terminal BLOCK_RULES
-			/// </summary>
-			public const int TerminalBlockRules = 0x001D;
-			/// <summary>
-			/// The unique identifier for terminal BLOCK_CONTEXT
-			/// </summary>
-			public const int TerminalBlockContext = 0x001E;
 		}
 		/// <summary>
 		/// Contains the constant IDs for the contexts for this lexer
@@ -150,20 +134,20 @@ namespace Lingu.Bootstrap
 			new Symbol(0x0018, "OPERATOR_DIFFERENCE"),
 			new Symbol(0x0019, "TREE_ACTION_PROMOTE"),
 			new Symbol(0x001A, "TREE_ACTION_DROP"),
-			new Symbol(0x001B, "BLOCK_OPTIONS"),
-			new Symbol(0x001C, "BLOCK_TERMINALS"),
-			new Symbol(0x001D, "BLOCK_RULES"),
-			new Symbol(0x001E, "BLOCK_CONTEXT"),
-			new Symbol(0x0042, "grammar"),
-			new Symbol(0x0043, "{"),
-			new Symbol(0x0044, "}"),
-			new Symbol(0x0046, "="),
-			new Symbol(0x0047, ";"),
-			new Symbol(0x0049, "->"),
-			new Symbol(0x004A, "fragment"),
-			new Symbol(0x0050, "("),
-			new Symbol(0x0051, ")"),
-			new Symbol(0x0053, ","),
+			new Symbol(0x003E, "grammar"),
+			new Symbol(0x003F, "{"),
+			new Symbol(0x0040, "}"),
+			new Symbol(0x0041, "options"),
+			new Symbol(0x0043, "="),
+			new Symbol(0x0044, ";"),
+			new Symbol(0x0045, "terminals"),
+			new Symbol(0x0047, "->"),
+			new Symbol(0x0048, "fragment"),
+			new Symbol(0x0049, "context"),
+			new Symbol(0x004F, "("),
+			new Symbol(0x0050, ")"),
+			new Symbol(0x0052, ","),
+			new Symbol(0x0053, "rules"),
 			new Symbol(0x0058, "#"),
 			new Symbol(0x0059, "@"),
 			new Symbol(0x005A, "<"),
