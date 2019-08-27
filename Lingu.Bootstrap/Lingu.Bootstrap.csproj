@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Grammar\Lingu.Grammar" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Grammar\Lingu.Grammar" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hime.SDK" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mean\Mean.Maker\Mean.Maker.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lingu.Automata\Lingu.Automata.csproj" />
+    <ProjectReference Include="..\Lingu.Commons\Lingu.Commons.csproj" />
+    <ProjectReference Include="..\Lingu.Earley\Lingu.Earley.csproj" />
+    <ProjectReference Include="..\Lingu.Grammars\Lingu.Grammars.csproj" />
+    <ProjectReference Include="..\Lingu.Samples\Lingu.Samples.csproj" />
+  </ItemGroup>
+
+</Project>
