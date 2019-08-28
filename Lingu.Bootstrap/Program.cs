@@ -15,12 +15,23 @@ namespace Lingu.Bootstrap
         {
             var program = new Program();
 
-            program.Run();
+            program.Build();
+            program.BuildTree();
+
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }
 
-        private void Run()
+        private void BuildTree()
+        {
+            Environment.CurrentDirectory = $"{ProjectDir}Grammar";
+
+            var source = FileRef.Source($"{ProjectDir}Grammar/Lingu.Grammar");
+
+            var grammar = Parser.Parse(source);
+        }
+
+        private void Build()
         {
             var options = new TaskOptions
             {
@@ -28,29 +39,33 @@ namespace Lingu.Bootstrap
                 Namespace = "Lingu.Bootstrap",
                 //RNGLR = true,
                 Debug = true,
+                Grammar = "Lingu",
             };
 
             Environment.CurrentDirectory = $"{ProjectDir}Grammar";
 
-            var source = FileRef.Source($"{ProjectDir}Grammar/Lingu.Grammar");
-
-            Generate(options, source);
-
-            var grammar = FileRef.Source($"{ProjectDir}Grammar/");
+            var source = FileRef.Source($"{ProjectDir}Grammar/Lingu.HimeGrammar");
             var parser = FileRef.Source($"{ProjectDir}Grammar/LinguParser.cs");
             var visitor = FileRef.Source($"{ProjectDir}Grammar/LinguVisitor.cs");
 
-            var tweaker = new Tweaker(parser, visitor);
-            Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.ToString().Substring(grammar.ToString().Length)} ...");
-            tweaker.Tweak();
+            if (source.NewerThan(parser))
+            {
+                Generate(options, source);
+
+                var grammar = FileRef.Source($"{ProjectDir}Grammar/");
+
+                var tweaker = new Tweaker(parser, visitor);
+                Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.FileName} ...");
+                tweaker.Tweak();
+            }
         }
 
-        private Report Generate(TaskOptions options, params string[] grammarInputs)
+        private Report Generate(TaskOptions options, params FileRef[] grammarInputs)
         {
             var task = BuildTask(options);
             foreach (var input in grammarInputs)
             {
-                AddInput(task, input);
+                task.AddInputFile(input);
             }
 
             var report = task.Execute();

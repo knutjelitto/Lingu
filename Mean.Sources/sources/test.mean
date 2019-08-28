@@ -1,0 +1,12 @@
+﻿namespace core
+{
+    namespace ops
+    {
+        trait Add<Rhs=Self>
+        {
+            type Output : Self;
+
+            function add(rhs: Rhs): Output;
+        }
+    }
+}

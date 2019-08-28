@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="boot-1.cl" />
+    <None Remove="boot-2.cl" />
+    <None Remove="boot.cl" />
+    <None Remove="checker-1.cl" />
+    <None Remove="checker-binops.cl" />
+    <None Remove="checker-for-f64.cl" />
+    <None Remove="checker-for-i64.cl" />
+    <None Remove="checker-if-1.cl" />
+    <None Remove="checker-if-2.cl" />
+    <None Remove="checker-if-3.cl" />
+    <None Remove="checker-string.cl" />
+    <None Remove="complex.cl" />
+    <None Remove="sources\ccore\CoreConsole.c" />
+    <None Remove="sources\ccore\CoreConsole.h" />
+    <None Remove="sources\ccore\CoreObject.c" />
+    <None Remove="sources\ccore\CoreObject.h" />
+    <None Remove="sources\ccore\CoreString.c" />
+    <None Remove="sources\ccore\CoreString.h" />
+    <None Remove="sources\ccore\Entry.c" />
+    <None Remove="sources\ccore\Tools.h" />
+    <None Remove="complex0.cl" />
+    <None Remove="gen-test.c" />
+    <None Remove="mandel.cl" />
+    <None Remove="mandelx.cl" />
+    <None Remove="sources\std\alias\alias.cl" />
+    <None Remove="sources\std\ops\ops.cl" />
+    <None Remove="sources\std\std.cl" />
+    <None Remove="sources\test.mean" />
+    <None Remove="support.c" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="sources\ccore\CoreConsole.c" />
+    <EmbeddedResource Include="sources\ccore\CoreConsole.h" />
+    <EmbeddedResource Include="sources\ccore\CoreObject.c" />
+    <EmbeddedResource Include="sources\ccore\CoreObject.h" />
+    <EmbeddedResource Include="sources\ccore\CoreString.c" />
+    <EmbeddedResource Include="sources\ccore\CoreString.h" />
+    <EmbeddedResource Include="sources\ccore\Entry.c" />
+    <EmbeddedResource Include="sources\ccore\Tools.h" />
+    <EmbeddedResource Include="sources\std\alias\alias.cl" />
+    <EmbeddedResource Include="sources\std\std.cl" />
+    <EmbeddedResource Include="sources\std\ops\ops.cl" />
+    <EmbeddedResource Include="sources\ccore\support.c" />
+    <EmbeddedResource Include="sources\test.mean" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="sources\core\" />
+  </ItemGroup>
+
+</Project>

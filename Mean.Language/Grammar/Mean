@@ -1,0 +1,519 @@
+﻿grammar Mean : MeanUnit
+{
+    options
+    {
+        Axiom       = "unit"; // the top variable for this grammar
+        Separator   = "SEPARATOR";  // the terminal that represent white space
+
+        CompilationMode = "Debug";
+        //ParserType = "LR";
+        ParserType = "RNGLR";
+        Runtime = "Net";
+        Namespace = "Mean.Language.Generated";
+        AccessModifier = "Public";
+    }
+    
+    terminals{}
+    rules {}
+}
+
+grammar MeanUnit
+    : MeanGenerics
+    , MeanExpression
+{
+    options{}
+    terminals{}
+
+    rules
+    {
+        unit
+            -> unitItem*
+            ;
+
+        unitItem
+            -> namespace^
+            ;
+
+        namespace
+            -> 'namespace'! identifier '{'! namespaceItems '}'!
+            ;
+
+        namespaceItems
+            -> namespaceItem*
+            ;
+
+        namespaceItem
+            -> namespace^
+            |  definedFunction^
+            |  trait^
+            ;
+
+        definedFunction
+            -> 'function' functionKernel '{' maybeFunctionItems '}'
+            ;
+
+        declaredFunction
+            -> 'function' functionKernel ';'
+            ;
+
+        definedMethod
+            -> 'method' functionKernel '{' maybeFunctionItems '}'
+            ;
+
+        declaredMethod
+            -> 'method' functionKernel ';'
+            ;
+
+        functionKernel
+            -> identifier maybeGenericParameters maybeWhere '(' maybeFunParameters ')' maybeTypeAnnotation
+            ;
+
+        maybeFunParameters
+            -> maybeFunParameters funParameter
+            | funParameter
+            |
+            ;
+
+        funParameter
+            -> identifier typeAnnotation
+            ;
+
+        maybeFunctionItems
+            -> maybeFunctionItems functionItem
+            |  functionItem
+            |
+            ;
+
+        functionItem
+            -> definedFunction^
+            |  trait^
+            |  typeAlias^
+            ;
+
+        typeAlias
+            -> 'type' identifier '=' type ';'
+            ;
+
+        trait
+            -> 'trait'! identifier maybeGenericParameters maybeWhere '{'! maybeTraitItems '}'!
+            ;
+
+        maybeTraitItems
+            -> traitItem*
+            ;
+
+        traitItem
+            -> definedFunction
+            |  declaredFunction
+            |  definedMethod
+            |  declaredMethod
+            |  traitOutputType
+            ;
+
+        traitOutputType
+            -> 'type' identifier maybeWhere maybeTypeAnnotation ';'
+            ;
+
+        maybeTypeAnnotation
+            -> typeAnnotation
+            |
+            ;
+
+        typeAnnotation
+            -> ':' type
+            ;
+
+        maybeGenericParameters
+            -> genericParameters?
+            ;
+
+        genericParameters
+            -> '<'! genericNames ','! genericDefaults '>'!
+            |  '<'! genericNames '>'!
+            |  '<'! genericDefaults '>'
+            ;
+
+        genericNames
+            -> genericName (','! genericName)*
+            ;
+
+        genericName
+            -> identifier
+            ;
+
+        genericDefaults
+            -> genericDefault (','! genericDefaults)*
+            ;
+
+        genericDefault
+            -> identifier '=' type
+            ;
+
+        maybeWhere
+            -> where?
+            ;
+
+        where
+            -> 'where'! whereItems
+            ;
+
+        whereItems
+            -> whereItems whereItem
+            | whereItem
+            ;
+
+        whereItem
+            -> type ':'! typeParamBounds
+            ;
+
+        typeParamBounds
+            -> typeParamBounds '&'! typeParamBound
+            |  typeParamBound
+            ;
+
+        traitBound
+            -> typePath
+            ;
+    }
+}
+
+grammar MeanSpacing
+{
+    options { }
+    
+    terminals
+    {
+        fragment NEW_LINE
+            -> U+000D           /* CR */
+            |  U+000A           /* LF */
+            |  U+000D U+000A    /* CR LF */
+            |  U+0085           // Next line character
+            |  U+2028           // Line separator character
+            |  U+2029           // Paragraph separator character
+            ;
+
+        fragment WHITE_SPACE
+            -> uc{Zs} | U+0009 | U+000B | U+000C
+            ;
+
+        fragment COMMENT_LINE
+            -> '//' (.* - (.* NEW_LINE .*))
+            ;
+
+        fragment COMMENT_BLOCK
+            -> '/*' (.* - (.* '*/' .*)) '*/'
+            ;
+
+        SEPARATOR
+            -> (NEW_LINE | WHITE_SPACE | COMMENT_LINE | COMMENT_BLOCK)+
+            ;
+    }
+  
+    rules{}
+}
+
+grammar MeanLiteral : MeanIdentifier
+{
+    options{}
+    
+    terminals
+    {
+        fragment BIN_DIGIT -> [0-9];
+        fragment OCT_DIGIT -> [0-9];
+        fragment DEC_DIGIT -> [0-9];
+        fragment HEX_DIGIT -> [0-9a-fA-F];
+        fragment NONZERO_DEC_DIGIT -> [1-9];
+
+        fragment BIN_LITERAL
+            -> '0b' (BIN_DIGIT | '_')* BIN_DIGIT (BIN_DIGIT | '_')*
+            ;
+
+        fragment OCT_LITERAL
+            -> '0o' (OCT_DIGIT | '_')* OCT_DIGIT (OCT_DIGIT | '_')*
+            ;
+
+        fragment DEC_LITERAL
+            -> '0'
+            |  [1-9] (DEC_DIGIT | '_')*
+            ;
+
+        fragment HEX_LITERAL
+            -> '0o' (HEX_DIGIT | '_')* HEX_DIGIT (HEX_DIGIT | '_')*
+            ;
+
+        fragment INTEGER_SUFFIX
+            -> 'u8' | 'u16' | 'u32' | 'u64' | 'u128' | 'usize'
+             | 'i8' | 'i16' | 'i32' | 'i64' | 'i128' | 'isize'
+             ;
+
+        INTEGER_LITERAL
+            -> (BIN_LITERAL | OCT_LITERAL | DEC_LITERAL | HEX_LITERAL) INTEGER_SUFFIX?
+            ;
+
+        fragment FLOAT_EXPONENT
+            -> ('e' | 'E') ('+' | '-')? (DEC_DIGIT | '_')* DEC_DIGIT (DEC_DIGIT | '_')*
+            ;
+
+        fragment FLOAT_SUFFIX
+            -> 'f32' | 'f64'
+            ;
+
+        FLOAT_LITERAL
+            ->  DEC_LITERAL FLOAT_EXPONENT
+            |   DEC_LITERAL '.' DEC_LITERAL FLOAT_EXPONENT?
+            |   DEC_LITERAL  ('.' DEC_LITERAL)? FLOAT_EXPONENT? FLOAT_SUFFIX
+            ;
+
+        BOOL_LITERAL
+            -> 'true' | 'false'
+            ;
+    }
+  
+    rules
+    {
+        tupleIndex
+            -> INTEGER_LITERAL
+            ;
+
+        literal
+            ->  INTEGER_LITERAL^
+            |   FLOAT_LITERAL
+            |   BOOL_LITERAL
+            ;
+    }
+}
+
+grammar MeanIdentifier
+{
+    options {}
+    
+    terminals
+    {
+        IDENTIFIER
+            -> [a-zA-Z_] [a-zA-Z0-9_]*
+            ;
+    }
+  
+    rules
+    {
+        identifier -> IDENTIFIER;
+    }
+}
+
+grammar MeanPath
+    : MeanIdentifier
+{
+    options{}
+    terminals{}
+
+    rules
+    {
+        name
+            -> identifier genericArgs?
+            ;
+
+        path
+            -> path '.' name
+            | name
+            ;
+
+        genericArgs
+            -> '<'! genericArgsTypes (','?)! '>'!
+            |  '<'! genericArgsTypes genericArgsBindings? '>'!
+            ;
+
+        genericArgsTypes
+            -> list<name,','>^
+            ;
+
+        genericArgsBindings
+            -> ','! list<genericArgsBinding,','>^
+            ;
+
+        genericArgsBinding
+            -> identifier '='! type
+            ;
+
+        type
+            -> typePath
+            ;
+
+        typePath
+            -> typePath '.' name
+            |  name
+            ;
+    }
+}
+
+grammar MeanExpression
+    : MeanSpacing
+    , MeanTools
+    , MeanLiteral
+    , MeanIdentifier
+    , MeanType
+    , MeanGenericArgs
+{
+    options 
+    {
+        Axiom       = "expression"; // the top variable for this grammar
+        Separator   = "SEPARATOR";  // the terminal that represent white space
+        ParserType  = "RNGLR";
+        CompilationMode = "Debug";
+        Namespace = "Mean.Language.Generated";
+        AccessModifier = "Internal";
+    }
+    
+    terminals {}
+  
+    rules
+    {
+        primaryExpression
+            ->  literal^
+            |   '('! expression^ ')'!
+            |   name^
+            ;
+
+        postfixExpression
+            ->  "flist"^ postfixExpression '('! sloppyList<expression, ','>? ')'!
+            |   "iselect"^ postfixExpression '['! expression ']'!
+            |   "tselect"^ postfixExpression '.'! tupleIndex
+            |   "mselect"^ postfixExpression '.'! name
+            |   primaryExpression^
+            ;
+
+        unaryExpression
+            -> "negOp"^ '-'! postfixExpression
+            |  "posOp"^ '+'! postfixExpression
+            |  "notOp"^ '!'! postfixExpression
+            |  postfixExpression^
+            ;
+
+        mulExpression
+            ->  "mulOp"^ mulExpression '*'! unaryExpression
+            |   "divOp"^ mulExpression '/'! unaryExpression
+            |   "remOp"^ mulExpression '%'! unaryExpression
+            |   "modOp"^ mulExpression 'mod'! unaryExpression
+            |   unaryExpression^
+            ;
+
+        addExpression
+            ->  "addOp"^ addExpression '+'! mulExpression
+            |   "subOp"^ addExpression '-'! mulExpression
+            |   mulExpression^
+            ;
+
+        shiftExpression
+            ->  "shlOp"^ shiftExpression 'shl'! addExpression
+            |   "shrOp"^ shiftExpression 'shr'! addExpression
+            |   addExpression^
+            ;
+
+        equalityExpression
+            ->  "eqOp"^   shiftExpression '=='! shiftExpression
+            |   "neOp"^   shiftExpression '!='! shiftExpression
+            |   "ltOp"^   shiftExpression '<'!  shiftExpression
+            |   "ltleOp"^ shiftExpression '<'!  shiftExpression '<='! shiftExpression
+            |   "ltltOp"^ shiftExpression '<'!  shiftExpression '<'!  shiftExpression
+            |   "leOp"^   shiftExpression '<='! shiftExpression
+            |   "leleOp"^ shiftExpression '<='! shiftExpression '<='! shiftExpression
+            |   "leltOp"^ shiftExpression '<='! shiftExpression '<'!  shiftExpression
+            |   "gtOp"^   shiftExpression '>'!  shiftExpression
+            |   "gtgeOp"^ shiftExpression '>'!  shiftExpression '>='! shiftExpression
+            |   "gtgtOp"^ shiftExpression '>'!  shiftExpression '>'!  shiftExpression
+            |   "geOp"^   shiftExpression '>='! shiftExpression
+            |   "gegeOp"^ shiftExpression '>='! shiftExpression '>='! shiftExpression
+            |   "gegtOp"^ shiftExpression '>='! shiftExpression '>'!  shiftExpression
+            |   shiftExpression^
+            ;
+
+        bitAndExpression
+            ->  "andOp"^ bitAndExpression '&'! equalityExpression
+            |   equalityExpression^
+            ;
+
+        bitXorExpression
+            ->  "xorOp"^ bitXorExpression '^'! bitAndExpression
+            |   bitAndExpression^
+            ;
+
+        bitOrExpression
+            ->  "orOp"^ bitOrExpression '|'! bitXorExpression
+            |   bitXorExpression^
+            ;
+
+        andExpression
+            ->  "andThenOp"^ andExpression '&&'^ bitOrExpression
+            |   bitOrExpression^
+            ;
+
+        orExpression
+            ->  "orElseOp"^ orExpression '||'^ andExpression
+            |   andExpression^
+            ;
+
+        conditionalExpression
+            -> "iff" conditionalExpression '?'! expression ':'! expression
+            |  orExpression^
+            ;
+
+        withoutBlockExpression
+            ->  conditionalExpression^
+            ;
+
+        expression
+            ->  withBlockExpression^
+            |   withoutBlockExpression^
+            ;
+
+        withBlockExpression
+            ->  blockExpression
+            ;
+
+        blockExpression
+            -> '{'! expression '}'!
+            ;
+    }
+}
+
+grammar MeanType
+    : MeanIdentifier
+    , MeanPath
+{
+    options {}    
+    terminals {}
+  
+    rules
+    {
+    }
+}
+
+grammar MeanGenerics
+    : MeanType
+    , MeanTools
+
+{
+    options {}
+    terminals {}
+
+    rules
+    {
+    }
+}
+
+grammar MeanTools
+{
+    options {}
+    
+    terminals {}
+  
+    rules
+    {
+        sloppyList<item, separator>
+            -> (item (separator! item)*)^ (separator?)!
+            ;
+
+        list<item, separator>
+            -> (item (separator! item)*)^
+            ;
+    }
+}

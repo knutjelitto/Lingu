@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Bootstrap.Tree
 {
-#if false
-    public class Builder : LinguVisitor
+    public abstract class TerminalExpression : Node
     {
     }
-#endif
 }

@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Generated\*.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hime.SDK" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mean.Hime.Tweak\Mean.Hime.Tweak.csproj" />
+    <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ProjectDir>$(MSBuildProjectDirectory)\</ProjectDir>
+    <Grammars>$(ProjectDir)Grammar\</Grammars>
+    <Generateds>$(ProjectDir)Generated\</Generateds>
+    <GrammarInputs>$(Grammars)Mean</GrammarInputs>
+    <GrammarOutputs>$(Generateds)MeanParser.bin</GrammarOutputs>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Tweak>..\Mean.Hime.Tweak\bin\Debug\netcoreapp2.2\Mean.Hime.Tweak.dll</Tweak>
+  </PropertyGroup>
+
+  <!--<Target Name="HimeCC" BeforeTargets="Compile;CoreCompile;Build;CoreBuild" Inputs="$(GrammarInputs)" Outputs="$(GrammarOutputs)">-->
+  <!--
+  <Target Name="HimeCC" BeforeTargets="Compile;CoreCompile;Build;CoreBuild">
+    <Message Importance="high" Text="XXX ProjectDir     XXX $(ProjectDir)" />
+    <Message Importance="high" Text="XXX GrammarInputs  XXX $(GrammarInputs)" />
+    <Message Importance="high" Text="XXX GrammarOutputs XXX $(GrammarOutputs)" />
+    <Exec Command="cd $(ProjectDir)Grammar&#xD;&#xA;..\..\hime-3.4.0\net461\himecc.exe Mean -g Mean -p $(ProjectDir)Generated&#xD;&#xA;" />
+    <Exec Command="cd $(ProjectDir)Grammar&#xD;&#xA;..\..\hime-3.4.0\net461\himecc.exe Mean -g MeanExpression -p $(ProjectDir)Generated&#xD;&#xA;" />
+    <Exec Command="dotnet $(Tweak) $(ProjectDir)Generated/MeanParser.cs $(ProjectDir)Generated/MeanVisitor.cs" />
+  </Target>
+  -->
+
+</Project>

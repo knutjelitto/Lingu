@@ -1,0 +1,228 @@
+﻿grammar Lingu
+{
+    options
+    {
+        Axiom = "file";
+        Separator = "SEPARATOR";
+    }
+
+    terminals
+    {
+        fragment NEW_LINE
+            -> U+000D           // CR
+            |  U+000A           // LF
+            |  U+000D U+000A    // CR LF
+			|  U+0085           // NL Next line character
+			|  U+2028           // LS Line separator character
+			|  U+2029           // PS Paragraph separator character
+            ;
+
+        fragment WHITE_SPACE    -> uc{Zs} | U+0009 | U+000B | U+000C ;
+
+        fragment COMMENT_LINE   -> '//' (.* - (.* NEW_LINE .*)) ;
+
+        fragment COMMENT_BLOCK  -> '/*' (.* - (.* '*/' .*)) '*/' ;
+
+        SEPARATOR               -> (NEW_LINE | WHITE_SPACE | COMMENT_LINE | COMMENT_BLOCK)+;
+
+        fragment NAME_FIRST     -> [_a-zA-Z];
+        NAME                    -> NAME_FIRST (NAME_FIRST | [0-9])* ;
+
+        INTEGER                 -> [1-9] [0-9]* | '0' ;
+        fragment ESCAPEES       -> '\\\\'        // Backslash
+                                | '\\0'        // Unicode character 0
+                                | '\\a'        // Alert (character 7)
+                                | '\\b'        // Backspace (character 8)
+                                | '\\f'        // Form feed (character 12)
+                                | '\\n'        // New line (character 10)
+                                | '\\r'        // Carriage return (character 13)
+                                | '\\t'        // Horizontal tab (character 9)
+                                | '\\v'        // Vertical quote (character 11)
+                                | '\\u' [0-9a-fA-F]{4}   // Unicode code point
+                                | '\\u' [0-9a-fA-F]{8} ; // Unicode code point
+        LITERAL_STRING          -> '"' ( [^"] | '\\"' | ESCAPEES )* '"';
+        LITERAL_ANY             -> '.';
+        LITERAL_TEXT            -> '~'? '\'' ( [^\\'] | '\\\'' | ESCAPEES )+ '\'';
+        LITERAL_CLASS           -> '[' ( [^\\\[\]] | '\\[' | '\\]' | '\\-' | '\\^' | ESCAPEES )+ ']';
+
+        UNICODE_BLOCK           -> 'ub' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
+        UNICODE_CATEGORY        -> 'uc' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
+        UNICODE_CODEPOINT       -> 'U+' [a-fA-F0-9]+;
+        UNICODE_SPAN_MARKER     -> '..';
+
+        OPERATOR_UNION          -> '|';
+        OPERATOR_DIFFERENCE     -> '-';
+
+        TREE_ACTION_PROMOTE     -> '^';
+        TREE_ACTION_DROP        -> '!';
+    }
+    rules
+    {
+        file
+            -> cf_grammar
+            ;
+
+        cf_grammar
+            -> 'grammar'! NAME '{'! grammar_options grammar_terminals grammar_rules '}'!
+            ;
+
+        /* OPTIONS */
+            grammar_options
+                -> 'options'! '{'! option* '}'!
+                ;
+
+            option
+                -> NAME '='! LITERAL_STRING ';'!
+                ;
+
+        /* TERMINALS *
+            /* terminals */
+            grammar_terminals
+                -> 'terminals'! '{'! terminal_item* '}'!
+                ;
+
+            terminal_item               
+                -> terminal_rule^
+                |  terminal_fragment^
+                |  terminal_context^
+                ;
+
+            terminal_rule
+                -> NAME '->'! terminal_definition ';'! 
+                ;
+
+            terminal_fragment
+                -> 'fragment'! NAME '->'! terminal_definition ';'!
+                ;
+
+            terminal_context
+                -> 'context'! NAME '{'! terminal_rule* '}'!
+                ;
+
+            terminal_definition
+                -> terminal_difference (OPERATOR_UNION! terminal_difference)*
+                ;
+
+            terminal_difference
+                -> terminal_sequence (OPERATOR_DIFFERENCE! terminal_sequence)*
+                ;
+
+            terminal_sequence
+                -> terminal_repetition terminal_repetition*
+                ;
+
+            terminal_repetition     
+                -> terminal_element terminal_cardinalilty?
+                ;
+
+            terminal_element
+                -> terminal_atom^
+                | '('! terminal_definition^ ')'! 
+                ;
+
+            terminal_atom
+                -> LITERAL_ANY^
+                |  UNICODE_CODEPOINT^
+                |  LITERAL_TEXT^
+                |  LITERAL_CLASS^
+                |  UNICODE_CODEPOINT UNICODE_SPAN_MARKER^ UNICODE_CODEPOINT
+                |  UNICODE_BLOCK^
+                |  UNICODE_CATEGORY^
+                |  NAME^
+                ;
+
+            terminal_cardinalilty
+                -> '?'^
+                |  '*'^
+                |  '+'^
+                |  "range"^ '{'! INTEGER (','! INTEGER)? '}'!
+                ;
+
+        /* RULES */
+            grammar_rules
+                -> 'rules'^ '{'! rule* '}'!
+                ;
+
+            rule                        
+                -> rule_simple^ | rule_template^
+                ;
+
+            rule_simple                 
+                -> NAME '->'! rule_definition ';'!
+                ;
+
+            rule_template
+                -> NAME rule_template_params '->'! rule_definition ';'!
+                ;
+
+            rule_definition
+                -> rule_def_choice^ (OPERATOR_UNION^ rule_def_choice)*
+                ;
+
+            rule_def_choice
+                -> rule_def_fragment^ | "emptypart"^
+                ;
+
+            rule_def_fragment
+                -> rule_def_repetition^ ("concat"^ rule_def_repetition)*
+                ;
+
+            rule_def_repetition
+                -> rule_def_tree_action^ rule_def_cardinality^?
+                ;
+
+            rule_def_tree_action
+                -> rule_def_element^ (TREE_ACTION_PROMOTE | TREE_ACTION_DROP)^?
+                ;
+
+            rule_def_element
+                -> rule_def_atom^
+                |  rule_def_context^
+                |  rule_def_sub^
+                |  '('! rule_definition^ ')'!
+                ;
+
+            rule_def_atom               
+                -> rule_sym_action^
+                |  rule_sym_virtual^
+                |  rule_sym_ref_simple^
+                |  rule_sym_ref_template^
+                |  LITERAL_TEXT^ ;
+
+            rule_def_cardinality
+                -> '?'^ | '*'^ | '+'^
+                ;
+
+            rule_def_context
+                -> '#'! NAME '{'! rule_definition '}'!
+                ;
+
+            rule_def_sub                
+                -> '{'! rule_definition '}'!
+                ;
+
+            rule_sym_action
+                -> '@'! NAME
+                ;
+
+            rule_sym_virtual
+                -> LITERAL_STRING
+                ;
+
+            rule_sym_ref_simple
+                -> NAME
+                ;
+
+            rule_sym_ref_template
+                -> NAME rule_sym_ref_params
+                ;
+
+            rule_sym_ref_params
+                -> '<'! rule_def_atom (','! rule_def_atom)* '>'!
+                ;
+
+            rule_template_params
+                -> '<'! NAME (','! NAME)* '>'!
+                ;
+    }
+}

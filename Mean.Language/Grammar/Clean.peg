@@ -1,0 +1,489 @@
+﻿@namespace Clean.Parser
+@classname CleanParser
+@using System.Globalization
+@using global::Clean.Language;
+@using global::Clean.Language.AST;
+
+
+//=================================================================================================
+// MAIN ENTRY
+//=================================================================================================
+
+unit <Items>
+    = i:items eof                                                   { i }
+
+//=================================================================================================
+// Expressions
+//=================================================================================================
+
+topExpression <Expression>
+    = e:expression eof                                              { e }
+
+expression <Expression> -memoize
+    = left:withBlock                                                { left }
+    / left:withoutBlock                                             { left }
+
+withoutBlock <Expression> -memoize
+    = left:assignmentExpression                                     { left }
+
+assignmentExpression <Expression> -memoize
+    = left:unaryExpression '=' _ right:assignmentExpression         { Assign(leftStart, left, right) }
+    / left:logicalOrExpression                                      { left }
+
+logicalOrExpression <Expression> -memoize
+    = left:logicalOrExpression '||' _ right:logicalAndExpression    { BinaryOrElse(leftStart, left, right) }
+    / left:logicalAndExpression                                     { left }
+
+logicalAndExpression <Expression> -memoize
+    = left:logicalAndExpression '&&' _ right:orExpression           { BinaryAndThen(leftStart, left, right) }
+    / left:orExpression                                             { left }
+
+orExpression <Expression> -memoize
+    = left:orExpression '|' _ right:xorExpression                   { BinaryOr(leftStart, left, right) }
+    / left:xorExpression                                            { left }
+
+xorExpression <Expression> -memoize
+    = left:xorExpression '^' _ right:andExpression                  { BinaryXor(leftStart, left, right) }
+    / left:andExpression                                            { left }
+
+andExpression <Expression> -memoize
+    = left:andExpression '&' _ right:equalityExpression             { BinaryAnd(leftStart, left, right) }
+    / left:equalityExpression                                       { left }
+
+equalityExpression <Expression> -memoize
+    = left:equalityExpression '==' _ right:shiftExpression          { BinaryEQ(leftStart, left, right) }
+    / left:equalityExpression '!=' _ right:shiftExpression          { BinaryNE(leftStart, left, right) }
+    / left:equalityExpression '<=' _ right:shiftExpression          { BinaryLE(leftStart, left, right) }
+    / left:equalityExpression '<'  _ right:shiftExpression          { BinaryLT(leftStart, left, right) }
+    / left:equalityExpression '>=' _ right:shiftExpression          { BinaryGE(leftStart, left, right) }
+    / left:equalityExpression '>'  _ right:shiftExpression          { BinaryGT(leftStart, left, right) }
+    / left:shiftExpression                                          { left }
+
+shiftExpression <Expression> -memoize
+    = left:shiftExpression '<<' _ right:addExpression               { BinaryShl(leftStart, left, right) }
+    / left:shiftExpression '>>' _ right:addExpression               { BinaryShr(leftStart, left, right) }
+    / left:addExpression                                            { left }
+
+addExpression <Expression> -memoize
+    = left:addExpression "+" _ right:mulExpression                  { BinaryAdd(leftStart, left, right) }
+    / left:addExpression "-" _ right:mulExpression                  { BinarySub(leftStart, left, right) }
+    / left:mulExpression                                            { left }
+
+mulExpression <Expression> -memoize
+    = left:mulExpression "*" _ right:castExpression                 { BinaryMul(leftStart, left, right) }
+    / left:mulExpression "/" _ right:castExpression                 { BinaryDiv(leftStart, left, right) }
+    / left:mulExpression "%" _ right:castExpression                 { BinaryRem(leftStart, left, right) }
+    / left:castExpression                                           { left }
+
+castExpression <Expression> -memoize
+    = left:castExpression 'as' _ type:type                          { TypeCast(leftStart, left, type) }
+    / left:unaryExpression                                          { left }
+
+unaryExpression <Expression> -memoize
+    = left:'-' _ right:castExpression                               { UnaryNeg(leftStart, right) }
+    / left:'!' _ right:castExpression                               { UnaryNot(leftStart, right) }
+    / left:postfixExpression                                        { left }
+
+postfixExpression <Expression> -memoize
+    = left:postfixExpression '[' _ list:expression ']' _            { ArrayIndex(leftStart, left, list) }
+    / left:postfixExpression '(' _ list:expressionList ')' _        { FunctionCall(leftStart, left, CallArgs(listStart, list)) }
+    / left:postfixExpression '.' _ index:tupleIndex                 { TupleIndex(leftStart, left, index) }
+    / left:primaryExpression                                        { left }
+
+primaryExpression <Expression> -memoize
+    = left:floatLiteral                                             { left }
+    / left:integerLiteral                                           { left }
+    / left:stringLiteral                                            { left }
+    / left:boolLiteral                                              { left }
+    / '(' _ expression:expression ')' _                             { expression }
+    / left:expressionPath                                           { left }
+
+expressionList <IList<Expression>>
+    = expressions:expression<0,,comma> ','? _                       { expressions }
+
+withBlock <Expression>
+    = blockExpr:block                                               { blockExpr }
+    / ifExpr:ifExpression                                           { ifExpr }
+    / loopExpr:loopExpression                                       { loopExpr }
+    / whileExpr:whileExpression                                     { whileExpr }
+    / forExpr:forExpression                                         { forExpr }
+
+block <Block>
+    = start:'{' _  statements:statements? '}' _                     { Block(startStart, statements) }
+
+ifExpression <Expression>
+    = start:'if' _ cond:expression ifblock:block elseif:else?       { IfExpression(startStart, cond, ifblock, elseif) }
+
+else <Expression>
+    = 'else' _ block:block                                          { block }
+    / 'else' _ ifexpr:ifExpression                                  { ifexpr }
+
+loopExpression <Expression>
+    = start:'loop' _ block:block                                    { Loop(startStart, block) }
+
+whileExpression <Expression>
+    = start:'while' _ cond:expression block:block                   { While(startStart, cond, block)}
+
+forExpression <Expression>
+    = start:'for' _ pattern:pattern 'in' _ expr:expression block:block
+                                                                    { For(startStart, pattern, expr, block) }
+
+
+//=================================================================================================
+// Patterns
+//=================================================================================================
+pattern <Pattern>
+    = pattern:identifierPattern                                     { pattern }
+
+identifierPattern <Pattern>
+    = identifier:identifier                                         { IdentifierPattern(identifierStart, identifier) }
+
+//=================================================================================================
+// Types
+//=================================================================================================
+type <TypeExpression>
+    = one:typePath                                                  { one }
+
+
+//=================================================================================================
+// Paths
+//=================================================================================================
+expressionPath <ExpressionPath>
+    = p:path                                                        { ExpressionPath(pStart, p) }
+
+typePath <TypePath>
+    = p:path                                                        { TypePath(pStart, p) }
+
+path <AnyPath>
+    = g:'::'? _ p:pathSegment<1,,dot>                               { AnyPath(gStart, g, p) }
+
+pathSegment <PathSegment>
+    = id:identifier a:genericArgs?                                   { PathSegment(idStart, id, a) }
+
+genericArgs <GenericArgs>
+    = s:('<' _) t:genericArgsTypes b:genericArgsBindings? ('>' _)   { GenericArgs(sStart, t, b) }
+
+genericArgsTypes <GenericArgsTypes>
+    = t:type<1,,comma>                                              { GenericArgsTypes(tStart, t) }
+
+genericArgsBindings <GenericArgsBindings>
+    = comma b:genericArgsBinding<1,,comma>                          { GenericArgsBindings(bStart, b) }
+
+genericArgsBinding <GenericArgsBinding>
+    = i:identifier '=' _ t:type                                     { GenericArgsBinding(iStart, i, t) }
+
+
+//=================================================================================================
+// Statements
+//=================================================================================================
+
+statements <StatementList>
+    = s:statement+ w:withoutBlock                                   { Statements(sStart, s, w) }
+    / s:statement+                                                  { Statements(sStart, s) }
+    / w:withoutBlock                                                { Statements(wStart, w) }
+
+statement <Statement>
+    = s:';' _                                                       { EmptyStatement(sStart) }
+    / i:item                                                        { ItemStatement(iStart, i) }
+    / l:letStatement                                                { l }
+    / e:expressionStatement                                         { e }
+
+letStatement <Statement>
+    = l:'let' _ p:pattern ':' _ t:type '=' _ v:expression ';' _     { LetStatement(lStart, p, t, v) }
+
+expressionStatement <Statement>
+    = expr:withoutBlock ';' _                                       { ExpressionStatement(exprStart, expr, true)  }
+    / expr:withBlock                                                { ExpressionStatement(exprStart, expr, false) }
+
+
+//=================================================================================================
+// Items
+//=================================================================================================
+
+topItem <Item>
+    = i:item eof                                                    {i}
+
+items <Items>
+    = i:item*                                                       { Items(iStart, i) }
+
+item <Item>
+    = p:prelude i:plainItem                                         { Preludering(p, i) }
+
+plainItem <Item>
+    = i:moduleRef                                                   {i}
+    / i:moduleDef                                                   {i}
+    / i:method                                                      {i}
+    / i:function                                                    {i}
+    / i:constant                                                    {i}
+    / i:typeAlias                                                   {i}
+    / i:struct                                                      {i}
+    / i:tuple                                                       {i}
+    / i:enumeration                                                 {i}
+    / i:trait                                                       {i}
+    / i:traitImpl                                                   {i}
+
+
+prelude <Prelude>
+    = v:visibility?                                                 { Prelude(vStart, v) }
+
+visibility <Visibility>
+    = pub:'pub' _                                                   { Visibility(pubStart) }
+
+//-------------------------------------------------------------------------------------------------
+// module item
+//-------------------------------------------------------------------------------------------------
+moduleRef <ModuleItem>
+    = m:'mod' _ id:identifier ';' _                                 { ModuleRef(mStart, id) }
+
+moduleDef <ModuleItem>
+    = m:'mod' _ id:identifier '{' _ items:items '}' _               { ModuleDef(mStart, id, items) }
+
+
+//-------------------------------------------------------------------------------------------------
+// constant item
+//-------------------------------------------------------------------------------------------------
+constant <ConstantItem>
+    = s:'const' _ id:identifier ':' _ t:type '=' _ e:expression ';' _
+      { ConstantItem(sStart, id, t, e) }
+
+
+//-------------------------------------------------------------------------------------------------
+// function item
+//-------------------------------------------------------------------------------------------------
+function <Function>
+    = q:qualifiers f:'fn' _ i:identifier g:generics '(' _ p:parameters ')' _ r:funReturn w:where b:block
+      { Function(fStart, q, i, g, p, r, w, b) }
+
+
+//-------------------------------------------------------------------------------------------------
+// method item
+//-------------------------------------------------------------------------------------------------
+method <Method>
+    = q:qualifiers f:'fn' _ i:identifier g:generics '(' _ m:mparameters ')' _ r:funReturn w:where b:block
+      { Method(fStart, q, i, g, m, r, w, b) }
+
+
+//-------------------------------------------------------------------------------------------------
+// struct item
+//-------------------------------------------------------------------------------------------------
+struct <Struct>
+    = s:'struct' _ id:identifier g:generics w:where '{' _ f:structFields '}' _
+      { Struct(sStart, id, g, w, f) }
+
+structFields <StructFields>
+    = f:structField<0,,comma> comma?                                { StructFields(fStart, f) }
+
+structField <StructField>
+    = p:prelude id:identifier ':' _ t:type                          { StructField(pStart, p, id, t) }
+
+
+//-------------------------------------------------------------------------------------------------
+// tuple item
+//-------------------------------------------------------------------------------------------------
+tuple <Language.AST.Tuple>
+    = s:'tuple' _ id:identifier g:generics w:where '(' _ f:tupleFields ')' _
+      { Tuple(sStart, id, g, w, f) }
+
+tupleFields <TupleFields>
+    = f:tupleField<0,,comma> comma?                                 { TupleFields(fStart, f) }
+
+tupleField <TupleField>
+    = p:prelude t:type                                              { TupleField(pStart, p, t) }
+
+
+//-------------------------------------------------------------------------------------------------
+// enum item
+//-------------------------------------------------------------------------------------------------
+enumeration <Enumeration>
+    = s:'enum' _ id:identifier g:generics w:where '{' _ f:enumItems '}' _
+      { Enumeration(sStart, id, g, w, f) }
+
+enumItems <EnumItems>
+    = i:enumItem<0,,comma> comma?                                   { EnumItems(iStart, i) }
+
+enumItem <EnumItem>
+    = id:identifier '{' _ f:structFields '}' _                      { EnumItemStruct(idStart, id, f) }
+    / id:identifier '(' _ f:tupleFields ')' _                       { EnumItemTuple(idStart, id, f)}
+    / id:identifier '=' _ e:expression                              { EnumItemDiscriminant(idStart, id, e) }
+
+//-------------------------------------------------------------------------------------------------
+// trait item
+//-------------------------------------------------------------------------------------------------
+trait <Trait>
+    = t:'trait' _ id:identifier g:generics b:traitBounds? w:where '{' _ i:traitItems '}' _
+                                                                    { Trait(tStart, id, g, b, w, i) }
+
+traitItems <Items>
+    = t:traitItem*                                                  { Items(tStart, t) }
+
+traitItem <Item>
+    = t:traitMethod                                                 { t }
+    / t:traitFunction                                               { t }
+    / t:traitConst                                                  { t }
+    / t:traitType                                                   { t }
+    ;
+
+traitFunction <TraitFunction>
+    = q:qualifiers 'fn' _ id:identifier g:generics '(' _ p:parameters ')' _ r:funReturn w:where b:blockOrNone
+                                                                    { TraitFunction(qStart, q, id, g, p, r, w, b) }
+
+blockOrNone <Block>
+    = b:';' _                                                       { BlockNone(bStart) }
+    / b:block                                                       { b }
+
+traitMethod <TraitMethod>
+    = q:qualifiers 'fn' _ id:identifier g:generics '(' _ m:mparameters ')' _ r:funReturn w:where b:blockOrNone
+                                                                    { TraitMethod(qStart, q, id, g, m, r, w, b) }
+
+traitConst <TraitConst>
+    = s:'const' _ id:identifier ':' _ t:type e:(<Expression> '=' _ ei:expression {ei})? ';' _
+                                                                    { TraitConst(sStart, id, t, e) }
+
+traitType <TraitType>
+    = s:'type' _ id:identifier b:traitBounds? t:(<TypeExpression> '=' _ ti:type {ti})? ';' _
+                                                                    { TraitType(sStart, id, b, t) }
+
+
+//-------------------------------------------------------------------------------------------------
+// type alias item
+//-------------------------------------------------------------------------------------------------
+typeAlias <TypeAlias>
+    = s:'type' _ i:identifier g:generics w:where '=' _ t:type ';' _ { TypeAlias(sStart, i, g, w, t) }
+
+
+//-------------------------------------------------------------------------------------------------
+// trait impl item
+//-------------------------------------------------------------------------------------------------
+traitImpl <TraitImpl>
+    = s:'impl' _ g:generics t:typePath 'for' _ f:type w:where '{' _ i:traitImplItems '}' _
+      { TraitImpl(sStart, g, t, f, w, i) }
+
+traitImplItems <Items>
+    = i:traitImplItem*                                              { Items(iStart, i) }
+
+traitImplItem <Item>
+    = i:typeAlias                                                   {i}
+    / i:constant                                                    {i}
+    / i:method                                                      {i}
+    / i:function                                                    {i}
+
+
+//-------------------------------------------------------------------------------------------------
+// generics
+//-------------------------------------------------------------------------------------------------
+
+generics <Generics> -memoize
+    = t:genericParameters?                                          { Generics(tStart, t) }
+
+genericParameters <GenericParameters>
+    = s:'<' _ p1:paramsWithout comma p2:paramsWith comma? '>' _     { GenericParameters(sStart, p1, p2) }
+    / s:'<' _ p1:paramsWithout comma? '>' _                         { GenericParameters(sStart, p1) }
+    / s:'<' _ p2:paramsWith comma? '>' _                            { GenericParameters(sStart, p2) }
+    / s:'<' _  '>' _                                                { GenericParameters(sStart) }
+
+paramsWith <IList<TypeParameter>> -memoize
+    = p:paramWith<1,,comma>                                         { p }
+
+paramsWithout <IList<TypeParameter>> -memoize
+    = p:paramWithout<1,,comma>                                      { p }
+
+paramWith <TypeParameter> -memoize
+    = i:identifier '=' t:type                                       { TypeParameter(iStart, i, t) }
+
+paramWithout <TypeParameter> -memoize
+    = i:identifier                                                  { TypeParameter(iStart, i) }
+
+
+//-------------------------------------------------------------------------------------------------
+// where / bounds
+//-------------------------------------------------------------------------------------------------
+
+where <Where> -memoize
+    = w:whereClause?                                                { Where(wStart, w) }
+
+whereClause <Where>
+    = s:'where' _ w:whereItem<1,,comma> comma?                      { WhereClause(sStart, w) }
+
+whereItem <WhereItem>
+    = t:type b:traitBounds                                          { WhereItem(tStart, t, b) }
+
+traitBounds <TraitBounds>
+    = s:':' _ t:traitBound<1,,plus> plus?                           { TraitBounds(sStart, t) }
+
+traitBound <TraitBound>
+    = p:typePath                                                    { TraitBound(pStart, p) }
+    / '(' _ p:typePath ')' _                                        { TraitBound(pStart, p) }
+
+
+//-------------------------------------------------------------------------------------------------
+// ITEM misc
+//-------------------------------------------------------------------------------------------------
+qualifiers <FunctionQualifiers> -memoize
+    = c:'const'?                                                    { FunctionQualifiers(cStart, c) }
+
+parameters <FunctionParameters>
+    = p:functionParameter<0,,comma> comma?                          { FunctionParameters(pStart, p) }
+
+mparameters <FunctionParameters>
+    = s:selfParameter ',' p:functionParameter<1,,comma> comma?      { FunctionParameters(sStart, s, p) }
+    / s:selfParameter                                               { FunctionParameters(sStart, s) }
+
+functionParameter <FunctionParameter>
+    = r:'&'? _ m:'mut'? _ id:identifier ':' _ t:type                { FunctionParameter(rStart, r, m, id, t) }
+
+selfParameter <FunctionParameter>
+    = r:'&'? _ m:'mut'? _ 'self' _                                  { SelfParameter(rStart, r, m) }
+
+funReturn <FunctionReturn>
+    = t:(<TypeExpression>'->' _ ti:type {ti})?                      { FunctionReturn(tStart, t) }
+
+
+
+//=================================================================================================
+// Literals
+//=================================================================================================
+
+tupleIndex <Constant.I64>
+    = value:('0' / [1-9][0-9]*) _                                   { IntegerLiteral(valueStart, value) }
+    
+integerLiteral <Constant.I64>
+    = value:('0' / [1-9][0-9]*) _                                   { IntegerLiteral(valueStart, value) }
+
+floatLiteral <Constant.F64>
+    = value:('0' / [1-9][0-9]* '.' [0-9]+) _                        { FloatLiteral(valueStart, value) }
+
+stringLiteral <Constant.String>
+    = value:('"' '"') _                                             { StringLiteral(valueStart, value) }
+
+boolLiteral <Constant.Bool>
+    = v:('true' / 'false')                                          { BoolLiteral(vStart, v) }
+
+
+
+//=================================================================================================
+// Identifier
+//=================================================================================================
+
+identifier <Identifier> -memoize
+    = value:([a-zA-Z_] [a-zA-Z0-9_]*) _                             { Identifier(valueStart, value) }
+
+
+
+//=================================================================================================
+// Misc
+//=================================================================================================
+
+_   = ( [ \t\r\n] / lineComment)*
+
+lineComment
+    = '//' (!eol .)* eol
+
+eol = '\r\n'
+    / '\r'
+    / '\n'
+
+comma = ',' _
+dot = '.' _
+plus = '+' _
+
+eof = !.

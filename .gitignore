@@ -332,3 +332,6 @@ Lingu.Bootstrap/Grammar/*.txt
 Lingu.Bootstrap/Grammar/*.dot
 Lingu.Bootstrap/Grammar/*.dll
 Lingu.Bootstrap/Hime
+Mean.Language/Generated/*.txt
+Mean.Language/Generated/*.dot
+Mean.Language/Generated/*.dll

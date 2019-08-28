@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mean.Language\Mean.Language.csproj" />
+    <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
+    <ProjectReference Include="..\Mean.Sources\Mean.Sources.csproj" />
+    <ProjectReference Include="..\Mean.Tree\Mean.Tree.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -7,10 +7,16 @@
 
   <ItemGroup>
     <None Remove="Grammar\Lingu.Grammar" />
+    <None Remove="Grammar\Lingu.HimeGrammar" />
+    <None Remove="Grammar\LinguLexer.bin" />
+    <None Remove="Grammar\LinguParser.bin" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Grammar\Lingu.HimeGrammar" />
     <EmbeddedResource Include="Grammar\Lingu.Grammar" />
+    <EmbeddedResource Include="Grammar\LinguLexer.bin" />
+    <EmbeddedResource Include="Grammar\LinguParser.bin" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mean\Mean.Maker\Mean.Maker.csproj" />
+    <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
   </ItemGroup>
 
 </Project>
