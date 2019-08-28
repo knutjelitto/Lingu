@@ -52,24 +52,22 @@ namespace Lingu.Bootstrap
                 case 0x002A: return (T)OnVariableRuleSimple(node);
                 case 0x002B: return (T)OnVariableRuleTemplate(node);
                 case 0x002C: return (T)OnVariableRuleDefinition(node);
-                case 0x002D: return (T)OnVariableRuleDefChoice(node);
-                case 0x002E: return (T)OnVariableRuleDefFragment(node);
-                case 0x002F: return (T)OnVariableRuleDefRepetition(node);
-                case 0x0030: return (T)OnVariableRuleDefTreeAction(node);
-                case 0x0031: return (T)OnVariableRuleDefElement(node);
-                case 0x0032: return (T)OnVariableRuleDefAtom(node);
-                case 0x0033: return (T)OnVariableRuleDefCardinality(node);
-                case 0x0034: return (T)OnVariableRuleDefContext(node);
-                case 0x0035: return (T)OnVariableRuleDefSub(node);
-                case 0x0036: return (T)OnVariableRuleSymAction(node);
-                case 0x0037: return (T)OnVariableRuleSymVirtual(node);
-                case 0x0038: return (T)OnVariableRuleSymRefSimple(node);
-                case 0x0039: return (T)OnVariableRuleSymRefTemplate(node);
-                case 0x003A: return (T)OnVariableRuleSymRefParams(node);
-                case 0x003B: return (T)OnVariableRuleTemplateParams(node);
+                case 0x002D: return (T)OnVariableRuleAlternative(node);
+                case 0x002E: return (T)OnVariableRuleSequence(node);
+                case 0x002F: return (T)OnVariableRuleRepetition(node);
+                case 0x0030: return (T)OnVariableRuleTreeAction(node);
+                case 0x0031: return (T)OnVariableRuleElement(node);
+                case 0x0032: return (T)OnVariableRuleAtom(node);
+                case 0x0033: return (T)OnVariableRuleCardinality(node);
+                case 0x0034: return (T)OnVariableRuleContext(node);
+                case 0x0035: return (T)OnVariableRuleSub(node);
+                case 0x0036: return (T)OnVariableRuleAction(node);
+                case 0x0037: return (T)OnVariableRuleVirtual(node);
+                case 0x0038: return (T)OnVariableRuleRef(node);
+                case 0x0039: return (T)OnVariableRuleRefTemplate(node);
+                case 0x003A: return (T)OnVariableRuleArguments(node);
+                case 0x003B: return (T)OnVariableRuleParams(node);
                 case 0x0051: return (T)OnVirtualRange(node);
-                case 0x0056: return (T)OnVirtualEmptypart(node);
-                case 0x0057: return (T)OnVirtualConcat(node);
                 default:
                     throw new NotImplementedException();
             }
@@ -237,75 +235,67 @@ namespace Lingu.Bootstrap
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefChoice(ASTNode node)
+        protected virtual object OnVariableRuleAlternative(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefFragment(ASTNode node)
+        protected virtual object OnVariableRuleSequence(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefRepetition(ASTNode node)
+        protected virtual object OnVariableRuleRepetition(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefTreeAction(ASTNode node)
+        protected virtual object OnVariableRuleTreeAction(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefElement(ASTNode node)
+        protected virtual object OnVariableRuleElement(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefAtom(ASTNode node)
+        protected virtual object OnVariableRuleAtom(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefCardinality(ASTNode node)
+        protected virtual object OnVariableRuleCardinality(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefContext(ASTNode node)
+        protected virtual object OnVariableRuleContext(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleDefSub(ASTNode node)
+        protected virtual object OnVariableRuleSub(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleSymAction(ASTNode node)
+        protected virtual object OnVariableRuleAction(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleSymVirtual(ASTNode node)
+        protected virtual object OnVariableRuleVirtual(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleSymRefSimple(ASTNode node)
+        protected virtual object OnVariableRuleRef(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleSymRefTemplate(ASTNode node)
+        protected virtual object OnVariableRuleRefTemplate(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleSymRefParams(ASTNode node)
+        protected virtual object OnVariableRuleArguments(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariableRuleTemplateParams(ASTNode node)
+        protected virtual object OnVariableRuleParams(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
         protected virtual object OnVirtualRange(ASTNode node)
-        {
-            return VisitChildren(node).FirstOrDefault();
-        }
-        protected virtual object OnVirtualEmptypart(ASTNode node)
-        {
-            return VisitChildren(node).FirstOrDefault();
-        }
-        protected virtual object OnVirtualConcat(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }

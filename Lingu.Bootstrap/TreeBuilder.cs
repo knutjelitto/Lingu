@@ -9,7 +9,6 @@ using Lingu.Bootstrap.Tree;
 
 namespace Lingu.Bootstrap
 {
-#if true
     public class TreeBuilder : LinguVisitor
     {
         public Grammar Visit(ASTNode node)
@@ -30,22 +29,14 @@ namespace Lingu.Bootstrap
             return new LitString(node.Children[child].Value);
         }
 
-        private LitString LitInteger(ASTNode node, int child)
-        {
-            Debug.Assert(child < node.Children.Count);
-            Debug.Assert(node.Children[child].SymbolType == SymbolType.Terminal);
-            Debug.Assert(node.Children[child].Symbol.ID == LinguLexer.ID.TerminalInteger);
-            return new LitString(node.Children[child].Value);
-        }
-
         protected override IEnumerable<object> VisitChildren(ASTNode node)
         {
-            return base.VisitChildren(node);
+            throw new NotImplementedException();
         }
 
         protected override IEnumerable<T> VisitChildren<T>(ASTNode node)
         {
-            return node.Children.Select(child => VisitNode<T>(child));
+            return node.Children.Select(VisitNode<T>);
         }
 
         protected override object OnVariableFile(ASTNode node)
@@ -60,8 +51,9 @@ namespace Lingu.Bootstrap
             var name =  VisitChild<AtomName>(node, 0);
             var options = VisitChild<Options>(node, 1);
             var terminals = VisitChild<Terminals>(node, 2);
+            var rules = VisitChild<Rules>(node, 3);
 
-            return new Grammar(name, options);
+            return new Grammar(name, options, terminals);
         }
 
         protected override object OnVariableGrammarOptions(ASTNode node)
@@ -137,15 +129,40 @@ namespace Lingu.Bootstrap
             {
                 return expression;
             }
-
-            switch (node.Children[1].Value)
+            if (node.Children.Count == 2)
             {
-                case "?": return new TerminalRepetition(expression, 0, 1);
-                case "*": return new TerminalRepetition(expression, 0);
-                case "+": return new TerminalRepetition(expression, 1);
-                default:
-                    throw new NotImplementedException();
+
+                var rep = node.Children[1];
+
+                switch (rep.Value)
+                {
+                    case "?": return new TerminalRepetition(expression, 0, 1);
+                    case "*": return new TerminalRepetition(expression, 0);
+                    case "+": return new TerminalRepetition(expression, 1);
+                    case null:
+                    {
+                        if (rep.Symbol.ID == LinguParser.ID.VirtualRange)
+                        {
+                            var int1 = VisitChild<AtomInteger>(rep, 0);
+                            if (rep.Children.Count == 1)
+                            {
+                                // exactly
+                                return new TerminalRepetition(expression, int1.Value, int1.Value);
+                            }
+                            if (rep.Children.Count == 2)
+                            {
+                                // from .. to
+                                var int2 = VisitChild<AtomInteger>(rep, 1);
+
+                                return new TerminalRepetition(expression, int1.Value, int2.Value);
+                            }
+                        }
+                        break;
+                    }
+                }
             }
+
+            throw new ArgumentOutOfRangeException(nameof(node));
         }
 
         protected override object OnTerminalUnicodeCodepoint(ASTNode node)
@@ -171,6 +188,8 @@ namespace Lingu.Bootstrap
 
         protected override object OnTerminalLiteralText(ASTNode node)
         {
+            Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
+
             return new AtomText(node.Value);
         }
 
@@ -179,12 +198,101 @@ namespace Lingu.Bootstrap
             return new AtomAny();
         }
 
+        protected override Object OnTerminalLiteralClass(ASTNode node)
+        {
+            Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
+
+            return new AtomClass(node.Value);
+        }
+
         protected override object OnTerminalName(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
             return new AtomName(node.Value);
         }
+
+        protected override Object OnTerminalInteger(ASTNode node)
+        {
+            Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
+
+            return new AtomInteger(node.Value);
+        }
+
+        protected override Object OnVariableGrammarRules(ASTNode node)
+        {
+            return new Rules(VisitChildren<RuleItem>(node));
+        }
+
+        protected override Object OnVariableRuleSimple(ASTNode node)
+        {
+            return new RuleSimple(
+                VisitChild<AtomName>(node, 0), 
+                VisitChild<RuleDefinition>(node, 1));
+        }
+
+        protected override Object OnVariableRuleTemplate(ASTNode node)
+        {
+            return new RuleTemplate(
+                VisitChild<AtomName>(node, 0),
+                VisitChild<RuleTemplateParams>(node, 1),
+                VisitChild<RuleDefinition>(node, 2));
+        }
+
+        protected override Object OnVariableRuleParams(ASTNode node)
+        {
+            return new RuleTemplateParams(VisitChildren<AtomName>(node));
+        }
+
+        protected override Object OnVariableRuleDefinition(ASTNode node)
+        {
+            if (node.Children.Count == 1)
+            {
+                return VisitChild<RuleExpression>(node, 0);
+            }
+
+            return new RuleDefinition(VisitChildren<RuleExpression>(node));
+        }
+
+        protected override Object OnVariableRuleAlternative(ASTNode node)
+        {
+            if (node.Children.Count == 0)
+            {
+                return new RuleEpsilon();
+            }
+
+            return VisitChild<RuleExpression>(node, 0);
+        }
+
+        protected override Object OnVariableRuleSequence(ASTNode node)
+        {
+            if (node.Children.Count == 1)
+            {
+                return VisitChild<RuleExpression>(node, 0);
+            }
+
+            return new RuleAlternative(VisitChildren<RuleExpression>(node));
+        }
+
+        protected override Object OnVariableRuleRepetition(ASTNode node)
+        {
+            var expression = VisitChild<RuleExpression>(node, 0);
+            if (node.Children.Count == 1)
+            {
+                return expression;
+            }
+            if (node.Children.Count == 2)
+            {
+                switch (node.Children[1].Value)
+                {
+                    case "?": return new RuleRepetition(expression, 0, 1);
+                    case "*": return new RuleRepetition(expression, 0);
+                    case "+": return new RuleRepetition(expression, 1);
+
+                }
+            }
+
+            throw  new NotImplementedException();
+        }
     }
-#endif
 }

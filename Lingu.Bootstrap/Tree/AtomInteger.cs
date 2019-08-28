@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Lingu.Bootstrap.Tree
 {
-    public class LitInteger : TerminalExpression
+    public class AtomInteger : TerminalExpression
     {
-        public LitInteger(string text)
+        public AtomInteger(string text)
         {
             Text = text;
             Value = int.Parse(Text);

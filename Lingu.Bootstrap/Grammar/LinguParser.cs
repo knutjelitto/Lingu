@@ -107,77 +107,69 @@ namespace Lingu.Bootstrap
 			/// </summary>
 			public const int VariableRuleDefinition = 0x002C;
 			/// <summary>
-			/// The unique identifier for variable rule_def_choice
+			/// The unique identifier for variable rule_alternative
 			/// </summary>
-			public const int VariableRuleDefChoice = 0x002D;
+			public const int VariableRuleAlternative = 0x002D;
 			/// <summary>
-			/// The unique identifier for variable rule_def_fragment
+			/// The unique identifier for variable rule_sequence
 			/// </summary>
-			public const int VariableRuleDefFragment = 0x002E;
+			public const int VariableRuleSequence = 0x002E;
 			/// <summary>
-			/// The unique identifier for variable rule_def_repetition
+			/// The unique identifier for variable rule_repetition
 			/// </summary>
-			public const int VariableRuleDefRepetition = 0x002F;
+			public const int VariableRuleRepetition = 0x002F;
 			/// <summary>
-			/// The unique identifier for variable rule_def_tree_action
+			/// The unique identifier for variable rule_tree_action
 			/// </summary>
-			public const int VariableRuleDefTreeAction = 0x0030;
+			public const int VariableRuleTreeAction = 0x0030;
 			/// <summary>
-			/// The unique identifier for variable rule_def_element
+			/// The unique identifier for variable rule_element
 			/// </summary>
-			public const int VariableRuleDefElement = 0x0031;
+			public const int VariableRuleElement = 0x0031;
 			/// <summary>
-			/// The unique identifier for variable rule_def_atom
+			/// The unique identifier for variable rule_atom
 			/// </summary>
-			public const int VariableRuleDefAtom = 0x0032;
+			public const int VariableRuleAtom = 0x0032;
 			/// <summary>
-			/// The unique identifier for variable rule_def_cardinality
+			/// The unique identifier for variable rule_cardinality
 			/// </summary>
-			public const int VariableRuleDefCardinality = 0x0033;
+			public const int VariableRuleCardinality = 0x0033;
 			/// <summary>
-			/// The unique identifier for variable rule_def_context
+			/// The unique identifier for variable rule_context
 			/// </summary>
-			public const int VariableRuleDefContext = 0x0034;
+			public const int VariableRuleContext = 0x0034;
 			/// <summary>
-			/// The unique identifier for variable rule_def_sub
+			/// The unique identifier for variable rule_sub
 			/// </summary>
-			public const int VariableRuleDefSub = 0x0035;
+			public const int VariableRuleSub = 0x0035;
 			/// <summary>
-			/// The unique identifier for variable rule_sym_action
+			/// The unique identifier for variable rule_action
 			/// </summary>
-			public const int VariableRuleSymAction = 0x0036;
+			public const int VariableRuleAction = 0x0036;
 			/// <summary>
-			/// The unique identifier for variable rule_sym_virtual
+			/// The unique identifier for variable rule_virtual
 			/// </summary>
-			public const int VariableRuleSymVirtual = 0x0037;
+			public const int VariableRuleVirtual = 0x0037;
 			/// <summary>
-			/// The unique identifier for variable rule_sym_ref_simple
+			/// The unique identifier for variable rule_ref
 			/// </summary>
-			public const int VariableRuleSymRefSimple = 0x0038;
+			public const int VariableRuleRef = 0x0038;
 			/// <summary>
-			/// The unique identifier for variable rule_sym_ref_template
+			/// The unique identifier for variable rule_ref_template
 			/// </summary>
-			public const int VariableRuleSymRefTemplate = 0x0039;
+			public const int VariableRuleRefTemplate = 0x0039;
 			/// <summary>
-			/// The unique identifier for variable rule_sym_ref_params
+			/// The unique identifier for variable rule_arguments
 			/// </summary>
-			public const int VariableRuleSymRefParams = 0x003A;
+			public const int VariableRuleArguments = 0x003A;
 			/// <summary>
-			/// The unique identifier for variable rule_template_params
+			/// The unique identifier for variable rule_params
 			/// </summary>
-			public const int VariableRuleTemplateParams = 0x003B;
+			public const int VariableRuleParams = 0x003B;
 			/// <summary>
 			/// The unique identifier for virtual range
 			/// </summary>
 			public const int VirtualRange = 0x0051;
-			/// <summary>
-			/// The unique identifier for virtual emptypart
-			/// </summary>
-			public const int VirtualEmptypart = 0x0056;
-			/// <summary>
-			/// The unique identifier for virtual concat
-			/// </summary>
-			public const int VirtualConcat = 0x0057;
 		}
 		/// <summary>
 		/// The collection of variables matched by this parser
@@ -208,21 +200,21 @@ namespace Lingu.Bootstrap
 			new Symbol(0x002A, "rule_simple"), 
 			new Symbol(0x002B, "rule_template"), 
 			new Symbol(0x002C, "rule_definition"), 
-			new Symbol(0x002D, "rule_def_choice"), 
-			new Symbol(0x002E, "rule_def_fragment"), 
-			new Symbol(0x002F, "rule_def_repetition"), 
-			new Symbol(0x0030, "rule_def_tree_action"), 
-			new Symbol(0x0031, "rule_def_element"), 
-			new Symbol(0x0032, "rule_def_atom"), 
-			new Symbol(0x0033, "rule_def_cardinality"), 
-			new Symbol(0x0034, "rule_def_context"), 
-			new Symbol(0x0035, "rule_def_sub"), 
-			new Symbol(0x0036, "rule_sym_action"), 
-			new Symbol(0x0037, "rule_sym_virtual"), 
-			new Symbol(0x0038, "rule_sym_ref_simple"), 
-			new Symbol(0x0039, "rule_sym_ref_template"), 
-			new Symbol(0x003A, "rule_sym_ref_params"), 
-			new Symbol(0x003B, "rule_template_params"), 
+			new Symbol(0x002D, "rule_alternative"), 
+			new Symbol(0x002E, "rule_sequence"), 
+			new Symbol(0x002F, "rule_repetition"), 
+			new Symbol(0x0030, "rule_tree_action"), 
+			new Symbol(0x0031, "rule_element"), 
+			new Symbol(0x0032, "rule_atom"), 
+			new Symbol(0x0033, "rule_cardinality"), 
+			new Symbol(0x0034, "rule_context"), 
+			new Symbol(0x0035, "rule_sub"), 
+			new Symbol(0x0036, "rule_action"), 
+			new Symbol(0x0037, "rule_virtual"), 
+			new Symbol(0x0038, "rule_ref"), 
+			new Symbol(0x0039, "rule_ref_template"), 
+			new Symbol(0x003A, "rule_arguments"), 
+			new Symbol(0x003B, "rule_params"), 
 			new Symbol(0x0040, "__V64"), 
 			new Symbol(0x0044, "__V68"), 
 			new Symbol(0x0048, "__V72"), 
@@ -231,7 +223,7 @@ namespace Lingu.Bootstrap
 			new Symbol(0x004B, "__V75"), 
 			new Symbol(0x0054, "__V84"), 
 			new Symbol(0x0055, "__V85"), 
-			new Symbol(0x0058, "__V88"), 
+			new Symbol(0x0056, "__V86"), 
 			new Symbol(0x005C, "__V92"), 
 			new Symbol(0x005E, "__V94"), 
 			new Symbol(0x005F, "__VAxiom") };
@@ -243,9 +235,7 @@ namespace Lingu.Bootstrap
 		/// so that virtual indices in the automaton can be used to retrieve the virtuals in this table
 		/// </remarks>
 		private static readonly Symbol[] virtuals = {
-			new Symbol(0x0051, "range"), 
-			new Symbol(0x0056, "emptypart"), 
-			new Symbol(0x0057, "concat") };
+			new Symbol(0x0051, "range") };
 		/// <summary>
 		/// Initializes a new instance of the parser
 		/// </summary>
@@ -293,24 +283,22 @@ namespace Lingu.Bootstrap
 			public virtual void OnVariableRuleSimple(ASTNode node) {}
 			public virtual void OnVariableRuleTemplate(ASTNode node) {}
 			public virtual void OnVariableRuleDefinition(ASTNode node) {}
-			public virtual void OnVariableRuleDefChoice(ASTNode node) {}
-			public virtual void OnVariableRuleDefFragment(ASTNode node) {}
-			public virtual void OnVariableRuleDefRepetition(ASTNode node) {}
-			public virtual void OnVariableRuleDefTreeAction(ASTNode node) {}
-			public virtual void OnVariableRuleDefElement(ASTNode node) {}
-			public virtual void OnVariableRuleDefAtom(ASTNode node) {}
-			public virtual void OnVariableRuleDefCardinality(ASTNode node) {}
-			public virtual void OnVariableRuleDefContext(ASTNode node) {}
-			public virtual void OnVariableRuleDefSub(ASTNode node) {}
-			public virtual void OnVariableRuleSymAction(ASTNode node) {}
-			public virtual void OnVariableRuleSymVirtual(ASTNode node) {}
-			public virtual void OnVariableRuleSymRefSimple(ASTNode node) {}
-			public virtual void OnVariableRuleSymRefTemplate(ASTNode node) {}
-			public virtual void OnVariableRuleSymRefParams(ASTNode node) {}
-			public virtual void OnVariableRuleTemplateParams(ASTNode node) {}
+			public virtual void OnVariableRuleAlternative(ASTNode node) {}
+			public virtual void OnVariableRuleSequence(ASTNode node) {}
+			public virtual void OnVariableRuleRepetition(ASTNode node) {}
+			public virtual void OnVariableRuleTreeAction(ASTNode node) {}
+			public virtual void OnVariableRuleElement(ASTNode node) {}
+			public virtual void OnVariableRuleAtom(ASTNode node) {}
+			public virtual void OnVariableRuleCardinality(ASTNode node) {}
+			public virtual void OnVariableRuleContext(ASTNode node) {}
+			public virtual void OnVariableRuleSub(ASTNode node) {}
+			public virtual void OnVariableRuleAction(ASTNode node) {}
+			public virtual void OnVariableRuleVirtual(ASTNode node) {}
+			public virtual void OnVariableRuleRef(ASTNode node) {}
+			public virtual void OnVariableRuleRefTemplate(ASTNode node) {}
+			public virtual void OnVariableRuleArguments(ASTNode node) {}
+			public virtual void OnVariableRuleParams(ASTNode node) {}
 			public virtual void OnVirtualRange(ASTNode node) {}
-			public virtual void OnVirtualEmptypart(ASTNode node) {}
-			public virtual void OnVirtualConcat(ASTNode node) {}
 		}
 
 		/// <summary>
@@ -366,24 +354,22 @@ namespace Lingu.Bootstrap
 				case 0x002A: visitor.OnVariableRuleSimple(node); break;
 				case 0x002B: visitor.OnVariableRuleTemplate(node); break;
 				case 0x002C: visitor.OnVariableRuleDefinition(node); break;
-				case 0x002D: visitor.OnVariableRuleDefChoice(node); break;
-				case 0x002E: visitor.OnVariableRuleDefFragment(node); break;
-				case 0x002F: visitor.OnVariableRuleDefRepetition(node); break;
-				case 0x0030: visitor.OnVariableRuleDefTreeAction(node); break;
-				case 0x0031: visitor.OnVariableRuleDefElement(node); break;
-				case 0x0032: visitor.OnVariableRuleDefAtom(node); break;
-				case 0x0033: visitor.OnVariableRuleDefCardinality(node); break;
-				case 0x0034: visitor.OnVariableRuleDefContext(node); break;
-				case 0x0035: visitor.OnVariableRuleDefSub(node); break;
-				case 0x0036: visitor.OnVariableRuleSymAction(node); break;
-				case 0x0037: visitor.OnVariableRuleSymVirtual(node); break;
-				case 0x0038: visitor.OnVariableRuleSymRefSimple(node); break;
-				case 0x0039: visitor.OnVariableRuleSymRefTemplate(node); break;
-				case 0x003A: visitor.OnVariableRuleSymRefParams(node); break;
-				case 0x003B: visitor.OnVariableRuleTemplateParams(node); break;
+				case 0x002D: visitor.OnVariableRuleAlternative(node); break;
+				case 0x002E: visitor.OnVariableRuleSequence(node); break;
+				case 0x002F: visitor.OnVariableRuleRepetition(node); break;
+				case 0x0030: visitor.OnVariableRuleTreeAction(node); break;
+				case 0x0031: visitor.OnVariableRuleElement(node); break;
+				case 0x0032: visitor.OnVariableRuleAtom(node); break;
+				case 0x0033: visitor.OnVariableRuleCardinality(node); break;
+				case 0x0034: visitor.OnVariableRuleContext(node); break;
+				case 0x0035: visitor.OnVariableRuleSub(node); break;
+				case 0x0036: visitor.OnVariableRuleAction(node); break;
+				case 0x0037: visitor.OnVariableRuleVirtual(node); break;
+				case 0x0038: visitor.OnVariableRuleRef(node); break;
+				case 0x0039: visitor.OnVariableRuleRefTemplate(node); break;
+				case 0x003A: visitor.OnVariableRuleArguments(node); break;
+				case 0x003B: visitor.OnVariableRuleParams(node); break;
 				case 0x0051: visitor.OnVirtualRange(node); break;
-				case 0x0056: visitor.OnVirtualEmptypart(node); break;
-				case 0x0057: visitor.OnVirtualConcat(node); break;
 			}
 		}
 	}

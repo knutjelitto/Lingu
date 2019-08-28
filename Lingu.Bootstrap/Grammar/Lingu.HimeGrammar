@@ -140,7 +140,7 @@
 
         /* RULES */
             grammar_rules
-                -> 'rules'^ '{'! rule* '}'!
+                -> 'rules'! '{'! rule* '}'!
                 ;
 
             rule                        
@@ -152,76 +152,76 @@
                 ;
 
             rule_template
-                -> NAME rule_template_params '->'! rule_definition ';'!
+                -> NAME rule_params '->'! rule_definition ';'!
                 ;
 
             rule_definition
-                -> rule_def_choice^ (OPERATOR_UNION^ rule_def_choice)*
+                -> rule_alternative (OPERATOR_UNION! rule_alternative)*
                 ;
 
-            rule_def_choice
-                -> rule_def_fragment^ | "emptypart"^
+            rule_alternative
+                -> rule_sequence?
                 ;
 
-            rule_def_fragment
-                -> rule_def_repetition^ ("concat"^ rule_def_repetition)*
+            rule_sequence
+                -> rule_repetition+
                 ;
 
-            rule_def_repetition
-                -> rule_def_tree_action^ rule_def_cardinality^?
+            rule_repetition
+                -> rule_tree_action ('?' | '*' | '+')?
                 ;
 
-            rule_def_tree_action
-                -> rule_def_element^ (TREE_ACTION_PROMOTE | TREE_ACTION_DROP)^?
+            rule_tree_action
+                -> rule_element ('!' | '^')?
                 ;
 
-            rule_def_element
-                -> rule_def_atom^
-                |  rule_def_context^
-                |  rule_def_sub^
+            rule_element
+                -> rule_atom^
+                |  rule_context^
+                |  rule_sub^
                 |  '('! rule_definition^ ')'!
                 ;
 
-            rule_def_atom               
-                -> rule_sym_action^
-                |  rule_sym_virtual^
-                |  rule_sym_ref_simple^
-                |  rule_sym_ref_template^
+            rule_atom
+                -> rule_action^
+                |  rule_virtual^
+                |  rule_ref^
+                |  rule_ref_template^
                 |  LITERAL_TEXT^ ;
 
-            rule_def_cardinality
+            rule_cardinality
                 -> '?'^ | '*'^ | '+'^
                 ;
 
-            rule_def_context
+            rule_context
                 -> '#'! NAME '{'! rule_definition '}'!
                 ;
 
-            rule_def_sub                
+            rule_sub                
                 -> '{'! rule_definition '}'!
                 ;
 
-            rule_sym_action
+            rule_action
                 -> '@'! NAME
                 ;
 
-            rule_sym_virtual
+            rule_virtual
                 -> LITERAL_STRING
                 ;
 
-            rule_sym_ref_simple
+            rule_ref
                 -> NAME
                 ;
 
-            rule_sym_ref_template
-                -> NAME rule_sym_ref_params
+            rule_ref_template
+                -> NAME rule_arguments
                 ;
 
-            rule_sym_ref_params
-                -> '<'! rule_def_atom (','! rule_def_atom)* '>'!
+            rule_arguments
+                -> '<'! rule_atom (','! rule_atom)* '>'!
                 ;
 
-            rule_template_params
+            rule_params
                 -> '<'! NAME (','! NAME)* '>'!
                 ;
     }

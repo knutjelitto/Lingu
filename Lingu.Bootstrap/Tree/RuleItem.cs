@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Lingu.Bootstrap.Tree
 {
-    public class Rule : NamedNode
+    public abstract class RuleItem : NamedNode
     {
-        public Rule(AtomName name)
+        protected RuleItem(AtomName name)
             : base(name)
         {
         }

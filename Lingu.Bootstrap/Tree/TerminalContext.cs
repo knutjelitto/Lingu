@@ -9,9 +9,9 @@ namespace Lingu.Bootstrap.Tree
         public TerminalContext(AtomName name, IEnumerable<TerminalRule> rules)
             : base(name)
         {
-            Rules = rules;
+            Rules = rules.ToArray();
         }
 
-        public IEnumerable<TerminalRule> Rules { get; }
+        public IReadOnlyList<TerminalRule> Rules { get; }
     }
 }

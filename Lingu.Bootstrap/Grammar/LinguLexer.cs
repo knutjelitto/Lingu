@@ -136,6 +136,8 @@ namespace Lingu.Bootstrap
 			new Symbol(0x0050, "+"),
 			new Symbol(0x0052, ","),
 			new Symbol(0x0053, "rules"),
+			new Symbol(0x0057, "!"),
+			new Symbol(0x0058, "^"),
 			new Symbol(0x0059, "#"),
 			new Symbol(0x005A, "@"),
 			new Symbol(0x005B, "<"),
