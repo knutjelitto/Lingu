@@ -24,45 +24,49 @@ namespace Lingu.Bootstrap
 		public class ID
 		{
 			/// <summary>
+			/// The unique identifier for terminal BLOCK_COMMENT
+			/// </summary>
+			public const int TerminalBlockComment = 0x0007;
+			/// <summary>
 			/// The unique identifier for terminal SEPARATOR
 			/// </summary>
-			public const int TerminalSeparator = 0x0007;
+			public const int TerminalSeparator = 0x0008;
 			/// <summary>
 			/// The unique identifier for terminal NAME
 			/// </summary>
-			public const int TerminalName = 0x0009;
+			public const int TerminalName = 0x000A;
 			/// <summary>
 			/// The unique identifier for terminal INTEGER
 			/// </summary>
-			public const int TerminalInteger = 0x000A;
+			public const int TerminalInteger = 0x000B;
 			/// <summary>
 			/// The unique identifier for terminal LITERAL_STRING
 			/// </summary>
-			public const int TerminalLiteralString = 0x000C;
+			public const int TerminalLiteralString = 0x000D;
 			/// <summary>
 			/// The unique identifier for terminal LITERAL_ANY
 			/// </summary>
-			public const int TerminalLiteralAny = 0x000D;
+			public const int TerminalLiteralAny = 0x000E;
 			/// <summary>
 			/// The unique identifier for terminal LITERAL_TEXT
 			/// </summary>
-			public const int TerminalLiteralText = 0x000E;
+			public const int TerminalLiteralText = 0x000F;
 			/// <summary>
 			/// The unique identifier for terminal LITERAL_CLASS
 			/// </summary>
-			public const int TerminalLiteralClass = 0x000F;
+			public const int TerminalLiteralClass = 0x0010;
 			/// <summary>
 			/// The unique identifier for terminal UNICODE_BLOCK
 			/// </summary>
-			public const int TerminalUnicodeBlock = 0x0010;
+			public const int TerminalUnicodeBlock = 0x0011;
 			/// <summary>
 			/// The unique identifier for terminal UNICODE_CATEGORY
 			/// </summary>
-			public const int TerminalUnicodeCategory = 0x0011;
+			public const int TerminalUnicodeCategory = 0x0012;
 			/// <summary>
 			/// The unique identifier for terminal UNICODE_CODEPOINT
 			/// </summary>
-			public const int TerminalUnicodeCodepoint = 0x0012;
+			public const int TerminalUnicodeCodepoint = 0x0013;
 		}
 		/// <summary>
 		/// Contains the constant IDs for the contexts for this lexer
@@ -84,51 +88,53 @@ namespace Lingu.Bootstrap
 		private static readonly Symbol[] terminals = {
 			new Symbol(0x0001, "ε"),
 			new Symbol(0x0002, "$"),
-			new Symbol(0x0007, "SEPARATOR"),
-			new Symbol(0x0009, "NAME"),
-			new Symbol(0x000A, "INTEGER"),
-			new Symbol(0x000C, "LITERAL_STRING"),
-			new Symbol(0x000D, "LITERAL_ANY"),
-			new Symbol(0x000E, "LITERAL_TEXT"),
-			new Symbol(0x000F, "LITERAL_CLASS"),
-			new Symbol(0x0010, "UNICODE_BLOCK"),
-			new Symbol(0x0011, "UNICODE_CATEGORY"),
-			new Symbol(0x0012, "UNICODE_CODEPOINT"),
-			new Symbol(0x003A, "grammar"),
-			new Symbol(0x003B, "{"),
-			new Symbol(0x003C, "}"),
-			new Symbol(0x003D, "options"),
-			new Symbol(0x003F, "="),
-			new Symbol(0x0040, ";"),
-			new Symbol(0x0041, "terminals"),
-			new Symbol(0x0043, "->"),
-			new Symbol(0x0044, "fragment"),
-			new Symbol(0x0045, "context"),
-			new Symbol(0x0047, "|"),
-			new Symbol(0x0049, "-"),
-			new Symbol(0x004C, "("),
-			new Symbol(0x004D, ")"),
-			new Symbol(0x004E, ".."),
-			new Symbol(0x004F, "?"),
-			new Symbol(0x0050, "*"),
-			new Symbol(0x0051, "+"),
-			new Symbol(0x0053, ","),
-			new Symbol(0x0054, "rules"),
-			new Symbol(0x0058, "!"),
-			new Symbol(0x0059, "^"),
-			new Symbol(0x005A, "#"),
-			new Symbol(0x005B, "@"),
-			new Symbol(0x005C, "<"),
-			new Symbol(0x005E, ">") };
+			new Symbol(0x0007, "BLOCK_COMMENT"),
+			new Symbol(0x0008, "SEPARATOR"),
+			new Symbol(0x000A, "NAME"),
+			new Symbol(0x000B, "INTEGER"),
+			new Symbol(0x000D, "LITERAL_STRING"),
+			new Symbol(0x000E, "LITERAL_ANY"),
+			new Symbol(0x000F, "LITERAL_TEXT"),
+			new Symbol(0x0010, "LITERAL_CLASS"),
+			new Symbol(0x0011, "UNICODE_BLOCK"),
+			new Symbol(0x0012, "UNICODE_CATEGORY"),
+			new Symbol(0x0013, "UNICODE_CODEPOINT"),
+			new Symbol(0x003D, "grammar"),
+			new Symbol(0x003E, "{"),
+			new Symbol(0x003F, "}"),
+			new Symbol(0x0040, "options"),
+			new Symbol(0x0042, "="),
+			new Symbol(0x0043, ";"),
+			new Symbol(0x0044, "terminals"),
+			new Symbol(0x0046, "->"),
+			new Symbol(0x0047, "fragment"),
+			new Symbol(0x0048, "context"),
+			new Symbol(0x004A, "|"),
+			new Symbol(0x004C, "-"),
+			new Symbol(0x004F, "("),
+			new Symbol(0x0050, ")"),
+			new Symbol(0x0051, "~"),
+			new Symbol(0x0052, ".."),
+			new Symbol(0x0053, "?"),
+			new Symbol(0x0054, "*"),
+			new Symbol(0x0055, "+"),
+			new Symbol(0x0057, ","),
+			new Symbol(0x0058, "rules"),
+			new Symbol(0x005C, "!"),
+			new Symbol(0x005D, "^"),
+			new Symbol(0x005E, "#"),
+			new Symbol(0x005F, "@"),
+			new Symbol(0x0060, "<"),
+			new Symbol(0x0062, ">") };
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>
 		/// <param name="input">The lexer's input</param>
-		public LinguLexer(string input) : base(commonAutomaton, terminals, 0x0007, input) {}
+		public LinguLexer(string input) : base(commonAutomaton, terminals, 0x0008, input) {}
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>
 		/// <param name="input">The lexer's input</param>
-		public LinguLexer(TextReader input) : base(commonAutomaton, terminals, 0x0007, input) {}
+		public LinguLexer(TextReader input) : base(commonAutomaton, terminals, 0x0008, input) {}
 	}
 }

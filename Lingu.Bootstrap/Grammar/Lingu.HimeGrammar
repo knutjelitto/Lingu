@@ -23,9 +23,15 @@
             -> '//' (. - NEW_LINE)*
             ;
 
-        fragment COMMENT_BLOCK  -> '/*' (.* - (.* '*/' .*)) '*/' ;
+        fragment COMMENT_BLOCK
+            -> '/*' (.* - (.* '*/' .*)) '*/'
+            ;
 
-        SEPARATOR               -> (NEW_LINE | WHITE_SPACE | COMMENT_LINE | COMMENT_BLOCK)+;
+        BLOCK_COMMENT
+            -> '/*' ([^*] | [*][^/])* '*/'
+            ;
+
+        SEPARATOR               -> (NEW_LINE | WHITE_SPACE | COMMENT_LINE | BLOCK_COMMENT)+;
 
         fragment NAME_FIRST     -> [_a-zA-Z];
         NAME                    -> NAME_FIRST (NAME_FIRST | [0-9])* ;
@@ -45,7 +51,7 @@
 
         LITERAL_STRING          -> '"' ( [^"] | '\\"' | ESCAPEES )+ '"';
         LITERAL_ANY             -> '.';
-        LITERAL_TEXT            -> '~'? '\'' ( [^\\'] | '\\\'' | ESCAPEES )+ '\'';
+        LITERAL_TEXT            -> '\'' ( [^\\'] | '\\\'' | ESCAPEES )+ '\'';
         LITERAL_CLASS           -> '[' ( [^\\\[\]] | '\\[' | '\\]' | '\\-' | '\\^' | ESCAPEES )+ ']';
 
         UNICODE_BLOCK           -> '\\ub' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
@@ -113,7 +119,12 @@
 
             terminal_element
                 -> terminal_atom^
+                |  terminal_not^
                 | '('! terminal_definition^ ')'! 
+                ;
+
+            terminal_not
+                -> '~' terminal_atom
                 ;
 
             terminal_atom
@@ -128,7 +139,12 @@
                 ;
 
             terminal_range
-                -> UNICODE_CODEPOINT '..'! UNICODE_CODEPOINT
+                -> character '..'! character
+                ;
+
+            character
+                -> UNICODE_CODEPOINT
+                |  LITERAL_TEXT
                 ;
 
             terminal_text

@@ -16,56 +16,59 @@ namespace Lingu.Bootstrap
         {
             switch(node.Symbol.ID)
             {
-                case 0x0007: return (T)OnTerminalSeparator(node);
-                case 0x0009: return (T)OnTerminalName(node);
-                case 0x000A: return (T)OnTerminalInteger(node);
-                case 0x000C: return (T)OnTerminalLiteralString(node);
-                case 0x000D: return (T)OnTerminalLiteralAny(node);
-                case 0x000E: return (T)OnTerminalLiteralText(node);
-                case 0x000F: return (T)OnTerminalLiteralClass(node);
-                case 0x0010: return (T)OnTerminalUnicodeBlock(node);
-                case 0x0011: return (T)OnTerminalUnicodeCategory(node);
-                case 0x0012: return (T)OnTerminalUnicodeCodepoint(node);
-                case 0x0013: return (T)OnVariableFile(node);
-                case 0x0014: return (T)OnVariableCfGrammar(node);
-                case 0x0015: return (T)OnVariableGrammarOptions(node);
-                case 0x0016: return (T)OnVariableOption(node);
-                case 0x0017: return (T)OnVariableGrammarTerminals(node);
-                case 0x0018: return (T)OnVariableTerminalItem(node);
-                case 0x0019: return (T)OnVariableTerminalRule(node);
-                case 0x001A: return (T)OnVariableTerminalFragment(node);
-                case 0x001B: return (T)OnVariableTerminalContext(node);
-                case 0x001C: return (T)OnVariableTerminalDefinition(node);
-                case 0x001D: return (T)OnVariableTerminalDifference(node);
-                case 0x001E: return (T)OnVariableTerminalSequence(node);
-                case 0x001F: return (T)OnVariableTerminalRepetition(node);
-                case 0x0020: return (T)OnVariableTerminalElement(node);
-                case 0x0021: return (T)OnVariableTerminalAtom(node);
-                case 0x0022: return (T)OnVariableTerminalRange(node);
-                case 0x0023: return (T)OnVariableTerminalText(node);
-                case 0x0024: return (T)OnVariableTerminalCardinalilty(node);
-                case 0x0025: return (T)OnVariableGrammarRules(node);
-                case 0x0026: return (T)OnVariableRule(node);
-                case 0x0027: return (T)OnVariableRuleSimple(node);
-                case 0x0028: return (T)OnVariableRuleTemplate(node);
-                case 0x0029: return (T)OnVariableRuleDefinition(node);
-                case 0x002A: return (T)OnVariableRuleAlternative(node);
-                case 0x002B: return (T)OnVariableRuleSequence(node);
-                case 0x002C: return (T)OnVariableRuleRepetition(node);
-                case 0x002D: return (T)OnVariableRuleTreeAction(node);
-                case 0x002E: return (T)OnVariableRuleElement(node);
-                case 0x002F: return (T)OnVariableRuleAtom(node);
-                case 0x0030: return (T)OnVariableRuleText(node);
-                case 0x0031: return (T)OnVariableRuleCardinality(node);
-                case 0x0032: return (T)OnVariableRuleContext(node);
-                case 0x0033: return (T)OnVariableRuleSub(node);
-                case 0x0034: return (T)OnVariableRuleAction(node);
-                case 0x0035: return (T)OnVariableRuleVirtual(node);
-                case 0x0036: return (T)OnVariableRuleRef(node);
-                case 0x0037: return (T)OnVariableRuleRefTemplate(node);
-                case 0x0038: return (T)OnVariableRuleArguments(node);
-                case 0x0039: return (T)OnVariableRuleParams(node);
-                case 0x0052: return (T)OnVirtualRange(node);
+                case 0x0007: return (T)OnTerminalBlockComment(node);
+                case 0x0008: return (T)OnTerminalSeparator(node);
+                case 0x000A: return (T)OnTerminalName(node);
+                case 0x000B: return (T)OnTerminalInteger(node);
+                case 0x000D: return (T)OnTerminalLiteralString(node);
+                case 0x000E: return (T)OnTerminalLiteralAny(node);
+                case 0x000F: return (T)OnTerminalLiteralText(node);
+                case 0x0010: return (T)OnTerminalLiteralClass(node);
+                case 0x0011: return (T)OnTerminalUnicodeBlock(node);
+                case 0x0012: return (T)OnTerminalUnicodeCategory(node);
+                case 0x0013: return (T)OnTerminalUnicodeCodepoint(node);
+                case 0x0014: return (T)OnVariableFile(node);
+                case 0x0015: return (T)OnVariableCfGrammar(node);
+                case 0x0016: return (T)OnVariableGrammarOptions(node);
+                case 0x0017: return (T)OnVariableOption(node);
+                case 0x0018: return (T)OnVariableGrammarTerminals(node);
+                case 0x0019: return (T)OnVariableTerminalItem(node);
+                case 0x001A: return (T)OnVariableTerminalRule(node);
+                case 0x001B: return (T)OnVariableTerminalFragment(node);
+                case 0x001C: return (T)OnVariableTerminalContext(node);
+                case 0x001D: return (T)OnVariableTerminalDefinition(node);
+                case 0x001E: return (T)OnVariableTerminalDifference(node);
+                case 0x001F: return (T)OnVariableTerminalSequence(node);
+                case 0x0020: return (T)OnVariableTerminalRepetition(node);
+                case 0x0021: return (T)OnVariableTerminalElement(node);
+                case 0x0022: return (T)OnVariableTerminalNot(node);
+                case 0x0023: return (T)OnVariableTerminalAtom(node);
+                case 0x0024: return (T)OnVariableTerminalRange(node);
+                case 0x0025: return (T)OnVariableCharacter(node);
+                case 0x0026: return (T)OnVariableTerminalText(node);
+                case 0x0027: return (T)OnVariableTerminalCardinalilty(node);
+                case 0x0028: return (T)OnVariableGrammarRules(node);
+                case 0x0029: return (T)OnVariableRule(node);
+                case 0x002A: return (T)OnVariableRuleSimple(node);
+                case 0x002B: return (T)OnVariableRuleTemplate(node);
+                case 0x002C: return (T)OnVariableRuleDefinition(node);
+                case 0x002D: return (T)OnVariableRuleAlternative(node);
+                case 0x002E: return (T)OnVariableRuleSequence(node);
+                case 0x002F: return (T)OnVariableRuleRepetition(node);
+                case 0x0030: return (T)OnVariableRuleTreeAction(node);
+                case 0x0031: return (T)OnVariableRuleElement(node);
+                case 0x0032: return (T)OnVariableRuleAtom(node);
+                case 0x0033: return (T)OnVariableRuleText(node);
+                case 0x0034: return (T)OnVariableRuleCardinality(node);
+                case 0x0035: return (T)OnVariableRuleContext(node);
+                case 0x0036: return (T)OnVariableRuleSub(node);
+                case 0x0037: return (T)OnVariableRuleAction(node);
+                case 0x0038: return (T)OnVariableRuleVirtual(node);
+                case 0x0039: return (T)OnVariableRuleRef(node);
+                case 0x003A: return (T)OnVariableRuleRefTemplate(node);
+                case 0x003B: return (T)OnVariableRuleArguments(node);
+                case 0x003C: return (T)OnVariableRuleParams(node);
+                case 0x0056: return (T)OnVirtualRange(node);
                 default:
                     throw new NotImplementedException();
             }
@@ -88,6 +91,11 @@ namespace Lingu.Bootstrap
                 yield return VisitNode<T>(child);
             }
 
+        }
+
+        protected virtual object OnTerminalBlockComment(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
         }
 
         protected virtual object OnTerminalSeparator(ASTNode node)
@@ -210,12 +218,22 @@ namespace Lingu.Bootstrap
             return VisitChildren(node).FirstOrDefault();
         }
 
+        protected virtual object OnVariableTerminalNot(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
+        }
+
         protected virtual object OnVariableTerminalAtom(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
 
         protected virtual object OnVariableTerminalRange(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
+        }
+
+        protected virtual object OnVariableCharacter(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }

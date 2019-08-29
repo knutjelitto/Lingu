@@ -26,7 +26,7 @@ namespace Lingu.Bootstrap
         {
             Environment.CurrentDirectory = $"{ProjectDir}Grammar";
 
-            var source = FileRef.Source($"{ProjectDir}Grammar/Lingu.Grammar");
+            var source = FileRef.Source($"{ProjectDir}Grammar/Expression.Grammar");
 
             var grammar = Parser.Parse(source);
         }
