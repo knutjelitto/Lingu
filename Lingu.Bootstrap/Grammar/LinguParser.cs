@@ -25,151 +25,163 @@ namespace Lingu.Bootstrap
 			/// <summary>
 			/// The unique identifier for variable file
 			/// </summary>
-			public const int VariableFile = 0x0018;
+			public const int VariableFile = 0x0013;
 			/// <summary>
 			/// The unique identifier for variable cf_grammar
 			/// </summary>
-			public const int VariableCfGrammar = 0x0019;
+			public const int VariableCfGrammar = 0x0014;
 			/// <summary>
 			/// The unique identifier for variable grammar_options
 			/// </summary>
-			public const int VariableGrammarOptions = 0x001A;
+			public const int VariableGrammarOptions = 0x0015;
 			/// <summary>
 			/// The unique identifier for variable option
 			/// </summary>
-			public const int VariableOption = 0x001B;
+			public const int VariableOption = 0x0016;
 			/// <summary>
 			/// The unique identifier for variable grammar_terminals
 			/// </summary>
-			public const int VariableGrammarTerminals = 0x001C;
+			public const int VariableGrammarTerminals = 0x0017;
 			/// <summary>
 			/// The unique identifier for variable terminal_item
 			/// </summary>
-			public const int VariableTerminalItem = 0x001D;
+			public const int VariableTerminalItem = 0x0018;
 			/// <summary>
 			/// The unique identifier for variable terminal_rule
 			/// </summary>
-			public const int VariableTerminalRule = 0x001E;
+			public const int VariableTerminalRule = 0x0019;
 			/// <summary>
 			/// The unique identifier for variable terminal_fragment
 			/// </summary>
-			public const int VariableTerminalFragment = 0x001F;
+			public const int VariableTerminalFragment = 0x001A;
 			/// <summary>
 			/// The unique identifier for variable terminal_context
 			/// </summary>
-			public const int VariableTerminalContext = 0x0020;
+			public const int VariableTerminalContext = 0x001B;
 			/// <summary>
 			/// The unique identifier for variable terminal_definition
 			/// </summary>
-			public const int VariableTerminalDefinition = 0x0021;
+			public const int VariableTerminalDefinition = 0x001C;
 			/// <summary>
 			/// The unique identifier for variable terminal_difference
 			/// </summary>
-			public const int VariableTerminalDifference = 0x0022;
+			public const int VariableTerminalDifference = 0x001D;
 			/// <summary>
 			/// The unique identifier for variable terminal_sequence
 			/// </summary>
-			public const int VariableTerminalSequence = 0x0023;
+			public const int VariableTerminalSequence = 0x001E;
 			/// <summary>
 			/// The unique identifier for variable terminal_repetition
 			/// </summary>
-			public const int VariableTerminalRepetition = 0x0024;
+			public const int VariableTerminalRepetition = 0x001F;
 			/// <summary>
 			/// The unique identifier for variable terminal_element
 			/// </summary>
-			public const int VariableTerminalElement = 0x0025;
+			public const int VariableTerminalElement = 0x0020;
 			/// <summary>
 			/// The unique identifier for variable terminal_atom
 			/// </summary>
-			public const int VariableTerminalAtom = 0x0026;
+			public const int VariableTerminalAtom = 0x0021;
+			/// <summary>
+			/// The unique identifier for variable terminal_range
+			/// </summary>
+			public const int VariableTerminalRange = 0x0022;
+			/// <summary>
+			/// The unique identifier for variable terminal_text
+			/// </summary>
+			public const int VariableTerminalText = 0x0023;
 			/// <summary>
 			/// The unique identifier for variable terminal_cardinalilty
 			/// </summary>
-			public const int VariableTerminalCardinalilty = 0x0027;
+			public const int VariableTerminalCardinalilty = 0x0024;
 			/// <summary>
 			/// The unique identifier for variable grammar_rules
 			/// </summary>
-			public const int VariableGrammarRules = 0x0028;
+			public const int VariableGrammarRules = 0x0025;
 			/// <summary>
 			/// The unique identifier for variable rule
 			/// </summary>
-			public const int VariableRule = 0x0029;
+			public const int VariableRule = 0x0026;
 			/// <summary>
 			/// The unique identifier for variable rule_simple
 			/// </summary>
-			public const int VariableRuleSimple = 0x002A;
+			public const int VariableRuleSimple = 0x0027;
 			/// <summary>
 			/// The unique identifier for variable rule_template
 			/// </summary>
-			public const int VariableRuleTemplate = 0x002B;
+			public const int VariableRuleTemplate = 0x0028;
 			/// <summary>
 			/// The unique identifier for variable rule_definition
 			/// </summary>
-			public const int VariableRuleDefinition = 0x002C;
+			public const int VariableRuleDefinition = 0x0029;
 			/// <summary>
 			/// The unique identifier for variable rule_alternative
 			/// </summary>
-			public const int VariableRuleAlternative = 0x002D;
+			public const int VariableRuleAlternative = 0x002A;
 			/// <summary>
 			/// The unique identifier for variable rule_sequence
 			/// </summary>
-			public const int VariableRuleSequence = 0x002E;
+			public const int VariableRuleSequence = 0x002B;
 			/// <summary>
 			/// The unique identifier for variable rule_repetition
 			/// </summary>
-			public const int VariableRuleRepetition = 0x002F;
+			public const int VariableRuleRepetition = 0x002C;
 			/// <summary>
 			/// The unique identifier for variable rule_tree_action
 			/// </summary>
-			public const int VariableRuleTreeAction = 0x0030;
+			public const int VariableRuleTreeAction = 0x002D;
 			/// <summary>
 			/// The unique identifier for variable rule_element
 			/// </summary>
-			public const int VariableRuleElement = 0x0031;
+			public const int VariableRuleElement = 0x002E;
 			/// <summary>
 			/// The unique identifier for variable rule_atom
 			/// </summary>
-			public const int VariableRuleAtom = 0x0032;
+			public const int VariableRuleAtom = 0x002F;
+			/// <summary>
+			/// The unique identifier for variable rule_text
+			/// </summary>
+			public const int VariableRuleText = 0x0030;
 			/// <summary>
 			/// The unique identifier for variable rule_cardinality
 			/// </summary>
-			public const int VariableRuleCardinality = 0x0033;
+			public const int VariableRuleCardinality = 0x0031;
 			/// <summary>
 			/// The unique identifier for variable rule_context
 			/// </summary>
-			public const int VariableRuleContext = 0x0034;
+			public const int VariableRuleContext = 0x0032;
 			/// <summary>
 			/// The unique identifier for variable rule_sub
 			/// </summary>
-			public const int VariableRuleSub = 0x0035;
+			public const int VariableRuleSub = 0x0033;
 			/// <summary>
 			/// The unique identifier for variable rule_action
 			/// </summary>
-			public const int VariableRuleAction = 0x0036;
+			public const int VariableRuleAction = 0x0034;
 			/// <summary>
 			/// The unique identifier for variable rule_virtual
 			/// </summary>
-			public const int VariableRuleVirtual = 0x0037;
+			public const int VariableRuleVirtual = 0x0035;
 			/// <summary>
 			/// The unique identifier for variable rule_ref
 			/// </summary>
-			public const int VariableRuleRef = 0x0038;
+			public const int VariableRuleRef = 0x0036;
 			/// <summary>
 			/// The unique identifier for variable rule_ref_template
 			/// </summary>
-			public const int VariableRuleRefTemplate = 0x0039;
+			public const int VariableRuleRefTemplate = 0x0037;
 			/// <summary>
 			/// The unique identifier for variable rule_arguments
 			/// </summary>
-			public const int VariableRuleArguments = 0x003A;
+			public const int VariableRuleArguments = 0x0038;
 			/// <summary>
 			/// The unique identifier for variable rule_params
 			/// </summary>
-			public const int VariableRuleParams = 0x003B;
+			public const int VariableRuleParams = 0x0039;
 			/// <summary>
 			/// The unique identifier for virtual range
 			/// </summary>
-			public const int VirtualRange = 0x0051;
+			public const int VirtualRange = 0x0052;
 		}
 		/// <summary>
 		/// The collection of variables matched by this parser
@@ -179,54 +191,57 @@ namespace Lingu.Bootstrap
 		/// so that variable indices in the automaton can be used to retrieve the variables in this table
 		/// </remarks>
 		private static readonly Symbol[] variables = {
-			new Symbol(0x0018, "file"), 
-			new Symbol(0x0019, "cf_grammar"), 
-			new Symbol(0x001A, "grammar_options"), 
-			new Symbol(0x001B, "option"), 
-			new Symbol(0x001C, "grammar_terminals"), 
-			new Symbol(0x001D, "terminal_item"), 
-			new Symbol(0x001E, "terminal_rule"), 
-			new Symbol(0x001F, "terminal_fragment"), 
-			new Symbol(0x0020, "terminal_context"), 
-			new Symbol(0x0021, "terminal_definition"), 
-			new Symbol(0x0022, "terminal_difference"), 
-			new Symbol(0x0023, "terminal_sequence"), 
-			new Symbol(0x0024, "terminal_repetition"), 
-			new Symbol(0x0025, "terminal_element"), 
-			new Symbol(0x0026, "terminal_atom"), 
-			new Symbol(0x0027, "terminal_cardinalilty"), 
-			new Symbol(0x0028, "grammar_rules"), 
-			new Symbol(0x0029, "rule"), 
-			new Symbol(0x002A, "rule_simple"), 
-			new Symbol(0x002B, "rule_template"), 
-			new Symbol(0x002C, "rule_definition"), 
-			new Symbol(0x002D, "rule_alternative"), 
-			new Symbol(0x002E, "rule_sequence"), 
-			new Symbol(0x002F, "rule_repetition"), 
-			new Symbol(0x0030, "rule_tree_action"), 
-			new Symbol(0x0031, "rule_element"), 
-			new Symbol(0x0032, "rule_atom"), 
-			new Symbol(0x0033, "rule_cardinality"), 
-			new Symbol(0x0034, "rule_context"), 
-			new Symbol(0x0035, "rule_sub"), 
-			new Symbol(0x0036, "rule_action"), 
-			new Symbol(0x0037, "rule_virtual"), 
-			new Symbol(0x0038, "rule_ref"), 
-			new Symbol(0x0039, "rule_ref_template"), 
-			new Symbol(0x003A, "rule_arguments"), 
-			new Symbol(0x003B, "rule_params"), 
-			new Symbol(0x0040, "__V64"), 
-			new Symbol(0x0044, "__V68"), 
+			new Symbol(0x0013, "file"), 
+			new Symbol(0x0014, "cf_grammar"), 
+			new Symbol(0x0015, "grammar_options"), 
+			new Symbol(0x0016, "option"), 
+			new Symbol(0x0017, "grammar_terminals"), 
+			new Symbol(0x0018, "terminal_item"), 
+			new Symbol(0x0019, "terminal_rule"), 
+			new Symbol(0x001A, "terminal_fragment"), 
+			new Symbol(0x001B, "terminal_context"), 
+			new Symbol(0x001C, "terminal_definition"), 
+			new Symbol(0x001D, "terminal_difference"), 
+			new Symbol(0x001E, "terminal_sequence"), 
+			new Symbol(0x001F, "terminal_repetition"), 
+			new Symbol(0x0020, "terminal_element"), 
+			new Symbol(0x0021, "terminal_atom"), 
+			new Symbol(0x0022, "terminal_range"), 
+			new Symbol(0x0023, "terminal_text"), 
+			new Symbol(0x0024, "terminal_cardinalilty"), 
+			new Symbol(0x0025, "grammar_rules"), 
+			new Symbol(0x0026, "rule"), 
+			new Symbol(0x0027, "rule_simple"), 
+			new Symbol(0x0028, "rule_template"), 
+			new Symbol(0x0029, "rule_definition"), 
+			new Symbol(0x002A, "rule_alternative"), 
+			new Symbol(0x002B, "rule_sequence"), 
+			new Symbol(0x002C, "rule_repetition"), 
+			new Symbol(0x002D, "rule_tree_action"), 
+			new Symbol(0x002E, "rule_element"), 
+			new Symbol(0x002F, "rule_atom"), 
+			new Symbol(0x0030, "rule_text"), 
+			new Symbol(0x0031, "rule_cardinality"), 
+			new Symbol(0x0032, "rule_context"), 
+			new Symbol(0x0033, "rule_sub"), 
+			new Symbol(0x0034, "rule_action"), 
+			new Symbol(0x0035, "rule_virtual"), 
+			new Symbol(0x0036, "rule_ref"), 
+			new Symbol(0x0037, "rule_ref_template"), 
+			new Symbol(0x0038, "rule_arguments"), 
+			new Symbol(0x0039, "rule_params"), 
+			new Symbol(0x003E, "__V62"), 
+			new Symbol(0x0042, "__V66"), 
+			new Symbol(0x0046, "__V70"), 
 			new Symbol(0x0048, "__V72"), 
-			new Symbol(0x0049, "__V73"), 
 			new Symbol(0x004A, "__V74"), 
 			new Symbol(0x004B, "__V75"), 
-			new Symbol(0x0054, "__V84"), 
 			new Symbol(0x0055, "__V85"), 
 			new Symbol(0x0056, "__V86"), 
-			new Symbol(0x005C, "__V92"), 
-			new Symbol(0x005E, "__V94"), 
-			new Symbol(0x005F, "__VAxiom") };
+			new Symbol(0x0057, "__V87"), 
+			new Symbol(0x005D, "__V93"), 
+			new Symbol(0x005F, "__V95"), 
+			new Symbol(0x0060, "__VAxiom") };
 		/// <summary>
 		/// The collection of virtuals matched by this parser
 		/// </summary>
@@ -235,7 +250,7 @@ namespace Lingu.Bootstrap
 		/// so that virtual indices in the automaton can be used to retrieve the virtuals in this table
 		/// </remarks>
 		private static readonly Symbol[] virtuals = {
-			new Symbol(0x0051, "range") };
+			new Symbol(0x0052, "range") };
 		/// <summary>
 		/// Initializes a new instance of the parser
 		/// </summary>
@@ -257,11 +272,6 @@ namespace Lingu.Bootstrap
 			public virtual void OnTerminalUnicodeBlock(ASTNode node) {}
 			public virtual void OnTerminalUnicodeCategory(ASTNode node) {}
 			public virtual void OnTerminalUnicodeCodepoint(ASTNode node) {}
-			public virtual void OnTerminalUnicodeSpanMarker(ASTNode node) {}
-			public virtual void OnTerminalOperatorUnion(ASTNode node) {}
-			public virtual void OnTerminalOperatorDifference(ASTNode node) {}
-			public virtual void OnTerminalTreeActionPromote(ASTNode node) {}
-			public virtual void OnTerminalTreeActionDrop(ASTNode node) {}
 			public virtual void OnVariableFile(ASTNode node) {}
 			public virtual void OnVariableCfGrammar(ASTNode node) {}
 			public virtual void OnVariableGrammarOptions(ASTNode node) {}
@@ -277,6 +287,8 @@ namespace Lingu.Bootstrap
 			public virtual void OnVariableTerminalRepetition(ASTNode node) {}
 			public virtual void OnVariableTerminalElement(ASTNode node) {}
 			public virtual void OnVariableTerminalAtom(ASTNode node) {}
+			public virtual void OnVariableTerminalRange(ASTNode node) {}
+			public virtual void OnVariableTerminalText(ASTNode node) {}
 			public virtual void OnVariableTerminalCardinalilty(ASTNode node) {}
 			public virtual void OnVariableGrammarRules(ASTNode node) {}
 			public virtual void OnVariableRule(ASTNode node) {}
@@ -289,6 +301,7 @@ namespace Lingu.Bootstrap
 			public virtual void OnVariableRuleTreeAction(ASTNode node) {}
 			public virtual void OnVariableRuleElement(ASTNode node) {}
 			public virtual void OnVariableRuleAtom(ASTNode node) {}
+			public virtual void OnVariableRuleText(ASTNode node) {}
 			public virtual void OnVariableRuleCardinality(ASTNode node) {}
 			public virtual void OnVariableRuleContext(ASTNode node) {}
 			public virtual void OnVariableRuleSub(ASTNode node) {}
@@ -328,48 +341,46 @@ namespace Lingu.Bootstrap
 				case 0x0010: visitor.OnTerminalUnicodeBlock(node); break;
 				case 0x0011: visitor.OnTerminalUnicodeCategory(node); break;
 				case 0x0012: visitor.OnTerminalUnicodeCodepoint(node); break;
-				case 0x0013: visitor.OnTerminalUnicodeSpanMarker(node); break;
-				case 0x0014: visitor.OnTerminalOperatorUnion(node); break;
-				case 0x0015: visitor.OnTerminalOperatorDifference(node); break;
-				case 0x0016: visitor.OnTerminalTreeActionPromote(node); break;
-				case 0x0017: visitor.OnTerminalTreeActionDrop(node); break;
-				case 0x0018: visitor.OnVariableFile(node); break;
-				case 0x0019: visitor.OnVariableCfGrammar(node); break;
-				case 0x001A: visitor.OnVariableGrammarOptions(node); break;
-				case 0x001B: visitor.OnVariableOption(node); break;
-				case 0x001C: visitor.OnVariableGrammarTerminals(node); break;
-				case 0x001D: visitor.OnVariableTerminalItem(node); break;
-				case 0x001E: visitor.OnVariableTerminalRule(node); break;
-				case 0x001F: visitor.OnVariableTerminalFragment(node); break;
-				case 0x0020: visitor.OnVariableTerminalContext(node); break;
-				case 0x0021: visitor.OnVariableTerminalDefinition(node); break;
-				case 0x0022: visitor.OnVariableTerminalDifference(node); break;
-				case 0x0023: visitor.OnVariableTerminalSequence(node); break;
-				case 0x0024: visitor.OnVariableTerminalRepetition(node); break;
-				case 0x0025: visitor.OnVariableTerminalElement(node); break;
-				case 0x0026: visitor.OnVariableTerminalAtom(node); break;
-				case 0x0027: visitor.OnVariableTerminalCardinalilty(node); break;
-				case 0x0028: visitor.OnVariableGrammarRules(node); break;
-				case 0x0029: visitor.OnVariableRule(node); break;
-				case 0x002A: visitor.OnVariableRuleSimple(node); break;
-				case 0x002B: visitor.OnVariableRuleTemplate(node); break;
-				case 0x002C: visitor.OnVariableRuleDefinition(node); break;
-				case 0x002D: visitor.OnVariableRuleAlternative(node); break;
-				case 0x002E: visitor.OnVariableRuleSequence(node); break;
-				case 0x002F: visitor.OnVariableRuleRepetition(node); break;
-				case 0x0030: visitor.OnVariableRuleTreeAction(node); break;
-				case 0x0031: visitor.OnVariableRuleElement(node); break;
-				case 0x0032: visitor.OnVariableRuleAtom(node); break;
-				case 0x0033: visitor.OnVariableRuleCardinality(node); break;
-				case 0x0034: visitor.OnVariableRuleContext(node); break;
-				case 0x0035: visitor.OnVariableRuleSub(node); break;
-				case 0x0036: visitor.OnVariableRuleAction(node); break;
-				case 0x0037: visitor.OnVariableRuleVirtual(node); break;
-				case 0x0038: visitor.OnVariableRuleRef(node); break;
-				case 0x0039: visitor.OnVariableRuleRefTemplate(node); break;
-				case 0x003A: visitor.OnVariableRuleArguments(node); break;
-				case 0x003B: visitor.OnVariableRuleParams(node); break;
-				case 0x0051: visitor.OnVirtualRange(node); break;
+				case 0x0013: visitor.OnVariableFile(node); break;
+				case 0x0014: visitor.OnVariableCfGrammar(node); break;
+				case 0x0015: visitor.OnVariableGrammarOptions(node); break;
+				case 0x0016: visitor.OnVariableOption(node); break;
+				case 0x0017: visitor.OnVariableGrammarTerminals(node); break;
+				case 0x0018: visitor.OnVariableTerminalItem(node); break;
+				case 0x0019: visitor.OnVariableTerminalRule(node); break;
+				case 0x001A: visitor.OnVariableTerminalFragment(node); break;
+				case 0x001B: visitor.OnVariableTerminalContext(node); break;
+				case 0x001C: visitor.OnVariableTerminalDefinition(node); break;
+				case 0x001D: visitor.OnVariableTerminalDifference(node); break;
+				case 0x001E: visitor.OnVariableTerminalSequence(node); break;
+				case 0x001F: visitor.OnVariableTerminalRepetition(node); break;
+				case 0x0020: visitor.OnVariableTerminalElement(node); break;
+				case 0x0021: visitor.OnVariableTerminalAtom(node); break;
+				case 0x0022: visitor.OnVariableTerminalRange(node); break;
+				case 0x0023: visitor.OnVariableTerminalText(node); break;
+				case 0x0024: visitor.OnVariableTerminalCardinalilty(node); break;
+				case 0x0025: visitor.OnVariableGrammarRules(node); break;
+				case 0x0026: visitor.OnVariableRule(node); break;
+				case 0x0027: visitor.OnVariableRuleSimple(node); break;
+				case 0x0028: visitor.OnVariableRuleTemplate(node); break;
+				case 0x0029: visitor.OnVariableRuleDefinition(node); break;
+				case 0x002A: visitor.OnVariableRuleAlternative(node); break;
+				case 0x002B: visitor.OnVariableRuleSequence(node); break;
+				case 0x002C: visitor.OnVariableRuleRepetition(node); break;
+				case 0x002D: visitor.OnVariableRuleTreeAction(node); break;
+				case 0x002E: visitor.OnVariableRuleElement(node); break;
+				case 0x002F: visitor.OnVariableRuleAtom(node); break;
+				case 0x0030: visitor.OnVariableRuleText(node); break;
+				case 0x0031: visitor.OnVariableRuleCardinality(node); break;
+				case 0x0032: visitor.OnVariableRuleContext(node); break;
+				case 0x0033: visitor.OnVariableRuleSub(node); break;
+				case 0x0034: visitor.OnVariableRuleAction(node); break;
+				case 0x0035: visitor.OnVariableRuleVirtual(node); break;
+				case 0x0036: visitor.OnVariableRuleRef(node); break;
+				case 0x0037: visitor.OnVariableRuleRefTemplate(node); break;
+				case 0x0038: visitor.OnVariableRuleArguments(node); break;
+				case 0x0039: visitor.OnVariableRuleParams(node); break;
+				case 0x0052: visitor.OnVirtualRange(node); break;
 			}
 		}
 	}

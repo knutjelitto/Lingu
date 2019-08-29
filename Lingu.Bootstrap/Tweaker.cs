@@ -1,4 +1,4 @@
-﻿using Mean.Maker;
+﻿using Lingu.Commons;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,11 +26,9 @@ namespace Lingu.Bootstrap
             outlines.Add($"using System.Linq;");
             outlines.Add($"using Hime.Redist;");
             outlines.Add($"");
-            outlines.Add($"namespace {Namespace(inlines)}");
-            using (outlines.Indent())
+            outlines.Block($"namespace {Namespace(inlines)}", () =>
             {
-                outlines.Add($"public abstract class {VisitorName()}");
-                using (outlines.Indent())
+                outlines.Block($"public abstract class {VisitorName()}", () =>
                 {
                     outlines.Block($"protected virtual void VisitNode(ASTNode node)", () =>
                     {
@@ -60,30 +58,26 @@ namespace Lingu.Bootstrap
 
                     Virtuals(inlines, outlines);
 
-                    outlines.Add($"partial class OnTerminal");
-                    using (outlines.Indent())
+                    outlines.Block($"partial class OnTerminal", () =>
                     {
-                        outlines.Add($"protected OnTerminal({VisitorName()} visitor)");
-                        using (outlines.Indent())
+                        outlines.Block($"protected OnTerminal({VisitorName()} visitor)", () =>
                         {
-                        }
-                    }
+                        });
+                    });
 
                     outlines.Add($"");
 
-                    outlines.Add($"partial class OnVariable");
-                    using (outlines.Indent())
+                    outlines.Block($"partial class OnVariable", () =>
                     {
-                    }
+                    });
 
                     outlines.Add($"");
 
-                    outlines.Add($"partial class OnVirtual");
-                    using (outlines.Indent())
+                    outlines.Block($"partial class OnVirtual", () =>
                     {
-                    }
-                }
-            }
+                    });
+                });
+            });
 
             outlines.Persist(outputFile);
         }
@@ -99,8 +93,7 @@ namespace Lingu.Bootstrap
                 }
             }
 
-            outlines.Add("switch(node.Symbol.ID)");
-            using (outlines.Indent())
+            outlines.Block("switch(node.Symbol.ID)", () =>
             {
                 for (start += 2; start < inlines.Count; ++start)
                 {
@@ -119,7 +112,7 @@ namespace Lingu.Bootstrap
 
                     outlines.Add(line);
                 }
-            }
+            });
         }
 
         private void Virtuals(IReadOnlyList<string> inlines, Indentable outlines)
@@ -154,12 +147,10 @@ namespace Lingu.Bootstrap
             line = line.Replace(" {}", string.Empty);
             line = line.Replace("public virtual void", "protected virtual object");
             line = line.TrimStart('\t');
-            outlines.Add($"{line}");
-
-            using (outlines.Indent())
+            outlines.Block($"{line}", () =>
             {
                 outlines.Add($"return VisitChildren(node).FirstOrDefault();");
-            }
+            });
         }
 
         private string Namespace(IReadOnlyCollection<string> lines)

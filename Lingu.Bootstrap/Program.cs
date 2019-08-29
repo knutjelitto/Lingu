@@ -33,7 +33,7 @@ namespace Lingu.Bootstrap
 
         private void Build()
         {
-            var options = new TaskOptions
+            var options = new HimeTaskOptions
             {
                 Public = true,
                 Namespace = "Lingu.Bootstrap",
@@ -60,7 +60,7 @@ namespace Lingu.Bootstrap
             }
         }
 
-        private Report Generate(TaskOptions options, params FileRef[] grammarInputs)
+        private Report Generate(HimeTaskOptions options, params FileRef[] grammarInputs)
         {
             var task = BuildTask(options);
             foreach (var input in grammarInputs)
@@ -92,7 +92,7 @@ namespace Lingu.Bootstrap
             }
         }
 
-        private static CompilationTask BuildTask(TaskOptions options)
+        private static CompilationTask BuildTask(HimeTaskOptions options)
         {
             CompilationTask task = new CompilationTask();
 

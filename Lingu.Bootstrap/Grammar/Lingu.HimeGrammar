@@ -19,7 +19,9 @@
 
         fragment WHITE_SPACE    -> uc{Zs} | U+0009 | U+000B | U+000C ;
 
-        fragment COMMENT_LINE   -> '//' (.* - (.* NEW_LINE .*)) ;
+        fragment COMMENT_LINE
+            -> '//' (. - NEW_LINE)*
+            ;
 
         fragment COMMENT_BLOCK  -> '/*' (.* - (.* '*/' .*)) '*/' ;
 
@@ -29,32 +31,26 @@
         NAME                    -> NAME_FIRST (NAME_FIRST | [0-9])* ;
 
         INTEGER                 -> [1-9] [0-9]* | '0' ;
-        fragment ESCAPEES       -> '\\\\'        // Backslash
-                                | '\\0'        // Unicode character 0
-                                | '\\a'        // Alert (character 7)
-                                | '\\b'        // Backspace (character 8)
-                                | '\\f'        // Form feed (character 12)
-                                | '\\n'        // New line (character 10)
-                                | '\\r'        // Carriage return (character 13)
-                                | '\\t'        // Horizontal tab (character 9)
-                                | '\\v'        // Vertical quote (character 11)
-                                | '\\u' [0-9a-fA-F]{4}   // Unicode code point
-                                | '\\u' [0-9a-fA-F]{8} ; // Unicode code point
-        LITERAL_STRING          -> '"' ( [^"] | '\\"' | ESCAPEES )* '"';
+        fragment ESCAPEES       -> '\\\\'                       // Backslash
+                                |  '\\0'                        // Unicode character 0
+                                |  '\\a'                        // Alert (character 7)
+                                |  '\\b'                        // Backspace (character 8)
+                                |  '\\f'                        // Form feed (character 12)
+                                |  '\\n'                        // New line (character 10)
+                                |  '\\r'                        // Carriage return (character 13)
+                                |  '\\t'                        // Horizontal tab (character 9)
+                                |  '\\v'                        // Vertical quote (character 11)
+                                |  '\\u{' [a-fA-F0-9]{1,6} '}'  // Unicode code point
+                                ;
+
+        LITERAL_STRING          -> '"' ( [^"] | '\\"' | ESCAPEES )+ '"';
         LITERAL_ANY             -> '.';
         LITERAL_TEXT            -> '~'? '\'' ( [^\\'] | '\\\'' | ESCAPEES )+ '\'';
         LITERAL_CLASS           -> '[' ( [^\\\[\]] | '\\[' | '\\]' | '\\-' | '\\^' | ESCAPEES )+ ']';
 
-        UNICODE_BLOCK           -> 'ub' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
-        UNICODE_CATEGORY        -> 'uc' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
-        UNICODE_CODEPOINT       -> 'U+' [a-fA-F0-9]+;
-        UNICODE_SPAN_MARKER     -> '..';
-
-        OPERATOR_UNION          -> '|';
-        OPERATOR_DIFFERENCE     -> '-';
-
-        TREE_ACTION_PROMOTE     -> '^';
-        TREE_ACTION_DROP        -> '!';
+        UNICODE_BLOCK           -> '\\ub' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
+        UNICODE_CATEGORY        -> '\\uc' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
+        UNICODE_CODEPOINT       -> '\\u' '{' [a-fA-F0-9]{1,6} '}';
     }
     rules
     {
@@ -67,13 +63,13 @@
             ;
 
         /* OPTIONS */
-            grammar_options
-                -> 'options'! '{'! option* '}'!
-                ;
+        grammar_options
+            -> 'options'! '{'! option* '}'!
+            ;
 
-            option
-                -> NAME '='! LITERAL_STRING ';'!
-                ;
+        option
+            -> NAME '='! LITERAL_STRING ';'!
+            ;
 
         /* TERMINALS *
             /* terminals */
@@ -100,11 +96,11 @@
                 ;
 
             terminal_definition
-                -> terminal_difference (OPERATOR_UNION! terminal_difference)*
+                -> terminal_difference ('|'! terminal_difference)*
                 ;
 
             terminal_difference
-                -> terminal_sequence (OPERATOR_DIFFERENCE! terminal_sequence)*
+                -> terminal_sequence ('-'! terminal_sequence)*
                 ;
 
             terminal_sequence
@@ -123,12 +119,20 @@
             terminal_atom
                 -> LITERAL_ANY^
                 |  UNICODE_CODEPOINT^
-                |  LITERAL_TEXT^
+                |  terminal_text^
                 |  LITERAL_CLASS^
-                |  UNICODE_CODEPOINT UNICODE_SPAN_MARKER^ UNICODE_CODEPOINT
+                |  terminal_range^
                 |  UNICODE_BLOCK^
                 |  UNICODE_CATEGORY^
                 |  NAME^
+                ;
+
+            terminal_range
+                -> UNICODE_CODEPOINT '..'! UNICODE_CODEPOINT
+                ;
+
+            terminal_text
+                -> LITERAL_TEXT
                 ;
 
             terminal_cardinalilty
@@ -156,7 +160,7 @@
                 ;
 
             rule_definition
-                -> rule_alternative (OPERATOR_UNION! rule_alternative)*
+                -> rule_alternative ('|'! rule_alternative)*
                 ;
 
             rule_alternative
@@ -187,7 +191,11 @@
                 |  rule_virtual^
                 |  rule_ref^
                 |  rule_ref_template^
-                |  LITERAL_TEXT^ ;
+                |  rule_text^ ;
+
+            rule_text
+                -> LITERAL_TEXT
+                ;
 
             rule_cardinality
                 -> '?'^ | '*'^ | '+'^

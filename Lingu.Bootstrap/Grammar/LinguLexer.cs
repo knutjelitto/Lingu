@@ -63,26 +63,6 @@ namespace Lingu.Bootstrap
 			/// The unique identifier for terminal UNICODE_CODEPOINT
 			/// </summary>
 			public const int TerminalUnicodeCodepoint = 0x0012;
-			/// <summary>
-			/// The unique identifier for terminal UNICODE_SPAN_MARKER
-			/// </summary>
-			public const int TerminalUnicodeSpanMarker = 0x0013;
-			/// <summary>
-			/// The unique identifier for terminal OPERATOR_UNION
-			/// </summary>
-			public const int TerminalOperatorUnion = 0x0014;
-			/// <summary>
-			/// The unique identifier for terminal OPERATOR_DIFFERENCE
-			/// </summary>
-			public const int TerminalOperatorDifference = 0x0015;
-			/// <summary>
-			/// The unique identifier for terminal TREE_ACTION_PROMOTE
-			/// </summary>
-			public const int TerminalTreeActionPromote = 0x0016;
-			/// <summary>
-			/// The unique identifier for terminal TREE_ACTION_DROP
-			/// </summary>
-			public const int TerminalTreeActionDrop = 0x0017;
 		}
 		/// <summary>
 		/// Contains the constant IDs for the contexts for this lexer
@@ -114,34 +94,32 @@ namespace Lingu.Bootstrap
 			new Symbol(0x0010, "UNICODE_BLOCK"),
 			new Symbol(0x0011, "UNICODE_CATEGORY"),
 			new Symbol(0x0012, "UNICODE_CODEPOINT"),
-			new Symbol(0x0013, "UNICODE_SPAN_MARKER"),
-			new Symbol(0x0014, "OPERATOR_UNION"),
-			new Symbol(0x0015, "OPERATOR_DIFFERENCE"),
-			new Symbol(0x0016, "TREE_ACTION_PROMOTE"),
-			new Symbol(0x0017, "TREE_ACTION_DROP"),
-			new Symbol(0x003C, "grammar"),
-			new Symbol(0x003D, "{"),
-			new Symbol(0x003E, "}"),
-			new Symbol(0x003F, "options"),
-			new Symbol(0x0041, "="),
-			new Symbol(0x0042, ";"),
-			new Symbol(0x0043, "terminals"),
-			new Symbol(0x0045, "->"),
-			new Symbol(0x0046, "fragment"),
-			new Symbol(0x0047, "context"),
+			new Symbol(0x003A, "grammar"),
+			new Symbol(0x003B, "{"),
+			new Symbol(0x003C, "}"),
+			new Symbol(0x003D, "options"),
+			new Symbol(0x003F, "="),
+			new Symbol(0x0040, ";"),
+			new Symbol(0x0041, "terminals"),
+			new Symbol(0x0043, "->"),
+			new Symbol(0x0044, "fragment"),
+			new Symbol(0x0045, "context"),
+			new Symbol(0x0047, "|"),
+			new Symbol(0x0049, "-"),
 			new Symbol(0x004C, "("),
 			new Symbol(0x004D, ")"),
-			new Symbol(0x004E, "?"),
-			new Symbol(0x004F, "*"),
-			new Symbol(0x0050, "+"),
-			new Symbol(0x0052, ","),
-			new Symbol(0x0053, "rules"),
-			new Symbol(0x0057, "!"),
-			new Symbol(0x0058, "^"),
-			new Symbol(0x0059, "#"),
-			new Symbol(0x005A, "@"),
-			new Symbol(0x005B, "<"),
-			new Symbol(0x005D, ">") };
+			new Symbol(0x004E, ".."),
+			new Symbol(0x004F, "?"),
+			new Symbol(0x0050, "*"),
+			new Symbol(0x0051, "+"),
+			new Symbol(0x0053, ","),
+			new Symbol(0x0054, "rules"),
+			new Symbol(0x0058, "!"),
+			new Symbol(0x0059, "^"),
+			new Symbol(0x005A, "#"),
+			new Symbol(0x005B, "@"),
+			new Symbol(0x005C, "<"),
+			new Symbol(0x005E, ">") };
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>

@@ -5,7 +5,7 @@ using System.Linq;
 
 using Hime.Redist;
 
-using Lingu.Bootstrap.Tree;
+using Lingu.Tree;
 
 namespace Lingu.Bootstrap
 {
@@ -53,7 +53,7 @@ namespace Lingu.Bootstrap
             var terminals = VisitChild<Terminals>(node, 2);
             var rules = VisitChild<Rules>(node, 3);
 
-            return new Grammar(name, options, terminals);
+            return new Grammar(name, options, terminals, rules);
         }
 
         protected override object OnVariableGrammarOptions(ASTNode node)
@@ -84,12 +84,6 @@ namespace Lingu.Bootstrap
         protected override object OnVariableTerminalFragment(ASTNode node)
         {
             return new TerminalFragment(VisitChild<AtomName>(node, 0), VisitChild<TerminalExpression>(node, 1));
-        }
-
-        protected override object OnVariableTerminalContext(ASTNode node)
-        {
-            throw new NotImplementedException();
-            return new TerminalContext(VisitChild<AtomName>(node, 0), VisitChildren<TerminalRule>(node));
         }
 
         protected override object OnVariableTerminalDefinition(ASTNode node)
@@ -169,7 +163,7 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomUcCodepoint(node.Value);
+            return new TerminalUcCodepoint(node.Value);
         }
 
         protected override object OnTerminalUnicodeBlock(ASTNode node)
@@ -186,11 +180,30 @@ namespace Lingu.Bootstrap
             return new AtomUcCategory(node.Value);
         }
 
+        protected override object OnVariableTerminalRange(ASTNode node)
+        {
+            return new AtomUcRange(
+                VisitChild<TerminalUcCodepoint>(node, 0),
+                VisitChild<TerminalUcCodepoint>(node, 1));
+        }
+
         protected override object OnTerminalLiteralText(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomText(node.Value);
+            return new LitText(node.Value);
+        }
+
+        protected override object OnTerminalLiteralString(ASTNode node)
+        {
+            Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
+
+            return new LitString(node.Value);
+        }
+
+        protected override object OnVariableTerminalText(ASTNode node)
+        {
+            return new TerminalText(VisitChild<LitText>(node, 0));
         }
 
         protected override object OnTerminalLiteralAny(ASTNode node)
@@ -228,7 +241,7 @@ namespace Lingu.Bootstrap
         {
             return new RuleSimple(
                 VisitChild<AtomName>(node, 0), 
-                VisitChild<RuleDefinition>(node, 1));
+                VisitChild<RuleExpression>(node, 1));
         }
 
         protected override Object OnVariableRuleTemplate(ASTNode node)
@@ -236,7 +249,7 @@ namespace Lingu.Bootstrap
             return new RuleTemplate(
                 VisitChild<AtomName>(node, 0),
                 VisitChild<RuleTemplateParams>(node, 1),
-                VisitChild<RuleDefinition>(node, 2));
+                VisitChild<RuleExpression>(node, 2));
         }
 
         protected override Object OnVariableRuleParams(ASTNode node)
@@ -293,6 +306,119 @@ namespace Lingu.Bootstrap
             }
 
             throw  new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleTreeAction(ASTNode node)
+        {
+            var expression = VisitChild<RuleExpression>(node, 0);
+            if (node.Children.Count == 1)
+            {
+                return expression;
+            }
+            if (node.Children.Count == 2)
+            {
+                switch (node.Children[1].Value)
+                {
+                    case "^":
+                        return new RuleTreeAction(expression, RuleTreeAction.TreeAction.Promote);
+                    case "!":
+                        return new RuleTreeAction(expression, RuleTreeAction.TreeAction.Drop);
+                }
+            }
+
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleRef(ASTNode node)
+        {
+            return new RuleRef(VisitChild<AtomName>(node, 0));
+        }
+
+        protected override object OnVariableRuleText(ASTNode node)
+        {
+            return new RuleText(VisitChild<LitText>(node, 0));
+        }
+
+        protected override object OnVariableRuleVirtual(ASTNode node)
+        {
+            return new RuleVirtual(VisitChild<LitString>(node, 0));
+        }
+
+        // #####################################################################
+
+        protected override object OnTerminalSeparator(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRule(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleAction(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleArguments(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleAtom(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleCardinality(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleContext(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleElement(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleRefTemplate(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableTerminalContext(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableTerminalElement(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableTerminalAtom(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableTerminalCardinalilty(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableRuleSub(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVirtualRange(ASTNode node)
+        {
+            throw new NotImplementedException();
         }
     }
 }
