@@ -1,13 +1,25 @@
-﻿namespace Lingu.Tree
+﻿using Lingu.Commons;
+
+namespace Lingu.Tree
 {
-    public class TerminalRule : TerminalItem
+    public class TerminalRule : TerminalExpression
     {
         public TerminalRule(AtomName name, TerminalExpression definition)
-            : base(name)
         {
+            Name = name;
             Definition = definition;
         }
 
+        public AtomName Name { get; }
         public TerminalExpression Definition { get; }
+
+        public override void Dump(Indentable output, bool top)
+        {
+            output.Indend($"{Name}", () =>
+            {
+                Definition.Dump(output, top);
+                output.WriteLine(";");
+            });
+        }
     }
 }

@@ -1,12 +1,14 @@
-﻿using Lingu.Errors;
+﻿using System;
+using Lingu.Errors;
 using System.Diagnostics;
 using System.Globalization;
+using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class TerminalUcCodepoint : TerminalAtom
+    public class AtomUcCodepoint : TerminalAtom
     {
-        public TerminalUcCodepoint(string text)
+        public AtomUcCodepoint(string text)
         {
             Text = text;
 
@@ -22,5 +24,17 @@ namespace Lingu.Tree
 
         public string Text { get; }
         public int Value { get; }
+
+        public override void Dump(Indentable output, Boolean top)
+        {
+            if (top)
+            {
+                output.WriteLine($"| {Text}");
+            }
+            else
+            {
+                output.Write(Text);
+            }
+        }
     }
 }

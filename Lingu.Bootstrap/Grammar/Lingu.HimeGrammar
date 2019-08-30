@@ -28,7 +28,7 @@
             ;
 
         BLOCK_COMMENT
-            -> '/*' ([^*] | [*][^/])* '*/'
+            -> '/*' (.* - (.* '*/' .*)) '*/'    
             ;
 
         SEPARATOR               -> (NEW_LINE | WHITE_SPACE | COMMENT_LINE | BLOCK_COMMENT)+;
@@ -80,25 +80,11 @@
         /* TERMINALS *
             /* terminals */
             grammar_terminals
-                -> 'terminals'! '{'! terminal_item* '}'!
-                ;
-
-            terminal_item               
-                -> terminal_rule^
-                |  terminal_fragment^
-                |  terminal_context^
+                -> 'terminals'! '{'! terminal_rule* '}'!
                 ;
 
             terminal_rule
-                -> NAME '->'! terminal_definition ';'! 
-                ;
-
-            terminal_fragment
-                -> 'fragment'! NAME '->'! terminal_definition ';'!
-                ;
-
-            terminal_context
-                -> 'context'! NAME '{'! terminal_rule* '}'!
+                -> NAME (':'|'|')! terminal_definition ';'!
                 ;
 
             terminal_definition
@@ -164,15 +150,7 @@
                 ;
 
             rule                        
-                -> rule_simple^ | rule_template^
-                ;
-
-            rule_simple                 
-                -> NAME '->'! rule_definition ';'!
-                ;
-
-            rule_template
-                -> NAME rule_params '->'! rule_definition ';'!
+                -> NAME ('->'|':'|'|')! rule_definition ';'!
                 ;
 
             rule_definition
@@ -196,33 +174,24 @@
                 ;
 
             rule_element
-                -> rule_atom^
-                |  rule_context^
-                |  rule_sub^
+                -> rule_sub^
                 |  '('! rule_definition^ ')'!
+                |  rule_atom^
+                ;
+
+            rule_sub                
+                -> '{'! NAME ':'! rule_definition '}'!
                 ;
 
             rule_atom
                 -> rule_action^
                 |  rule_virtual^
                 |  rule_ref^
-                |  rule_ref_template^
-                |  rule_text^ ;
+                |  rule_text^
+                ;
 
             rule_text
                 -> LITERAL_TEXT
-                ;
-
-            rule_cardinality
-                -> '?'^ | '*'^ | '+'^
-                ;
-
-            rule_context
-                -> '#'! NAME '{'! rule_definition '}'!
-                ;
-
-            rule_sub                
-                -> '{'! rule_definition '}'!
                 ;
 
             rule_action
@@ -235,18 +204,6 @@
 
             rule_ref
                 -> NAME
-                ;
-
-            rule_ref_template
-                -> NAME rule_arguments
-                ;
-
-            rule_arguments
-                -> '<'! rule_atom (','! rule_atom)* '>'!
-                ;
-
-            rule_params
-                -> '<'! NAME (','! NAME)* '>'!
                 ;
     }
 }

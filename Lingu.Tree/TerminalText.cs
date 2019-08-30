@@ -1,6 +1,9 @@
-﻿namespace Lingu.Tree
+﻿using System;
+using Lingu.Commons;
+
+namespace Lingu.Tree
 {
-    public class TerminalText : TerminalExpression
+    public class TerminalText : TerminalAtom
     {
         public TerminalText(LitText text)
         {
@@ -8,5 +11,10 @@
         }
 
         public LitText Text { get; }
+
+        public override void Dump(Indentable output, Boolean top)
+        {
+            Text.Dump(output, top);
+        }
     }
 }

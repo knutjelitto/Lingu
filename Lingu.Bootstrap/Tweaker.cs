@@ -21,18 +21,18 @@ namespace Lingu.Bootstrap
             var inlines = File.ReadAllLines(inputFile);
             var outlines = new Indentable();
             
-            outlines.Add($"using System;");
-            outlines.Add($"using System.Collections.Generic;");
-            outlines.Add($"using System.Linq;");
-            outlines.Add($"using Hime.Redist;");
-            outlines.Add($"");
+            outlines.WriteLine($"using System;");
+            outlines.WriteLine($"using System.Collections.Generic;");
+            outlines.WriteLine($"using System.Linq;");
+            outlines.WriteLine($"using Hime.Redist;");
+            outlines.WriteLine($"");
             outlines.Block($"namespace {Namespace(inlines)}", () =>
             {
                 outlines.Block($"public abstract class {VisitorName()}", () =>
                 {
                     outlines.Block($"protected virtual void VisitNode(ASTNode node)", () =>
                     {
-                        outlines.Add($"VisitNode<bool>(node);");
+                        outlines.WriteLine($"VisitNode<bool>(node);");
                     });
 
                     outlines.Block($"protected virtual T VisitNode<T>(ASTNode node)", () =>
@@ -44,7 +44,7 @@ namespace Lingu.Bootstrap
                     {
                         outlines.Block($"foreach (var child in node.Children)", () =>
                         {
-                            outlines.Add($"yield return VisitNode<object>(child);");
+                            outlines.WriteLine($"yield return VisitNode<object>(child);");
                         });
                     });
 
@@ -52,7 +52,7 @@ namespace Lingu.Bootstrap
                         {
                             outlines.Block($"foreach (var child in node.Children)", () =>
                             {
-                                outlines.Add($"yield return VisitNode<T>(child);");
+                                outlines.WriteLine($"yield return VisitNode<T>(child);");
                             });
                         });
 
@@ -65,13 +65,13 @@ namespace Lingu.Bootstrap
                         });
                     });
 
-                    outlines.Add($"");
+                    outlines.WriteLine($"");
 
                     outlines.Block($"partial class OnVariable", () =>
                     {
                     });
 
-                    outlines.Add($"");
+                    outlines.WriteLine($"");
 
                     outlines.Block($"partial class OnVirtual", () =>
                     {
@@ -101,8 +101,10 @@ namespace Lingu.Bootstrap
 
                     if (line == "\t\t\t}")
                     {
-                        outlines.Add("default:");
-                        outlines.Add2("throw new NotImplementedException();");
+                        outlines.Indend("default:", () =>
+                        {
+                            outlines.WriteLine("throw new NotImplementedException();");
+                        });
                         break;
                     }
 
@@ -110,7 +112,7 @@ namespace Lingu.Bootstrap
                     line = line.Replace(" break;", string.Empty);
                     line = line.TrimStart('\t');
 
-                    outlines.Add(line);
+                    outlines.WriteLine(line);
                 }
             });
         }
@@ -149,7 +151,7 @@ namespace Lingu.Bootstrap
             line = line.TrimStart('\t');
             outlines.Block($"{line}", () =>
             {
-                outlines.Add($"return VisitChildren(node).FirstOrDefault();");
+                outlines.WriteLine($"return VisitChildren(node).FirstOrDefault();");
             });
         }
 

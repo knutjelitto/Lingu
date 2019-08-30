@@ -9,54 +9,88 @@ namespace Lingu.Commons
         private readonly List<string> lines;
         private readonly string tab;
         private string prefix;
+        private string current;
 
         public Indentable(string tab = "    ")
         {
             lines = new List<string>();
             this.tab = tab;
             prefix = string.Empty;
+            current = null;
         }
 
-        public void Add(string line)
+        public void WriteLine(string line)
         {
-            lines.Add($"{prefix}{line}");
+            AddLine(line);
         }
 
-        public void Add2(string line)
+        public void Write(string line)
         {
-            lines.Add($"{prefix}{tab}{line}");
+            Add(line);
+        }
+
+        private void AddLine(string line)
+        {
+            Begin();
+            lines.Add(current + line);
+            current = null;
+        }
+
+        private void Add(string line)
+        {
+            Begin();
+            current = current + line;
+        }
+
+        private void Begin()
+        {
+            if (current == null)
+            {
+                current = prefix;
+            }
         }
 
         public void Block(string head, Action body)
         {
-            Add(head);
+            AddLine(head);
+            AddLine("{");
             using (Indent())
             {
                 body();
             }
-            lines.Add(string.Empty);
+            AddLine("}");
+        }
+
+        public void Indend(string head, Action body)
+        {
+            AddLine(head);
+            using (Indent())
+            {
+                body();
+            }
         }
 
         private IDisposable Indent()
         {
-            return Indent(@"{", "}");
-        }
-
-        private IDisposable Indent(string prefix, string suffix)
-        {
-            var prevPrefix = this.prefix;
-            lines.Add($"{this.prefix}{prefix}");
-            this.prefix = this.prefix + tab;
+            var prevPrefix = prefix;
+            prefix = prefix + tab;
             return new Disposable(() =>
             {
-                this.prefix = prevPrefix;
-                lines.Add($"{this.prefix}{suffix}");
+                prefix = prevPrefix;
             });
         }
 
         public void Persist(string path)
         {
             File.WriteAllLines(path, lines);
+        }
+
+        public void Dump(TextWriter writer)
+        {
+            foreach (var line in lines)
+            {
+                writer.WriteLine(line);
+            }
         }
     }
 }

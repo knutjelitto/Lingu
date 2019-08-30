@@ -1,8 +1,8 @@
 ﻿namespace Lingu.Tree
 {
-    public sealed class RuleSimple : RuleItem
+    public sealed class Rule : NamedNode
     {
-        public RuleSimple(AtomName name, RuleExpression expression)
+        public Rule(AtomName name, RuleExpression expression)
             : base(name)
         {
             Expression = expression;

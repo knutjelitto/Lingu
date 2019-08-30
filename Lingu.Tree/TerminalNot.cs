@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Lingu.Commons;
 
 namespace Lingu.Tree
 {
@@ -12,5 +13,19 @@ namespace Lingu.Tree
         }
 
         public TerminalExpression Expression { get; }
+
+        public override void Dump(Indentable output, Boolean top)
+        {
+            if (top)
+            {
+                output.Write("! ");
+            }
+            output.Write("~");
+            Expression.Dump(output, false);
+            if (top)
+            {
+                output.WriteLine("");
+            }
+        }
     }
 }

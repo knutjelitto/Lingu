@@ -29,6 +29,11 @@ namespace Lingu.Bootstrap
             var source = FileRef.Source($"{ProjectDir}Grammar/Expression.Grammar");
 
             var grammar = Parser.Parse(source);
+
+            if (grammar != null)
+            {
+                grammar.Dump(Console.Out);
+            }
         }
 
         private void Build()

@@ -39,6 +39,11 @@ namespace Lingu.Bootstrap
             return node.Children.Select(VisitNode<T>);
         }
 
+        protected IEnumerable<T> VisitChildren<T>(ASTNode node, int skip)
+        {
+            return node.Children.Skip(skip).Select(VisitNode<T>);
+        }
+
         protected override object OnVariableFile(ASTNode node)
         {
             Debug.Assert(node.Children.Count == 1);
@@ -68,17 +73,12 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableGrammarTerminals(ASTNode node)
         {
-            return new Terminals(VisitChildren<TerminalItem>(node));
+            return new Terminals(VisitChildren<TerminalRule>(node));
         }
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
             return new TerminalRule(VisitChild<AtomName>(node, 0), VisitChild<TerminalExpression>(node, 1));
-        }
-
-        protected override object OnVariableTerminalFragment(ASTNode node)
-        {
-            return new TerminalFragment(VisitChild<AtomName>(node, 0), VisitChild<TerminalExpression>(node, 1));
         }
 
         protected override object OnVariableTerminalDefinition(ASTNode node)
@@ -163,7 +163,7 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new TerminalUcCodepoint(node.Value);
+            return new AtomUcCodepoint(node.Value);
         }
 
         protected override object OnTerminalUnicodeBlock(ASTNode node)
@@ -239,27 +239,14 @@ namespace Lingu.Bootstrap
 
         protected override Object OnVariableGrammarRules(ASTNode node)
         {
-            return new Rules(VisitChildren<RuleItem>(node));
+            return new Rules(VisitChildren<Rule>(node));
         }
 
-        protected override Object OnVariableRuleSimple(ASTNode node)
+        protected override Object OnVariableRule(ASTNode node)
         {
-            return new RuleSimple(
+            return new Rule(
                 VisitChild<AtomName>(node, 0), 
                 VisitChild<RuleExpression>(node, 1));
-        }
-
-        protected override Object OnVariableRuleTemplate(ASTNode node)
-        {
-            return new RuleTemplate(
-                VisitChild<AtomName>(node, 0),
-                VisitChild<RuleTemplateParams>(node, 1),
-                VisitChild<RuleExpression>(node, 2));
-        }
-
-        protected override Object OnVariableRuleParams(ASTNode node)
-        {
-            return new RuleTemplateParams(VisitChildren<AtomName>(node));
         }
 
         protected override Object OnVariableRuleDefinition(ASTNode node)
@@ -272,6 +259,16 @@ namespace Lingu.Bootstrap
             return new RuleDefinition(VisitChildren<RuleExpression>(node));
         }
 
+        protected override Object OnVariableRuleSequence(ASTNode node)
+        {
+            if (node.Children.Count == 1)
+            {
+                return VisitChild<RuleExpression>(node, 0);
+            }
+
+            return new RuleSequence(VisitChildren<RuleExpression>(node));
+        }
+
         protected override Object OnVariableRuleAlternative(ASTNode node)
         {
             if (node.Children.Count == 0)
@@ -280,16 +277,6 @@ namespace Lingu.Bootstrap
             }
 
             return VisitChild<RuleExpression>(node, 0);
-        }
-
-        protected override Object OnVariableRuleSequence(ASTNode node)
-        {
-            if (node.Children.Count == 1)
-            {
-                return VisitChild<RuleExpression>(node, 0);
-            }
-
-            return new RuleAlternative(VisitChildren<RuleExpression>(node));
         }
 
         protected override Object OnVariableRuleRepetition(ASTNode node)
@@ -312,6 +299,15 @@ namespace Lingu.Bootstrap
 
             throw  new NotImplementedException();
         }
+ 
+        protected override object OnVariableRuleSub(ASTNode node)
+        {
+            var name = VisitChild<AtomName>(node, 0);
+            var expr = VisitChild<RuleExpression>(node, 1);
+
+            return new RuleSub(name, expr);
+        }
+
 
         protected override object OnVariableRuleTreeAction(ASTNode node)
         {
@@ -351,17 +347,7 @@ namespace Lingu.Bootstrap
 
         // #####################################################################
 
-        protected override object OnVariableTerminalItem(ASTNode node)
-        {
-            return base.OnVariableTerminalItem(node);
-        }
-
         protected override object OnTerminalSeparator(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object OnVariableRule(ASTNode node)
         {
             throw new NotImplementedException();
         }
@@ -371,37 +357,12 @@ namespace Lingu.Bootstrap
             throw new NotImplementedException();
         }
 
-        protected override object OnVariableRuleArguments(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
         protected override object OnVariableRuleAtom(ASTNode node)
         {
             throw new NotImplementedException();
         }
 
-        protected override object OnVariableRuleCardinality(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object OnVariableRuleContext(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
         protected override object OnVariableRuleElement(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object OnVariableRuleRefTemplate(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object OnVariableTerminalContext(ASTNode node)
         {
             throw new NotImplementedException();
         }
@@ -417,11 +378,6 @@ namespace Lingu.Bootstrap
         }
 
         protected override object OnVariableTerminalCardinalilty(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object OnVariableRuleSub(ASTNode node)
         {
             throw new NotImplementedException();
         }

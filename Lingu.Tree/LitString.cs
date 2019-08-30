@@ -1,4 +1,6 @@
-﻿namespace Lingu.Tree
+﻿using System;
+
+namespace Lingu.Tree
 {
     public class LitString : Node
     {
@@ -8,5 +10,10 @@
         }
 
         public string Text { get; }
+
+        public override String ToString()
+        {
+            return Text;
+        }
     }
 }

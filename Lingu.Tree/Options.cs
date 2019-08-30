@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Lingu.Commons;
 
 namespace Lingu.Tree
 {
@@ -11,5 +12,16 @@ namespace Lingu.Tree
         }
 
         public IReadOnlyList<Option> Items { get; }
+
+        public override void Dump(Indentable output, bool top)
+        {
+            output.Block("options", () =>
+            {
+                foreach (var option in Items)
+                {
+                    option.Dump(output, top);
+                }
+            });
+        }
     }
 }

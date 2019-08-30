@@ -5,11 +5,11 @@ namespace Lingu.Tree
 {
     public class Rules : Node
     {
-        public Rules(IEnumerable<RuleItem> items)
+        public Rules(IEnumerable<Rule> items)
         {
             Items = items.ToArray();
         }
 
-        public IReadOnlyCollection<RuleItem> Items { get; }
+        public IReadOnlyCollection<Rule> Items { get; }
     }
 }
