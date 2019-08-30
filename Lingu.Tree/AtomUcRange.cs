@@ -2,13 +2,13 @@
 {
     public class AtomUcRange : TerminalAtom
     {
-        public AtomUcRange(TerminalUcCodepoint from, TerminalUcCodepoint to)
+        public AtomUcRange(TerminalExpression from, TerminalExpression to)
         {
             From = from;
             To = to;
         }
 
-        public TerminalUcCodepoint From { get; }
-        public TerminalUcCodepoint To { get; }
+        public TerminalExpression From { get; }
+        public TerminalExpression To { get; }
     }
 }

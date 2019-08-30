@@ -71,11 +71,6 @@ namespace Lingu.Bootstrap
             return new Terminals(VisitChildren<TerminalItem>(node));
         }
 
-        protected override object OnVariableTerminalItem(ASTNode node)
-        {
-            return base.OnVariableTerminalItem(node);
-        }
-
         protected override object OnVariableTerminalRule(ASTNode node)
         {
             return new TerminalRule(VisitChild<AtomName>(node, 0), VisitChild<TerminalExpression>(node, 1));
@@ -159,6 +154,11 @@ namespace Lingu.Bootstrap
             throw new ArgumentOutOfRangeException(nameof(node));
         }
 
+        protected override object OnVariableTerminalNot(ASTNode node)
+        {
+            return new TerminalNot(VisitChild<TerminalExpression>(node, 0));
+        }
+
         protected override object OnTerminalUnicodeCodepoint(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
@@ -183,8 +183,8 @@ namespace Lingu.Bootstrap
         protected override object OnVariableTerminalRange(ASTNode node)
         {
             return new AtomUcRange(
-                VisitChild<TerminalUcCodepoint>(node, 0),
-                VisitChild<TerminalUcCodepoint>(node, 1));
+                VisitChild<TerminalExpression>(node, 0),
+                VisitChild<TerminalExpression>(node, 1));
         }
 
         protected override object OnTerminalLiteralText(ASTNode node)
@@ -209,6 +209,11 @@ namespace Lingu.Bootstrap
         protected override object OnTerminalLiteralAny(ASTNode node)
         {
             return new AtomAny();
+        }
+
+        protected override object OnVariableCharacter(ASTNode node)
+        {
+            return VisitChild<TerminalExpression>(node, 0);
         }
 
         protected override Object OnTerminalLiteralClass(ASTNode node)
@@ -345,6 +350,11 @@ namespace Lingu.Bootstrap
         }
 
         // #####################################################################
+
+        protected override object OnVariableTerminalItem(ASTNode node)
+        {
+            return base.OnVariableTerminalItem(node);
+        }
 
         protected override object OnTerminalSeparator(ASTNode node)
         {

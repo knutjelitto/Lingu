@@ -124,15 +124,15 @@
                 ;
 
             terminal_not
-                -> '~' terminal_atom
+                -> '~'! terminal_atom
                 ;
 
             terminal_atom
                 -> LITERAL_ANY^
                 |  UNICODE_CODEPOINT^
                 |  terminal_text^
-                |  LITERAL_CLASS^
                 |  terminal_range^
+                |  LITERAL_CLASS^
                 |  UNICODE_BLOCK^
                 |  UNICODE_CATEGORY^
                 |  NAME^
@@ -144,7 +144,7 @@
 
             character
                 -> UNICODE_CODEPOINT
-                |  LITERAL_TEXT
+                |  terminal_text
                 ;
 
             terminal_text
