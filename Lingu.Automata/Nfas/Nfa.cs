@@ -13,8 +13,8 @@ namespace Lingu.Automata
             End = end ?? throw new ArgumentNullException(nameof(end));
         }
 
-        public NfaState End { get; }
         public NfaState Start { get; }
+        public NfaState End { get; }
 
         public void Dump()
         {

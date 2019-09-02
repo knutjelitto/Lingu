@@ -84,7 +84,12 @@ namespace Lingu.Tree
             {
                 if (terminal.IsGenerated)
                 {
-                    writer.WriteLine($"[{terminal.Name}]");
+                    writer.Write($"[{terminal.Name}]");
+                    if (terminal.IsGenerated && terminal.Expression is AtomText text)
+                    {
+                        writer.Write($" '{text.Value}'");
+                    }
+                    writer.WriteLine();
                 }
                 else
                 {

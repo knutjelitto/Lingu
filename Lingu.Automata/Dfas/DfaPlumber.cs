@@ -21,11 +21,6 @@ namespace Lingu.Automata
 
         protected Dictionary<DfaState, int> States { get; private set; }
 
-        public IEnumerable<DfaState> GetOrderedStates()
-        {
-            return States.OrderBy(kv => kv.Value).Select(kv => kv.Key);
-        }
-
         public void Dump(string prefix, TextWriter writer)
         {
             foreach (var pair in States.OrderBy(s => s.Value))

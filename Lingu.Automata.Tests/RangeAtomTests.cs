@@ -10,7 +10,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = Atom.From('u', 'w');
 
-            Assert.AreEqual("[117-119]", sut.ToString());
+            Assert.AreEqual("['u'-'w']", sut.ToString());
         }
 
         [TestMethod]

@@ -54,13 +54,14 @@ namespace Lingu.Automata
             return new Atom(Invert(Set));
         }
 
+        public string ToIString()
+        {
+            return Set.ToIString();
+        }
+
         public override string ToString()
         {
-            var builder = new StringBuilder();
-
-            builder.Append(Set);
-
-            return builder.ToString();
+            return Set.ToString();
         }
 
         private static IntegerSet Invert(IntegerSet set)

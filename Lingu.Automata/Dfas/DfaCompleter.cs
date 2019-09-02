@@ -29,12 +29,16 @@ namespace Lingu.Automata
                     if (sink == null)
                     {
                         sink = new DfaState(false);
-                        dfa.States.Add(sink);
                         sink.Add(Atom.From(UnicodeSets.Any), sink);
                     }
 
                     state.Add(Atom.From(rest), sink);
                 }
+            }
+
+            if (sink != null)
+            {
+                dfa.States.Add(sink);
             }
 
             return dfa;

@@ -10,7 +10,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((10, 20));
 
-            Assert.AreEqual("[10-20]", sut.ToString());
+            Assert.AreEqual("[10-20]", sut.ToIString());
         }
 
         [TestMethod]
@@ -18,7 +18,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((10, 20), (21, 30));
 
-            Assert.AreEqual("[10-30]", sut.ToString());
+            Assert.AreEqual("[10-30]", sut.ToIString());
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((10, 19), (21, 30));
 
-            Assert.AreEqual("[10-19,21-30]", sut.ToString());
+            Assert.AreEqual("[10-19,21-30]", sut.ToIString());
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((10, 21), (21, 30));
 
-            Assert.AreEqual("[10-30]", sut.ToString());
+            Assert.AreEqual("[10-30]", sut.ToIString());
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((21, 30), (10, 20));
 
-            Assert.AreEqual("[10-30]", sut.ToString());
+            Assert.AreEqual("[10-30]", sut.ToIString());
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((21, 30), (10, 19));
 
-            Assert.AreEqual("[10-19,21-30]", sut.ToString());
+            Assert.AreEqual("[10-19,21-30]", sut.ToIString());
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((21, 30), (10, 19), (1, 1000));
 
-            Assert.AreEqual("[1-1000]", sut.ToString());
+            Assert.AreEqual("[1-1000]", sut.ToIString());
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((21, 30), (10, 21));
 
-            Assert.AreEqual("[10-30]", sut.ToString());
+            Assert.AreEqual("[10-30]", sut.ToIString());
         }
 
         [TestMethod]
@@ -74,11 +74,11 @@ namespace Lingu.Automata.Tests
         {
             var sut = new IntegerSet((1, 9), (11, 20));
 
-            Assert.AreEqual("[1-9,11-20]", sut.ToString());
+            Assert.AreEqual("[1-9,11-20]", sut.ToIString());
 
             sut.Add(10);
 
-            Assert.AreEqual("[1-20]", sut.ToString());
+            Assert.AreEqual("[1-20]", sut.ToIString());
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Lingu.Automata.Tests
 
             sut.Sub((91, 110));
 
-            Assert.AreEqual("[111-200]", sut.ToString());
+            Assert.AreEqual("[111-200]", sut.ToIString());
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace Lingu.Automata.Tests
 
             sut.Sub((191, 210));
 
-            Assert.AreEqual("[101-190]", sut.ToString());
+            Assert.AreEqual("[101-190]", sut.ToIString());
         }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace Lingu.Automata.Tests
 
             sut.Sub((111, 190));
 
-            Assert.AreEqual("[101-110,191-200]", sut.ToString());
+            Assert.AreEqual("[101-110,191-200]", sut.ToIString());
         }
 
         [TestMethod]
@@ -118,7 +118,7 @@ namespace Lingu.Automata.Tests
 
             sut.Sub((111, 390));
 
-            Assert.AreEqual("[101-110,391-400]", sut.ToString());
+            Assert.AreEqual("[101-110,391-400]", sut.ToIString());
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace Lingu.Automata.Tests
 
             sut.Sub((201, 390));
 
-            Assert.AreEqual("[101-200,391-400]", sut.ToString());
+            Assert.AreEqual("[101-200,391-400]", sut.ToIString());
         }
 
         [TestMethod]
@@ -138,7 +138,7 @@ namespace Lingu.Automata.Tests
 
             sut.Sub((200, 301));
 
-            Assert.AreEqual("[101-199,302-400]", sut.ToString());
+            Assert.AreEqual("[101-199,302-400]", sut.ToIString());
         }
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace Lingu.Automata.Tests
                 sut.Sub(i);
             }
 
-            Assert.AreEqual("[]", sut.ToString());
+            Assert.AreEqual("[]", sut.ToIString());
         }
 
         [TestMethod]
@@ -233,9 +233,9 @@ namespace Lingu.Automata.Tests
 
             var union = set1.UnionWith(set2);
 
-            Assert.AreEqual("[1-10,21-30]", set1.ToString());
-            Assert.AreEqual("[1-10,41-50]", set2.ToString());
-            Assert.AreEqual("[1-10,21-30,41-50]", union.ToString());
+            Assert.AreEqual("[1-10,21-30]", set1.ToIString());
+            Assert.AreEqual("[1-10,41-50]", set2.ToIString());
+            Assert.AreEqual("[1-10,21-30,41-50]", union.ToIString());
         }
 
 
@@ -248,10 +248,10 @@ namespace Lingu.Automata.Tests
             var set12 = set1.ExceptWith(set2);
             var set21 = set2.ExceptWith(set1);
 
-            Assert.AreEqual("[1-10,21-30]", set1.ToString());
-            Assert.AreEqual("[1-10,41-50]", set2.ToString());
-            Assert.AreEqual("[21-30]", set12.ToString());
-            Assert.AreEqual("[41-50]", set21.ToString());
+            Assert.AreEqual("[1-10,21-30]", set1.ToIString());
+            Assert.AreEqual("[1-10,41-50]", set2.ToIString());
+            Assert.AreEqual("[21-30]", set12.ToIString());
+            Assert.AreEqual("[41-50]", set21.ToIString());
         }
 
         [TestMethod]

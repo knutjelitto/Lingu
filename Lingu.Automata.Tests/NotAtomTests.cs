@@ -10,7 +10,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = Atom.From('a').Not();
 
-            Assert.AreEqual("[0-96,98-65535]", sut.ToString());
+            Assert.AreEqual("[0-96,98-1114111]", sut.ToIString());
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = Atom.From('u', 'w').Not();
 
-            Assert.AreEqual("[0-116,120-65535]", sut.ToString());
+            Assert.AreEqual("[0-116,120-1114111]", sut.ToIString());
         }
 
         [TestMethod]

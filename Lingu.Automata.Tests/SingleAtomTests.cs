@@ -10,7 +10,7 @@ namespace Lingu.Automata.Tests
         {
             var sut = Atom.From('a');
 
-            Assert.AreEqual("[97]", sut.ToString());
+            Assert.AreEqual("['a']", sut.ToString());
         }
 
         [TestMethod]

@@ -232,6 +232,11 @@ namespace Lingu.Automata
             return $"[{string.Join(",", this.ranges)}]";
         }
 
+        public string ToIString()
+        {
+            return $"[{string.Join(",", this.ranges.Select(r => r.ToIString()))}]";
+        }
+
         public IntegerSet UnionWith(IntegerSet other)
         {
             var set = Clone();

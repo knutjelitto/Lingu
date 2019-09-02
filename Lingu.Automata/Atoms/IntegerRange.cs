@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lingu.Commons;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,7 +36,7 @@ namespace Lingu.Automata
 
         public IEnumerator<int> GetEnumerator() => Enumerable.Range(Min, Max - Min + 1).GetEnumerator();
 
-        public override string ToString()
+        public string ToIString()
         {
             if (Min == Max)
             {
@@ -43,6 +44,16 @@ namespace Lingu.Automata
             }
 
             return $"{Min}-{Max}";
+        }
+
+        public override string ToString()
+        {
+            if (Min == Max)
+            {
+                return CharRep.InRange(Min);
+            }
+
+            return $"{CharRep.InRange(Min)}-{CharRep.InRange(Max)}";
         }
 
         public static bool TryParse(string str, out IntegerRange range)
