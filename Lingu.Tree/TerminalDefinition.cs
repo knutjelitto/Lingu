@@ -1,28 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Lingu.Commons;
+using System.Text;
 
 namespace Lingu.Tree
 {
-    public class TerminalDefinition : TerminalExpression
+    public sealed class TerminalDefinition : Definition
     {
-        public TerminalDefinition(IEnumerable<TerminalExpression> expressions)
+        public TerminalDefinition(bool generated, AtomName name, Expression expression)
+            : base(generated, name, expression)
         {
-            Expressions = expressions.ToArray();
         }
 
-        public IReadOnlyList<TerminalExpression> Expressions { get; }
-
-        public override void Dump(Indentable output, Boolean top)
+        public TerminalDefinition(AtomName name, Expression expression)
+            : base(false, name, expression)
         {
-            if (top)
-            {
-                foreach (var expression in Expressions)
-                {
-                    expression.Dump(output, top);
-                }
-            }
         }
     }
 }

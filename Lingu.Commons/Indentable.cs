@@ -24,6 +24,11 @@ namespace Lingu.Commons
             AddLine(line);
         }
 
+        public void WriteLine()
+        {
+            AddLine(string.Empty);
+        }
+
         public void Write(string line)
         {
             Add(line);

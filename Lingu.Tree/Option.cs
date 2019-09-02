@@ -1,21 +1,23 @@
-﻿using System;
-using Lingu.Commons;
+﻿using Lingu.Commons;
 
 namespace Lingu.Tree
 {
     public class Option : NamedNode
     {
-        public Option(AtomName name, LitString value)
+        public Option(AtomName name, AtomText value)
             : base(name)
         {
             Value = value;
         }
 
-        public LitString Value { get; }
+        public AtomText Value { get; }
 
         public override void Dump(Indentable output, bool top)
         {
-            output.WriteLine($"{Name} = {Value}");
+            Name.Dump(output, top);
+            output.Write(" = ");
+            Value.Dump(output, top);
+            output.WriteLine(";");
         }
     }
 }

@@ -145,7 +145,7 @@ namespace Lingu.Automata
 
         public override int GetHashCode()
         {
-            return this.ranges.SequenceHash();
+            return this.ranges.Hash();
         }
 
         public IEnumerable<IntegerRange> GetRanges()
@@ -392,7 +392,7 @@ namespace Lingu.Automata
             }
         }
 
-        private IntegerSet Sub(IEnumerable<IntegerRange> rangesToSub)
+        public IntegerSet Sub(IEnumerable<IntegerRange> rangesToSub)
         {
             foreach (var range in rangesToSub)
             {

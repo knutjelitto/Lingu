@@ -8,23 +8,26 @@ namespace Lingu.Automata
     {
         public NfaState()
         {
-            this.transitions = new List<NfaTransition>();
+            IsFinal = false;
+            Id = -1;
+            Transitions = new List<NfaTransition>();
         }
 
-        public IEnumerable<NfaTransition> EpsilonTransitions => this.transitions.Where(t => t.Terminal.Set.IsEmpty);
+        public bool IsFinal { get; }
+        public int Id { get; set; }
+        public List<NfaTransition> Transitions { get; }
 
-        public IEnumerable<NfaTransition> TerminalTransitions => this.transitions.Where(t => !t.Terminal.Set.IsEmpty);
-
-        public IEnumerable<NfaTransition> Transitions => TerminalTransitions.Concat(EpsilonTransitions);
+        public IEnumerable<NfaTransition> EpsilonTransitions => Transitions.Where(t => t.Terminal.Set.IsEmpty);
+        public IEnumerable<NfaTransition> TerminalTransitions => Transitions.Where(t => !t.Terminal.Set.IsEmpty);
 
         public void Add(NfaState target)
         {
-            Add(new NfaTransition(Atom.From(IntegerSet.Empty), target));
+            Transitions.Add(new NfaTransition(Atom.From(IntegerSet.Empty), target));
         }
 
         public void Add(Atom terminal, NfaState target)
         {
-            Add(new NfaTransition(terminal, target));
+            Transitions.Add(new NfaTransition(terminal, target));
         }
 
         public IEnumerable<NfaState> Closure()
@@ -44,12 +47,5 @@ namespace Lingu.Automata
 
             return once.Seen;
         }
-
-        private void Add(NfaTransition transition)
-        {
-            this.transitions.Add(transition);
-        }
-
-        private readonly List<NfaTransition> transitions;
     }
 }

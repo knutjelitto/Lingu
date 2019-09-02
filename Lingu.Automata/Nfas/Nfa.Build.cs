@@ -18,7 +18,14 @@
 
         public Nfa Opt => NfaBuilder.Optional(this);
 
+        public Nfa Or(Nfa other) => NfaBuilder.Or(this, other);
+
+        public Nfa Concat(Nfa other) => NfaBuilder.Concat(this, other);
+
         public static Nfa Any => NfaBuilder.Dot;
+
+        public static Nfa From(int codePoint) => NfaBuilder.From((char)codePoint);
+        public static Nfa From(string sequence) => NfaBuilder.From(sequence);
 
         public static implicit operator Nfa((char first, char last) range)
         {

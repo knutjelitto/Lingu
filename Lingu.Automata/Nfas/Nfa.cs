@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lingu.Commons;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -24,6 +25,32 @@ namespace Lingu.Automata
         public void Dump(TextWriter writer)
         {
             new NfaPlumber(this).Dump(writer);
+        }
+
+        public Dfa ToDfa()
+        {
+            var once = new UniqueQueue<NfaClosure>();
+            var start = new NfaClosure(this.Start, this.End);
+            once.Enqueue(start);
+
+            while (once.Count > 0)
+            {
+                var closure = once.Dequeue();
+                var transitions = closure.UnambiguateTransitions();
+
+                foreach (var transition in transitions)
+                {
+                    var terminal = transition.Key;
+                    var targets = transition.Value;
+                    var targetClosure = new NfaClosure(targets, this.End);
+                    once.Enqueue(targetClosure, out targetClosure);
+                    var target = targetClosure.State;
+
+                    closure.State.Add(Atom.From(terminal), target);
+                }
+            }
+
+            return Dfa.From(start.State);
         }
 
         private Nfa Clone()

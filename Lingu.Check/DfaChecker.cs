@@ -25,7 +25,7 @@ namespace Lingu.Check
 
             var plumber = new DfaPlumber(dfa);
 
-            plumber.Dump(Console.Out);
+            plumber.Dump("", Console.Out);
         }
 
         private void Check2()
@@ -42,7 +42,7 @@ namespace Lingu.Check
             var plumber = new DfaPlumber(dfa);
 
             Console.WriteLine("---------------");
-            plumber.Dump(Console.Out);
+            plumber.Dump("", Console.Out);
         }
 
         private void Check3()
@@ -56,10 +56,10 @@ namespace Lingu.Check
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
             dfa = dfa.Minimize();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
         }
 
         private void Check4()
@@ -73,10 +73,10 @@ namespace Lingu.Check
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
             dfa = dfa.Minimize();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
         }
 
         private void Check5()
@@ -91,10 +91,10 @@ namespace Lingu.Check
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
             dfa = dfa.Minimize();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
         }
 
         private void Check6()
@@ -105,10 +105,10 @@ namespace Lingu.Check
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
             dfa = dfa.Minimize();
             Console.WriteLine("---------------");
-            dfa.Dump(Console.Out);
+            dfa.Dump("", Console.Out);
         }
     }
 }

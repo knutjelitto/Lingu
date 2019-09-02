@@ -25,7 +25,7 @@ namespace Lingu.Bootstrap
             outlines.WriteLine($"using System.Collections.Generic;");
             outlines.WriteLine($"using System.Linq;");
             outlines.WriteLine($"using Hime.Redist;");
-            outlines.WriteLine($"");
+            outlines.WriteLine();
             outlines.Block($"namespace {Namespace(inlines)}", () =>
             {
                 outlines.Block($"public abstract class {VisitorName()}", () =>
@@ -65,13 +65,13 @@ namespace Lingu.Bootstrap
                         });
                     });
 
-                    outlines.WriteLine($"");
+                    outlines.WriteLine();
 
                     outlines.Block($"partial class OnVariable", () =>
                     {
                     });
 
-                    outlines.WriteLine($"");
+                    outlines.WriteLine();
 
                     outlines.Block($"partial class OnVirtual", () =>
                     {

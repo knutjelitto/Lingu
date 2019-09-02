@@ -28,11 +28,22 @@ namespace Lingu.Bootstrap
 
             var source = FileRef.Source($"{ProjectDir}Grammar/Expression.Grammar");
 
+            var dests = source.With(".Out");
+            var grammarDump = dests.Add(".DumpGrammar");
+            var terminals = dests.Add(".Terminals");
+
             var grammar = Parser.Parse(source);
 
             if (grammar != null)
             {
-                grammar.Dump(Console.Out);
+                using (var writer = new StreamWriter(grammarDump))
+                {
+                    grammar.Dump(writer);
+                }
+                using (var writer = new StreamWriter(terminals))
+                {
+                    grammar.DumpTerminals(writer);
+                }
             }
         }
 
@@ -60,7 +71,7 @@ namespace Lingu.Bootstrap
                 var grammar = FileRef.Source($"{ProjectDir}Grammar/");
 
                 var tweaker = new Tweaker(parser, visitor);
-                Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.FileName} ...");
+                Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.File} ...");
                 tweaker.Tweak();
             }
         }

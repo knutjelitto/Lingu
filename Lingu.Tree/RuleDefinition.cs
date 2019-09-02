@@ -1,15 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Lingu.Tree
 {
-    public class RuleDefinition : RuleExpression
+    public sealed class RuleDefinition : Definition
     {
-        public RuleDefinition(IEnumerable<RuleExpression> expressions)
+        public RuleDefinition(bool generated, AtomName name, Expression expression)
+            : base(generated, name, expression)
         {
-            Expressions = expressions.ToList();
         }
 
-        public IReadOnlyList<RuleExpression> Expressions { get; }
+        public RuleDefinition(AtomName name, Expression expression)
+            : base(false, name, expression)
+        {
+        }
     }
 }

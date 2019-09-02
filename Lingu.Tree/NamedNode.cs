@@ -1,6 +1,6 @@
 ﻿namespace Lingu.Tree
 {
-    public abstract class NamedNode : Node
+    public abstract class NamedNode : Node, INamed
     {
         public NamedNode(AtomName name)
         {

@@ -4,25 +4,11 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Terminals : Node
+    public class Terminals : NamedSet<TerminalDefinition>
     {
-        public Terminals(IEnumerable<TerminalRule> rules)
+        public Terminals()
+            : base("terminals", true)
         {
-            Rules = rules.ToArray(); ;
         }
-
-        public IReadOnlyList<TerminalRule> Rules { get; }
-
-        public override void Dump(Indentable output, bool top)
-        {
-            output.Block("terminals", () =>
-            {
-                foreach (var option in Rules)
-                {
-                    option.Dump(output, top);
-                }
-            });
-        }
-
     }
 }

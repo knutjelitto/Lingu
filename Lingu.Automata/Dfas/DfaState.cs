@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Lingu.Automata
 {
@@ -7,26 +8,25 @@ namespace Lingu.Automata
         public DfaState(bool isFinal)
         {
             IsFinal = isFinal;
+            Id = -1;
             Transitions = new List<DfaTransition>();
         }
 
         public bool IsFinal { get; }
-
+        public int Id { get; set; }
         public List<DfaTransition> Transitions { get; }
+
+        public IEnumerable<DfaTransition> EpsilonTransitions => Transitions.Where(t => t.Terminal.Set.IsEmpty);
+        public IEnumerable<DfaTransition> TerminalTransitions => Transitions.Where(t => !t.Terminal.Set.IsEmpty);
 
         public static DfaState Make(bool isFinal)
         {
             return new DfaState(isFinal);
         }
 
-        private void Add(DfaTransition transition)
-        {
-            Transitions.Add(transition);
-        }
-
         public void Add(Atom terminal, DfaState target)
         {
-            Add(new DfaTransition(terminal, target));
+            Transitions.Add(new DfaTransition(terminal, target));
         }
 
         public override string ToString()

@@ -12,7 +12,7 @@ namespace Lingu.Automata.Tests
             // "abc"
             var matcher = MakeMatcher("abc");
 
-            Assert.AreEqual(4, new DfaPlumber(matcher.Dfa).StateCount);
+            Assert.AreEqual(4, matcher.Dfa.StateCount);
         }
 
         [TestMethod]

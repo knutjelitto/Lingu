@@ -17,7 +17,7 @@ namespace Lingu.Automata.Tests
 
             dfa = dfa.Minimize();
 
-            Assert.AreEqual(3, new DfaPlumber(dfa).StateCount);
+            Assert.AreEqual(3, dfa.StateCount);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Lingu.Automata.Tests
 
             dfa = dfa.Minimize();
 
-            Assert.AreEqual(3, new DfaPlumber(dfa).StateCount);
+            Assert.AreEqual(3, dfa.StateCount);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Lingu.Automata.Tests
 
             dfa = dfa.Minimize();
 
-            Assert.AreEqual(3, new DfaPlumber(dfa).StateCount);
+            Assert.AreEqual(3, dfa.StateCount);
         }
 
 
@@ -67,7 +67,7 @@ namespace Lingu.Automata.Tests
 
             dfa = dfa.Minimize();
 
-            Assert.AreEqual(4, new DfaPlumber(dfa).StateCount);
+            Assert.AreEqual(4, dfa.StateCount);
         }
     }
 }

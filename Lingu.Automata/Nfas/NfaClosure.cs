@@ -32,7 +32,7 @@ namespace Lingu.Automata
 
             Set = set;
             State = DfaState.Make(isFinal);
-            this.hashCode = Set.AddedHash();
+            this.hashCode = Set.Hash();
         }
 
         public Dictionary<IntegerSet, HashSet<NfaState>> UnambiguateTransitions()

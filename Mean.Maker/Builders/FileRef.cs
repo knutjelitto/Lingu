@@ -19,15 +19,26 @@ namespace Mean.Maker.Builders
 
         public bool NewerThan(FileRef dst)
         {
-            Debug.Assert(File.Exists(this));
+            Debug.Assert(System.IO.File.Exists(this));
 
-            return !File.Exists(dst) || File.GetLastWriteTime(this) > File.GetLastWriteTime(dst);
+            return !System.IO.File.Exists(dst) || System.IO.File.GetLastWriteTime(this) > System.IO.File.GetLastWriteTime(dst);
         }
 
         protected abstract FileRef ForceChangeExtension(string newExtension);
 
+        protected abstract FileRef ForceAddExtension(string newExtension);
+
+        public FileRef AddExtension(string newExtension)
+        {
+            newExtension = newExtension.StartsWith(".") ? newExtension : "." + newExtension;
+
+            return ForceAddExtension(newExtension);
+        }
+
         protected FileRef ChangeExtension(string newExtension)
         {
+            newExtension = newExtension.StartsWith(".") ? newExtension : "." + newExtension;
+
             if (System.IO.Path.GetExtension(Path) != newExtension)
             {
                 return ForceChangeExtension(newExtension);
@@ -45,8 +56,18 @@ namespace Mean.Maker.Builders
         public FileRef LL => ChangeExtension(".ll");
         public FileRef CL => ChangeExtension(".cl");
 
-        public string Name => System.IO.Path.GetFileNameWithoutExtension(Path);
-        public string FileName => System.IO.Path.GetFileName(Path);
+        public FileRef With(string extension)
+        {
+            return ChangeExtension(extension);
+        }
+
+        public FileRef Add(string extension)
+        {
+            return AddExtension(extension);
+        }
+
+        public string BaseName => System.IO.Path.GetFileNameWithoutExtension(Path);
+        public string File => System.IO.Path.GetFileName(Path);
         public string Directory => System.IO.Path.GetDirectoryName(Path);
 
         public static FileRef Source(string name)

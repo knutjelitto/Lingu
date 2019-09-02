@@ -3,7 +3,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public abstract class Node
+    public abstract class Node : IDumpable
     {
         public virtual void Dump(Indentable output, bool top)
         {

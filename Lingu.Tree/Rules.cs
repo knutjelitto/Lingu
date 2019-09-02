@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Lingu.Tree
 {
-    public class Rules : Node
+    public sealed class Rules : NamedSet<RuleDefinition>
     {
-        public Rules(IEnumerable<Rule> items)
+        public Rules()
+            : base("rules", true)
         {
-            Items = items.ToArray();
         }
-
-        public IReadOnlyCollection<Rule> Items { get; }
     }
 }

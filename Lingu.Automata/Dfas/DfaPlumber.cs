@@ -14,23 +14,28 @@ namespace Lingu.Automata
         protected void SetDfa(Dfa dfa)
         {
             Dfa = dfa;
-            this.states = VisitStates();
+            States = VisitStates();
         }
 
         protected Dfa Dfa { get; private set; }
 
-        public int StateCount => this.states.Count;
+        protected Dictionary<DfaState, int> States { get; private set; }
 
-        public void Dump(TextWriter writer)
+        public IEnumerable<DfaState> GetOrderedStates()
         {
-            foreach (var pair in this.states.OrderBy(s => s.Value))
+            return States.OrderBy(kv => kv.Value).Select(kv => kv.Key);
+        }
+
+        public void Dump(string prefix, TextWriter writer)
+        {
+            foreach (var pair in States.OrderBy(s => s.Value))
             {
                 var finA = pair.Key.IsFinal ? "(" : ".";
                 var finB = pair.Key.IsFinal ? ")" : ".";
-                writer.WriteLine($"{finA}{pair.Value}{finB}:");
+                writer.WriteLine($"{prefix}{finA}{pair.Value}{finB}:");
                 foreach (var transition in pair.Key.Transitions)
                 {
-                    writer.WriteLine($"  {this.states[transition.Target]} <= {transition.Terminal}");
+                    writer.WriteLine($"{prefix}  {States[transition.Target]} <= {transition.Terminal}");
                 }
             }
         }
@@ -56,7 +61,5 @@ namespace Lingu.Automata
 
             return visited;
         }
-
-        protected Dictionary<DfaState, int> states;
     }
 }

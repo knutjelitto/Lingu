@@ -1,6 +1,6 @@
 ﻿namespace Lingu.Tree
 {
-    public class AtomInteger : TerminalExpression
+    public class AtomInteger : Node
     {
         public AtomInteger(string text)
         {

@@ -3,7 +3,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class AtomName : TerminalAtom
+    public class AtomName : Node
     {
         public static readonly AtomName Empty = new AtomName(string.Empty);
 
@@ -19,17 +19,9 @@ namespace Lingu.Tree
             return Text;
         }
 
-        public override void Dump(Indentable output, Boolean top)
+        public override void Dump(Indentable output, bool top)
         {
-            if (top)
-            {
-                output.Write("| ");
-            }
             output.Write(Text);
-            if (top)
-            {
-                output.WriteLine("");
-            }
         }
     }
 }

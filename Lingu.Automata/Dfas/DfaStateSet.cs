@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using Lingu.Commons;
 
 namespace Lingu.Automata
@@ -8,6 +10,11 @@ namespace Lingu.Automata
     {
         public DfaStateSet()
             : this(new HashSet<DfaState>())
+        {
+        }
+
+        public DfaStateSet(params DfaState[] states)
+            : this(states.AsEnumerable())
         {
         }
 
@@ -70,7 +77,7 @@ namespace Lingu.Automata
 
         public override int GetHashCode()
         {
-            return this.set.SequenceHash();
+            return this.set.Hash();
         }
 
         public DfaStateSet IntersectWith(DfaStateSet other)

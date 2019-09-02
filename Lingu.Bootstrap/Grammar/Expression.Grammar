@@ -2,89 +2,104 @@
 {
     options
     {
-        Axiom = "Expression";
-        Separator = "separator";
+        Axiom = 'expression';
+        Separator = 'separator';
     }
-
     terminals
     {
         newline
-            | \u{000D}          // CR
-            | \u{000A}          // LF
-            | \u{000D} \u{000A} // CR LF
-			| \u{0085}          // NL Next line character
-			| \u{2028}          // LS Line separator character
-			| \u{2029}          // PS Paragraph separator character
+            : U+000A        // LF
+            | U+000D U+000A // CR LF
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
             ;
 
         newlineChar
-            | \u{000D}          // CR
-            | \u{000A}          // LF
-			| \u{0085}          // NL Next line character
-			| \u{2028}          // LS Line separator character
-			| \u{2029}          // PS Paragraph separator character
+            : U+000D        // CR
+            | U+000A        // LF
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
             ;
 
         whitespace
-            | \uc{Zs}
-            | \u{0009}
-            | \u{000B}
-            | \u{000C}
+            : ' '
+            | U+0009
+            | U+000B
+            | U+000C
             ;
 
         lineComment
-            | '//' ~newlineChar*
+            : '//' ~newlineChar*
             ;
 
         blockComment
-            | '/*'  ( ~'*' | '*' ~'/')* '*/'
+            : '/*'  ( ~'*' | '*' ~'/')* '*/'
             ;
 
         separator
-            | (newline | whitespace | lineComment | blockComment)+
+            : (newline | whitespace | lineComment | blockComment)+
+            ;
+
+        identifierStart
+            : ('a' .. 'z' | 'A' .. 'Z' |  '_')
             ;
 
         identifier
-            | ('a' .. 'z' | 'A' .. 'Z' |  '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
+            : identifierStart (identifierStart | digit)*
+            ;
+
+        digit
+            : '0' .. '9'
+            ;
+
+        nonzeroDigit
+            : '1' .. '9'
+            ;
+
+        zero
+            : digit - nonzeroDigit
             ;
 
         number
-            | '1' .. '9' ('0' .. '9')* | '0'
+            : zero
+            | nonzeroDigit digit*
             ;
     }
     rules
     {
         expression
-            | shiftExpression
+            : shiftExpression
             ;
 
         shiftExpression
-            | {shlOp: shiftExpression 'shl'! addExpression}^
-            | "shrOp"^ shiftExpression 'shr'! addExpression
+            : {shlOp: shiftExpression '<<'! addExpression}^
+            | {shrOp: shiftExpression '>>'! addExpression}^
             | addExpression^
             ;
 
         addExpression
-            | "addOp"^ addExpression '+'! mulExpression
-            | "subOp"^ addExpression '-'! mulExpression
+            : {addOp: addExpression '+'! mulExpression}^
+            | {subOp: addExpression '-'! mulExpression}^
             | mulExpression^
             ;
 
         mulExpression
-            | "mulOp"^ mulExpression '*'! primaryExpression
-            | "divOp"^ mulExpression '/'! primaryExpression
-            | "remOp"^ mulExpression '%'! primaryExpression
-            | "modOp"^ mulExpression 'mod'! primaryExpression
+            : {mulOp: mulExpression '*'! primaryExpression}^
+            | {divOp: mulExpression '/'! primaryExpression}^
+            | {remOp: mulExpression '%'! primaryExpression}^
+            | {modOp: mulExpression 'mod'! primaryExpression}^
             | primaryExpression^
             ;
 
         prefixExpression
-            | '-' prefixExpression
-            | primaryExpression
+            : {negOp: '-' prefixExpression}^
+            | primaryExpression^
             ;
 
         primaryExpression
-            | identifier^
+            : identifier^
             | number^
             | '('! expression^ ')'!
             ;

@@ -14,8 +14,12 @@ namespace Mean.Maker.Builders
             }
 
             public override FileRef Dst => this;
-
             public override FileRef Src => new SrcFileRef(Path.Substring(DstPrefix.Length));
+
+            protected override FileRef ForceAddExtension(string newExtension)
+            {
+                return new DstFileRef(Path + newExtension);
+            }
 
             protected override FileRef ForceChangeExtension(string newExtension)
             {

@@ -3,29 +3,34 @@ using System.Linq;
 
 namespace Lingu.Automata
 {
-    public class DfaMinimizer : DfaPlumber
+    public class DfaMinimizer
     {
-        public DfaMinimizer(Dfa dfa)
-            : base(dfa)
+        private DfaMinimizer(Dfa dfa)
         {
-
+            Dfa = dfa;
+            FinalStates = Dfa.States.Where(state => state.IsFinal);
+            NonFinalStates = Dfa.States.Where(state => !state.IsFinal);
+            AllStates = Dfa.States;
         }
 
-        private IEnumerable<DfaState> FinalStates =>
-            this.states.Where(kv => kv.Key.IsFinal).OrderBy(kv => kv.Value).Select(kv => kv.Key);
+        public static Dfa Minimize(Dfa dfa, bool cloned = false)
+        {
+            return new DfaMinimizer(cloned ? dfa.Clone() : dfa).DoMinimize();
+        }
 
-        private IEnumerable<DfaState> NonFinalStates =>
-            this.states.Where(kv => !kv.Key.IsFinal).OrderBy(kv => kv.Value).Select(kv => kv.Key);
 
-        private IEnumerable<DfaState> AllStates =>
-            this.states.OrderBy(kv => kv.Value).Select(kv => kv.Key);
+        private Dfa Dfa { get; }
 
-        public Dfa Minimize()
+        private IEnumerable<DfaState> FinalStates { get; }
+        private IEnumerable<DfaState> NonFinalStates { get; }
+        private IEnumerable<DfaState> AllStates { get; }
+
+        private Dfa DoMinimize()
         {
             MergeStates();
             MergeTransitions();
 
-            return Dfa;
+            return Dfa.From(Dfa.Start);
         }
 
         private void MergeTransitions()
@@ -65,7 +70,7 @@ namespace Lingu.Automata
             var partitions = new List<DfaStateSet> { finals, nons };
             var working = new List<DfaStateSet> { finals };
 
-            var terminals =  new HashSet<Atom>(AllStates.SelectMany(state => state.Transitions).Select(transition => transition.Terminal));
+            var terminals = new HashSet<Atom>(AllStates.SelectMany(state => state.Transitions).Select(transition => transition.Terminal));
 
             while (working.Count > 0)
             {
@@ -159,8 +164,6 @@ namespace Lingu.Automata
                     }
                 }
             }
-
-            SetDfa(Dfa);
         }
     }
 }

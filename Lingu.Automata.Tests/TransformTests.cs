@@ -21,7 +21,7 @@ namespace Lingu.Automata.Tests
             var dfa = nfa.ToDfa().Minimize();
 
             Assert.IsNotNull(dfa);
-            Assert.AreEqual(3, new DfaPlumber(dfa).StateCount);
+            Assert.AreEqual(3, dfa.StateCount);
         }
     }
 }

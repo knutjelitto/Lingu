@@ -36,7 +36,7 @@
         fragment NAME_FIRST     -> [_a-zA-Z];
         NAME                    -> NAME_FIRST (NAME_FIRST | [0-9])* ;
 
-        INTEGER                 -> [1-9] [0-9]* | '0' ;
+        INTEGER                 -> '0' | [1-9] [0-9]*;
         fragment ESCAPEES       -> '\\\\'                       // Backslash
                                 |  '\\0'                        // Unicode character 0
                                 |  '\\a'                        // Alert (character 7)
@@ -49,14 +49,14 @@
                                 |  '\\u{' [a-fA-F0-9]{1,6} '}'  // Unicode code point
                                 ;
 
-        LITERAL_STRING          -> '"' ( [^"] | '\\"' | ESCAPEES )+ '"';
         LITERAL_ANY             -> '.';
         LITERAL_TEXT            -> '\'' ( [^\\'] | '\\\'' | ESCAPEES )+ '\'';
-        LITERAL_CLASS           -> '[' ( [^\\\[\]] | '\\[' | '\\]' | '\\-' | '\\^' | ESCAPEES )+ ']';
 
         UNICODE_BLOCK           -> '\\ub' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
         UNICODE_CATEGORY        -> '\\uc' '{' ([_a-zA-Z0-9] | '-')+ '}' ;
-        UNICODE_CODEPOINT       -> '\\u' '{' [a-fA-F0-9]{1,6} '}';
+        UNICODE_CODEPOINT       -> '\\u{' [a-fA-F0-9]{1,6} '}'
+                                |  [uU]'+' [a-fA-F0-9]{1,6}
+                                ;
     }
     rules
     {
@@ -74,7 +74,7 @@
             ;
 
         option
-            -> NAME '='! LITERAL_STRING ';'!
+            -> NAME '='! LITERAL_TEXT ';'!
             ;
 
         /* TERMINALS *
@@ -84,10 +84,10 @@
                 ;
 
             terminal_rule
-                -> NAME (':'|'|')! terminal_definition ';'!
+                -> NAME (':'|'->')! terminal_expression ';'!
                 ;
 
-            terminal_definition
+            terminal_expression
                 -> terminal_difference ('|'! terminal_difference)*
                 ;
 
@@ -106,7 +106,7 @@
             terminal_element
                 -> terminal_atom^
                 |  terminal_not^
-                | '('! terminal_definition^ ')'! 
+                | '('! terminal_expression^ ')'! 
                 ;
 
             terminal_not
@@ -115,25 +115,24 @@
 
             terminal_atom
                 -> LITERAL_ANY^
+                |  text^
+                |  range^
                 |  UNICODE_CODEPOINT^
-                |  terminal_text^
-                |  terminal_range^
-                |  LITERAL_CLASS^
                 |  UNICODE_BLOCK^
                 |  UNICODE_CATEGORY^
-                |  NAME^
+                |  reference^
                 ;
 
-            terminal_range
+            range
                 -> character '..'! character
                 ;
 
             character
                 -> UNICODE_CODEPOINT
-                |  terminal_text
+                |  text
                 ;
 
-            terminal_text
+            text
                 -> LITERAL_TEXT
                 ;
 
@@ -150,15 +149,16 @@
                 ;
 
             rule                        
-                -> NAME ('->'|':'|'|')! rule_definition ';'!
+                -> NAME (':'|'->')! rule_expression ';'!
                 ;
 
-            rule_definition
+            rule_expression
                 -> rule_alternative ('|'! rule_alternative)*
                 ;
 
             rule_alternative
-                -> rule_sequence?
+                -> rule_sequence
+                | // epsilon
                 ;
 
             rule_sequence
@@ -175,34 +175,25 @@
 
             rule_element
                 -> rule_sub^
-                |  '('! rule_definition^ ')'!
+                |  '('! rule_expression^ ')'!
                 |  rule_atom^
                 ;
 
             rule_sub                
-                -> '{'! NAME ':'! rule_definition '}'!
+                -> '{'! NAME ':'! rule_expression '}'!
                 ;
 
             rule_atom
                 -> rule_action^
-                |  rule_virtual^
-                |  rule_ref^
-                |  rule_text^
-                ;
-
-            rule_text
-                -> LITERAL_TEXT
+                |  reference^
+                |  text^
                 ;
 
             rule_action
                 -> '@'! NAME
                 ;
 
-            rule_virtual
-                -> LITERAL_STRING
-                ;
-
-            rule_ref
+            reference
                 -> NAME
                 ;
     }

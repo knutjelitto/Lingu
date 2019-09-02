@@ -11,7 +11,7 @@ namespace Lingu.Automata.Tests
             // a?b?c?
             var matcher = MakeMatcher();
 
-            Assert.AreEqual(4, new DfaPlumber(matcher.Dfa).StateCount);
+            Assert.AreEqual(4, matcher.Dfa.StateCount);
         }
 
         [TestMethod]

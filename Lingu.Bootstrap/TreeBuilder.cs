@@ -11,22 +11,26 @@ namespace Lingu.Bootstrap
 {
     public class TreeBuilder : LinguVisitor
     {
+        public TreeBuilder()
+        {
+        }
+
+        private ReferenceKind CurrentContext { get; set; } = ReferenceKind.Illegal;
+
+        private Grammar Grammar { get; set; }
+
         public Grammar Visit(ASTNode node)
         {
-            return VisitNode<Grammar>(node);
+            VisitNode<Grammar>(node);
+
+            Grammar.Resolve();
+
+            return Grammar;
         }
 
         private T VisitChild<T>(ASTNode node, int child)
         {
             return VisitNode<T>(node.Children[child]);
-        }
-
-        private LitString LitString(ASTNode node, int child)
-        {
-            Debug.Assert(child < node.Children.Count);
-            Debug.Assert(node.Children[child].SymbolType == SymbolType.Terminal);
-            Debug.Assert(node.Children[child].Symbol.ID == LinguLexer.ID.TerminalLiteralString);
-            return new LitString(node.Children[child].Value);
         }
 
         protected override IEnumerable<object> VisitChildren(ASTNode node)
@@ -54,66 +58,76 @@ namespace Lingu.Bootstrap
         protected override object OnVariableCfGrammar(ASTNode node)
         {
             var name =  VisitChild<AtomName>(node, 0);
-            var options = VisitChild<Options>(node, 1);
-            var terminals = VisitChild<Terminals>(node, 2);
-            var rules = VisitChild<Rules>(node, 3);
 
-            return new Grammar(name, options, terminals, rules);
+            Grammar = new Grammar(name);
+
+            CurrentContext = ReferenceKind.Illegal;
+            VisitChild<Options>(node, 1);
+
+            CurrentContext = ReferenceKind.Terminal;
+            VisitChild<Terminals>(node, 2);
+
+            CurrentContext = ReferenceKind.TerminalOrRule;
+            VisitChild<Rules>(node, 3);
+
+            return null;
         }
 
         protected override object OnVariableGrammarOptions(ASTNode node)
         {
-            return new Options(VisitChildren<Option>(node));
+            Grammar.Options.AddRange(VisitChildren<Option>(node));
+            return null;
         }
 
         protected override object OnVariableOption(ASTNode node)
         {
-            return new Option(VisitChild<AtomName>(node, 0), LitString(node, 1));
+            return new Option(VisitChild<AtomName>(node, 0), VisitChild<AtomText>(node, 1));
         }
 
         protected override object OnVariableGrammarTerminals(ASTNode node)
         {
-            return new Terminals(VisitChildren<TerminalRule>(node));
+            Grammar.Terminals.AddRange(VisitChildren<TerminalDefinition>(node));
+            return null;
         }
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
-            return new TerminalRule(VisitChild<AtomName>(node, 0), VisitChild<TerminalExpression>(node, 1));
+            return new TerminalDefinition(VisitChild<AtomName>(node, 0), VisitChild<Expression>(node, 1));
         }
 
-        protected override object OnVariableTerminalDefinition(ASTNode node)
+        protected override object OnVariableTerminalExpression(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<TerminalExpression>(node, 0);
+                return VisitChild<Expression>(node, 0);
 
             }
-            return new TerminalDefinition(VisitChildren<TerminalExpression>(node));
+            return new Alternates(VisitChildren<Expression>(node));
         }
 
         protected override object OnVariableTerminalDifference(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<TerminalExpression>(node, 0);
+                return VisitChild<Expression>(node, 0);
 
             }
-            return new TerminalDifference(VisitChildren<TerminalExpression>(node));
+            return new Difference(VisitChildren<Expression>(node));
         }
 
         protected override object OnVariableTerminalSequence(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<TerminalExpression>(node, 0);
+                return VisitChild<Expression>(node, 0);
 
             }
-            return new TerminalSequence(VisitChildren<TerminalExpression>(node));
+            return new Sequence(VisitChildren<Expression>(node));
         }
 
         protected override object OnVariableTerminalRepetition(ASTNode node)
         {
-            var expression = VisitChild<TerminalExpression>(node, 0);
+            var expression = VisitChild<Expression>(node, 0);
             if (node.Children.Count == 1)
             {
                 return expression;
@@ -125,9 +139,9 @@ namespace Lingu.Bootstrap
 
                 switch (rep.Value)
                 {
-                    case "?": return new TerminalRepetition(expression, 0, 1);
-                    case "*": return new TerminalRepetition(expression, 0);
-                    case "+": return new TerminalRepetition(expression, 1);
+                    case "?": return new Repetition(expression, 0, 1);
+                    case "*": return new Repetition(expression, 0);
+                    case "+": return new Repetition(expression, 1);
                     case null:
                     {
                         if (rep.Symbol.ID == LinguParser.ID.VirtualRange)
@@ -136,14 +150,14 @@ namespace Lingu.Bootstrap
                             if (rep.Children.Count == 1)
                             {
                                 // exactly
-                                return new TerminalRepetition(expression, int1.Value, int1.Value);
+                                return new Repetition(expression, int1.Value, int1.Value);
                             }
                             if (rep.Children.Count == 2)
                             {
                                 // from .. to
                                 var int2 = VisitChild<AtomInteger>(rep, 1);
 
-                                return new TerminalRepetition(expression, int1.Value, int2.Value);
+                                return new Repetition(expression, int1.Value, int2.Value);
                             }
                         }
                         break;
@@ -156,54 +170,62 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableTerminalNot(ASTNode node)
         {
-            return new TerminalNot(VisitChild<TerminalExpression>(node, 0));
+            return new Not(VisitChild<Expression>(node, 0));
+        }
+
+        protected override object OnVariableText(ASTNode node)
+        {
+            return VisitChild<Expression>(node, 0);
         }
 
         protected override object OnTerminalUnicodeCodepoint(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomUcCodepoint(node.Value);
+            return new AtomCodepoint(node.Value);
         }
 
         protected override object OnTerminalUnicodeBlock(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomUcBlock(node.Value);
+            return new AtomBlock(node.Value);
         }
 
         protected override object OnTerminalUnicodeCategory(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomUcCategory(node.Value);
+            return new AtomCategory(node.Value);
         }
 
-        protected override object OnVariableTerminalRange(ASTNode node)
+        protected override object OnVariableRange(ASTNode node)
         {
-            return new AtomUcRange(
-                VisitChild<TerminalExpression>(node, 0),
-                VisitChild<TerminalExpression>(node, 1));
+            return new AtomRange(
+                VisitChild<Expression>(node, 0),
+                VisitChild<Expression>(node, 1));
         }
 
         protected override object OnTerminalLiteralText(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new LitText(node.Value);
-        }
+            var text = new AtomText(node.Value);
 
-        protected override object OnTerminalLiteralString(ASTNode node)
-        {
-            Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
+            if (CurrentContext == ReferenceKind.TerminalOrRule)
+            {
+                foreach (var t in Grammar.Terminals)
+                {
+                    if (t.IsGenerated && t.Expression.Equals(text))
+                    {
+                        return NewReference(t.Name, ReferenceKind.Terminal);
+                    }
+                }
 
-            return new LitString(node.Value);
-        }
+                return NewReference(Grammar.GenTerminal(text).Name, ReferenceKind.Terminal);
+            }
 
-        protected override object OnVariableTerminalText(ASTNode node)
-        {
-            return new TerminalText(VisitChild<LitText>(node, 0));
+            return text;
         }
 
         protected override object OnTerminalLiteralAny(ASTNode node)
@@ -213,14 +235,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableCharacter(ASTNode node)
         {
-            return VisitChild<TerminalExpression>(node, 0);
-        }
-
-        protected override Object OnTerminalLiteralClass(ASTNode node)
-        {
-            Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
-
-            return new AtomClass(node.Value);
+            return VisitChild<Expression>(node, 0);
         }
 
         protected override object OnTerminalName(ASTNode node)
@@ -230,58 +245,57 @@ namespace Lingu.Bootstrap
             return new AtomName(node.Value);
         }
 
-        protected override Object OnTerminalInteger(ASTNode node)
+        protected override object OnTerminalInteger(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
             return new AtomInteger(node.Value);
         }
 
-        protected override Object OnVariableGrammarRules(ASTNode node)
+        protected override object OnVariableGrammarRules(ASTNode node)
         {
-            return new Rules(VisitChildren<Rule>(node));
+            Grammar.Rules.AddRange(VisitChildren<RuleDefinition>(node));
+            return null;
         }
 
-        protected override Object OnVariableRule(ASTNode node)
+        protected override object OnVariableRule(ASTNode node)
         {
-            return new Rule(
-                VisitChild<AtomName>(node, 0), 
-                VisitChild<RuleExpression>(node, 1));
+            return new RuleDefinition(VisitChild<AtomName>(node, 0), VisitChild<Expression>(node, 1));
         }
 
-        protected override Object OnVariableRuleDefinition(ASTNode node)
-        {
-            if (node.Children.Count == 1)
-            {
-                return VisitChild<RuleExpression>(node, 0);
-            }
-
-            return new RuleDefinition(VisitChildren<RuleExpression>(node));
-        }
-
-        protected override Object OnVariableRuleSequence(ASTNode node)
+        protected override object OnVariableRuleExpression(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<RuleExpression>(node, 0);
+                return VisitChild<Expression>(node, 0);
             }
 
-            return new RuleSequence(VisitChildren<RuleExpression>(node));
+            return new Alternates(VisitChildren<Expression>(node));
         }
 
-        protected override Object OnVariableRuleAlternative(ASTNode node)
+        protected override object OnVariableRuleSequence(ASTNode node)
+        {
+            if (node.Children.Count == 1)
+            {
+                return VisitChild<Expression>(node, 0);
+            }
+
+            return new Sequence(VisitChildren<Expression>(node));
+        }
+
+        protected override object OnVariableRuleAlternative(ASTNode node)
         {
             if (node.Children.Count == 0)
             {
-                return new RuleEpsilon();
+                return new Epsilon();
             }
 
-            return VisitChild<RuleExpression>(node, 0);
+            return VisitChild<Expression>(node, 0);
         }
 
-        protected override Object OnVariableRuleRepetition(ASTNode node)
+        protected override object OnVariableRuleRepetition(ASTNode node)
         {
-            var expression = VisitChild<RuleExpression>(node, 0);
+            var expression = VisitChild<Expression>(node, 0);
             if (node.Children.Count == 1)
             {
                 return expression;
@@ -290,10 +304,9 @@ namespace Lingu.Bootstrap
             {
                 switch (node.Children[1].Value)
                 {
-                    case "?": return new RuleRepetition(expression, 0, 1);
-                    case "*": return new RuleRepetition(expression, 0);
-                    case "+": return new RuleRepetition(expression, 1);
-
+                    case "?": return new Repetition(expression, 0, 1);
+                    case "*": return new Repetition(expression, 0);
+                    case "+": return new Repetition(expression, 1);
                 }
             }
 
@@ -303,15 +316,22 @@ namespace Lingu.Bootstrap
         protected override object OnVariableRuleSub(ASTNode node)
         {
             var name = VisitChild<AtomName>(node, 0);
-            var expr = VisitChild<RuleExpression>(node, 1);
+            var expr = VisitChild<Expression>(node, 1);
+#if true
+            var rule = new RuleDefinition(true, name, expr);
 
-            return new RuleSub(name, expr);
+            Grammar.Rules.Add(rule);
+
+            return NewReference(name, ReferenceKind.TerminalOrRule);
+#else
+
+            return new SubRule(name, expr);
+#endif
         }
-
 
         protected override object OnVariableRuleTreeAction(ASTNode node)
         {
-            var expression = VisitChild<RuleExpression>(node, 0);
+            var expression = VisitChild<Expression>(node, 0);
             if (node.Children.Count == 1)
             {
                 return expression;
@@ -321,28 +341,36 @@ namespace Lingu.Bootstrap
                 switch (node.Children[1].Value)
                 {
                     case "^":
-                        return new RuleTreeAction(expression, RuleTreeAction.TreeAction.Promote);
+                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Promote);
                     case "!":
-                        return new RuleTreeAction(expression, RuleTreeAction.TreeAction.Drop);
+                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Drop);
                 }
             }
 
             throw new NotImplementedException();
         }
 
-        protected override object OnVariableRuleRef(ASTNode node)
+        protected override object OnVariableReference(ASTNode node)
         {
-            return new RuleRef(VisitChild<AtomName>(node, 0));
+            if (CurrentContext != ReferenceKind.Illegal)
+            {
+                var name = VisitChild<AtomName>(node, 0);
+
+                return NewReference(name, CurrentContext);
+            }
+
+            throw new NotImplementedException();
         }
 
-        protected override object OnVariableRuleText(ASTNode node)
-        {
-            return new RuleText(VisitChild<LitText>(node, 0));
-        }
+        // #####################################################################
 
-        protected override object OnVariableRuleVirtual(ASTNode node)
+        private Reference NewReference(AtomName name, ReferenceKind kind)
         {
-            return new RuleVirtual(VisitChild<LitString>(node, 0));
+            var reference = new Reference(name, kind);
+
+            Grammar.References.Add(reference);
+
+            return reference;
         }
 
         // #####################################################################
