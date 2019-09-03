@@ -65,7 +65,7 @@ namespace Lingu.Automata
 
         public FA Complete()
         {
-            return Completer.Complete(this);
+            return Operations.Complete(this,true);
         }
 
         public void Dump(string prefix, TextWriter writer)

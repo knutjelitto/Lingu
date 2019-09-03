@@ -64,7 +64,7 @@
                 return FA.From(start, end);
             }
 
-            public static FA Dot => Single(Atom.From(UnicodeSets.Any));
+            public static FA Dot => Single(Atom.From(UnicodeSets.Any()));
 
             public static FA From(char ch)
             {

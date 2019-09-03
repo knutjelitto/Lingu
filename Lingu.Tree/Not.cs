@@ -17,8 +17,8 @@ namespace Lingu.Tree
 
         public override FA GetNfa()
         {
-            //return Expression.GetNfa().ToDfa().Minimize().Complete().Negate().ToNfa();
-            return Expression.GetNfa().ToDfa();
+            return Expression.GetNfa().ToDfa().Minimize().Complete();
+            //return Expression.GetNfa().ToDfa();
         }
 
         public override void Dump(Indentable output, bool top)

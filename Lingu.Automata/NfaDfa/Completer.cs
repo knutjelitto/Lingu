@@ -17,7 +17,7 @@ namespace Lingu.Automata
 
             foreach (var state in fa.States)
             {
-                var rest = UnicodeSets.Any;
+                var rest = UnicodeSets.Any();
 
                 foreach (var transition in state.Transitions)
                 {
@@ -29,7 +29,7 @@ namespace Lingu.Automata
                     if (sink == null)
                     {
                         sink = new State();
-                        sink.Add(Atom.From(UnicodeSets.Any), sink);
+                        sink.Add(Atom.From(UnicodeSets.Any()), sink);
                     }
 
                     state.Add(Atom.From(rest), sink);

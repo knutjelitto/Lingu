@@ -66,7 +66,7 @@ namespace Lingu.Automata
 
         private static IntegerSet Invert(IntegerSet set)
         {
-            return UnicodeSets.Any.Substract(set);
+            return UnicodeSets.Any().Substract(set);
         }
 
         public static explicit operator Atom(char ch)

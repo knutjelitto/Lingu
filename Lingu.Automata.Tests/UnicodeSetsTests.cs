@@ -9,7 +9,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void AnyShouldHaveCardinality()
         {
-            Assert.AreEqual(0x110000, UnicodeSets.Any.Cardinality);
+            Assert.AreEqual(0x110000, UnicodeSets.Any().Cardinality);
         }
 
         [TestMethod]

@@ -9,7 +9,7 @@ namespace Lingu.Automata
     // ReSharper disable UnusedMember.Local
     public static class UnicodeSets
     {
-        public static readonly IntegerSet Any = new IntegerSet((0, 0x10FFFF));
+        public static IntegerSet Any() => new IntegerSet((0, 0x10FFFF));
 
         public static readonly CatergorySets Category = new CatergorySets();
 

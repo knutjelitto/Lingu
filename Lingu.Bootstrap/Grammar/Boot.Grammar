@@ -5,11 +5,11 @@
     }
     terminals
     {
+        lineComment : ~newline ;
+
         newline : 'l' | 'c' 'l' ;
 
         newlineChar : 'l' | 'c' ;
-
-        lineComment : '//' ~newline ;
 
         whitespace : ' ' ;
      

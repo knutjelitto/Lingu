@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Lingu.Commons;
 
@@ -21,7 +22,6 @@ namespace Lingu.Automata
             {
                 foreach (var closureState in state.Closure())
                 {
-                    Console.WriteLine($"equals({closureState}{end}) => {closureState.Equals(end)}");
                     if (closureState.Equals(end))
                     {
                         isFinal = true;
@@ -90,9 +90,7 @@ namespace Lingu.Automata
                 }
             }
 
-#if DEBUG
             EnsureDistinct(transitions);
-#endif
 
             return transitions;
         }
@@ -108,6 +106,7 @@ namespace Lingu.Automata
 
         public override int GetHashCode() => this.hashCode;
 
+        [Conditional("DEBUG")]
         private void EnsureDistinct(Dictionary<IntegerSet, HashSet<State>> transitions)
         {
             var terminals = transitions.Keys.ToList();
