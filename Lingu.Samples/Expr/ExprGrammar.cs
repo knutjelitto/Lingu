@@ -43,10 +43,10 @@ namespace Lingu.Samples.Expr
         {
             // [-+]?[0-9]+
 
-            var digit = (Nfa)('0', '9');
-            var sign = (Nfa)'+' | '-';
+            var digit = (FA)('0', '9');
+            var sign = (FA)'+' | '-';
 
-            var number = sign.Opt + digit.Plus;
+            var number = sign.Opt() + digit.Plus();
 
             return TerminalExpr.From(DfaProvision.From("number", number));
         }

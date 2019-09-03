@@ -6,24 +6,24 @@ using Lingu.Commons;
 
 namespace Lingu.Automata
 {
-    public class DfaStateSet : IEnumerable<DfaState>
+    public class StateSet : IEnumerable<State>
     {
-        public DfaStateSet()
-            : this(new HashSet<DfaState>())
+        public StateSet()
+            : this(new HashSet<State>())
         {
         }
 
-        public DfaStateSet(params DfaState[] states)
+        public StateSet(params State[] states)
             : this(states.AsEnumerable())
         {
         }
 
-        public DfaStateSet(IEnumerable<DfaState> states)
-            : this(new HashSet<DfaState>(states))
+        public StateSet(IEnumerable<State> states)
+            : this(new HashSet<State>(states))
         {
         }
 
-        private DfaStateSet(HashSet<DfaState> states)
+        private StateSet(HashSet<State> states)
         {
             this.set = states;
         }
@@ -32,7 +32,7 @@ namespace Lingu.Automata
 
         public bool IsEmpty => this.set.Count == 0;
 
-        public static bool operator ==(DfaStateSet s1, DfaStateSet s2)
+        public static bool operator ==(StateSet s1, StateSet s2)
         {
             if (s1 is null || s2 is null)
             {
@@ -42,35 +42,35 @@ namespace Lingu.Automata
             return s1.Equals(s2);
         }
 
-        public static bool operator !=(DfaStateSet s1, DfaStateSet s2)
+        public static bool operator !=(StateSet s1, StateSet s2)
         {
             return !(s1 == s2);
         }
 
-        public void Add(DfaState state)
+        public void Add(State state)
         {
             this.set.Add(state);
         }
 
-        public bool Contains(DfaState state)
+        public bool Contains(State state)
         {
             return this.set.Contains(state);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is DfaStateSet other && this.set.SetEquals(other.set);
+            return obj is StateSet other && this.set.SetEquals(other.set);
         }
 
-        public DfaStateSet ExceptWith(DfaStateSet other)
+        public StateSet ExceptWith(StateSet other)
         {
-            var except = new HashSet<DfaState>(this.set);
+            var except = new HashSet<State>(this.set);
             except.ExceptWith(other.set);
 
-            return new DfaStateSet(except);
+            return new StateSet(except);
         }
 
-        public IEnumerator<DfaState> GetEnumerator()
+        public IEnumerator<State> GetEnumerator()
         {
             return this.set.GetEnumerator();
         }
@@ -80,12 +80,12 @@ namespace Lingu.Automata
             return this.set.Hash();
         }
 
-        public DfaStateSet IntersectWith(DfaStateSet other)
+        public StateSet IntersectWith(StateSet other)
         {
-            var intersect = new HashSet<DfaState>(this.set);
+            var intersect = new HashSet<State>(this.set);
             intersect.IntersectWith(other.set);
 
-            return new DfaStateSet(intersect);
+            return new StateSet(intersect);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -93,6 +93,6 @@ namespace Lingu.Automata
             return GetEnumerator();
         }
 
-        private readonly HashSet<DfaState> set;
+        private readonly HashSet<State> set;
     }
 }

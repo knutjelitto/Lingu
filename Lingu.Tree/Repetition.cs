@@ -17,21 +17,21 @@ namespace Lingu.Tree
         public int? Min { get; }
         public int? Max { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
             var expr = Expression.GetNfa();
 
             if (Min == 0 && Max == 1)
             {
-                return expr.Opt;
+                return expr.Opt();
             }
             if (Min == 0 && Max == null)
             {
-                return expr.Star;
+                return expr.Star();
             }
             if (Min == 1 && Max == null)
             {
-                return expr.Plus;
+                return expr.Plus();
             }
             Debug.Assert(Min != null && Max != null);
             var nfa = expr;
@@ -40,7 +40,7 @@ namespace Lingu.Tree
             {
                 nfa = nfa.Concat(expr);
             }
-            expr = expr.Opt;
+            expr = expr.Opt();
             for (; i < Max; ++i)
             {
                 nfa = nfa.Concat(expr);

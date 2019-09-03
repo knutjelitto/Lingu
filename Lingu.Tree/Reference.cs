@@ -21,7 +21,7 @@ namespace Lingu.Tree
             definition.Use();
         }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
             return Definition.Expression.GetNfa();
         }

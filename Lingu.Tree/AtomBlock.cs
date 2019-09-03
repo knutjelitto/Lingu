@@ -1,4 +1,6 @@
-﻿using Lingu.Automata;
+﻿using System;
+
+using Lingu.Automata;
 using Lingu.Commons;
 
 namespace Lingu.Tree
@@ -12,9 +14,9 @@ namespace Lingu.Tree
 
         public string Text { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Dump(Indentable output, bool top)

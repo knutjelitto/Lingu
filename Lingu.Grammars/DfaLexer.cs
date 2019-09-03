@@ -13,9 +13,9 @@ namespace Lingu.Grammars
             Current = Dfa.Start;
         }
 
-        public DfaState Current { get; set; }
+        public State Current { get; set; }
 
-        public Dfa Dfa => ((DfaProvision) Provision).Dfa;
+        public FA Dfa => ((DfaProvision) Provision).Dfa;
 
         public int Length { get; private set; }
         public int Offset { get; }

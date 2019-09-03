@@ -3,39 +3,39 @@ using System.Linq;
 
 namespace Lingu.Automata
 {
-    public class DfaMinimizer
+    public class Minimizer
     {
-        private DfaMinimizer(Dfa dfa)
+        private Minimizer(FA finiteAutomaton)
         {
-            Dfa = dfa;
-            FinalStates = Dfa.States.Where(state => state.IsFinal);
-            NonFinalStates = Dfa.States.Where(state => !state.IsFinal);
-            AllStates = Dfa.States;
+            Automaton = finiteAutomaton;
+            FinalStates = Automaton.Finals.ToList();
+            NonFinalStates = Automaton.Inners.ToList();
+            AllStates = Automaton.States.ToList();
         }
 
-        public static Dfa Minimize(Dfa dfa, bool cloned = false)
+        public static FA Minimize(FA fa, bool cloned = false)
         {
-            return new DfaMinimizer(cloned ? dfa.Clone() : dfa).DoMinimize();
+            return new Minimizer(cloned ? fa.Clone() : fa).DoMinimize();
         }
 
 
-        private Dfa Dfa { get; }
+        private FA Automaton { get; }
 
-        private IEnumerable<DfaState> FinalStates { get; }
-        private IEnumerable<DfaState> NonFinalStates { get; }
-        private IEnumerable<DfaState> AllStates { get; }
+        private IReadOnlyList<State> FinalStates { get; }
+        private IReadOnlyList<State> NonFinalStates { get; }
+        private IReadOnlyList<State> AllStates { get; }
 
-        private Dfa DoMinimize()
+        private FA DoMinimize()
         {
             MergeStates();
             MergeTransitions();
 
-            return Dfa.From(Dfa.Start);
+            return FA.From(Automaton.Start);
         }
 
         private void MergeTransitions()
         {
-            foreach (var state in AllStates)
+            foreach (var state in Automaton.States)
             {
                 var i = 0;
 
@@ -64,11 +64,11 @@ namespace Lingu.Automata
             // Hopcroft's algorithm
             //
 
-            var finals = new DfaStateSet(FinalStates);
-            var nons = new DfaStateSet(NonFinalStates);
+            var finals = new StateSet(FinalStates);
+            var nons = new StateSet(NonFinalStates);
 
-            var partitions = new List<DfaStateSet> { finals, nons };
-            var working = new List<DfaStateSet> { finals };
+            var partitions = new List<StateSet> { finals, nons };
+            var working = new List<StateSet> { finals };
 
             var terminals = new HashSet<Atom>(AllStates.SelectMany(state => state.Transitions).Select(transition => transition.Terminal));
 
@@ -79,7 +79,7 @@ namespace Lingu.Automata
 
                 foreach (var terminal in terminals)
                 {
-                    var x = new DfaStateSet();
+                    var x = new StateSet();
                     foreach (var state in AllStates)
                     {
                         foreach (var transition in state.Transitions)

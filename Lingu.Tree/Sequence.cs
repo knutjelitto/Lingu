@@ -14,7 +14,7 @@ namespace Lingu.Tree
 
         public IReadOnlyList<Expression> Expressions { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
             var nfa = Expressions.First().GetNfa();
             foreach (var expr in Expressions.Skip(1))

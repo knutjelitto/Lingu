@@ -4,18 +4,18 @@ using System.Text;
 
 namespace Lingu.Automata
 {
-    public class DfaCompleter
+    public class Completer
     {
-        public static Dfa Complete(Dfa dfa, bool cloned = false)
+        public static FA Complete(FA fa, bool cloned = false)
         {
             if (cloned)
             {
-                dfa = dfa.Clone();
+                fa = fa.Clone();
             }
 
-            DfaState sink = null;
+            State sink = null;
 
-            foreach (var state in dfa.States)
+            foreach (var state in fa.States)
             {
                 var rest = UnicodeSets.Any;
 
@@ -28,7 +28,7 @@ namespace Lingu.Automata
                 {
                     if (sink == null)
                     {
-                        sink = new DfaState(false);
+                        sink = new State();
                         sink.Add(Atom.From(UnicodeSets.Any), sink);
                     }
 
@@ -38,10 +38,11 @@ namespace Lingu.Automata
 
             if (sink != null)
             {
-                dfa.States.Add(sink);
+                sink.Id = fa.States.Count;
+                fa.States.Add(sink);
             }
 
-            return dfa;
+            return fa;
         }
     }
 }

@@ -99,9 +99,14 @@ namespace Lingu.Tree
                 try
                 {
                     var nfa = terminal.Expression.GetNfa();
-                    var dfa = nfa.ToDfa().Minimize();
-
-                    dfa.Dump("  ", writer);
+                    nfa.Dump("    ", writer);
+                    writer.WriteLine("-----------------------------");
+                    var dfa = nfa.ToDfa();
+                    dfa.Dump("    ", writer);
+                    writer.WriteLine("-----------------------------");
+                    dfa = dfa.Minimize();
+                    dfa.Dump("    ", writer);
+                    writer.WriteLine("-----------------------------");
                 }
                 catch (Exception e)
                 {

@@ -14,10 +14,12 @@ namespace Lingu.Tree
         public Expression From { get; }
         public Expression To { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
-            var dfa1 = From.GetNfa().ToDfa().Minimize();
-            var dfa2 = To.GetNfa().ToDfa().Minimize();
+            if (From.IsSingleCodePoint() && To.IsSingleCodePoint())
+            {
+                return FA.From(From.GetSingleCodePoint(), To.GetSingleCodePoint());
+            }
 
             throw new System.NotImplementedException();
         }

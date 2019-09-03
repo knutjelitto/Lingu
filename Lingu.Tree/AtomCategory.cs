@@ -13,7 +13,7 @@ namespace Lingu.Tree
 
         public string Text { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
             throw new NotImplementedException();
         }

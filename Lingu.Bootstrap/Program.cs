@@ -16,17 +16,17 @@ namespace Lingu.Bootstrap
             var program = new Program();
 
             program.Build();
-            program.BuildTree();
+            program.BuildTree("Expression");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }
 
-        private void BuildTree()
+        private void BuildTree(string stem)
         {
             Environment.CurrentDirectory = $"{ProjectDir}Grammar";
 
-            var source = FileRef.Source($"{ProjectDir}Grammar/Expression.Grammar");
+            var source = FileRef.Source($"{ProjectDir}Grammar/{stem}.Grammar");
 
             var dests = source.With(".Out");
             var grammarDump = dests.Add(".DumpGrammar");

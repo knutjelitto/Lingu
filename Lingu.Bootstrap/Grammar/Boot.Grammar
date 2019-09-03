@@ -1,0 +1,21 @@
+﻿grammar Expression
+{
+    options
+    {
+    }
+    terminals
+    {
+        newline : 'l' | 'c' 'l' ;
+
+        newlineChar : 'l' | 'c' ;
+
+        lineComment : '//' ~newline ;
+
+        whitespace : ' ' ;
+     
+        something : .* ('0' .. '5') .* | .* ('4' .. '9') .* ;
+    }
+    rules
+    {
+    }
+}

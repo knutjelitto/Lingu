@@ -15,44 +15,40 @@ namespace Lingu.Check
         private void Check1()
         {
             // [0]|[1-9][0-9]*
-            var zero = (Nfa)'0';
-            var nonZero = (Nfa)('1', '9');
-            var digit = (Nfa)('0', '9');
+            var zero = (FA)'0';
+            var nonZero = (FA)('1', '9');
+            var digit = (FA)('0', '9');
 
-            var nfa = zero | (nonZero + digit.Star);
+            var nfa = zero | (nonZero + digit.Star());
 
             var dfa = nfa.ToDfa().Minimize();
 
-            var plumber = new DfaPlumber(dfa);
-
-            plumber.Dump("", Console.Out);
+            dfa.Dump("", Console.Out);
         }
 
         private void Check2()
         {
             // .*[A-Z]|.*[0-9]
-            var dot = Nfa.Any;
+            var dot = FA.Any;
 
-            var nfa = (dot.Star + ('A', 'Z')) | (dot.Star + ('0', '9'));
+            var nfa = (dot.Star() + ('A', 'Z')) | (dot.Star() + ('0', '9'));
 
-            nfa.Dump();
+            nfa.Dump("", Console.Out);
 
             var dfa = nfa.ToDfa().Minimize();
 
-            var plumber = new DfaPlumber(dfa);
-
             Console.WriteLine("---------------");
-            plumber.Dump("", Console.Out);
+            dfa.Dump("", Console.Out);
         }
 
         private void Check3()
         {
             // .*[A-Z].+|.*[0-9].+
-            var dot = Nfa.Any;
+            var dot = FA.Any;
 
-            var nfa = (dot.Star + ('A', 'Z') + dot.Plus) | (dot.Star + ('0', '9') + dot.Plus);
+            var nfa = (dot.Star() + ('A', 'Z') + dot.Plus()) | (dot.Star() + ('0', '9') + dot.Plus());
 
-            nfa.Dump();
+            nfa.Dump("", Console.Out);
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
@@ -65,11 +61,11 @@ namespace Lingu.Check
         private void Check4()
         {
             // .*[0-5]|.*[4-9]
-            var dot = Nfa.Any;
+            var dot = FA.Any;
 
-            var nfa = (dot.Star + ('0', '5') + dot.Plus) | (dot.Star + ('4', '9') + dot.Plus);
+            var nfa = (dot.Star() + ('0', '5') + dot.Plus()) | (dot.Star() + ('4', '9') + dot.Plus());
 
-            nfa.Dump();
+            nfa.Dump("", Console.Out);
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
@@ -81,13 +77,13 @@ namespace Lingu.Check
 
         private void Check5()
         {
-            var a = (Nfa)'a';
-            var b = (Nfa)'b';
-            var c = (Nfa)'c';
+            var a = (FA)'a';
+            var b = (FA)'b';
+            var c = (FA)'c';
 
-            var nfa = (a.Plus + b.Plus + c.Plus).Plus | (a + b + c);
+            var nfa = (a.Plus() + b.Plus() + c.Plus()).Plus() | (a + b + c);
 
-            nfa.Dump();
+            nfa.Dump("", Console.Out);
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");
@@ -99,9 +95,9 @@ namespace Lingu.Check
 
         private void Check6()
         {
-            var nfa = (Nfa)"abc";
+            var nfa = (FA)"abc";
 
-            nfa.Dump();
+            nfa.Dump("", Console.Out);
 
             var dfa = nfa.ToDfa();
             Console.WriteLine("---------------");

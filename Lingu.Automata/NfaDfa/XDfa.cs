@@ -24,6 +24,7 @@ namespace Lingu.Automata
             return new XDfa(start, Enumerate(start));
         }
 
+#if false
         public XDfa Minimize()
         {
             return DfaMinimizer.Minimize(this);
@@ -33,6 +34,7 @@ namespace Lingu.Automata
         {
             return DfaCompleter.Complete(this);
         }
+#endif
 
         public void Dump(string prefix, TextWriter writer)
         {

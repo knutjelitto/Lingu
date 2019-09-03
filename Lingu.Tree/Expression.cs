@@ -7,6 +7,6 @@ namespace Lingu.Tree
 {
     public abstract class Expression : Node
     {
-        public abstract Nfa GetNfa();
+        public abstract FA GetNfa();
     }
 }

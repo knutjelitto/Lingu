@@ -5,7 +5,7 @@ namespace Lingu.Automata
 {
     public class Atom
     {
-        private Atom(char first, char last)
+        private Atom(int first, int last)
             : this(new IntegerSet((first, last)))
         {
             Set = new IntegerSet((first, last));
@@ -18,12 +18,12 @@ namespace Lingu.Automata
 
         public IntegerSet Set { get; }
 
-        public static Atom From(char single)
+        public static Atom From(int single)
         {
             return new Atom(single, single);
         }
 
-        public static Atom From(char first, char last)
+        public static Atom From(int first, int last)
         {
             Debug.Assert(first <= last);
             return new Atom(first, last);

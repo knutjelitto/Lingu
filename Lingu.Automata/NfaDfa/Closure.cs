@@ -5,22 +5,23 @@ using Lingu.Commons;
 
 namespace Lingu.Automata
 {
-    public class NfaClosure
+    public class Closure
     {
-        public NfaClosure(NfaState state, NfaState end)
+        public Closure(State state, State end)
             : this(Enumerable.Repeat(state, 1), end)
         {
         }
 
-        public NfaClosure(IEnumerable<NfaState> states, NfaState end)
+        public Closure(IEnumerable<State> states, State end)
         {
-            var set = new HashSet<NfaState>();
+            var set = new HashSet<State>();
             var isFinal = false;
 
             foreach (var state in states)
             {
                 foreach (var closureState in state.Closure())
                 {
+                    Console.WriteLine($"equals({closureState}{end}) => {closureState.Equals(end)}");
                     if (closureState.Equals(end))
                     {
                         isFinal = true;
@@ -31,26 +32,26 @@ namespace Lingu.Automata
             }
 
             Set = set;
-            State = DfaState.Make(isFinal);
+            DfaState = new State(isFinal);
             this.hashCode = Set.Hash();
         }
 
-        public Dictionary<IntegerSet, HashSet<NfaState>> UnambiguateTransitions()
+        public Dictionary<IntegerSet, HashSet<State>> UnambiguateTransitions()
         {
-            var transitions = new Dictionary<IntegerSet, HashSet<NfaState>>();
+            var transitions = new Dictionary<IntegerSet, HashSet<State>>();
 
-            void Handle(IntegerSet terminal, NfaState target)
+            void Handle(IntegerSet terminal, State target)
             {
                 HandleMore(terminal, Enumerable.Repeat(target, 1));
             }
 
-            void HandleMore(IntegerSet added, IEnumerable<NfaState> targets)
+            void HandleMore(IntegerSet added, IEnumerable<State> targets)
             {
                 var already = transitions.Keys.FirstOrDefault(t => t.Overlaps(added));
 
                 if (already == null)
                 {
-                    transitions.Add(added, new HashSet<NfaState>(targets));
+                    transitions.Add(added, new HashSet<State>(targets));
                     return;
                 }
 
@@ -96,18 +97,18 @@ namespace Lingu.Automata
             return transitions;
         }
 
-        public HashSet<NfaState> Set { get; }
+        public HashSet<State> Set { get; }
 
-        public DfaState State { get; }
+        public State DfaState { get; }
 
         public override bool Equals(object obj)
         {
-            return obj is NfaClosure other && Set.SetEquals(other.Set);
+            return obj is Closure other && Set.SetEquals(other.Set);
         }
 
         public override int GetHashCode() => this.hashCode;
 
-        private void EnsureDistinct(Dictionary<IntegerSet, HashSet<NfaState>> transitions)
+        private void EnsureDistinct(Dictionary<IntegerSet, HashSet<State>> transitions)
         {
             var terminals = transitions.Keys.ToList();
             var i = 0;

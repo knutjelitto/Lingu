@@ -11,7 +11,7 @@ namespace Lingu.Automata.Tests
             // [0]|[1-9][0-9]*
             var matcher = MakeMatcher();
 
-            Assert.AreEqual(3, matcher.Dfa.StateCount);
+            Assert.AreEqual(3, matcher.FA.States.Count);
         }
 
         [TestMethod]
@@ -48,13 +48,13 @@ namespace Lingu.Automata.Tests
             Assert.IsFalse(matcher.FullMatch("1 "));
         }
 
-        private static DfaMatcher MakeMatcher()
+        private static Matcher MakeMatcher()
         {
             // [0]|[1-9][0-9]*
-            var nfa = '0' | (('1', '9') + ((Nfa)('0', '9')).Star);
+            var nfa = '0' | (('1', '9') + ((FA)('0', '9')).Star());
 
             var dfa = nfa.ToDfa().Minimize();
-            return new DfaMatcher(dfa);
+            return new Matcher(dfa);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Lingu.Automata.Tests
             // "abc"
             var matcher = MakeMatcher("abc");
 
-            Assert.AreEqual(4, matcher.Dfa.StateCount);
+            Assert.AreEqual(4, matcher.FA.States.Count);
         }
 
         [TestMethod]
@@ -43,11 +43,11 @@ namespace Lingu.Automata.Tests
             MakeMatcher("");
         }
 
-        private static DfaMatcher MakeMatcher(string sequence)
+        private static Matcher MakeMatcher(string sequence)
         {
-            var nfa = (Nfa) sequence;
+            var nfa = (FA) sequence;
 
-            return new DfaMatcher(nfa.ToDfa().Minimize());
+            return new Matcher(nfa.ToDfa().Minimize());
         }
     }
 }

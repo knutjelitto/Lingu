@@ -11,7 +11,7 @@ namespace Lingu.Automata.Tests
             // a?b?c?
             var matcher = MakeMatcher();
 
-            Assert.AreEqual(4, matcher.Dfa.StateCount);
+            Assert.AreEqual(4, matcher.FA.States.Count);
         }
 
         [TestMethod]
@@ -40,12 +40,12 @@ namespace Lingu.Automata.Tests
             Assert.IsFalse(matcher.FullMatch("x"));
         }
 
-        private static DfaMatcher MakeMatcher()
+        private static Matcher MakeMatcher()
         {
             // a?b?c?
-            var nfa = ((Nfa) 'a').Opt + ((Nfa) 'b').Opt + ((Nfa) 'c').Opt;
+            var nfa = ((FA) 'a').Opt() + ((FA) 'b').Opt() + ((FA) 'c').Opt();
 
-            return new DfaMatcher(nfa.ToDfa().Minimize());
+            return new Matcher(nfa.ToDfa().Minimize());
         }
     }
 }

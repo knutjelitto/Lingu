@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Grammar\Boot.Grammar" />
     <None Remove="Grammar\Expression.Grammar" />
     <None Remove="Grammar\Lingu.Grammar" />
     <None Remove="Grammar\Lingu.HimeGrammar" />
@@ -15,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Grammar\Boot.Grammar" />
     <EmbeddedResource Include="Grammar\Expression.Grammar" />
     <EmbeddedResource Include="Grammar\Lingu.HimeGrammar" />
     <EmbeddedResource Include="Grammar\Lingu.Grammar" />

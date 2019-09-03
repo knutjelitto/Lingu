@@ -14,7 +14,7 @@ namespace Lingu.Automata
             Transitions = new List<Transition>();
         }
 
-        public bool IsFinal { get; }
+        public bool IsFinal { get; set; }
         public int Id { get; set; }
         public List<Transition> Transitions { get; }
 
@@ -48,5 +48,11 @@ namespace Lingu.Automata
 
             return once.Seen;
         }
+
+        public override string ToString()
+        {
+            return $"({Id},{IsFinal},({string.Join(",", Transitions)}))";
+        }
+
     }
 }

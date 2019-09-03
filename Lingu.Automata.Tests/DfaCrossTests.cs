@@ -35,10 +35,10 @@ namespace Lingu.Automata.Tests
             Assert.IsTrue(evenA.FullMatch("bbbb"));
         }
 
-        private Dfa EvenA()
+        private FA EvenA()
         {
-            var start = new DfaState(true);
-            var count = new DfaState(false);
+            var start = new State(true);
+            var count = new State(false);
             var a = Atom.From('a');
             var b = Atom.From('b');
             start.Add(b, start);
@@ -46,18 +46,18 @@ namespace Lingu.Automata.Tests
             count.Add(b, count);
             count.Add(a, start);
 
-            return Dfa.From(start);
+            return FA.From(start);
         }
 
-        private DfaMatcher MatchEvenA()
+        private Matcher MatchEvenA()
         {
-            return new DfaMatcher(EvenA());
+            return new Matcher(EvenA());
         }
 
-        private Dfa EvenB()
+        private FA EvenB()
         {
-            var start = new DfaState(true);
-            var count = new DfaState(false);
+            var start = new State(true);
+            var count = new State(false);
             var a = Atom.From('a');
             var b = Atom.From('b');
             start.Add(a, start);
@@ -65,12 +65,12 @@ namespace Lingu.Automata.Tests
             count.Add(a, count);
             count.Add(b, start);
 
-            return Dfa.From(start);
+            return FA.From(start);
         }
 
-        private DfaMatcher MatchEvenB()
+        private Matcher MatchEvenB()
         {
-            return new DfaMatcher(EvenB());
+            return new Matcher(EvenB());
         }
     }
 }

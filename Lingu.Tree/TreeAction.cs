@@ -20,7 +20,7 @@ namespace Lingu.Tree
         public Expression Expression { get; }
         public TreeActionX Action { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
             return Expression.GetNfa();
         }

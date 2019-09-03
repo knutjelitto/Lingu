@@ -16,9 +16,9 @@ namespace Lingu.Tree
         public string Text { get; }
         public string Value { get; }
 
-        public override Nfa GetNfa()
+        public override FA GetNfa()
         {
-            return Nfa.From(Value);
+            return FA.From(Value);
         }
 
         public override void Dump(Indentable output, bool top)

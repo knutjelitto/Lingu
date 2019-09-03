@@ -1,20 +1,20 @@
 ﻿namespace Lingu.Automata
 {
-    public class DfaMatcher
+    public class Matcher
     {
-        public DfaMatcher(Dfa dfa)
+        public Matcher(FA automaton)
         {
-            Dfa = dfa;
-            State = Dfa.Start;
+            FA = automaton;
+            State = FA.Start;
         }
 
-        public Dfa Dfa { get; }
+        public FA FA { get; }
 
-        public DfaState State { get; private set; }
+        public State State { get; private set; }
 
         public bool FullMatch(string characters)
         {
-            State = Dfa.Start;
+            State = FA.Start;
 
             foreach (var character in characters)
             {

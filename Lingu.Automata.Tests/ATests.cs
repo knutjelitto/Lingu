@@ -11,7 +11,7 @@ namespace Lingu.Automata.Tests
             // a?[ab]
             var matcher = MakeMatcher();
 
-            Assert.AreEqual(3, matcher.Dfa.StateCount);
+            Assert.AreEqual(3, matcher.FA.States.Count);
         }
 
 
@@ -46,12 +46,12 @@ namespace Lingu.Automata.Tests
             Assert.IsFalse(matcher.FullMatch("abc"));
         }
 
-        private static DfaMatcher MakeMatcher()
+        private static Matcher MakeMatcher()
         {
             // a?[ab]
-            var first = new NfaState();
-            var last = new NfaState();
-            var end = new NfaState();
+            var first = new State();
+            var last = new State();
+            var end = new State();
 
             var a1 = Atom.From('a');
             var a2 = Atom.From('a', 'b');
@@ -60,9 +60,9 @@ namespace Lingu.Automata.Tests
             first.Add(last);
             last.Add(a2, end);
 
-            var nfa = new Nfa(first, end);
+            var nfa = FA.From(first, end);
 
-            return new DfaMatcher(nfa.ToDfa().Minimize());
+            return new Matcher(nfa.ToDfa().Minimize());
         }
     }
 }
