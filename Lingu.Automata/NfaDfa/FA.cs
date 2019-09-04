@@ -1,5 +1,4 @@
-﻿using Lingu.Commons;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -34,6 +33,7 @@ namespace Lingu.Automata
 
         public State Start { get; }
         public State Final { get; private set; }
+        public FAKind Kind { get; private set; }
         public List<State> States { get; }
         public IEnumerable<State> Finals => States.Where(state => state.IsFinal);
         public IEnumerable<State> Inners => States.Where(state => state.IsFinal);
@@ -48,24 +48,12 @@ namespace Lingu.Automata
 
         public static FA From(State start)
         {
-            var states = Enumerate(start);
-
-            if (!states.Any(state => state.IsFinal))
-            {
-                Debug.Assert(false, "no final in stateset");
-            }
-
-            return new FA(start, null, states);
+            return new FA(start, null, Enumerate(start));
         }
 
         public FA Minimize()
         {
             return Minimizer.Minimize(this);
-        }
-
-        public FA Complete(bool cloned = false)
-        {
-            return Operations.Complete(cloned ? Clone() : this);
         }
 
         public void Dump(string prefix, TextWriter writer)
@@ -86,24 +74,40 @@ namespace Lingu.Automata
             }
         }
 
+        public FA Complete(bool cloned = false)
+        {
+            return Operations.Complete(CloneIf(cloned));
+        }
+
+        public FA Cross(FA other, bool cloned = false)
+        {
+            return Operations.Cross(CloneIf(cloned), other.CloneIf(cloned));
+        }
+
+
         public FA ToDfa(bool cloned = false)
         {
-            return Operations.ToDfa(cloned ? Clone() : this);
+            return Operations.ToDfa(CloneIf(cloned));
         }
 
         public FA ToNfa(bool cloned = false)
         {
-            return Operations.ToNfa(cloned ? Clone() : this);
+            return Operations.ToNfa(CloneIf(cloned));
         }
 
         public FA Remove(bool cloned = false)
         {
-            return Operations.Remove(cloned ? Clone() : this);
+            return Operations.RemoveDead(CloneIf(cloned));
         }
 
         public FA Negate(bool cloned = false)
         {
-            return Operations.Negate(cloned ? Clone() : this);
+            return Operations.Negate(CloneIf(cloned));
+        }
+
+        private FA CloneIf(bool cloned)
+        {
+            return cloned ? Clone() : this;
         }
 
         public FA Clone()
@@ -140,14 +144,14 @@ namespace Lingu.Automata
 
         private static IEnumerable<State> Enumerate(State start)
         {
-            var visited = new Dictionary<State, int>();
+            var visited = new HashSet<State>();
 
             void Visit(State state)
             {
-                if (!visited.TryGetValue(state, out var _))
+                if (!visited.Contains(state))
                 {
                     state.Id = visited.Count;
-                    visited.Add(state, visited.Count);
+                    visited.Add(state);
 
                     foreach (var transition in state.Transitions)
                     {
@@ -158,7 +162,7 @@ namespace Lingu.Automata
 
             Visit(start);
 
-            return visited.Keys.OrderBy(state => state.Id);
+            return visited.OrderBy(state => state.Id);
         }
     }
 }

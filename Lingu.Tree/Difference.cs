@@ -16,7 +16,17 @@ namespace Lingu.Tree
 
         public override FA GetNfa()
         {
-            throw new System.NotImplementedException();
+            if (Expressions.Count != 2)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            var nfa1 = Expressions[0].GetNfa();
+            var nfa2 = Expressions[1].GetNfa();
+
+            var cross = nfa1.ToDfa().Cross(nfa2.ToDfa());
+
+            return cross; ;
         }
 
         public override void Dump(Indentable output, bool top)

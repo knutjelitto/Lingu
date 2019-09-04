@@ -26,19 +26,20 @@ namespace Lingu.Tree
 
         public override void Dump(Indentable output, bool top)
         {
+            var more = false;
             if (top)
             {
                 foreach (var expression in Expressions)
                 {
-                    output.Write("| ");
+                    output.Write(more ? "| " : ": ");
                     expression.Dump(output, !(expression is Alternates));
                     output.WriteLine();
+                    more = true;
                 }
             }
             else
             {
                 output.Write("(");
-                var more = false;
                 foreach (var expression in Expressions)
                 {
                     if (more)

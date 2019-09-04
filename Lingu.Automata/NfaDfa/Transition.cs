@@ -15,5 +15,10 @@
         {
             Target = newTarget;
         }
+
+        public override string ToString()
+        {
+            return Terminal.ToIString();
+        }
     }
 }

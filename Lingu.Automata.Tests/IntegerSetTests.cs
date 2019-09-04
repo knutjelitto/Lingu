@@ -240,6 +240,20 @@ namespace Lingu.Automata.Tests
 
 
         [TestMethod]
+        public void IntersectWith()
+        {
+            var set1 = new IntegerSet((1, 10), (21, 30));
+            var set2 = new IntegerSet((1, 10), (41, 50));
+
+            var intersection = set1.IntersectWith(set2);
+
+            Assert.AreEqual("[1-10,21-30]", set1.ToIString());
+            Assert.AreEqual("[1-10,41-50]", set2.ToIString());
+            Assert.AreEqual("[1-10]", intersection.ToIString());
+        }
+
+
+        [TestMethod]
         public void ExeptWith()
         {
             var set1 = new IntegerSet((1, 10), (21, 30));

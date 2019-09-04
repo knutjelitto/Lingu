@@ -29,7 +29,7 @@ namespace Lingu.Bootstrap
             var source = FileRef.Source($"{ProjectDir}Grammar/{stem}.Grammar");
 
             var dests = source.With(".Out");
-            var grammarDump = dests.Add(".DumpGrammar");
+            var grammarDump = dests.Add(".Grammar");
             var terminals = dests.Add(".Terminals");
 
             var grammar = Parser.Parse(source);

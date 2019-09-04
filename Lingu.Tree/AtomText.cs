@@ -23,13 +23,7 @@ namespace Lingu.Tree
 
         public override void Dump(Indentable output, bool top)
         {
-            output.Write(Text);
-            if (Text != "'" + Value + "'")
-            {
-                output.Write("/*!! '");
-                output.Write(Value);
-                output.Write("' !!*/");
-            }
+            output.Write(ToString());
         }
 
         public override bool Equals(object obj)
@@ -44,7 +38,7 @@ namespace Lingu.Tree
 
         public override string ToString()
         {
-            return Text;
+            return $"'{CharRep.InText(Value)}'";
         }
 
         private string Convert(string text)
@@ -56,20 +50,20 @@ namespace Lingu.Tree
                 if (text[i] == '\\')
                 {
                     i += 1;
-                    switch (char.ToUpper(text[i]))
+                    switch (char.ToLower(text[i]))
                     {
                         case '\\': result.Append('\\'); break;
                         case '\'': result.Append('\''); break;
                         case '\"': result.Append('\"'); break;
                         case '0': result.Append('\0'); break;
-                        case 'A': result.Append('\a'); break;
-                        case 'B': result.Append('\b'); break;
-                        case 'F': result.Append('\f'); break;
-                        case 'N': result.Append('\n'); break;
-                        case 'R': result.Append('\r'); break;
-                        case 'T': result.Append('\t'); break;
-                        case 'V': result.Append('\v'); break;
-                        case 'U':
+                        case 'a': result.Append('\a'); break;
+                        case 'b': result.Append('\b'); break;
+                        case 'f': result.Append('\f'); break;
+                        case 'n': result.Append('\n'); break;
+                        case 'r': result.Append('\r'); break;
+                        case 't': result.Append('\t'); break;
+                        case 'v': result.Append('\v'); break;
+                        case 'u':
                             var start = i + 1;
                             var end = text.IndexOf('}', start + 1);
                             if (int.TryParse(text.AsSpan(start, end - start + 1), out var codePoint))

@@ -10,6 +10,11 @@ namespace Lingu.Automata
     {
         public static readonly IntegerSet Empty = new IntegerSet();
 
+        public IntegerSet(IntegerRange range)
+            : this(Enumerable.Repeat(range, 1))
+        {
+        }
+
         public IntegerSet()
             : this(Enumerable.Empty<IntegerRange>())
         {
@@ -34,15 +39,15 @@ namespace Lingu.Automata
             }
         }
 
-        public int Cardinality => this.ranges.Sum(range => range.Count);
+        public int Cardinality => ranges.Sum(range => range.Count);
 
-        public bool IsEmpty => this.ranges.Count == 0;
+        public bool IsEmpty => ranges.Count == 0;
 
-        public int Max => this.ranges.Last().Max;
+        public int Max => ranges.Last().Max;
 
-        public int Min => this.ranges.First().Min;
+        public int Min => ranges.First().Min;
 
-        public int RangeCount => this.ranges.Count;
+        public int RangeCount => ranges.Count;
 
         public static IntegerSet Parse(string str)
         {
@@ -107,7 +112,7 @@ namespace Lingu.Automata
 
         public IntegerSet Clone()
         {
-            return new IntegerSet(this.ranges);
+            return new IntegerSet(ranges);
         }
 
         public bool Contains(int value)
@@ -117,7 +122,7 @@ namespace Lingu.Automata
 
         public override bool Equals(object obj)
         {
-            return obj is IntegerSet other && this.ranges.SequenceEqual(other.ranges);
+            return obj is IntegerSet other && ranges.SequenceEqual(other.ranges);
         }
 
         public IntegerSet ExceptWith(IntegerSet other)
@@ -127,6 +132,15 @@ namespace Lingu.Automata
             return set;
         }
 
+        public IntegerSet IntersectWith(IntegerSet other)
+        {
+            var union = this.UnionWith(other);
+            var ex1 = this.ExceptWith(other);
+            var ex2 = other.ExceptWith(this);
+
+            return union.ExceptWith(ex1).ExceptWith(ex2);
+        }
+
         public string FmtCSharp()
         {
             return "";
@@ -134,7 +148,7 @@ namespace Lingu.Automata
 
         public IEnumerator<int> GetEnumerator()
         {
-            foreach (var range in this.ranges)
+            foreach (var range in ranges)
             {
                 foreach (var value in range)
                 {
@@ -145,17 +159,17 @@ namespace Lingu.Automata
 
         public override int GetHashCode()
         {
-            return this.ranges.Hash();
+            return ranges.Hash();
         }
 
         public IEnumerable<IntegerRange> GetRanges()
         {
-            return this.ranges;
+            return ranges;
         }
 
         public IEnumerable<int> GetValues()
         {
-            return this.ranges.SelectMany(range => range);
+            return ranges.SelectMany(range => range);
         }
 
         public bool IsProperSubsetOf(IntegerSet other)
@@ -170,7 +184,7 @@ namespace Lingu.Automata
 
         public bool IsSubsetOf(IntegerSet other)
         {
-            foreach (var range in this.ranges)
+            foreach (var range in ranges)
             {
                 if (!other.Contains(range))
                 {
@@ -191,19 +205,19 @@ namespace Lingu.Automata
             var t = 0;
             var o = 0;
 
-            while (t < this.ranges.Count && o < other.ranges.Count)
+            while (t < ranges.Count && o < other.ranges.Count)
             {
-                while (t < this.ranges.Count && o < other.ranges.Count && this.ranges[t].Max < other.ranges[o].Min)
+                while (t < ranges.Count && o < other.ranges.Count && ranges[t].Max < other.ranges[o].Min)
                 {
                     t += 1;
                 }
 
-                while (t < this.ranges.Count && o < other.ranges.Count && other.ranges[o].Max < this.ranges[t].Min)
+                while (t < ranges.Count && o < other.ranges.Count && other.ranges[o].Max < ranges[t].Min)
                 {
                     o += 1;
                 }
 
-                if (t < this.ranges.Count && o < other.ranges.Count && other.ranges[o].Overlaps(this.ranges[t]))
+                if (t < ranges.Count && o < other.ranges.Count && other.ranges[o].Overlaps(ranges[t]))
                 {
                     return true;
                 }
@@ -229,12 +243,12 @@ namespace Lingu.Automata
 
         public override string ToString()
         {
-            return $"[{string.Join(",", this.ranges)}]";
+            return $"[{string.Join(",", ranges)}]";
         }
 
         public string ToIString()
         {
-            return $"[{string.Join(",", this.ranges.Select(r => r.ToIString()))}]";
+            return $"[{string.Join(",", ranges.Select(r => r.ToIString()))}]";
         }
 
         public IntegerSet UnionWith(IntegerSet other)
@@ -257,9 +271,9 @@ namespace Lingu.Automata
         private void Add(IntegerRange add)
         {
             var i = 0;
-            while (i < this.ranges.Count)
+            while (i < ranges.Count)
             {
-                var current = this.ranges[i];
+                var current = ranges[i];
 
                 if (add.Min > current.Max + 1)
                 {
@@ -270,24 +284,24 @@ namespace Lingu.Automata
                 if (add.Max + 1 < current.Min)
                 {
                     // before current
-                    this.ranges.Insert(i, add);
+                    ranges.Insert(i, add);
                     return;
                 }
 
                 if (add.Max <= current.Max)
                 {
                     // combine with current
-                    this.ranges[i] = new IntegerRange((char) Math.Min(add.Min, current.Min), current.Max);
+                    ranges[i] = new IntegerRange((char) Math.Min(add.Min, current.Min), current.Max);
                     return;
                 }
 
                 add = new IntegerRange((char) Math.Min(add.Min, current.Min), add.Max);
-                this.ranges.RemoveAt(i);
+                ranges.RemoveAt(i);
             }
 
-            if (i == this.ranges.Count)
+            if (i == ranges.Count)
             {
-                this.ranges.Add(add);
+                ranges.Add(add);
             }
         }
 
@@ -316,19 +330,19 @@ namespace Lingu.Automata
 
                 var mid = lower + (upper - lower) / 2;
 
-                if (this.ranges[mid].Contains(value))
+                if (ranges[mid].Contains(value))
                 {
-                    found = this.ranges[mid];
+                    found = ranges[mid];
                     return true;
                 }
-                if (value < this.ranges[mid].Min)
+                if (value < ranges[mid].Min)
                 {
                     return Find(lower, mid - 1, out found);
                 }
                 return Find(mid + 1, upper, out found);
             }
 
-            return Find(0, this.ranges.Count - 1, out range);
+            return Find(0, ranges.Count - 1, out range);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -340,9 +354,9 @@ namespace Lingu.Automata
         {
             var i = 0;
 
-            while (i < this.ranges.Count)
+            while (i < ranges.Count)
             {
-                var range = this.ranges[i];
+                var range = ranges[i];
 
                 if (sub.Max < range.Min)
                 {
@@ -362,11 +376,11 @@ namespace Lingu.Automata
                     if (sub.Max >= range.Max)
                     {
                         // full cover
-                        this.ranges.RemoveAt(i);
+                        ranges.RemoveAt(i);
                     }
                     else
                     {
-                        this.ranges[i] = new IntegerRange(sub.Max + 1, range.Max);
+                        ranges[i] = new IntegerRange(sub.Max + 1, range.Max);
                         i += 1;
                     }
                     continue;
@@ -378,11 +392,11 @@ namespace Lingu.Automata
                     if (range.Min >= sub.Min)
                     {
                         // full cover
-                        this.ranges.RemoveAt(i);
+                        ranges.RemoveAt(i);
                     }
                     else
                     {
-                        this.ranges[i] = new IntegerRange(range.Min, sub.Min - 1);
+                        ranges[i] = new IntegerRange(range.Min, sub.Min - 1);
                         i += 1;
                     }
                     continue;
@@ -390,8 +404,8 @@ namespace Lingu.Automata
 
                 // inner
                 // sub.Min > range.Min && range.Max > sub.Max
-                this.ranges.Insert(i, new IntegerRange(range.Min, sub.Min - 1));
-                this.ranges[i + 1] = new IntegerRange(sub.Max + 1, range.Max);
+                ranges.Insert(i, new IntegerRange(range.Min, sub.Min - 1));
+                ranges[i + 1] = new IntegerRange(sub.Max + 1, range.Max);
                 // done
                 break;
             }

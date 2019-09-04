@@ -5,8 +5,13 @@
     }
     terminals
     {
-        lineComment : '//' ~(.* newline .*) newline
-                    ;
+        lineComment2
+			: '//' (.* - newline)* newline
+            ;
+
+        lineComment
+			: '//' ~(.* newline .*) newline
+            ;
 
         newline
             : '\n'

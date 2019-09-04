@@ -31,7 +31,7 @@ namespace Lingu.Tree
                 }
                 else
                 {
-                    output.Write("| ");
+                    output.Write(": ");
                     Expression.Dump(output, true);
                     output.WriteLine();
                 }

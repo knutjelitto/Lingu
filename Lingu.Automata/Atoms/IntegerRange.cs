@@ -1,12 +1,15 @@
 ﻿using Lingu.Commons;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Lingu.Automata
 {
     public struct IntegerRange : IEnumerable<int>
     {
+        public static readonly IntegerRange Empty = new IntegerRange(0, -1);
+
         public IntegerRange(int minmax)
         {
             Min = minmax;
@@ -19,8 +22,10 @@ namespace Lingu.Automata
             Max = max;
         }
 
-        public int Max { get; }
-        public int Min { get; }
+        public int Min { get; private set; }
+        public int Max { get; private set;  }
+        public int Count => Max - Min + 1;
+        public bool IsEmpty => Max < Min;
 
         public bool Contains(int value)
         {
@@ -31,8 +36,6 @@ namespace Lingu.Automata
         {
             return Contains(other.Min) || Contains(other.Max) || other.Contains(Min) || other.Contains(Max);
         }
-
-        public int Count => Max - Min + 1;
 
         public IEnumerator<int> GetEnumerator() => Enumerable.Range(Min, Max - Min + 1).GetEnumerator();
 

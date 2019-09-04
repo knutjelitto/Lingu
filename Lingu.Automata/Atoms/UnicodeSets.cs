@@ -9,9 +9,18 @@ namespace Lingu.Automata
     // ReSharper disable UnusedMember.Local
     public static class UnicodeSets
     {
-        public static IntegerSet Any() => new IntegerSet((0, 0x10FFFF));
+        public const int MinCodePoint = 0;
+        public const int MaxCodePoint = 0x10FFFF;
+        public static IntegerSet Any() => new IntegerSet((MinCodePoint, MaxCodePoint));
 
         public static readonly CatergorySets Category = new CatergorySets();
+
+        public static bool IsAny(IntegerSet set)
+        {
+            return set.Min == MinCodePoint &&
+                   set.Max == MaxCodePoint &
+                   set.Cardinality == (MaxCodePoint - MinCodePoint + 1);
+        }
 
         public class CatergorySets
         {
