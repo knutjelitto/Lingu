@@ -72,7 +72,7 @@ namespace Lingu.Tree
                         case 'U':
                             var start = i + 1;
                             var end = text.IndexOf('}', start + 1);
-                            if (int.TryParse(text.AsSpan(start, end-start+1), out var codePoint))
+                            if (int.TryParse(text.AsSpan(start, end - start + 1), out var codePoint))
                             {
                                 result.Append(char.ConvertFromUtf32(codePoint));
                             }
@@ -83,7 +83,10 @@ namespace Lingu.Tree
                             break;
                     }
                 }
-                result.Append(text[i]);
+                else
+                {
+                    result.Append(text[i]);
+                }
             }
 
             return result.ToString();

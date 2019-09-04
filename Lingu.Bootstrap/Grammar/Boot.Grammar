@@ -5,15 +5,13 @@
     }
     terminals
     {
-        lineComment : ~newline ;
+        lineComment : '//' ~(.* newline .*) newline
+                    ;
 
-        newline : 'l' | 'c' 'l' ;
-
-        newlineChar : 'l' | 'c' ;
-
-        whitespace : ' ' ;
-     
-        something : .* ('0' .. '5') .* | .* ('4' .. '9') .* ;
+        newline
+            : '\n'
+            | '\r\n'
+            ;
     }
     rules
     {

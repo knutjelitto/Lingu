@@ -63,9 +63,9 @@ namespace Lingu.Automata
             return Minimizer.Minimize(this);
         }
 
-        public FA Complete()
+        public FA Complete(bool cloned = false)
         {
-            return Operations.Complete(this,true);
+            return Operations.Complete(cloned ? Clone() : this);
         }
 
         public void Dump(string prefix, TextWriter writer)
@@ -86,51 +86,24 @@ namespace Lingu.Automata
             }
         }
 
-        public FA ToDfa()
+        public FA ToDfa(bool cloned = false)
         {
-            return Operations.ToDfa(this);
+            return Operations.ToDfa(cloned ? Clone() : this);
         }
 
         public FA ToNfa(bool cloned = false)
         {
-            var nfa = this;
-            if (cloned)
-            {
-                nfa = nfa.Clone();
-            }
+            return Operations.ToNfa(cloned ? Clone() : this);
+        }
 
-            if (nfa.Final != null)
-            {
-                return nfa;
-            }
-
-            nfa.Final = new State();
-
-            foreach (var final in nfa.Finals)
-            {
-                final.Add(nfa.Final);
-            }
-
-            nfa.Final.Id = nfa.States.Count;
-            nfa.States.Add(nfa.Final);
-            foreach (var state in nfa.States)
-            {
-                state.IsFinal = false;
-            }
-
-            return nfa;
+        public FA Remove(bool cloned = false)
+        {
+            return Operations.Remove(cloned ? Clone() : this);
         }
 
         public FA Negate(bool cloned = false)
         {
-            var nfa = cloned ? this : this.Clone();
-
-            for (var i = 0; i < nfa.States.Count; ++i)
-            {
-                nfa.States[i].IsFinal = !nfa.States[i].IsFinal;
-            }
-
-            return nfa;
+            return Operations.Negate(cloned ? Clone() : this);
         }
 
         public FA Clone()

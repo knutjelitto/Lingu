@@ -42,16 +42,39 @@ namespace Lingu.Automata
                 return From(start.DfaState);
             }
 
-            public static FA Complete(FA fa, bool cloned = false)
+
+            public static FA ToNfa(FA dfa)
             {
-                if (cloned)
+                if (dfa.Final != null)
                 {
-                    fa = fa.Clone();
+                    return dfa;
                 }
+
+                dfa.Final = new State();
+
+                foreach (var final in dfa.Finals)
+                {
+                    final.Add(dfa.Final);
+                }
+
+                dfa.Final.Id = dfa.States.Count;
+                dfa.States.Add(dfa.Final);
+                foreach (var state in dfa.States)
+                {
+                    state.IsFinal = false;
+                }
+
+                return dfa;
+            }
+
+
+            public static FA Complete(FA dfa)
+            {
+                EnsureDfa(dfa);
 
                 State sink = null;
 
-                foreach (var state in fa.States)
+                foreach (var state in dfa.States)
                 {
                     var rest = UnicodeSets.Any();
 
@@ -74,11 +97,124 @@ namespace Lingu.Automata
 
                 if (sink != null)
                 {
-                    sink.Id = fa.States.Count;
-                    fa.States.Add(sink);
+                    sink.Id = dfa.States.Count;
+                    dfa.States.Add(sink);
                 }
 
-                return fa;
+                return dfa;
+            }
+
+            public static FA Negate(FA dfa)
+            {
+                EnsureDfa(dfa);
+
+                for (var i = 0; i < dfa.States.Count; ++i)
+                {
+                    dfa.States[i].IsFinal = !dfa.States[i].IsFinal;
+                }
+
+                return dfa;
+            }
+
+
+            public static FA Remove(FA dfa)
+            {
+                EnsureDfa(dfa);
+
+                var closures = new Dictionary<State, HashSet<State>>();
+
+                void Initial(State state)
+                {
+                    var set = new HashSet<State>() { state };
+
+                    foreach (var transition in state.Transitions)
+                    {
+                        set.Add(transition.Target);
+                    }
+
+                    closures.Add(state, set);
+                }
+
+                bool Close(State state)
+                {
+                    var set = closures[state];
+
+                    var before = set.Count;
+
+                    foreach (var buddy in set.Where(s => s != state).ToList())
+                    {
+                        var buddySet = closures[buddy];
+
+                        set.UnionWith(buddySet);
+                    }
+
+                    var after = set.Count;
+
+                    return after > before;
+                }
+
+                foreach (var state in dfa.States)
+                {
+                    Initial(state);
+                }
+
+                var added = true;
+                while (added)
+                {
+                    added = false;
+
+                    foreach (var state in dfa.States)
+                    {
+                        added = added || Close(state);
+                    }
+                }
+
+                var dead = new HashSet<State>();
+
+                foreach (var state in dfa.States)
+                {
+                    var set = closures[state];
+
+                    if (set.All(s => !s.IsFinal))
+                    {
+                        Debug.Assert(true);
+
+                        dead.UnionWith(set);
+                    }
+                }
+
+                return RemoveDead(dfa, dead);
+            }
+
+            private static FA RemoveDead(FA dfa, HashSet<State> dead)
+            {
+                if (dead.Count == 0)
+                {
+                    return dfa;
+                }
+
+                var map = new Dictionary<State, State>();
+
+                State Map(State state)
+                {
+                    if (!map.TryGetValue(state, out var mapped))
+                    {
+                        mapped = new State(state.IsFinal);
+                        map.Add(state, mapped);
+
+                        foreach (var transition in state.Transitions)
+                        {
+                            if (!dead.Contains(transition.Target))
+                            {
+                                mapped.Add(transition.Terminal, Map(transition.Target));
+                            }
+                        }
+                    }
+
+                    return mapped;
+                }
+
+                return From(Map(dfa.Start));
             }
 
             [Conditional("DEBUG")]
@@ -102,6 +238,11 @@ namespace Lingu.Automata
                     while (i < state.Transitions.Count)
                     {
                         var trans1 = state.Transitions[i];
+
+                        if (trans1.Terminal.Set.IsEmpty)
+                        {
+                            throw new Exception("DFA: epsilon transition");
+                        }
                         var j = i + 1;
                         while (j < state.Transitions.Count)
                         {

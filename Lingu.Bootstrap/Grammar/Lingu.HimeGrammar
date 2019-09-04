@@ -110,7 +110,7 @@
                 ;
 
             terminal_not
-                -> '~'! terminal_atom
+                -> '~'! terminal_element
                 ;
 
             terminal_atom

@@ -110,7 +110,7 @@ namespace Lingu.Tree
                 }
                 catch (Exception e)
                 {
-                    writer.WriteLine($"{e.Message}");
+                    writer.WriteLine($"{e}");
                 }
             }
         }
