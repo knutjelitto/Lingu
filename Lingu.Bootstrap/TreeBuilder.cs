@@ -5,7 +5,7 @@ using System.Linq;
 
 using Hime.Redist;
 
-using Lingu.Tree;
+using Lingu.Sdk.Tree;
 
 namespace Lingu.Bootstrap
 {
@@ -344,9 +344,9 @@ namespace Lingu.Bootstrap
                 switch (node.Children[1].Value)
                 {
                     case "^":
-                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Promote);
+                        return new Sdk.Tree.TreeAction(expression, Sdk.Tree.TreeAction.TreeActionX.Promote);
                     case "!":
-                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Drop);
+                        return new Sdk.Tree.TreeAction(expression, Sdk.Tree.TreeAction.TreeActionX.Drop);
                 }
             }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Hime.Redist;
-using Lingu.Tree;
+using Lingu.Sdk.Tree;
 using Mean.Maker.Builders;
 
 namespace Lingu.Bootstrap

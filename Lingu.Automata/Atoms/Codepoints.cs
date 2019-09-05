@@ -6,29 +6,29 @@ using Lingu.Commons;
 
 namespace Lingu.Automata
 {
-    public class Codepoints : IEnumerable<int>
+    public partial class Codepoints : IEnumerable<int>
     {
         public static Codepoints Empty => new Codepoints();
         public static Codepoints Any => new Codepoints(UnicodeSets.Any());
 
-        private Codepoints(IntRange range)
+        private Codepoints(Interval range)
             : this(Enumerable.Repeat(range, 1))
         {
         }
 
         private Codepoints()
-            : this(Enumerable.Empty<IntRange>())
+            : this(Enumerable.Empty<Interval>())
         {
         }
 
         private Codepoints(Codepoints other)
-            : this(other.GetRanges())
+            : this(other.ranges)
         {
 
         }
 
         public Codepoints(params (int min, int max)[] ranges)
-            : this(ranges.Select(p => new IntRange(p.min, p.max)))
+            : this(ranges.Select(p => new Interval(p.min, p.max)))
         {
         }
 
@@ -37,9 +37,9 @@ namespace Lingu.Automata
         {
         }
 
-        public Codepoints(IEnumerable<IntRange> ranges)
+        private Codepoints(IEnumerable<Interval> ranges)
         {
-            this.ranges = new List<IntRange>();
+            this.ranges = new List<Interval>();
             foreach (var range in ranges)
             {
                 Add(range);
@@ -63,12 +63,12 @@ namespace Lingu.Automata
 
         public static Codepoints From(int minmax)
         {
-            return new Codepoints(new IntRange(minmax));
+            return new Codepoints(new Interval(minmax));
         }
 
         public static Codepoints From(int min, int max)
         {
-            return new Codepoints(new IntRange(min, max));
+            return new Codepoints(new Interval(min, max));
         }
 
         public static Codepoints Parse(string str)
@@ -97,7 +97,7 @@ namespace Lingu.Automata
                 {
                     end = end + 1;
                 }
-                if (end > start && IntRange.TryParse(str.Substring(start, end - start), out var range))
+                if (end > start && Interval.TryParse(str.Substring(start, end - start), out var range))
                 {
                     set.Add(range);
                     start = end = end + 1;
@@ -119,12 +119,12 @@ namespace Lingu.Automata
 
         public void Add(int value)
         {
-            Add(new IntRange(value));
+            Add(new Interval(value));
         }
 
         public void Add(params (int min, int max)[] rangesToAdd)
         {
-            Add(rangesToAdd.Select(range => new IntRange(range.min, range.max)));
+            Add(rangesToAdd.Select(range => new Interval(range.min, range.max)));
         }
 
         public void Add(Codepoints other)
@@ -184,9 +184,9 @@ namespace Lingu.Automata
             return ranges.Hash();
         }
 
-        public IEnumerable<IntRange> GetRanges()
+        public IEnumerable<(int Min, int Max)> GetIntervals()
         {
-            return ranges;
+            return ranges.Select(r => (r.Min, r.Max));
         }
 
         public IEnumerable<int> GetValues()
@@ -250,12 +250,12 @@ namespace Lingu.Automata
 
         public void Sub(int value)
         {
-            Sub(new IntRange(value));
+            Sub(new Interval(value));
         }
 
         public void Sub(params (int min, int max)[] rangesToSub)
         {
-            Sub(rangesToSub.Select(range => new IntRange(range.min, range.max)));
+            Sub(rangesToSub.Select(range => new Interval(range.min, range.max)));
         }
 
         public Codepoints Substract(Codepoints other)
@@ -301,7 +301,7 @@ namespace Lingu.Automata
             return From(ch);
         }
 
-        private void Add(IntRange add)
+        private void Add(Interval add)
         {
             var i = 0;
             while (i < ranges.Count)
@@ -324,11 +324,11 @@ namespace Lingu.Automata
                 if (add.Max <= current.Max)
                 {
                     // combine with current
-                    ranges[i] = new IntRange((char) Math.Min(add.Min, current.Min), current.Max);
+                    ranges[i] = new Interval((char) Math.Min(add.Min, current.Min), current.Max);
                     return;
                 }
 
-                add = new IntRange((char) Math.Min(add.Min, current.Min), add.Max);
+                add = new Interval((char) Math.Min(add.Min, current.Min), add.Max);
                 ranges.RemoveAt(i);
             }
 
@@ -338,7 +338,7 @@ namespace Lingu.Automata
             }
         }
 
-        private void Add(IEnumerable<IntRange> rangesToAdd)
+        private void Add(IEnumerable<Interval> rangesToAdd)
         {
             foreach (var range in rangesToAdd)
             {
@@ -346,14 +346,14 @@ namespace Lingu.Automata
             }
         }
 
-        private bool Contains(IntRange range)
+        private bool Contains(Interval range)
         {
             return Find(range.Min, out var found) && range.Max <= found.Max;
         }
 
-        private bool Find(int value, out IntRange range)
+        private bool Find(int value, out Interval range)
         {
-            bool Find(int lower, int upper, out IntRange found)
+            bool Find(int lower, int upper, out Interval found)
             {
                 if (upper < lower)
                 {
@@ -383,7 +383,7 @@ namespace Lingu.Automata
             return GetEnumerator();
         }
 
-        private void Sub(IntRange sub)
+        private void Sub(Interval sub)
         {
             var i = 0;
 
@@ -413,7 +413,7 @@ namespace Lingu.Automata
                     }
                     else
                     {
-                        ranges[i] = new IntRange(sub.Max + 1, range.Max);
+                        ranges[i] = new Interval(sub.Max + 1, range.Max);
                         i += 1;
                     }
                     continue;
@@ -429,7 +429,7 @@ namespace Lingu.Automata
                     }
                     else
                     {
-                        ranges[i] = new IntRange(range.Min, sub.Min - 1);
+                        ranges[i] = new Interval(range.Min, sub.Min - 1);
                         i += 1;
                     }
                     continue;
@@ -437,14 +437,14 @@ namespace Lingu.Automata
 
                 // inner
                 // sub.Min > range.Min && range.Max > sub.Max
-                ranges.Insert(i, new IntRange(range.Min, sub.Min - 1));
-                ranges[i + 1] = new IntRange(sub.Max + 1, range.Max);
+                ranges.Insert(i, new Interval(range.Min, sub.Min - 1));
+                ranges[i + 1] = new Interval(sub.Max + 1, range.Max);
                 // done
                 break;
             }
         }
 
-        public Codepoints Sub(IEnumerable<IntRange> rangesToSub)
+        private Codepoints Sub(IEnumerable<Interval> rangesToSub)
         {
             foreach (var range in rangesToSub)
             {
@@ -454,6 +454,6 @@ namespace Lingu.Automata
             return this;
         }
 
-        private readonly List<IntRange> ranges;
+        private readonly List<Interval> ranges;
     }
 }

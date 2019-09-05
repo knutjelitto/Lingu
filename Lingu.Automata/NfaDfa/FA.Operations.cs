@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
- using System.Linq;
+using System.Linq;
 
 using Lingu.Commons;
 
@@ -89,7 +89,7 @@ namespace Lingu.Automata
 
                     foreach (var transition in state.Transitions)
                     {
-                        rest.Sub(transition.Terminal.GetRanges());
+                        rest = rest.ExceptWith(transition.Terminal);
                     }
 
                     if (!rest.IsEmpty)
@@ -465,7 +465,7 @@ namespace Lingu.Automata
                     var result = new List<Trans>();
                     foreach (var transition in state.Transitions)
                     {
-                        foreach (var range in transition.Terminal.GetRanges())
+                        foreach (var range in transition.Terminal.GetIntervals())
                         {
                             result.Add(new Trans { Range = new Range(range.Min, range.Max), Target = transition.Target.Id });
                         }
