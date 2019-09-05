@@ -11,11 +11,11 @@ namespace Lingu.Automata
     {
         public const int MinCodePoint = 0;
         public const int MaxCodePoint = 0x10FFFF;
-        public static IntegerSet Any() => new IntegerSet((MinCodePoint, MaxCodePoint));
+        public static Codepoints Any() => new Codepoints((MinCodePoint, MaxCodePoint));
 
         public static readonly CatergorySets Category = new CatergorySets();
 
-        public static bool IsAny(IntegerSet set)
+        public static bool IsAny(Codepoints set)
         {
             return set.Min == MinCodePoint &&
                    set.Max == MaxCodePoint &
@@ -44,7 +44,7 @@ namespace Lingu.Automata
                 ("M", new[] {UnicodeCategory.NonSpacingMark, UnicodeCategory.SpacingCombiningMark, UnicodeCategory.EnclosingMark}),
             };
 
-            public IntegerSet this[string category]
+            public Codepoints this[string category]
             {
                 get
                 {
@@ -67,7 +67,7 @@ namespace Lingu.Automata
                         return this[def.categories[0]];
                     }
 
-                    var set = new IntegerSet();
+                    var set = new Codepoints();
 
                     foreach (var unicodeCategory in def.categories)
                     {
@@ -80,7 +80,7 @@ namespace Lingu.Automata
                 }
             }
 
-            public IntegerSet this[UnicodeCategory category]
+            public Codepoints this[UnicodeCategory category]
             {
                 get
                 {
@@ -89,9 +89,9 @@ namespace Lingu.Automata
                 }
             }
 
-            private static IntegerSet Generate(UnicodeCategory category)
+            private static Codepoints Generate(UnicodeCategory category)
             {
-                var set = new IntegerSet();
+                var set = new Codepoints();
 
                 for (int ch = char.MinValue; ch <= char.MaxValue; ++ch)
                 {
@@ -104,8 +104,8 @@ namespace Lingu.Automata
                 return set;
             }
 
-            private readonly IntegerSet[] basicSets = new IntegerSet[30];
-            private readonly Dictionary<string, IntegerSet> sets = new Dictionary<string, IntegerSet>();
+            private readonly Codepoints[] basicSets = new Codepoints[30];
+            private readonly Dictionary<string, Codepoints> sets = new Dictionary<string, Codepoints>();
         }
     }
 }

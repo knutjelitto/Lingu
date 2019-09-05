@@ -28,7 +28,7 @@ namespace Lingu.Tree
 
         public TerminalDefinition GenTerminal(Expression expression)
         {
-            var name = new AtomName("__T_" + nextTerminalId++);
+            var name = new AtomName("$T" + nextTerminalId++);
 
             var terminal = new TerminalDefinition(true, name, expression);
 
@@ -39,7 +39,7 @@ namespace Lingu.Tree
 
         public RuleDefinition GenRule(Expression expression)
         {
-            var name = new AtomName("__T_" + nextRuleId++);
+            var name = new AtomName("$R" + nextRuleId++);
 
             var terminal = new RuleDefinition(true, name, expression);
 

@@ -6,17 +6,15 @@ using System.Linq;
 
 namespace Lingu.Automata
 {
-    public struct IntegerRange : IEnumerable<int>
+    public struct IntRange : IEnumerable<int>
     {
-        public static readonly IntegerRange Empty = new IntegerRange(0, -1);
-
-        public IntegerRange(int minmax)
+        public IntRange(int minmax)
         {
             Min = minmax;
             Max = minmax;
         }
 
-        public IntegerRange(int min, int max)
+        public IntRange(int min, int max)
         {
             Min = min;
             Max = max;
@@ -32,7 +30,7 @@ namespace Lingu.Automata
             return Min <= value && value <= Max;
         }
 
-        public bool Overlaps(IntegerRange other)
+        public bool Overlaps(IntRange other)
         {
             return Contains(other.Min) || Contains(other.Max) || other.Contains(Min) || other.Contains(Max);
         }
@@ -59,7 +57,7 @@ namespace Lingu.Automata
             return $"{CharRep.InRange(Min)}-{CharRep.InRange(Max)}";
         }
 
-        public static bool TryParse(string str, out IntegerRange range)
+        public static bool TryParse(string str, out IntRange range)
         {
             var end = 0;
             while (end < str.Length && char.IsDigit(str, end))
@@ -72,7 +70,7 @@ namespace Lingu.Automata
                 {
                     if (int.TryParse(str, out var minmax))
                     {
-                        range = new IntegerRange(minmax);
+                        range = new IntRange(minmax);
                         return true;
                     }
                 }
@@ -87,7 +85,7 @@ namespace Lingu.Automata
                     {
                         if (int.TryParse(str.Substring(start, end-start), out var max))
                         {
-                            range = new IntegerRange(min, max);
+                            range = new IntRange(min, max);
                             return true;
                         }
                     }
@@ -105,7 +103,7 @@ namespace Lingu.Automata
 
         public override bool Equals(object obj)
         {
-            return obj is IntegerRange other && Min == other.Min && Max == other.Max;
+            return obj is IntRange other && Min == other.Min && Max == other.Max;
         }
 
         public override int GetHashCode() => (Min, Max).GetHashCode();

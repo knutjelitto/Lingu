@@ -6,33 +6,33 @@ using Lingu.Commons;
 
 namespace Lingu.Automata
 {
-    public class IntegerSet : IEnumerable<int>
+    public class Codepoints : IEnumerable<int>
     {
-        public static readonly IntegerSet Empty = new IntegerSet();
+        public static readonly Codepoints Empty = new Codepoints();
 
-        public IntegerSet(IntegerRange range)
+        public Codepoints(IntRange range)
             : this(Enumerable.Repeat(range, 1))
         {
         }
 
-        public IntegerSet()
-            : this(Enumerable.Empty<IntegerRange>())
+        public Codepoints()
+            : this(Enumerable.Empty<IntRange>())
         {
         }
 
-        public IntegerSet(params (int min, int max)[] ranges)
-            : this(ranges.Select(p => new IntegerRange(p.min, p.max)))
+        public Codepoints(params (int min, int max)[] ranges)
+            : this(ranges.Select(p => new IntRange(p.min, p.max)))
         {
         }
 
-        public IntegerSet(IEnumerable<IntegerSet> set)
+        public Codepoints(IEnumerable<Codepoints> set)
             : this(set.SelectMany(s => s.ranges))
         {
         }
 
-        public IntegerSet(IEnumerable<IntegerRange> ranges)
+        public Codepoints(IEnumerable<IntRange> ranges)
         {
-            this.ranges = new List<IntegerRange>();
+            this.ranges = new List<IntRange>();
             foreach (var range in ranges)
             {
                 Add(range);
@@ -49,7 +49,7 @@ namespace Lingu.Automata
 
         public int RangeCount => ranges.Count;
 
-        public static IntegerSet Parse(string str)
+        public static Codepoints Parse(string str)
         {
             if (TryParse(str, out var set))
             {
@@ -58,7 +58,7 @@ namespace Lingu.Automata
             return null;
         }
 
-        public static bool TryParse(string str, out IntegerSet set)
+        public static bool TryParse(string str, out Codepoints set)
         {
             if (str.Length == 0 || str[0] != '[')
             {
@@ -68,14 +68,14 @@ namespace Lingu.Automata
 
             var start = 1;
             var end = 1;
-            set = new IntegerSet();
+            set = new Codepoints();
             while (end < str.Length)
             {
                 while (end < str.Length && str[end] != ',' && str[end] != ']')
                 {
                     end = end + 1;
                 }
-                if (end > start && IntegerRange.TryParse(str.Substring(start, end - start), out var range))
+                if (end > start && IntRange.TryParse(str.Substring(start, end - start), out var range))
                 {
                     set.Add(range);
                     start = end = end + 1;
@@ -97,22 +97,22 @@ namespace Lingu.Automata
 
         public void Add(int value)
         {
-            Add(new IntegerRange(value));
+            Add(new IntRange(value));
         }
 
         public void Add(params (int min, int max)[] rangesToAdd)
         {
-            Add(rangesToAdd.Select(range => new IntegerRange(range.min, range.max)));
+            Add(rangesToAdd.Select(range => new IntRange(range.min, range.max)));
         }
 
-        public void Add(IntegerSet other)
+        public void Add(Codepoints other)
         {
             Add(other.ranges);
         }
 
-        public IntegerSet Clone()
+        public Codepoints Clone()
         {
-            return new IntegerSet(ranges);
+            return new Codepoints(ranges);
         }
 
         public bool Contains(int value)
@@ -122,17 +122,17 @@ namespace Lingu.Automata
 
         public override bool Equals(object obj)
         {
-            return obj is IntegerSet other && ranges.SequenceEqual(other.ranges);
+            return obj is Codepoints other && ranges.SequenceEqual(other.ranges);
         }
 
-        public IntegerSet ExceptWith(IntegerSet other)
+        public Codepoints ExceptWith(Codepoints other)
         {
             var set = Clone();
             set.Sub(other.ranges);
             return set;
         }
 
-        public IntegerSet IntersectWith(IntegerSet other)
+        public Codepoints IntersectWith(Codepoints other)
         {
             var union = this.UnionWith(other);
             var ex1 = this.ExceptWith(other);
@@ -162,7 +162,7 @@ namespace Lingu.Automata
             return ranges.Hash();
         }
 
-        public IEnumerable<IntegerRange> GetRanges()
+        public IEnumerable<IntRange> GetRanges()
         {
             return ranges;
         }
@@ -172,17 +172,17 @@ namespace Lingu.Automata
             return ranges.SelectMany(range => range);
         }
 
-        public bool IsProperSubsetOf(IntegerSet other)
+        public bool IsProperSubsetOf(Codepoints other)
         {
             return IsSubsetOf(other) && !Equals(other);
         }
 
-        public bool IsProperSupersetOf(IntegerSet other)
+        public bool IsProperSupersetOf(Codepoints other)
         {
             return IsSupersetOf(other) && !Equals(other);
         }
 
-        public bool IsSubsetOf(IntegerSet other)
+        public bool IsSubsetOf(Codepoints other)
         {
             foreach (var range in ranges)
             {
@@ -195,12 +195,12 @@ namespace Lingu.Automata
             return true;
         }
 
-        public bool IsSupersetOf(IntegerSet other)
+        public bool IsSupersetOf(Codepoints other)
         {
             return other.IsSubsetOf(this);
         }
 
-        public bool Overlaps(IntegerSet other)
+        public bool Overlaps(Codepoints other)
         {
             var t = 0;
             var o = 0;
@@ -228,15 +228,15 @@ namespace Lingu.Automata
 
         public void Sub(int value)
         {
-            Sub(new IntegerRange(value));
+            Sub(new IntRange(value));
         }
 
         public void Sub(params (int min, int max)[] rangesToSub)
         {
-            Sub(rangesToSub.Select(range => new IntegerRange(range.min, range.max)));
+            Sub(rangesToSub.Select(range => new IntRange(range.min, range.max)));
         }
 
-        public IntegerSet Substract(IntegerSet other)
+        public Codepoints Substract(Codepoints other)
         {
             return Clone().Sub(other.ranges);
         }
@@ -251,24 +251,24 @@ namespace Lingu.Automata
             return $"[{string.Join(",", ranges.Select(r => r.ToIString()))}]";
         }
 
-        public IntegerSet UnionWith(IntegerSet other)
+        public Codepoints UnionWith(Codepoints other)
         {
             var set = Clone();
             set.Add(other.ranges);
             return set;
         }
 
-        public static IntegerSet operator +(IntegerSet set1, IntegerSet set2)
+        public static Codepoints operator +(Codepoints set1, Codepoints set2)
         {
             return set2.UnionWith(set2);
         }
 
-        public static IntegerSet operator /(IntegerSet set1, IntegerSet set2)
+        public static Codepoints operator /(Codepoints set1, Codepoints set2)
         {
             return set1.ExceptWith(set2);
         }
 
-        private void Add(IntegerRange add)
+        private void Add(IntRange add)
         {
             var i = 0;
             while (i < ranges.Count)
@@ -291,11 +291,11 @@ namespace Lingu.Automata
                 if (add.Max <= current.Max)
                 {
                     // combine with current
-                    ranges[i] = new IntegerRange((char) Math.Min(add.Min, current.Min), current.Max);
+                    ranges[i] = new IntRange((char) Math.Min(add.Min, current.Min), current.Max);
                     return;
                 }
 
-                add = new IntegerRange((char) Math.Min(add.Min, current.Min), add.Max);
+                add = new IntRange((char) Math.Min(add.Min, current.Min), add.Max);
                 ranges.RemoveAt(i);
             }
 
@@ -305,7 +305,7 @@ namespace Lingu.Automata
             }
         }
 
-        private void Add(IEnumerable<IntegerRange> rangesToAdd)
+        private void Add(IEnumerable<IntRange> rangesToAdd)
         {
             foreach (var range in rangesToAdd)
             {
@@ -313,14 +313,14 @@ namespace Lingu.Automata
             }
         }
 
-        private bool Contains(IntegerRange range)
+        private bool Contains(IntRange range)
         {
             return Find(range.Min, out var found) && range.Max <= found.Max;
         }
 
-        private bool Find(int value, out IntegerRange range)
+        private bool Find(int value, out IntRange range)
         {
-            bool Find(int lower, int upper, out IntegerRange found)
+            bool Find(int lower, int upper, out IntRange found)
             {
                 if (upper < lower)
                 {
@@ -350,7 +350,7 @@ namespace Lingu.Automata
             return GetEnumerator();
         }
 
-        private void Sub(IntegerRange sub)
+        private void Sub(IntRange sub)
         {
             var i = 0;
 
@@ -380,7 +380,7 @@ namespace Lingu.Automata
                     }
                     else
                     {
-                        ranges[i] = new IntegerRange(sub.Max + 1, range.Max);
+                        ranges[i] = new IntRange(sub.Max + 1, range.Max);
                         i += 1;
                     }
                     continue;
@@ -396,7 +396,7 @@ namespace Lingu.Automata
                     }
                     else
                     {
-                        ranges[i] = new IntegerRange(range.Min, sub.Min - 1);
+                        ranges[i] = new IntRange(range.Min, sub.Min - 1);
                         i += 1;
                     }
                     continue;
@@ -404,14 +404,14 @@ namespace Lingu.Automata
 
                 // inner
                 // sub.Min > range.Min && range.Max > sub.Max
-                ranges.Insert(i, new IntegerRange(range.Min, sub.Min - 1));
-                ranges[i + 1] = new IntegerRange(sub.Max + 1, range.Max);
+                ranges.Insert(i, new IntRange(range.Min, sub.Min - 1));
+                ranges[i + 1] = new IntRange(sub.Max + 1, range.Max);
                 // done
                 break;
             }
         }
 
-        public IntegerSet Sub(IEnumerable<IntegerRange> rangesToSub)
+        public Codepoints Sub(IEnumerable<IntRange> rangesToSub)
         {
             foreach (var range in rangesToSub)
             {
@@ -421,6 +421,6 @@ namespace Lingu.Automata
             return this;
         }
 
-        private readonly List<IntegerRange> ranges;
+        private readonly List<IntRange> ranges;
     }
 }

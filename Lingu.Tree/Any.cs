@@ -3,7 +3,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class AtomAny : Atom
+    public sealed class Any : Atom
     {
         public override FA GetFA() => FA.Any;
 

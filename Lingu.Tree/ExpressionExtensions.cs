@@ -6,7 +6,7 @@ namespace Lingu.Tree
     {
         public static bool IsSingleCodePoint(this Expression expression)
         {
-            if (expression is AtomCodepoint)
+            if (expression is UcCodepoint)
             {
                 return true;
             }
@@ -20,7 +20,7 @@ namespace Lingu.Tree
 
         public static int GetSingleCodePoint(this Expression expression)
         {
-            if (expression is AtomCodepoint codePoint)
+            if (expression is UcCodepoint codePoint)
             {
                 return codePoint.Value;
             }

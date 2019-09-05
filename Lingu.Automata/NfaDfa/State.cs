@@ -23,7 +23,7 @@ namespace Lingu.Automata
 
         public void Add(State target)
         {
-            Transitions.Add(new Transition(Atom.From(IntegerSet.Empty), target));
+            Transitions.Add(new Transition(Atom.From(Codepoints.Empty), target));
         }
 
         public void Add(Atom terminal, State target)

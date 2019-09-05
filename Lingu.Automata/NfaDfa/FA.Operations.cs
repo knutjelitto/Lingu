@@ -249,7 +249,7 @@ namespace Lingu.Automata
 
                 foreach (var state in dfa.States)
                 {
-                    var all = new IntegerSet();
+                    var all = new Codepoints();
                     var sum = 0;
                     foreach (var transition in state.Transitions)
                     {
@@ -381,7 +381,7 @@ namespace Lingu.Automata
                             var ctranses = GetMerge(t1[n1], t2[n2]);
                             foreach (var ctrans in ctranses)
                             {
-                                state.Add(Atom.From(ctrans.Range), cross[ctrans.Target1, ctrans.Target2]);
+                                state.Add(Atom.From(ctrans.Range.Min, ctrans.Range.Max), cross[ctrans.Target1, ctrans.Target2]);
                             }
                         }
                     }
@@ -407,13 +407,19 @@ namespace Lingu.Automata
 
                     var result = new List<CrossTrans>();
 
-                    for(;;)
+                    void Add(Range range)
+                    {
+                        result.Add(new CrossTrans { Range = range, Target1 = t1.Target, Target2 = t2.Target });
+                    }
+
+                    for (;;)
                     {
                         Debug.Assert(r1.Min == r2.Min);
 
                         if (r1.Max == r2.Max)
                         {
-                            result.Add(new CrossTrans { Range = r1, Target1 = t1.Target, Target2 = t2.Target });
+                            Add(r1);
+
                             if (i1 == l1.Count && i2 == l2.Count)
                             {
                                 break;
@@ -426,17 +432,19 @@ namespace Lingu.Automata
                         }
                         else if (r1.Max < r2.Max)
                         {
-                            r2 = new IntegerRange(r1.Max + 1, r2.Max);
-                            result.Add(new CrossTrans { Range = r1, Target1 = t1.Target, Target2 = t2.Target });
+                            Add(r1);
+
                             Debug.Assert(i1 < l1.Count);
+                            r2 = new Range(r1.Max + 1, r2.Max);
                             t1 = l1[i1++];
                             r1 = t1.Range;
                         }
                         else if (r2.Max < r1.Max)
                         {
-                            r1 = new IntegerRange(r2.Max + 1, r1.Max);
-                            result.Add(new CrossTrans { Range = r2, Target1 = t1.Target, Target2 = t2.Target });
+                            Add(r2);
+
                             Debug.Assert(i2 < l2.Count);
+                            r1 = new Range(r2.Max + 1, r1.Max);
                             t2 = l2[i2++];
                             r2 = t2.Range;
                         }
@@ -459,7 +467,7 @@ namespace Lingu.Automata
                     {
                         foreach (var range in transition.Terminal.Set.GetRanges())
                         {
-                            result.Add(new Trans { Range = range, Target = transition.Target.Id });
+                            result.Add(new Trans { Range = new Range(range.Min, range.Max), Target = transition.Target.Id });
                         }
                     }
 
@@ -475,15 +483,26 @@ namespace Lingu.Automata
                     return result;
                 }
 
+                private struct Range
+                {
+                    public Range(int min, int max)
+                    {
+                        Min = min;
+                        Max = max;
+                    }
+                    public readonly int Min;
+                    public readonly int Max;
+                }
+
                 private class Trans
                 {
-                    public IntegerRange Range;
+                    public Range Range;
                     public int Target;
                 }
 
                 private class CrossTrans
                 {
-                    public IntegerRange Range;
+                    public Range Range;
                     public int Target1;
                     public int Target2;
                 }

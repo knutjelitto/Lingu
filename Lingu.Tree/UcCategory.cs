@@ -1,13 +1,12 @@
 ﻿using System;
-
 using Lingu.Automata;
 using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class AtomBlock : Atom
+    public class UcCategory : Atom
     {
-        public AtomBlock(string text)
+        public UcCategory(string text)
         {
             Text = text;
         }

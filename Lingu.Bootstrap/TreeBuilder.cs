@@ -185,21 +185,21 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomCodepoint(node.Value);
+            return new UcCodepoint(node.Value);
         }
 
         protected override object OnTerminalUnicodeBlock(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomBlock(node.Value);
+            return new UcBlock(node.Value);
         }
 
         protected override object OnTerminalUnicodeCategory(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomCategory(node.Value);
+            return new UcCategory(node.Value);
         }
 
         protected override object OnVariableRange(ASTNode node)
@@ -233,7 +233,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnTerminalLiteralAny(ASTNode node)
         {
-            return new AtomAny();
+            return new Any();
         }
 
         protected override object OnVariableCharacter(ASTNode node)

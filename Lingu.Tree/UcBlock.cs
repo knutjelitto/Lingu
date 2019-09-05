@@ -1,12 +1,16 @@
 ﻿using System;
+
 using Lingu.Automata;
 using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class AtomCategory : Atom
+    /// <summary>
+    /// Represents a Unicode block
+    /// </summary>
+    public class UcBlock : Atom
     {
-        public AtomCategory(string text)
+        public UcBlock(string text)
         {
             Text = text;
         }

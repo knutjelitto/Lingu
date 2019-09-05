@@ -1,15 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using Lingu.Automata;
 using Lingu.Commons;
 using Lingu.Errors;
 
 namespace Lingu.Tree
 {
-    public class AtomCodepoint : Atom
+    public class UcCodepoint : Atom
     {
-        public AtomCodepoint(string text)
+        public UcCodepoint(string text)
         {
             Text = text;
 

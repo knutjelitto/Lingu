@@ -6,22 +6,17 @@ namespace Lingu.Automata
     public class Atom
     {
         private Atom(int first, int last)
-            : this(new IntegerSet((first, last)))
+            : this(new Codepoints((first, last)))
         {
-            Set = new IntegerSet((first, last));
+            Set = new Codepoints((first, last));
         }
 
-        private Atom(IntegerSet set)
+        private Atom(Codepoints set)
         {
             Set = set;
         }
 
-        private Atom(IntegerRange range)
-        {
-            Set = new IntegerSet(range);
-        }
-
-        public IntegerSet Set { get; }
+        public Codepoints Set { get; }
 
         public static Atom From(int single)
         {
@@ -34,14 +29,9 @@ namespace Lingu.Automata
             return new Atom(first, last);
         }
 
-        public static Atom From(IntegerSet set)
+        public static Atom From(Codepoints set)
         {
             return new Atom(set);
-        }
-
-        public static Atom From(IntegerRange range)
-        {
-            return new Atom(range);
         }
 
         public override bool Equals(object obj)
@@ -74,7 +64,7 @@ namespace Lingu.Automata
             return Set.ToString();
         }
 
-        private static IntegerSet Invert(IntegerSet set)
+        private static Codepoints Invert(Codepoints set)
         {
             return UnicodeSets.Any().Substract(set);
         }
