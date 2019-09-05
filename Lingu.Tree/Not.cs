@@ -15,10 +15,10 @@ namespace Lingu.Tree
 
         public Expression Expression { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
             //return Expression.GetNfa().ToDfa().Minimize().Complete().Negate();
-            return Expression.GetNfa().ToDfa().Complete().Negate().Remove().ToNfa();
+            return Expression.GetFA().ToDfa().Complete().Negate().RemoveDead().ToNfa();
         }
 
         public override void Dump(Indentable output, bool top)

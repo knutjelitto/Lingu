@@ -20,9 +20,9 @@ namespace Lingu.Tree
         public Expression Expression { get; }
         public TreeActionX Action { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
-            return Expression.GetNfa();
+            return Expression.GetFA();
         }
 
         public override void Dump(Indentable output, bool top)

@@ -16,6 +16,11 @@ namespace Lingu.Automata
             Set = set;
         }
 
+        private Atom(IntegerRange range)
+        {
+            Set = new IntegerSet(range);
+        }
+
         public IntegerSet Set { get; }
 
         public static Atom From(int single)
@@ -32,6 +37,11 @@ namespace Lingu.Automata
         public static Atom From(IntegerSet set)
         {
             return new Atom(set);
+        }
+
+        public static Atom From(IntegerRange range)
+        {
+            return new Atom(range);
         }
 
         public override bool Equals(object obj)

@@ -25,6 +25,7 @@
         public static FA Any => Builder.Dot;
 
         public static FA From(int codePoint) => Builder.From((char)codePoint);
+
         public static FA From(string sequence) => Builder.From(sequence);
 
         public static FA From(int from, int to)
@@ -94,7 +95,7 @@
 
             public static FA Optional(FA fa)
             {
-                var clone = fa.Clone();
+                var clone = fa.ToNfa(true);
 
                 clone.Start.Add(clone.Final);
 
@@ -103,7 +104,7 @@
 
             public static FA Star(FA fa)
             {
-                var clone = fa.Clone();
+                var clone = fa.ToNfa(true);
 
                 clone.Start.Add(clone.Final);
                 clone.Final.Add(clone.Start);
@@ -113,7 +114,7 @@
 
             public static FA Plus(FA fa)
             {
-                var clone = fa.Clone();
+                var clone = fa.ToNfa(true);
 
                 clone.Final.Add(clone.Start);
 
@@ -122,8 +123,8 @@
 
             public static FA Or(FA fa, FA other)
             {
-                var first = fa.Clone();
-                var second = other.Clone();
+                var first = fa.ToNfa(true);
+                var second = other.ToNfa(true);
                 var newEnd = new State();
 
                 first.Start.Add(second.Start);
@@ -137,13 +138,13 @@
 
             public static FA Concat(FA fa, FA other)
             {
-                var first = fa.Clone();
+                var first = fa.ToNfa(true);
+                other = other.ToNfa(true);
 
                 first.Final.Add(other.Start);
 
                 return FA.From(first.Start, other.Final);
             }
         }
-
     }
 }

@@ -14,12 +14,12 @@ namespace Lingu.Tree
 
         public IReadOnlyList<Expression> Expressions { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
-            var nfa = Expressions.First().GetNfa();
+            var nfa = Expressions.First().GetFA();
             foreach (var expr in Expressions.Skip(1))
             {
-                nfa = nfa.Or(expr.GetNfa());
+                nfa = nfa.Or(expr.GetFA());
             }
             return nfa;
         }

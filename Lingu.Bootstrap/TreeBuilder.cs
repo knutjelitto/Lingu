@@ -61,8 +61,11 @@ namespace Lingu.Bootstrap
 
             Grammar = new Grammar(name);
 
-            CurrentContext = ReferenceKind.Illegal;
-            VisitChild<Options>(node, 1);
+            if (node.Children[1].SymbolType == SymbolType.Variable && node.Children[1].Symbol.ID == LinguParser.ID.VariableGrammarOptions)
+            {
+                CurrentContext = ReferenceKind.Illegal;
+                VisitChild<Options>(node, 1);
+            }
 
             CurrentContext = ReferenceKind.Terminal;
             VisitChild<Terminals>(node, 2);

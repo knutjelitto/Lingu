@@ -98,15 +98,8 @@ namespace Lingu.Tree
 
                 try
                 {
-                    var nfa = terminal.Expression.GetNfa();
-                    nfa.Dump("    ", writer);
-                    writer.WriteLine("-----------------------------");
-                    var dfa = nfa.ToDfa();
+                    var dfa = terminal.Expression.GetFA().ToDfa().Minimize().RemoveDead().Minimize();
                     dfa.Dump("    ", writer);
-                    writer.WriteLine("-----------------------------");
-                    dfa = dfa.Minimize();
-                    dfa.Dump("    ", writer);
-                    writer.WriteLine("-----------------------------");
                 }
                 catch (Exception e)
                 {

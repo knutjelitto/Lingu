@@ -5,7 +5,7 @@ namespace Lingu.Tree
 {
     public class AtomAny : Atom
     {
-        public override FA GetNfa() => FA.Any;
+        public override FA GetFA() => FA.Any;
 
         public override string ToString()
         {

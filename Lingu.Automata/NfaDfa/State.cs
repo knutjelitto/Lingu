@@ -31,6 +31,11 @@ namespace Lingu.Automata
             Transitions.Add(new Transition(terminal, target));
         }
 
+        public void Add(Transition transition)
+        {
+            Transitions.Add(transition);
+        }
+
         public IEnumerable<State> Closure()
         {
             var once = new UniqueQueue<State>();
@@ -53,6 +58,5 @@ namespace Lingu.Automata
         {
             return $"({Id},{IsFinal},({string.Join(",", Transitions)}))";
         }
-
     }
 }

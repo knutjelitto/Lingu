@@ -51,11 +51,6 @@ namespace Lingu.Automata
             return new FA(start, null, Enumerate(start));
         }
 
-        public FA Minimize()
-        {
-            return Minimizer.Minimize(this);
-        }
-
         public void Dump(string prefix, TextWriter writer)
         {
             foreach (var state in States)
@@ -79,11 +74,16 @@ namespace Lingu.Automata
             return Operations.Complete(CloneIf(cloned));
         }
 
-        public FA Cross(FA other, bool cloned = false)
+        public FA Substract(FA other, bool cloned = false)
         {
-            return Operations.Cross(CloneIf(cloned), other.CloneIf(cloned));
+            return Operations.Substract(CloneIf(cloned), other.CloneIf(cloned));
         }
 
+
+        public FA Minimize(bool cloned = false)
+        {
+            return Operations.Minimize(CloneIf(cloned));
+        }
 
         public FA ToDfa(bool cloned = false)
         {
@@ -95,7 +95,7 @@ namespace Lingu.Automata
             return Operations.ToNfa(CloneIf(cloned));
         }
 
-        public FA Remove(bool cloned = false)
+        public FA RemoveDead(bool cloned = false)
         {
             return Operations.RemoveDead(CloneIf(cloned));
         }

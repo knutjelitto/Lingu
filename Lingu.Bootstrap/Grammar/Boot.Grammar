@@ -5,8 +5,16 @@
     }
     terminals
     {
+        dotnix
+            : (. - '*')*
+            ;
+
+        blockComment
+            : '/*' ((. - '*') | '*' (. - '/'))* '*/'
+            ;
+
         lineComment2
-			: '//' (.* - newline)* newline
+			: '//' (. - newline)* newline
             ;
 
         lineComment
@@ -16,6 +24,11 @@
         newline
             : '\n'
             | '\r\n'
+            ;
+
+        newlineChar
+            : '\r'
+            | '\n'
             ;
     }
     rules

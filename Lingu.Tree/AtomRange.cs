@@ -14,7 +14,7 @@ namespace Lingu.Tree
         public Expression From { get; }
         public Expression To { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
             if (From.IsSingleCodePoint() && To.IsSingleCodePoint())
             {

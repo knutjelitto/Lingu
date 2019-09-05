@@ -14,17 +14,17 @@ namespace Lingu.Tree
 
         public IReadOnlyList<Expression> Expressions { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
             if (Expressions.Count != 2)
             {
                 throw new System.NotImplementedException();
             }
 
-            var nfa1 = Expressions[0].GetNfa();
-            var nfa2 = Expressions[1].GetNfa();
+            var nfa1 = Expressions[0].GetFA();
+            var nfa2 = Expressions[1].GetFA();
 
-            var cross = nfa1.ToDfa().Cross(nfa2.ToDfa());
+            var cross = nfa1.ToDfa().Substract(nfa2.ToDfa()).ToNfa();
 
             return cross; ;
         }

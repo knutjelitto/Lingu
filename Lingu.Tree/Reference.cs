@@ -21,9 +21,9 @@ namespace Lingu.Tree
             definition.Use();
         }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
-            return Definition.Expression.GetNfa();
+            return Definition.Expression.GetFA();
         }
 
         public override void Dump(Indentable output, bool top)

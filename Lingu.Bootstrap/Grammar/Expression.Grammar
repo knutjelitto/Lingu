@@ -10,17 +10,17 @@
         newline
             : U+000A        // LF
             | U+000D U+000A // CR LF
-			//| U+0085        // NL Next line character
-			//| U+2028        // LS Line separator character
-			//| U+2029        // PS Paragraph separator character
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
             ;
 
         newlineChar
             : U+000D        // CR
             | U+000A        // LF
-			//| U+0085        // NL Next line character
-			//| U+2028        // LS Line separator character
-			//| U+2029        // PS Paragraph separator character
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
             ;
 
         whitespace
@@ -31,12 +31,11 @@
             ;
 
         lineComment
-            //: '//' (~newlineChar)*
-            : ~newlineChar
+            : '//' (. - newline)* newline?
             ;
 
         blockComment
-            : '/*'  ( ~'*' | '*' ~'/')* '*/'
+            : '/*'  ((. - '*') | '*' (. - '/'))* '*/'
             ;
 
         separator

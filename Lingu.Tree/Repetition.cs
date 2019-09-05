@@ -17,9 +17,9 @@ namespace Lingu.Tree
         public int? Min { get; }
         public int? Max { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
-            var expr = Expression.GetNfa();
+            var expr = Expression.GetFA();
 
             if (Min == 0 && Max == 1)
             {

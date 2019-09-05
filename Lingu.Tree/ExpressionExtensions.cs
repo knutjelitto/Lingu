@@ -26,7 +26,7 @@ namespace Lingu.Tree
             }
             if (expression is AtomText text && text.Value.Length == 1)
             {
-                return text.Text[0];
+                return text.Value[0];
             }
 
             throw new NotImplementedException();

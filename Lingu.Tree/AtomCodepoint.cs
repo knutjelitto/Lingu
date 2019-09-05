@@ -36,7 +36,7 @@ namespace Lingu.Tree
         public string Text { get; }
         public int Value { get; }
 
-        public override FA GetNfa()
+        public override FA GetFA()
         {
             return FA.From(Value);
         }

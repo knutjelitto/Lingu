@@ -1,9 +1,9 @@
-﻿using Lingu.Commons;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
+ using System.Linq;
+
+using Lingu.Commons;
 
 namespace Lingu.Automata
 {
@@ -40,7 +40,11 @@ namespace Lingu.Automata
                     }
                 }
 
-                return From(start.DfaState);
+                var dfa = From(start.DfaState);
+
+                EnsureDfa(dfa);
+
+                return dfa;
             }
 
 
@@ -68,6 +72,10 @@ namespace Lingu.Automata
                 return dfa;
             }
 
+            public static FA Minimize(FA dfa)
+            {
+                return new Minimizer().Minimize(dfa);
+            }
 
             public static FA Complete(FA dfa)
             {
@@ -119,9 +127,19 @@ namespace Lingu.Automata
                 return dfa;
             }
 
-            public static FA Cross(FA dfa1, FA dfa2)
+            public static FA Union(FA dfa1, FA dfa2)
             {
-                return CrossBuilder.Build(dfa1, dfa2);
+                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.IsFinal || s2.IsFinal);
+            }
+
+            public static FA Intersect(FA dfa1, FA dfa2)
+            {
+                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.IsFinal && s2.IsFinal);
+            }
+
+            public static FA Substract(FA dfa1, FA dfa2)
+            {
+                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.IsFinal && !s2.IsFinal);
             }
 
             public static FA RemoveDead(FA dfa)
@@ -224,9 +242,11 @@ namespace Lingu.Automata
                 return From(Map(dfa.Start));
             }
 
+            [Conditional("DEBUG")]
             private static void EnsureComplete(FA dfa)
             {
                 EnsureDfa(dfa);
+
                 foreach (var state in dfa.States)
                 {
                     var all = new IntegerSet();
@@ -248,6 +268,68 @@ namespace Lingu.Automata
             }
 
             [Conditional("DEBUG")]
+            private static void EnsureDistinctTransitions(State state)
+            {
+                foreach (var pair in state.Transitions.GlidePairWise())
+                {
+                    if (pair.Left.Terminal.Set.Overlaps(pair.Right.Terminal.Set))
+                    {
+                        throw new Exception("DFA: some transitions overlap");
+                    }
+                }
+
+                var i = 0;
+                while (i < state.Transitions.Count)
+                {
+                    var trans1 = state.Transitions[i];
+
+                    if (trans1.Terminal.Set.IsEmpty)
+                    {
+                        throw new Exception("DFA: epsilon transition");
+                    }
+                    var j = i + 1;
+                    while (j < state.Transitions.Count)
+                    {
+                        var trans2 = state.Transitions[j];
+                        if (trans1.Terminal.Set.Overlaps(trans2.Terminal.Set))
+                        {
+                            throw new Exception("DFA: some transitions overlap");
+                        }
+                        j += 1;
+                    }
+                    i += 1;
+                }
+            }
+
+            [Conditional("DEBUG")]
+            private static void EnsureDefiniteTransitions(State state)
+            {
+                foreach (var transition in state.Transitions)
+                {
+                    if (transition.Terminal.Set.IsEmpty)
+                    {
+                        throw new Exception("DFA: epsilon transition");
+                    }
+                }
+            }
+
+            [Conditional("DEBUG")]
+            private static void EnsureDfaTransitions(FA dfa)
+            {
+                foreach (var state in dfa.States)
+                {
+                    EnsureDfaTransition(state);
+                }
+            }
+
+            [Conditional("DEBUG")]
+            private static void EnsureDfaTransition(State state)
+            {
+                EnsureDistinctTransitions(state);
+                EnsureDefiniteTransitions(state);
+            }
+
+            [Conditional("DEBUG")]
             private static void EnsureDfa(FA dfa)
             {
                 if (dfa.Final != null)
@@ -262,35 +344,12 @@ namespace Lingu.Automata
                 {
                     throw new Exception("DFA: at least on state");
                 }
-                foreach (var state in dfa.States)
-                {
-                    var i = 0;
-                    while (i < state.Transitions.Count)
-                    {
-                        var trans1 = state.Transitions[i];
-
-                        if (trans1.Terminal.Set.IsEmpty)
-                        {
-                            throw new Exception("DFA: epsilon transition");
-                        }
-                        var j = i + 1;
-                        while (j < state.Transitions.Count)
-                        {
-                            var trans2 = state.Transitions[j];
-                            if (trans1.Terminal.Set.Overlaps(trans2.Terminal.Set))
-                            {
-                                throw new Exception("DFA: some transitions overlap");
-                            }
-                            j += 1;
-                        }
-                        i += 1;
-                    }
-                }
+                EnsureDfaTransitions(dfa);
             }
 
             private static class CrossBuilder
             {
-                public static FA Build(FA dfa1, FA dfa2)
+                public static FA Build(FA dfa1, FA dfa2, Func<State,State,bool> isFinal)
                 {
                     EnsureDfa(dfa1);
                     EnsureDfa(dfa2);
@@ -301,7 +360,7 @@ namespace Lingu.Automata
                     EnsureComplete(dfa1);
                     EnsureComplete(dfa2);
 
-                    var cross = new CrossState[dfa1.States.Count, dfa2.States.Count];
+                    var cross = new State[dfa1.States.Count, dfa2.States.Count];
 
                     var t1 = dfa1.States.Select(s => GetTransitions(s)).ToList();
                     var t2 = dfa2.States.Select(s => GetTransitions(s)).ToList();
@@ -310,16 +369,28 @@ namespace Lingu.Automata
                     {
                         for (var n2 = 0; n2 < dfa2.States.Count; n2 += 1)
                         {
-                            cross[n1, n2] = new CrossState
-                            {
-                                S1 = dfa1.States[n1].Id, S2 = dfa2.States[n2].Id
-                            };
-
-                            var m = GetMerge(t1[n1], t2[n2]);
+                            cross[n1, n2] = new State(isFinal(dfa1.States[n1], dfa2.States[n2]));
                         }
                     }
 
-                    return null;
+                    for (var n1 = 0; n1 < dfa1.States.Count; n1 += 1)
+                    {
+                        for (var n2 = 0; n2 < dfa2.States.Count; n2 += 1)
+                        {
+                            var state = cross[n1, n2];
+                            var ctranses = GetMerge(t1[n1], t2[n2]);
+                            foreach (var ctrans in ctranses)
+                            {
+                                state.Add(Atom.From(ctrans.Range), cross[ctrans.Target1, ctrans.Target2]);
+                            }
+                        }
+                    }
+
+                    var dfa = From(cross[0,0]);
+
+                    EnsureComplete(dfa);
+
+                    return dfa.RemoveDead().Minimize();
                 }
 
                 private static List<CrossTrans> GetMerge(List<Trans> l1, List<Trans> l2)
@@ -330,29 +401,55 @@ namespace Lingu.Automata
                     var i2 = 0;
 
                     var t1 = l1[i1++];
+                    var r1 = t1.Range;
                     var t2 = l2[i2++];
+                    var r2 = t2.Range;
 
-                    var cross = new List<CrossTrans>();
+                    var result = new List<CrossTrans>();
 
-                    do
+                    for(;;)
                     {
-                        var intersection = t1.Set.IntersectWith(t2.Set);
-                        if (!intersection.IsEmpty)
-                        {
-                            var ct = new CrossTrans { Set = intersection, S1 = t1.StateId, S2 = t2.StateId };
-                            cross.Add(ct);
-                        }
-                        while (!t1.Set.IsEmpty && !t2.Set.IsEmpty)
-                        {
+                        Debug.Assert(r1.Min == r2.Min);
 
-                        }
-                        if (t1.Set.IsProperSupersetOf(t2.Set))
+                        if (r1.Max == r2.Max)
                         {
+                            result.Add(new CrossTrans { Range = r1, Target1 = t1.Target, Target2 = t2.Target });
+                            if (i1 == l1.Count && i2 == l2.Count)
+                            {
+                                break;
+                            }
+                            Debug.Assert(i1 < l1.Count && i2 < l2.Count );
+                            t1 = l1[i1++];
+                            r1 = t1.Range;
+                            t2 = l2[i2++];
+                            r2 = t2.Range;
+                        }
+                        else if (r1.Max < r2.Max)
+                        {
+                            r2 = new IntegerRange(r1.Max + 1, r2.Max);
+                            result.Add(new CrossTrans { Range = r1, Target1 = t1.Target, Target2 = t2.Target });
+                            Debug.Assert(i1 < l1.Count);
+                            t1 = l1[i1++];
+                            r1 = t1.Range;
+                        }
+                        else if (r2.Max < r1.Max)
+                        {
+                            r1 = new IntegerRange(r2.Max + 1, r1.Max);
+                            result.Add(new CrossTrans { Range = r2, Target1 = t1.Target, Target2 = t2.Target });
+                            Debug.Assert(i2 < l2.Count);
+                            t2 = l2[i2++];
+                            r2 = t2.Range;
                         }
                     }
-                    while (i1 < l1.Count && i2 < l2.Count);
 
-                    throw new NotImplementedException();
+                    Debug.Assert(result[0].Range.Min == 0);
+                    Debug.Assert(result[result.Count - 1].Range.Max == UnicodeSets.MaxCodePoint);
+                    for (int i = 1; i < result.Count; ++i)
+                    {
+                        Debug.Assert(result[i - 1].Range.Max + 1 == result[i].Range.Min);
+                    }
+
+                    return result;
                 }
 
                 private static List<Trans> GetTransitions(State state)
@@ -362,17 +459,17 @@ namespace Lingu.Automata
                     {
                         foreach (var range in transition.Terminal.Set.GetRanges())
                         {
-                            result.Add(new Trans { Set = new IntegerSet(range), StateId = transition.Target.Id });
+                            result.Add(new Trans { Range = range, Target = transition.Target.Id });
                         }
                     }
 
-                    result = result.OrderBy(t => t.Set.Min).ToList();
+                    result = result.OrderBy(t => t.Range.Min).ToList();
 
-                    Debug.Assert(result[0].Set.Min == 0);
-                    Debug.Assert(result[result.Count - 1].Set.Max == UnicodeSets.MaxCodePoint);
+                    Debug.Assert(result[0].Range.Min == 0);
+                    Debug.Assert(result[result.Count - 1].Range.Max == UnicodeSets.MaxCodePoint);
                     for (int i = 1; i < result.Count; ++i)
                     {
-                        Debug.Assert(result[i - 1].Set.Max + 1 == result[i].Set.Min);
+                        Debug.Assert(result[i - 1].Range.Max + 1 == result[i].Range.Min);
                     }
 
                     return result;
@@ -380,24 +477,181 @@ namespace Lingu.Automata
 
                 private class Trans
                 {
-                    public IntegerSet Set;
-                    public int StateId;
+                    public IntegerRange Range;
+                    public int Target;
                 }
 
                 private class CrossTrans
                 {
-                    public IntegerSet Set;
-                    public int S1;
-                    public int S2;
+                    public IntegerRange Range;
+                    public int Target1;
+                    public int Target2;
                 }
-
-                private class CrossState
-                {
-                    public int S1;
-                    public int S2;
-                }
-
             }
+
+            private class Minimizer
+            {
+                public FA Minimize(FA dfa)
+                {
+                    EnsureDfa(dfa);
+
+                    dfa = MergeStates(dfa);
+                    dfa = MergeTransitions(dfa);
+
+                    var result = From(dfa.Start);
+
+                    EnsureDfa(result);
+
+                    return result;
+                }
+
+                private FA MergeTransitions(FA dfa)
+                {
+                    foreach (var state in dfa.States)
+                    {
+                        //EnsureDfaTransition(state);
+
+                        var i = 0;
+
+                        while (i < state.Transitions.Count)
+                        {
+                            var j = i + 1;
+                            while (j < state.Transitions.Count)
+                            {
+                                if (state.Transitions[i].Target.Equals(state.Transitions[j].Target))
+                                {
+                                    state.Transitions[i].Terminal.Set.Add(state.Transitions[j].Terminal.Set);
+                                    state.Transitions.RemoveAt(j);
+                                    continue;
+                                }
+                                j += 1;
+                            }
+                            i += 1;
+                        }
+                    }
+
+                    return dfa;
+                }
+
+                private FA MergeStates(FA dfa)
+                {
+                    //
+                    // https://en.wikipedia.org/wiki/DFA_minimization
+                    // Hopcroft's algorithm
+                    //
+
+                    var finals = new StateSet(dfa.Finals.ToList());
+                    var nons = new StateSet(dfa.Inners.ToList());
+                    var all = dfa.States.ToList();
+
+                    var partitions = new List<StateSet> { finals, nons };
+                    var working = new List<StateSet> { finals };
+
+                    var terminals = new HashSet<Atom>(all.SelectMany(state => state.Transitions).Select(transition => transition.Terminal));
+
+                    while (working.Count > 0)
+                    {
+                        var a = working[0];
+                        working.RemoveAt(0);
+
+                        foreach (var terminal in terminals)
+                        {
+                            var x = new StateSet();
+                            foreach (var state in all)
+                            {
+                                foreach (var transition in state.Transitions)
+                                {
+                                    if (transition.Terminal.Set.Overlaps(terminal.Set))
+                                    {
+                                        if (a.Contains(transition.Target))
+                                        {
+                                            x.Add(state);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            var i = 0;
+
+                            while (i < partitions.Count)
+                            {
+                                var y = partitions[i];
+                                var x_intersect_y = x.IntersectWith(y);
+
+                                var y_without_x = y.ExceptWith(x);
+
+                                if (x_intersect_y.IsEmpty || y_without_x.IsEmpty)
+                                {
+                                    i += 1;
+                                    continue;
+                                }
+                                partitions[i] = x_intersect_y;
+                                i += 1;
+                                partitions.Insert(i, y_without_x);
+                                i += 1;
+
+                                var j = 0;
+                                while (j < working.Count)
+                                {
+                                    if (working[j] == y)
+                                    {
+                                        working.RemoveAt(j);
+                                        working.Add(x_intersect_y);
+                                        working.Add(y_without_x);
+                                        break;
+                                    }
+
+                                    j += 1;
+                                }
+
+                                if (j == working.Count)
+                                {
+                                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                                    if (x_intersect_y.Count <= y_without_x.Count)
+                                    {
+                                        working.Add(x_intersect_y);
+                                    }
+                                    else
+                                    {
+                                        working.Add(y_without_x);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var partition in partitions)
+                    {
+                        if (partition.Count >= 1)
+                        {
+                            var dfaStates = partition.ToList();
+                            var premium = dfaStates.First();
+                            var remove = dfaStates.Skip(1).ToList();
+
+                            foreach (var state in all)
+                            {
+                                foreach (var transition in state.Transitions)
+                                {
+                                    if (remove.Contains(transition.Target))
+                                    {
+                                        transition.Retarget(premium);
+                                    }
+                                }
+                            }
+
+                            EnsureDistinctTransitions(premium);
+                        }
+                    }
+
+                    var result = FA.From(dfa.Start);
+
+                    EnsureDfa(result);
+
+                    return result;
+                }
+            }
+
         }
     }
 }
