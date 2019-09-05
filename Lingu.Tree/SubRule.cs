@@ -16,7 +16,7 @@ namespace Lingu.Tree
         public AtomName Name { get; }
         public Expression Expression { get; }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Write("{");
             Name.Dump(output, false);

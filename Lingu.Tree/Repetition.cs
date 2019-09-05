@@ -65,7 +65,7 @@ namespace Lingu.Tree
             }
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             Expression.Dump(output, false);
             output.Write(Rep);

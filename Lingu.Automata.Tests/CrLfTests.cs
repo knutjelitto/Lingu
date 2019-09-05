@@ -36,8 +36,8 @@ namespace Lingu.Automata.Tests
             var cr = new State();
             var done = new State();
 
-            var l = Atom.From('l');
-            var c = Atom.From('c');
+            var l = Codepoints.From('l');
+            var c = Codepoints.From('c');
 
             start.Add(l, done);
             start.Add(c, cr);

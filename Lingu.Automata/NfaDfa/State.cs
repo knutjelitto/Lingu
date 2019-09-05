@@ -18,15 +18,15 @@ namespace Lingu.Automata
         public int Id { get; set; }
         public List<Transition> Transitions { get; }
 
-        public IEnumerable<Transition> EpsilonTransitions => Transitions.Where(t => t.Terminal.Set.IsEmpty);
-        public IEnumerable<Transition> TerminalTransitions => Transitions.Where(t => !t.Terminal.Set.IsEmpty);
+        public IEnumerable<Transition> EpsilonTransitions => Transitions.Where(t => t.Terminal.IsEmpty);
+        public IEnumerable<Transition> TerminalTransitions => Transitions.Where(t => !t.Terminal.IsEmpty);
 
         public void Add(State target)
         {
-            Transitions.Add(new Transition(Atom.From(Codepoints.Empty), target));
+            Transitions.Add(new Transition(Codepoints.Empty, target));
         }
 
-        public void Add(Atom terminal, State target)
+        public void Add(Codepoints terminal, State target)
         {
             Transitions.Add(new Transition(terminal, target));
         }

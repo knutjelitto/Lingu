@@ -4,7 +4,7 @@ namespace Lingu.Tree
 {
     public sealed class Epsilon : Node
     {
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Write("ε");
         }

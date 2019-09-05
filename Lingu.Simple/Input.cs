@@ -13,15 +13,15 @@
             this.offset = offset;
         }
 
-        public Input Next => new Input(this.text, this.offset + 1);
+        public Input Next => new Input(text, offset + 1);
 
-        public bool Valid => this.offset < this.text.Length;
+        public bool Valid => offset < text.Length;
 
-        public char Value => this.text[this.offset];
+        public char Value => text[offset];
 
         public string UpTo(Input next)
         {
-            return this.text.Substring(this.offset, next.offset - this.offset);
+            return text.Substring(offset, next.offset - offset);
         }
 
         public static implicit operator bool(Input input) => input.Valid;

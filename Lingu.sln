@@ -52,11 +52,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LinguItems", "LinguItems", 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lingu.Tree", "Lingu.Tree\Lingu.Tree.csproj", "{F6C20B35-2E0D-45F4-B3C0-99B5449FDEC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Tree", "Lingu.Tree\Lingu.Tree.csproj", "{F6C20B35-2E0D-45F4-B3C0-99B5449FDEC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lingu.Errors", "Lingu.Errors\Lingu.Errors.csproj", "{D205A3AA-AA4F-4379-9E0D-CEC6F1F8A4FD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lingu.Self", "Lingu.Self\Lingu.Self.csproj", "{56FE90DC-6D2A-418B-B863-CFA7898BC7FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Errors", "Lingu.Errors\Lingu.Errors.csproj", "{D205A3AA-AA4F-4379-9E0D-CEC6F1F8A4FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,10 +150,6 @@ Global
 		{D205A3AA-AA4F-4379-9E0D-CEC6F1F8A4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D205A3AA-AA4F-4379-9E0D-CEC6F1F8A4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D205A3AA-AA4F-4379-9E0D-CEC6F1F8A4FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56FE90DC-6D2A-418B-B863-CFA7898BC7FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56FE90DC-6D2A-418B-B863-CFA7898BC7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56FE90DC-6D2A-418B-B863-CFA7898BC7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56FE90DC-6D2A-418B-B863-CFA7898BC7FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

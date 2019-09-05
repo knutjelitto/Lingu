@@ -21,7 +21,7 @@ namespace Lingu.Tree
             UseCount += 1;
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Indend($"{Name}", () =>
             {

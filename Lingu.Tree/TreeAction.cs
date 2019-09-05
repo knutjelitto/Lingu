@@ -25,7 +25,7 @@ namespace Lingu.Tree
             return Expression.GetFA();
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             Expression.Dump(output, top);
             switch (Action)

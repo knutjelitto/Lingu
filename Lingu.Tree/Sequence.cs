@@ -24,7 +24,7 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;

@@ -24,7 +24,7 @@ namespace Lingu.Grammars
         {
             foreach (var transition in Current.Transitions)
             {
-                if (transition.Terminal.Match(@char))
+                if (transition.Terminal.Contains(@char))
                 {
                     Current = transition.Target;
                     Length += 1;

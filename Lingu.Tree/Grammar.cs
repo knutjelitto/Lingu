@@ -110,14 +110,14 @@ namespace Lingu.Tree
 
         public void Dump(TextWriter writer)
         {
-            var output = new Indentable();
+            var output = new IWriter();
 
             Dump(output, true);
 
             output.Dump(writer);
         }
 
-        public void Dump(Indentable output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             output.Block($"grammar {Name}", () =>
             {

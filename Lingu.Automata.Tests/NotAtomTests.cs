@@ -8,7 +8,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotSingleCreateString()
         {
-            var sut = Atom.From('a').Not();
+            var sut = Codepoints.From('a').Not();
 
             Assert.AreEqual("[0-96,98-1114111]", sut.ToIString());
         }
@@ -16,23 +16,23 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotSingleShouldMatch()
         {
-            var sut = Atom.From('a').Not();
+            var sut = Codepoints.From('a').Not();
 
-            Assert.IsFalse(sut.Match('a'));
+            Assert.IsFalse(sut.Contains('a'));
         }
 
         [TestMethod]
         public void NotSingleShouldntMatch()
         {
-            var sut = Atom.From('a').Not();
+            var sut = Codepoints.From('a').Not();
 
-            Assert.IsTrue(sut.Match('b'));
+            Assert.IsTrue(sut.Contains('b'));
         }
 
         [TestMethod]
         public void NotRangeCreateString()
         {
-            var sut = Atom.From('u', 'w').Not();
+            var sut = Codepoints.From('u', 'w').Not();
 
             Assert.AreEqual("[0-116,120-1114111]", sut.ToIString());
         }
@@ -40,20 +40,20 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotRangeShouldMatch()
         {
-            var sut = Atom.From('u', 'w').Not();
+            var sut = Codepoints.From('u', 'w').Not();
 
-            Assert.IsFalse(sut.Match('u'));
-            Assert.IsFalse(sut.Match('v'));
-            Assert.IsFalse(sut.Match('w'));
+            Assert.IsFalse(sut.Contains('u'));
+            Assert.IsFalse(sut.Contains('v'));
+            Assert.IsFalse(sut.Contains('w'));
         }
 
         [TestMethod]
         public void NotRangeShouldntMatch()
         {
-            var sut = Atom.From('u', 'w').Not();
+            var sut = Codepoints.From('u', 'w').Not();
 
-            Assert.IsTrue(sut.Match('a'));
-            Assert.IsTrue(sut.Match('z'));
+            Assert.IsTrue(sut.Contains('a'));
+            Assert.IsTrue(sut.Contains('z'));
         }
     }
 }

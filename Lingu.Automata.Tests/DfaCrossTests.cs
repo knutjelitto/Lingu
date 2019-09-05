@@ -39,8 +39,8 @@ namespace Lingu.Automata.Tests
         {
             var start = new State(true);
             var count = new State(false);
-            var a = Atom.From('a');
-            var b = Atom.From('b');
+            var a = Codepoints.From('a');
+            var b = Codepoints.From('b');
             start.Add(b, start);
             start.Add(a, count);
             count.Add(b, count);
@@ -58,8 +58,8 @@ namespace Lingu.Automata.Tests
         {
             var start = new State(true);
             var count = new State(false);
-            var a = Atom.From('a');
-            var b = Atom.From('b');
+            var a = Codepoints.From('a');
+            var b = Codepoints.From('b');
             start.Add(a, start);
             start.Add(b, count);
             count.Add(a, count);

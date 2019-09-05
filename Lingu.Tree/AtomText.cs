@@ -21,7 +21,7 @@ namespace Lingu.Tree
             return FA.From(Value);
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Write(ToString());
         }

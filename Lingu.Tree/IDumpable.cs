@@ -4,6 +4,6 @@ namespace Lingu.Tree
 {
     public interface IDumpable
     {
-        void Dump(Indentable output, bool top);
+        void Dump(IWriter output, bool top);
     }
 }

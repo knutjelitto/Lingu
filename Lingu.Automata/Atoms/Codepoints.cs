@@ -8,16 +8,23 @@ namespace Lingu.Automata
 {
     public class Codepoints : IEnumerable<int>
     {
-        public static readonly Codepoints Empty = new Codepoints();
+        public static Codepoints Empty => new Codepoints();
+        public static Codepoints Any => new Codepoints(UnicodeSets.Any());
 
-        public Codepoints(IntRange range)
+        private Codepoints(IntRange range)
             : this(Enumerable.Repeat(range, 1))
         {
         }
 
-        public Codepoints()
+        private Codepoints()
             : this(Enumerable.Empty<IntRange>())
         {
+        }
+
+        private Codepoints(Codepoints other)
+            : this(other.GetRanges())
+        {
+
         }
 
         public Codepoints(params (int min, int max)[] ranges)
@@ -48,6 +55,21 @@ namespace Lingu.Automata
         public int Min => ranges.First().Min;
 
         public int RangeCount => ranges.Count;
+
+        public static Codepoints From(Codepoints other)
+        {
+            return new Codepoints(other);
+        }
+
+        public static Codepoints From(int minmax)
+        {
+            return new Codepoints(new IntRange(minmax));
+        }
+
+        public static Codepoints From(int min, int max)
+        {
+            return new Codepoints(new IntRange(min, max));
+        }
 
         public static Codepoints Parse(string str)
         {
@@ -241,6 +263,11 @@ namespace Lingu.Automata
             return Clone().Sub(other.ranges);
         }
 
+        public Codepoints Not()
+        {
+            return Any.Substract(this);
+        }
+
         public override string ToString()
         {
             return $"[{string.Join(",", ranges)}]";
@@ -266,6 +293,12 @@ namespace Lingu.Automata
         public static Codepoints operator /(Codepoints set1, Codepoints set2)
         {
             return set1.ExceptWith(set2);
+        }
+
+
+        public static explicit operator Codepoints(char ch)
+        {
+            return From(ch);
         }
 
         private void Add(IntRange add)

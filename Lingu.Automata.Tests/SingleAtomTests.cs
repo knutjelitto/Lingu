@@ -8,7 +8,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void SingleCreateString()
         {
-            var sut = Atom.From('a');
+            var sut = Codepoints.From('a');
 
             Assert.AreEqual("['a']", sut.ToString());
         }
@@ -16,17 +16,17 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void SingleShouldMatch()
         {
-            var sut = Atom.From('a');
+            var sut = Codepoints.From('a');
 
-            Assert.IsTrue(sut.Match('a'));
+            Assert.IsTrue(sut.Contains('a'));
         }
 
         [TestMethod]
         public void SingleShouldntMatch()
         {
-            var sut = Atom.From('a');
+            var sut = Codepoints.From('a');
 
-            Assert.IsFalse(sut.Match('b'));
+            Assert.IsFalse(sut.Contains('b'));
         }
     }
 }

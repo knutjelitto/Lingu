@@ -26,7 +26,7 @@ namespace Lingu.Tree
             return Definition.Expression.GetFA();
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             if (Definition is TerminalDefinition && Definition.IsGenerated)
             {

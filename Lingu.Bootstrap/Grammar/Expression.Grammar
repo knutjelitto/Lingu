@@ -16,8 +16,8 @@
             ;
 
         newlineChar
-            : U+000D        // CR
-            | U+000A        // LF
+            : U+000A        // LF
+            | U+000D        // CR
 			| U+0085        // NL Next line character
 			| U+2028        // LS Line separator character
 			| U+2029        // PS Paragraph separator character
@@ -46,8 +46,12 @@
             : ('a' .. 'z' | 'A' .. 'Z' |  '_')
             ;
 
+		identifierContinue
+			: identifierStart | digit
+			;
+
         identifier
-            : identifierStart (identifierStart | digit)*
+            : identifierStart identifierContinue*
             ;
 
         digit
@@ -65,6 +69,7 @@
         number
             : zero
             | nonzeroDigit digit*
+			| number
             ;
     }
     rules

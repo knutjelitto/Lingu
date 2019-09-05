@@ -60,7 +60,7 @@ namespace Lingu.Samples.Json
             // ["][^"]*["]
 
             var quotation = (FA) '"';
-            var notQuotation = (FA) ((Atom) '"').Not();
+            var notQuotation = (FA) ((Codepoints) '"').Not();
 
             var @string = quotation + notQuotation.Star() + quotation;
 

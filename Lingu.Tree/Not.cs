@@ -21,7 +21,7 @@ namespace Lingu.Tree
             return Expression.GetFA().ToDfa().Complete().Negate().RemoveDead().ToNfa();
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Write("~");
             Expression.Dump(output, false);

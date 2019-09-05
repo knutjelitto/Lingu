@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
+#if false
 namespace Lingu.Automata
 {
     public class Atom
@@ -75,3 +76,4 @@ namespace Lingu.Automata
         }
     }
 }
+#endif

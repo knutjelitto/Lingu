@@ -19,7 +19,7 @@ namespace Lingu.Bootstrap
         public void Tweak()
         {
             var inlines = File.ReadAllLines(inputFile);
-            var outlines = new Indentable();
+            var outlines = new IWriter();
             
             outlines.WriteLine($"using System;");
             outlines.WriteLine($"using System.Collections.Generic;");
@@ -82,7 +82,7 @@ namespace Lingu.Bootstrap
             outlines.Persist(outputFile);
         }
 
-        private void Switch(IReadOnlyList<string> inlines, Indentable outlines)
+        private void Switch(IReadOnlyList<string> inlines, IWriter outlines)
         {
             var start = 0;
             for (; start < inlines.Count; ++start)
@@ -117,7 +117,7 @@ namespace Lingu.Bootstrap
             });
         }
 
-        private void Virtuals(IReadOnlyList<string> inlines, Indentable outlines)
+        private void Virtuals(IReadOnlyList<string> inlines, IWriter outlines)
         {
             var start = 0;
             for (; start < inlines.Count; ++start)
@@ -143,7 +143,7 @@ namespace Lingu.Bootstrap
             }
         }
 
-        private void Virtual(string line, Indentable outlines)
+        private void Virtual(string line, IWriter outlines)
         {
             line = line.Substring(1); // remove '\t'
             line = line.Replace(" {}", string.Empty);

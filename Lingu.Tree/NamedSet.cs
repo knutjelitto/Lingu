@@ -20,7 +20,7 @@ namespace Lingu.Tree
         public string Setname { get; }
         public bool Separate { get; }
 
-        public void Dump(Indentable output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             output.Block(Setname, () =>
             {

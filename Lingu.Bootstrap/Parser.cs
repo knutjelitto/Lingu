@@ -10,21 +10,6 @@ namespace Lingu.Bootstrap
 {
     public class Parser
     {
-        public static ParseResult Grammar(string source)
-        {
-            var lexer = new LinguLexer(source);
-            var parser = new LinguParser(lexer);
-
-            var result = parser.Parse();
-
-            return result;
-        }
-
-        public static Grammar Tree(ASTNode node)
-        {
-            return new TreeBuilder().Visit(node);
-        }
-
         public static Grammar Parse(FileRef file)
         {
             var source = File.ReadAllText(file);
@@ -43,5 +28,22 @@ namespace Lingu.Bootstrap
 
             return null;
         }
+
+        private static ParseResult Grammar(string source)
+        {
+            var lexer = new LinguLexer(source);
+            var parser = new LinguParser(lexer);
+
+            var result = parser.Parse();
+
+            return result;
+        }
+
+        private static Grammar Tree(ASTNode node)
+        {
+            return new TreeBuilder().Visit(node);
+        }
+
     }
+
 }

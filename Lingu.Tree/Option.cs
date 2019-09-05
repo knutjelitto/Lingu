@@ -12,7 +12,7 @@ namespace Lingu.Tree
 
         public AtomText Value { get; }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             Name.Dump(output, top);
             output.Write(" = ");

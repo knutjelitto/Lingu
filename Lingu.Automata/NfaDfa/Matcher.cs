@@ -22,7 +22,7 @@
 
                 foreach (var transition in State.Transitions)
                 {
-                    if (transition.Terminal.Match(character))
+                    if (transition.Terminal.Contains(character))
                     {
                         State = transition.Target;
                         matched = true;

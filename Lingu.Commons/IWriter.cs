@@ -4,14 +4,14 @@ using System.IO;
 
 namespace Lingu.Commons
 {
-    public class Indentable
+    public class IWriter
     {
         private readonly List<string> lines;
         private readonly string tab;
         private string prefix;
         private string current;
 
-        public Indentable(string tab = "    ")
+        public IWriter(string tab = "    ")
         {
             lines = new List<string>();
             this.tab = tab;

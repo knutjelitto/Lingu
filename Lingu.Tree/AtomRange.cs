@@ -24,7 +24,7 @@ namespace Lingu.Tree
             throw new System.NotImplementedException();
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             From.Dump(output, false);

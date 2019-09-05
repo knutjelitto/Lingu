@@ -48,14 +48,14 @@
             return Builder.From(sequence);
         }
 
-        public static explicit operator FA(Atom terminal)
+        public static explicit operator FA(Codepoints terminal)
         {
             return Builder.Single(terminal);
         }
 
         private static class Builder
         {
-            public static FA Single(Atom terminal)
+            public static FA Single(Codepoints terminal)
             {
                 var start = new State();
                 var end = new State();
@@ -65,16 +65,16 @@
                 return FA.From(start, end);
             }
 
-            public static FA Dot => Single(Atom.From(UnicodeSets.Any()));
+            public static FA Dot => Single(Codepoints.Any);
 
             public static FA From(char ch)
             {
-                return Single(Atom.From(ch));
+                return Single(Codepoints.From(ch));
             }
 
             public static FA From(int first, int last)
             {
-                return Single(Atom.From(first, last));
+                return Single(Codepoints.From(first, last));
             }
 
             public static FA From(string sequence)
@@ -86,7 +86,7 @@
                 foreach (var ch in sequence)
                 {
                     next = new State();
-                    current.Add(Atom.From(ch), next);
+                    current.Add(Codepoints.From(ch), next);
                     current = next;
                 }
 

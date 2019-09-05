@@ -24,12 +24,12 @@ namespace Lingu.Tree
             var nfa1 = Expressions[0].GetFA();
             var nfa2 = Expressions[1].GetFA();
 
-            var cross = nfa1.ToDfa().Substract(nfa2.ToDfa()).ToNfa();
+            var cross = nfa1.ToDfa().Substract(nfa2.ToDfa());
 
             return cross; ;
         }
 
-        public override void Dump(Indentable output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;

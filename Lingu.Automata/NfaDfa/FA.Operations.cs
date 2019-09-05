@@ -36,7 +36,7 @@ namespace Lingu.Automata
                         once.Enqueue(targetClosure, out targetClosure);
                         var target = targetClosure.DfaState;
 
-                        closure.DfaState.Add(Atom.From(terminal), target);
+                        closure.DfaState.Add(Codepoints.From(terminal), target);
                     }
                 }
 
@@ -89,7 +89,7 @@ namespace Lingu.Automata
 
                     foreach (var transition in state.Transitions)
                     {
-                        rest.Sub(transition.Terminal.Set.GetRanges());
+                        rest.Sub(transition.Terminal.GetRanges());
                     }
 
                     if (!rest.IsEmpty)
@@ -97,10 +97,10 @@ namespace Lingu.Automata
                         if (sink == null)
                         {
                             sink = new State();
-                            sink.Add(Atom.From(UnicodeSets.Any()), sink);
+                            sink.Add(Codepoints.Any, sink);
                         }
 
-                        state.Add(Atom.From(rest), sink);
+                        state.Add(Codepoints.From(rest), sink);
                     }
                 }
 
@@ -253,8 +253,8 @@ namespace Lingu.Automata
                     var sum = 0;
                     foreach (var transition in state.Transitions)
                     {
-                        sum += transition.Terminal.Set.Cardinality;
-                        all.Add(transition.Terminal.Set);
+                        sum += transition.Terminal.Cardinality;
+                        all.Add(transition.Terminal);
                     }
                     if (!UnicodeSets.IsAny(all))
                     {
@@ -272,7 +272,7 @@ namespace Lingu.Automata
             {
                 foreach (var pair in state.Transitions.GlidePairWise())
                 {
-                    if (pair.Left.Terminal.Set.Overlaps(pair.Right.Terminal.Set))
+                    if (pair.Left.Terminal.Overlaps(pair.Right.Terminal))
                     {
                         throw new Exception("DFA: some transitions overlap");
                     }
@@ -283,7 +283,7 @@ namespace Lingu.Automata
                 {
                     var trans1 = state.Transitions[i];
 
-                    if (trans1.Terminal.Set.IsEmpty)
+                    if (trans1.Terminal.IsEmpty)
                     {
                         throw new Exception("DFA: epsilon transition");
                     }
@@ -291,7 +291,7 @@ namespace Lingu.Automata
                     while (j < state.Transitions.Count)
                     {
                         var trans2 = state.Transitions[j];
-                        if (trans1.Terminal.Set.Overlaps(trans2.Terminal.Set))
+                        if (trans1.Terminal.Overlaps(trans2.Terminal))
                         {
                             throw new Exception("DFA: some transitions overlap");
                         }
@@ -306,7 +306,7 @@ namespace Lingu.Automata
             {
                 foreach (var transition in state.Transitions)
                 {
-                    if (transition.Terminal.Set.IsEmpty)
+                    if (transition.Terminal.IsEmpty)
                     {
                         throw new Exception("DFA: epsilon transition");
                     }
@@ -381,7 +381,7 @@ namespace Lingu.Automata
                             var ctranses = GetMerge(t1[n1], t2[n2]);
                             foreach (var ctrans in ctranses)
                             {
-                                state.Add(Atom.From(ctrans.Range.Min, ctrans.Range.Max), cross[ctrans.Target1, ctrans.Target2]);
+                                state.Add(Codepoints.From(ctrans.Range.Min, ctrans.Range.Max), cross[ctrans.Target1, ctrans.Target2]);
                             }
                         }
                     }
@@ -465,7 +465,7 @@ namespace Lingu.Automata
                     var result = new List<Trans>();
                     foreach (var transition in state.Transitions)
                     {
-                        foreach (var range in transition.Terminal.Set.GetRanges())
+                        foreach (var range in transition.Terminal.GetRanges())
                         {
                             result.Add(new Trans { Range = new Range(range.Min, range.Max), Target = transition.Target.Id });
                         }
@@ -539,7 +539,7 @@ namespace Lingu.Automata
                             {
                                 if (state.Transitions[i].Target.Equals(state.Transitions[j].Target))
                                 {
-                                    state.Transitions[i].Terminal.Set.Add(state.Transitions[j].Terminal.Set);
+                                    state.Transitions[i].Terminal.Add(state.Transitions[j].Terminal);
                                     state.Transitions.RemoveAt(j);
                                     continue;
                                 }
@@ -566,7 +566,7 @@ namespace Lingu.Automata
                     var partitions = new List<StateSet> { finals, nons };
                     var working = new List<StateSet> { finals };
 
-                    var terminals = new HashSet<Atom>(all.SelectMany(state => state.Transitions).Select(transition => transition.Terminal));
+                    var terminals = new HashSet<Codepoints>(all.SelectMany(state => state.Transitions).Select(transition => transition.Terminal));
 
                     while (working.Count > 0)
                     {
@@ -580,7 +580,7 @@ namespace Lingu.Automata
                             {
                                 foreach (var transition in state.Transitions)
                                 {
-                                    if (transition.Terminal.Set.Overlaps(terminal.Set))
+                                    if (transition.Terminal.Overlaps(terminal))
                                     {
                                         if (a.Contains(transition.Target))
                                         {
