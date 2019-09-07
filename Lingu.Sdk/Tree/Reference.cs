@@ -1,7 +1,10 @@
-﻿using Lingu.Automata;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Lingu.Automata;
 using Lingu.Commons;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class Reference : Expression
     {
@@ -14,6 +17,7 @@ namespace Lingu.Sdk.Tree
         public AtomName Name { get; }
         public ReferenceKind Kind { get; }
         public Definition Definition { get; private set; }
+        public override IEnumerable<Expression> Children => Enumerable.Empty<Expression>();
 
         public void ResolveTo(Definition definition)
         {

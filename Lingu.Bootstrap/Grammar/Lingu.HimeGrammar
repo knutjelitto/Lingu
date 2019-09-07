@@ -65,7 +65,13 @@
             ;
 
         cf_grammar
-            -> 'grammar'! NAME '{'! grammar_options grammar_terminals grammar_rules '}'!
+            -> 'grammar'! NAME '{'! grammar_item+ '}'!
+            ;
+
+        grammar_item
+            -> grammar_options^
+            |  grammar_terminals^
+            |  grammar_rules^
             ;
 
         /* OPTIONS */

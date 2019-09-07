@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Lingu.Commons;
+﻿using Lingu.Commons;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class SubRule : Node
     {

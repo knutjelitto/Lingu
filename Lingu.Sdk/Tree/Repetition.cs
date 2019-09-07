@@ -1,10 +1,11 @@
-﻿using Lingu.Automata;
-using Lingu.Commons;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Lingu.Sdk.Tree
+using Lingu.Automata;
+using Lingu.Commons;
+
+namespace Lingu.Tree
 {
     public class Repetition : Expression
     {

@@ -29,21 +29,16 @@ namespace Lingu.Bootstrap
             var source = FileRef.Source($"{ProjectDir}Grammar/{stem}.Grammar");
 
             var dests = source.With(".Out");
-            var grammarDump = dests.Add(".Grammar");
-            var terminals = dests.Add(".Terminals");
 
             var grammar = Parser.Parse(source);
 
             if (grammar != null)
             {
-                using (var writer = new StreamWriter(grammarDump))
-                {
-                    grammar.Dump(writer);
-                }
-                using (var writer = new StreamWriter(terminals))
-                {
-                    grammar.DumpTerminals(writer);
-                }
+                var builder = new Build.Builder(grammar);
+
+                builder.Check();
+                builder.Build();
+                builder.Dump(dests);
             }
         }
 
@@ -142,20 +137,6 @@ namespace Lingu.Bootstrap
             }
 
             return task;
-        }
-
-        /// <summary>
-        /// Adds an input to a compilation task
-        /// </summary>
-        /// <param name="task">The compilation task</param>
-        /// <param name="inputFile">The input as a parsed data in the command line</param>
-        private static void AddInput(CompilationTask task, string inputFile)
-        {
-            if (inputFile == null)
-                return;
-            if (inputFile.StartsWith("\""))
-                inputFile = inputFile.Substring(1, inputFile.Length - 2);
-            task.AddInputFile(inputFile);
         }
     }
 }

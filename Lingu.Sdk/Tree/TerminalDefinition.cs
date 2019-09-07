@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lingu.Automata;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public sealed class TerminalDefinition : Definition
     {
@@ -15,5 +13,9 @@ namespace Lingu.Sdk.Tree
             : base(false, name, expression)
         {
         }
+
+        public bool IsFragment { get; set; }
+
+        public FA Dfa { get; set; }
     }
 }

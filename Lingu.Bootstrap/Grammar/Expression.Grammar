@@ -69,7 +69,6 @@
         number
             : zero
             | nonzeroDigit digit*
-			| number
             ;
     }
     rules

@@ -1,7 +1,6 @@
-﻿using System;
-using Lingu.Commons;
+﻿using Lingu.Commons;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public abstract class Node : IDumpable
     {

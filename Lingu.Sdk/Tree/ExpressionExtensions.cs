@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public static class ExpressionExtensions
     {

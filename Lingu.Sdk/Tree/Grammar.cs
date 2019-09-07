@@ -1,11 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 using Lingu.Commons;
 using Lingu.Errors;
-using System;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class Grammar : IDumpable
     {
@@ -98,8 +98,7 @@ namespace Lingu.Sdk.Tree
 
                 try
                 {
-                    var dfa = terminal.Expression.GetFA().ToDfa().Minimize().RemoveDead().Minimize();
-                    dfa.Dump("    ", writer);
+                    terminal.Dfa.Dump("    ", writer);
                 }
                 catch (Exception e)
                 {

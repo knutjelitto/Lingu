@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public abstract class Expression : Node, IEnumerable<Expression>
     {

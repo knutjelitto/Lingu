@@ -1,6 +1,6 @@
 ﻿using Lingu.Commons;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public abstract class Definition : NamedNode
     {
@@ -19,6 +19,11 @@ namespace Lingu.Sdk.Tree
         public void Use()
         {
             UseCount += 1;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} -> ...";
         }
 
         public override void Dump(IWriter output, bool top)

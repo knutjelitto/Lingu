@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lingu.Commons\Lingu.Commons.csproj" />
     <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
     <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
   </ItemGroup>

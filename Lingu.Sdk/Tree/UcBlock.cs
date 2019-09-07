@@ -3,7 +3,7 @@
 using Lingu.Automata;
 using Lingu.Commons;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     /// <summary>
     /// Represents a Unicode block

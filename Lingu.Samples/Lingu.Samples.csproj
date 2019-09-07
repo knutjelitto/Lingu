@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lingu.Automata\Lingu.Automata.csproj" />
     <ProjectReference Include="..\Lingu.Grammars\Lingu.Grammars.csproj" />
   </ItemGroup>
 

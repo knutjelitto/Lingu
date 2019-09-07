@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Lingu.Commons;
 
-using Lingu.Commons;
-
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
-    public abstract class NamedSet<T> : IndexedList<string, T>, IDumpable
+    public abstract class NamedSet<T> : UniqueList<string, T>, IDumpable
         where T : INamed, IDumpable
     {
         public NamedSet(string setname, bool separate)

@@ -3,7 +3,7 @@ using Lingu.Automata;
 using Lingu.Commons;
 using Lingu.Errors;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class UcCodepoint : Atom
     {

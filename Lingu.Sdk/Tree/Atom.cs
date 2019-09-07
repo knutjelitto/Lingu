@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public abstract class Atom : Expression
     {

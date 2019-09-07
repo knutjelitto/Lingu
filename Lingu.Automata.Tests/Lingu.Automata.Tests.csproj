@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lingu.Automata\Lingu.Automata.csproj" />
+    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
   </ItemGroup>
 
 </Project>

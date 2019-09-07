@@ -4,12 +4,19 @@ using System.Collections.Generic;
 
 namespace Lingu.Commons
 {
-    public class IndexedList<TKey,TValue> : IReadOnlyList<TValue>, IReadOnlyDictionary<TKey,TValue>
+    public class UniqueList<T> : UniqueList<T, T>
+    {
+        public UniqueList() : base(item => item)
+        {
+        }
+    }
+
+    public class UniqueList<TKey,TValue> : IReadOnlyList<TValue>
     {
         private readonly List<TValue> values = new List<TValue>();
         private readonly Dictionary<TKey, TValue> index = new Dictionary<TKey, TValue>();
 
-        public IndexedList(Func<TValue, TKey> getKey)
+        public UniqueList(Func<TValue, TKey> getKey)
         {
             GetKey = getKey;
         }
@@ -26,6 +33,11 @@ namespace Lingu.Commons
 
         public Func<TValue, TKey> GetKey { get; }
 
+        public bool Contains(TKey key)
+        {
+            return index.ContainsKey(key);
+        }
+
         public bool ContainsKey(TKey key)
         {
             return index.ContainsKey(key);
@@ -34,6 +46,16 @@ namespace Lingu.Commons
         public bool TryGetValue(TKey key, out TValue value)
         {
             return index.TryGetValue(key, out value);
+        }
+
+        public void MaybeAdd(TValue value)
+        {
+            var key = GetKey(value);
+            if (!Contains(key))
+            {
+                index.Add(GetKey(value), value);
+                values.Add(value);
+            }
         }
 
         public void Add(TValue value)
@@ -58,11 +80,6 @@ namespace Lingu.Commons
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
-        {
-            return index.GetEnumerator();
         }
     }
 }

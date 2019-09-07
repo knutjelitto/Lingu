@@ -26,34 +26,35 @@ namespace Lingu.Bootstrap
                 case 0x0011: return (T)OnTerminalUnicodeCodepoint(node);
                 case 0x0012: return (T)OnVariableFile(node);
                 case 0x0013: return (T)OnVariableCfGrammar(node);
-                case 0x0014: return (T)OnVariableGrammarOptions(node);
-                case 0x0015: return (T)OnVariableOption(node);
-                case 0x0016: return (T)OnVariableGrammarTerminals(node);
-                case 0x0017: return (T)OnVariableTerminalRule(node);
-                case 0x0018: return (T)OnVariableTerminalExpression(node);
-                case 0x0019: return (T)OnVariableTerminalDifference(node);
-                case 0x001A: return (T)OnVariableTerminalSequence(node);
-                case 0x001B: return (T)OnVariableTerminalRepetition(node);
-                case 0x001C: return (T)OnVariableTerminalElement(node);
-                case 0x001D: return (T)OnVariableTerminalNot(node);
-                case 0x001E: return (T)OnVariableTerminalAtom(node);
-                case 0x001F: return (T)OnVariableRange(node);
-                case 0x0020: return (T)OnVariableCharacter(node);
-                case 0x0021: return (T)OnVariableText(node);
-                case 0x0022: return (T)OnVariableTerminalCardinalilty(node);
-                case 0x0023: return (T)OnVariableGrammarRules(node);
-                case 0x0024: return (T)OnVariableRule(node);
-                case 0x0025: return (T)OnVariableRuleExpression(node);
-                case 0x0026: return (T)OnVariableRuleAlternative(node);
-                case 0x0027: return (T)OnVariableRuleSequence(node);
-                case 0x0028: return (T)OnVariableRuleRepetition(node);
-                case 0x0029: return (T)OnVariableRuleTreeAction(node);
-                case 0x002A: return (T)OnVariableRuleElement(node);
-                case 0x002B: return (T)OnVariableRuleSub(node);
-                case 0x002C: return (T)OnVariableRuleAtom(node);
-                case 0x002D: return (T)OnVariableRuleAction(node);
-                case 0x002E: return (T)OnVariableReference(node);
-                case 0x0046: return (T)OnVirtualRange(node);
+                case 0x0014: return (T)OnVariableGrammarItem(node);
+                case 0x0015: return (T)OnVariableGrammarOptions(node);
+                case 0x0016: return (T)OnVariableOption(node);
+                case 0x0017: return (T)OnVariableGrammarTerminals(node);
+                case 0x0018: return (T)OnVariableTerminalRule(node);
+                case 0x0019: return (T)OnVariableTerminalExpression(node);
+                case 0x001A: return (T)OnVariableTerminalDifference(node);
+                case 0x001B: return (T)OnVariableTerminalSequence(node);
+                case 0x001C: return (T)OnVariableTerminalRepetition(node);
+                case 0x001D: return (T)OnVariableTerminalElement(node);
+                case 0x001E: return (T)OnVariableTerminalNot(node);
+                case 0x001F: return (T)OnVariableTerminalAtom(node);
+                case 0x0020: return (T)OnVariableRange(node);
+                case 0x0021: return (T)OnVariableCharacter(node);
+                case 0x0022: return (T)OnVariableText(node);
+                case 0x0023: return (T)OnVariableTerminalCardinalilty(node);
+                case 0x0024: return (T)OnVariableGrammarRules(node);
+                case 0x0025: return (T)OnVariableRule(node);
+                case 0x0026: return (T)OnVariableRuleExpression(node);
+                case 0x0027: return (T)OnVariableRuleAlternative(node);
+                case 0x0028: return (T)OnVariableRuleSequence(node);
+                case 0x0029: return (T)OnVariableRuleRepetition(node);
+                case 0x002A: return (T)OnVariableRuleTreeAction(node);
+                case 0x002B: return (T)OnVariableRuleElement(node);
+                case 0x002C: return (T)OnVariableRuleSub(node);
+                case 0x002D: return (T)OnVariableRuleAtom(node);
+                case 0x002E: return (T)OnVariableRuleAction(node);
+                case 0x002F: return (T)OnVariableReference(node);
+                case 0x0048: return (T)OnVirtualRange(node);
                 default:
                     throw new NotImplementedException();
             }
@@ -113,6 +114,10 @@ namespace Lingu.Bootstrap
             return VisitChildren(node).FirstOrDefault();
         }
         protected virtual object OnVariableCfGrammar(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
+        }
+        protected virtual object OnVariableGrammarItem(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }

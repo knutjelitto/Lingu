@@ -3,7 +3,7 @@ using Lingu.Commons;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class Sequence : Expression
     {
@@ -13,7 +13,7 @@ namespace Lingu.Sdk.Tree
         }
 
         public IReadOnlyList<Expression> Expressions { get; }
-        public override IEnumerable<Expression> Children => throw new System.NotImplementedException();
+        public override IEnumerable<Expression> Children => Expressions;
 
         public override FA GetFA()
         {

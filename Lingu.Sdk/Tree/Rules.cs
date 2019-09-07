@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Lingu.Sdk.Tree
+﻿namespace Lingu.Tree
 {
     public sealed class Rules : NamedSet<RuleDefinition>
     {

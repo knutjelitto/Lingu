@@ -2,7 +2,7 @@
 using Lingu.Automata;
 using Lingu.Commons;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class UcCategory : Atom
     {

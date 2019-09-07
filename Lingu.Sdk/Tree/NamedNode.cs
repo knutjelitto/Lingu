@@ -1,4 +1,4 @@
-﻿namespace Lingu.Sdk.Tree
+﻿namespace Lingu.Tree
 {
     public abstract class NamedNode : Node, INamed
     {

@@ -3,7 +3,7 @@ using Lingu.Commons;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lingu.Sdk.Tree
+namespace Lingu.Tree
 {
     public class Alternates : Expression
     {

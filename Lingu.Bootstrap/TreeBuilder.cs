@@ -5,7 +5,7 @@ using System.Linq;
 
 using Hime.Redist;
 
-using Lingu.Sdk.Tree;
+using Lingu.Tree;
 
 namespace Lingu.Bootstrap
 {
@@ -22,7 +22,7 @@ namespace Lingu.Bootstrap
         public Grammar Visit(ASTNode node)
         {
             VisitNode<Grammar>(node);
-
+            
             Grammar.Resolve();
 
             return Grammar;
@@ -61,19 +61,29 @@ namespace Lingu.Bootstrap
 
             Grammar = new Grammar(name);
 
-            if (node.Children[1].SymbolType == SymbolType.Variable && node.Children[1].Symbol.ID == LinguParser.ID.VariableGrammarOptions)
+
+            foreach (var subNode in node.Children.Skip(1))
             {
-                CurrentContext = ReferenceKind.Illegal;
-                VisitChild<Options>(node, 1);
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarOptions)
+                {
+                    CurrentContext = ReferenceKind.Illegal;
+                    Grammar.Options.AddRange(VisitChildren<Option>(subNode));
+                }
+
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarTerminals)
+                {
+                    CurrentContext = ReferenceKind.Terminal;
+                    Grammar.Terminals.AddRange(VisitChildren<TerminalDefinition>(subNode));
+                }
+
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarRules)
+                {
+                    CurrentContext = ReferenceKind.TerminalOrRule;
+                    Grammar.Rules.AddRange(VisitChildren<RuleDefinition>(subNode));
+                }
             }
 
-            CurrentContext = ReferenceKind.Terminal;
-            VisitChild<Terminals>(node, 2);
-
-            CurrentContext = ReferenceKind.TerminalOrRule;
-            VisitChild<Rules>(node, 3);
-
-            return null;
+            return Grammar; 
         }
 
         protected override object OnVariableGrammarOptions(ASTNode node)
@@ -344,9 +354,9 @@ namespace Lingu.Bootstrap
                 switch (node.Children[1].Value)
                 {
                     case "^":
-                        return new Sdk.Tree.TreeAction(expression, Sdk.Tree.TreeAction.TreeActionX.Promote);
+                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Promote);
                     case "!":
-                        return new Sdk.Tree.TreeAction(expression, Sdk.Tree.TreeAction.TreeActionX.Drop);
+                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Drop);
                 }
             }
 
