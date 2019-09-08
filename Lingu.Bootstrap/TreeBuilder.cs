@@ -9,7 +9,7 @@ using Lingu.Tree;
 
 namespace Lingu.Bootstrap
 {
-    public class TreeBuilder : LinguVisitor
+    public class TreeBuilder :Hime.LinguVisitor
     {
         public TreeBuilder()
         {
@@ -64,19 +64,19 @@ namespace Lingu.Bootstrap
 
             foreach (var subNode in node.Children.Skip(1))
             {
-                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarOptions)
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarOptions)
                 {
                     CurrentContext = ReferenceKind.Illegal;
                     Grammar.Options.AddRange(VisitChildren<Option>(subNode));
                 }
 
-                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarTerminals)
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarTerminals)
                 {
                     CurrentContext = ReferenceKind.Terminal;
                     Grammar.Terminals.AddRange(VisitChildren<TerminalDefinition>(subNode));
                 }
 
-                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarRules)
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarRules)
                 {
                     CurrentContext = ReferenceKind.TerminalOrRule;
                     Grammar.Rules.AddRange(VisitChildren<RuleDefinition>(subNode));
@@ -86,21 +86,9 @@ namespace Lingu.Bootstrap
             return Grammar; 
         }
 
-        protected override object OnVariableGrammarOptions(ASTNode node)
-        {
-            Grammar.Options.AddRange(VisitChildren<Option>(node));
-            return null;
-        }
-
         protected override object OnVariableOption(ASTNode node)
         {
             return new Option(VisitChild<AtomName>(node, 0), VisitChild<AtomText>(node, 1));
-        }
-
-        protected override object OnVariableGrammarTerminals(ASTNode node)
-        {
-            Grammar.Terminals.AddRange(VisitChildren<TerminalDefinition>(node));
-            return null;
         }
 
         protected override object OnVariableTerminalRule(ASTNode node)
@@ -157,7 +145,7 @@ namespace Lingu.Bootstrap
                     case "+": return new Repetition(expression, 1);
                     case null:
                     {
-                        if (rep.Symbol.ID == LinguParser.ID.VirtualRange)
+                        if (rep.Symbol.ID == Hime.LinguParser.ID.VirtualRange)
                         {
                             var int1 = VisitChild<AtomInteger>(rep, 0);
                             if (rep.Children.Count == 1)
@@ -263,12 +251,6 @@ namespace Lingu.Bootstrap
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
             return new AtomInteger(node.Value);
-        }
-
-        protected override object OnVariableGrammarRules(ASTNode node)
-        {
-            Grammar.Rules.AddRange(VisitChildren<RuleDefinition>(node));
-            return null;
         }
 
         protected override object OnVariableRule(ASTNode node)
@@ -387,6 +369,21 @@ namespace Lingu.Bootstrap
         }
 
         // #####################################################################
+
+        protected override object OnVariableGrammarOptions(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableGrammarTerminals(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object OnVariableGrammarRules(ASTNode node)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override object OnTerminalSeparator(ASTNode node)
         {

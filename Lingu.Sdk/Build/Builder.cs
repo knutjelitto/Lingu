@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using Lingu.Automata;
 using Lingu.Errors;
 using Lingu.Tree;
 
@@ -21,6 +21,7 @@ namespace Lingu.Build
         public void Check()
         {
             CheckTerminals();
+            CheckFragments();
         }
 
         public void Build()
@@ -82,6 +83,33 @@ namespace Lingu.Build
             }
         }
 
+        private void CheckFragments()
+        {
+            foreach (var terminal in Grammar.Terminals)
+            {
+                terminal.IsFragment = true;
+            }
+
+            foreach (var rule in Grammar.Rules)
+            {
+                CheckFragment(rule.Expression);
+            }
+        }
+
+        private void CheckFragment(Expression expression)
+        {
+            if (expression is Reference reference && reference.Definition is TerminalDefinition terminal)
+            {
+                terminal.IsFragment = false;
+            }
+
+            foreach (var subExpression in expression.Children)
+            {
+                CheckFragment(subExpression);
+            }
+        }
+
+
         private void BuildTerminals()
         {
             foreach (var terminal in Grammar.Terminals)
@@ -93,6 +121,7 @@ namespace Lingu.Build
         private void BuildTerminal(TerminalDefinition terminal)
         {
             terminal.Dfa = terminal.Expression.GetFA().ToDfa().Minimize().RemoveDead();
+            terminal.Bytes = Writer.Compact(terminal.Dfa);
         }
     }
 }

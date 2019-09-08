@@ -1,12 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>Lingu</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
     <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Lexing\" />
   </ItemGroup>
 
 </Project>

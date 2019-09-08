@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Check", "Lingu.Check\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Earley.Tests", "Lingu.Earley.Tests\Lingu.Earley.Tests.csproj", "{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Grammars", "Lingu.Grammars\Lingu.Grammars.csproj", "{CCAD20FD-D61C-4EE4-970E-E6E11D6116E1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Simple", "Lingu.Simple\Lingu.Simple.csproj", "{BD961571-3A47-4103-BC5E-89C384299430}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Simple.Tests", "Lingu.Simple.Tests\Lingu.Simple.Tests.csproj", "{B6A9E71E-56A8-42E3-9851-733F6FA96AD7}"
@@ -49,6 +47,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LinguItems", "LinguItems", 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Sdk", "Lingu.Sdk\Lingu.Sdk.csproj", "{7574EC52-90DA-4694-8108-39F3D60791AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lingu.Runtime", "Lingu.Runtime\Lingu.Runtime.csproj", "{1CF4EE71-14FD-4356-9E9D-011A4086B141}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lingu.Hime", "Lingu.Hime\Lingu.Hime.csproj", "{2014C1A0-53EA-40CB-829D-315A3BB6090D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,10 +86,6 @@ Global
 		{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCAD20FD-D61C-4EE4-970E-E6E11D6116E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCAD20FD-D61C-4EE4-970E-E6E11D6116E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCAD20FD-D61C-4EE4-970E-E6E11D6116E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCAD20FD-D61C-4EE4-970E-E6E11D6116E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD961571-3A47-4103-BC5E-89C384299430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD961571-3A47-4103-BC5E-89C384299430}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD961571-3A47-4103-BC5E-89C384299430}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -132,6 +130,14 @@ Global
 		{7574EC52-90DA-4694-8108-39F3D60791AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7574EC52-90DA-4694-8108-39F3D60791AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7574EC52-90DA-4694-8108-39F3D60791AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF4EE71-14FD-4356-9E9D-011A4086B141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF4EE71-14FD-4356-9E9D-011A4086B141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF4EE71-14FD-4356-9E9D-011A4086B141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF4EE71-14FD-4356-9E9D-011A4086B141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,62 +6,68 @@ namespace Lingu.Commons
 {
     public class UniqueList<T> : UniqueList<T, T>
     {
-        public UniqueList() : base(item => item)
+        public UniqueList()
+            : base(item => item)
+        {
+        }
+        public UniqueList(IEqualityComparer<T> eq)
+            : base(item => item, eq)
         {
         }
     }
 
-    public class UniqueList<TKey,TValue> : IReadOnlyList<TValue>
+    public class UniqueList<TKey, TValue> : IReadOnlyList<TValue>
     {
-        private readonly List<TValue> values = new List<TValue>();
-        private readonly Dictionary<TKey, TValue> index = new Dictionary<TKey, TValue>();
-
         public UniqueList(Func<TValue, TKey> getKey)
+            : this(getKey, EqualityComparer<TKey>.Default)
         {
-            GetKey = getKey;
         }
 
-        public TValue this[int index] => values[index];
+        public UniqueList(Func<TValue, TKey> getKey, IEqualityComparer<TKey> eq)
+        {
+            GetKey = getKey;
 
-        public TValue this[TKey key] => index[key];
+            Values = new List<TValue>();
+            Index = new Dictionary<TKey, int>(eq);
+        }
 
-        public int Count => values.Count;
+        private List<TValue> Values { get; }
+        private Dictionary<TKey, int> Index { get; }
 
-        public IEnumerable<TKey> Keys => index.Keys;
+        public TValue this[int index] => Values[index];
 
-        public IEnumerable<TValue> Values => values;
+        public TValue this[TKey key] => Values[Index[key]];
+
+        public int Count => Values.Count;
 
         public Func<TValue, TKey> GetKey { get; }
 
         public bool Contains(TKey key)
         {
-            return index.ContainsKey(key);
-        }
-
-        public bool ContainsKey(TKey key)
-        {
-            return index.ContainsKey(key);
+            return Index.ContainsKey(key);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            return index.TryGetValue(key, out value);
+            if (Index.TryGetValue(key, out var i))
+            {
+                value = Values[i];
+                return true;
+            }
+            value = default;
+            return false;
         }
 
-        public void MaybeAdd(TValue value)
+        public int Add(TValue value)
         {
             var key = GetKey(value);
-            if (!Contains(key))
+            if (Index.TryGetValue(key, out var i))
             {
-                index.Add(GetKey(value), value);
-                values.Add(value);
+                return i;
             }
-        }
-
-        public void Add(TValue value)
-        {
-            index.Add(GetKey(value), value);
-            values.Add(value);
+            Index.Add(key, Values.Count);
+            Values.Add(value);
+            return Values.Count - 1;
         }
 
         public void AddRange(IEnumerable<TValue> values)
@@ -74,7 +80,7 @@ namespace Lingu.Commons
 
         public IEnumerator<TValue> GetEnumerator()
         {
-            return values.GetEnumerator();
+            return Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

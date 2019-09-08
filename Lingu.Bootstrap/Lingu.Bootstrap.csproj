@@ -2,26 +2,26 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <StartupObject>Lingu.Bootstrap.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Grammar\Boot.Grammar" />
     <None Remove="Grammar\Expression.Grammar" />
-    <None Remove="Grammar\Lingu.Grammar" />
-    <None Remove="Grammar\Lingu.HimeGrammar" />
-    <None Remove="Grammar\LinguLexer.bin" />
-    <None Remove="Grammar\LinguParser.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Lingu.Hime\LinguLexer.cs" Link="Hime\LinguLexer.cs" />
+    <Compile Include="..\Lingu.Hime\LinguParser.cs" Link="Hime\LinguParser.cs" />
+    <Compile Include="..\Lingu.Hime\LinguVisitor.cs" Link="Hime\LinguVisitor.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Grammar\Boot.Grammar" />
     <EmbeddedResource Include="Grammar\Expression.Grammar" />
-    <EmbeddedResource Include="Grammar\Lingu.HimeGrammar" />
-    <EmbeddedResource Include="Grammar\Lingu.Grammar" />
-    <EmbeddedResource Include="Grammar\LinguLexer.bin" />
-    <EmbeddedResource Include="Grammar\LinguParser.bin" />
+    <EmbeddedResource Include="..\Lingu.Hime\LinguLexer.bin" Link="Hime\LinguLexer.bin" />
+    <EmbeddedResource Include="..\Lingu.Hime\LinguParser.bin" Link="Hime\LinguParser.bin" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,5 +32,11 @@
     <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
     <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
   </ItemGroup>
+
+  <!--
+  <ItemGroup>
+    <Folder Include="Hime\" />
+  </ItemGroup>
+  -->
 
 </Project>

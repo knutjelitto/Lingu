@@ -75,6 +75,14 @@ namespace Lingu.Commons
             }
         }
 
+        public void Indend(Action body)
+        {
+            using (Indent())
+            {
+                body();
+            }
+        }
+
         private IDisposable Indent()
         {
             var prevPrefix = prefix;

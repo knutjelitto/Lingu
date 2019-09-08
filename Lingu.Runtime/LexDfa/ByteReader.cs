@@ -1,36 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Lingu.Commons
+﻿namespace Lingu.Runtime.LexDfa
 {
-    public class BinReader
+    public abstract class ByteReader
     {
         private readonly byte[] bytes;
         private int offset;
 
-        public BinReader(byte[] bytes)
+        public ByteReader(byte[] bytes, int offset)
         {
             this.bytes = bytes;
-            offset = 0;
+            this.offset = offset;
         }
 
-        public bool ReadBool()
+        protected bool ReadBool()
         {
             return ReadByte() != 0;
         }
 
-        public int ReadInt32()
+        protected int ReadInt32()
         {
             return Read7BitEncodedInt();
         }
 
-        public byte ReadByte()
+        private byte ReadByte()
         {
             return bytes[offset++];
         }
 
-        protected int Read7BitEncodedInt()
+        private int Read7BitEncodedInt()
         {
             // Read out an Int32 7 bits at a time.  The high bit
             // of the byte when on means to continue reading more bytes.

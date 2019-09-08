@@ -86,7 +86,7 @@ namespace Lingu.Automata
             {
                 foreach (var transition in state.TerminalTransitions)
                 {
-                    Handle(transition.Terminal, transition.Target);
+                    Handle(transition.Set, transition.Target);
                 }
             }
 

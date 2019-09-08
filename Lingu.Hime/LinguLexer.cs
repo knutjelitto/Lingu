@@ -7,7 +7,7 @@ using System.IO;
 using Hime.Redist;
 using Hime.Redist.Lexer;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Bootstrap.Hime
 {
 	/// <summary>
 	/// Represents a lexer
@@ -17,7 +17,7 @@ namespace Lingu.Bootstrap
 		/// <summary>
 		/// The automaton for this lexer
 		/// </summary>
-		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer.bin");
+		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer");
 		/// <summary>
 		/// Contains the constant IDs for the terminals for this lexer
 		/// </summary>

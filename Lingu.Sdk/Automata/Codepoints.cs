@@ -6,7 +6,7 @@ using Lingu.Commons;
 
 namespace Lingu.Automata
 {
-    public partial class Codepoints : IEnumerable<int>
+    public partial class Codepoints : IEnumerable<int>, IEquatable<Codepoints>
     {
         public static Codepoints Empty => new Codepoints();
         public static Codepoints Any => new Codepoints(UnicodeSets.Any());
@@ -32,11 +32,6 @@ namespace Lingu.Automata
         {
         }
 
-        public Codepoints(IEnumerable<Codepoints> set)
-            : this(set.SelectMany(s => s.ranges))
-        {
-        }
-
         private Codepoints(IEnumerable<Interval> ranges)
         {
             this.ranges = new List<Interval>();
@@ -54,7 +49,7 @@ namespace Lingu.Automata
 
         public int Min => ranges.First().Min;
 
-        public int RangeCount => ranges.Count;
+        public int IntervalCount => ranges.Count;
 
         public static Codepoints From(Codepoints other)
         {
@@ -147,6 +142,11 @@ namespace Lingu.Automata
             return obj is Codepoints other && ranges.SequenceEqual(other.ranges);
         }
 
+        public bool Equals(Codepoints other)
+        {
+            return other != null && ranges.SequenceEqual(other.ranges);
+        }
+
         public Codepoints ExceptWith(Codepoints other)
         {
             var set = Clone();
@@ -156,16 +156,11 @@ namespace Lingu.Automata
 
         public Codepoints IntersectWith(Codepoints other)
         {
-            var union = this.UnionWith(other);
-            var ex1 = this.ExceptWith(other);
+            var union = UnionWith(other);
+            var ex1 = ExceptWith(other);
             var ex2 = other.ExceptWith(this);
 
             return union.ExceptWith(ex1).ExceptWith(ex2);
-        }
-
-        public string FmtCSharp()
-        {
-            return "";
         }
 
         public IEnumerator<int> GetEnumerator()
@@ -287,7 +282,7 @@ namespace Lingu.Automata
 
         public static Codepoints operator +(Codepoints set1, Codepoints set2)
         {
-            return set2.UnionWith(set2);
+            return set1.UnionWith(set2);
         }
 
         public static Codepoints operator /(Codepoints set1, Codepoints set2)

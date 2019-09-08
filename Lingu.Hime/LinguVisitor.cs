@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hime.Redist;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Bootstrap.Hime
 {
     public abstract class LinguVisitor
     {

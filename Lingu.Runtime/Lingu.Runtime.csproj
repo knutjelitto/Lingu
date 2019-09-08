@@ -2,10 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyName>Lingu.Runtime</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
-  </ItemGroup>
 
 </Project>

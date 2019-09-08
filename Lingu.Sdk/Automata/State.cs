@@ -18,8 +18,8 @@ namespace Lingu.Automata
         public int Id { get; set; }
         public List<Transition> Transitions { get; }
 
-        public IEnumerable<Transition> EpsilonTransitions => Transitions.Where(t => t.Terminal.IsEmpty);
-        public IEnumerable<Transition> TerminalTransitions => Transitions.Where(t => !t.Terminal.IsEmpty);
+        public IEnumerable<Transition> EpsilonTransitions => Transitions.Where(t => t.Set.IsEmpty);
+        public IEnumerable<Transition> TerminalTransitions => Transitions.Where(t => !t.Set.IsEmpty);
 
         public void Add(State target)
         {

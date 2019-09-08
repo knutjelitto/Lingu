@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Lingu.Commons;
 using Lingu.Errors;
+using Lingu.Automata;
+using Lingu.Tools;
 
 namespace Lingu.Tree
 {
@@ -82,28 +84,45 @@ namespace Lingu.Tree
         {
             foreach (var terminal in Terminals)
             {
-                if (terminal.IsGenerated)
-                {
-                    writer.Write($"[{terminal.Name}]");
-                    if (terminal.IsGenerated && terminal.Expression is AtomText text)
-                    {
-                        writer.Write($" '{text.Value}'");
-                    }
-                    writer.WriteLine();
-                }
-                else
-                {
-                    writer.WriteLine($"{terminal.Name}");
-                }
+                DumpTerminal(terminal, writer);
+            }
+        }
 
-                try
+        public void DumpTerminal(TerminalDefinition terminal, TextWriter writer)
+        {
+            if (terminal.IsFragment)
+            {
+                writer.Write("fragment ");
+            }
+            if (terminal.IsGenerated)
+            {
+                writer.Write($"[{terminal.Name}]");
+                if (terminal.IsGenerated && terminal.Expression is AtomText text)
                 {
-                    terminal.Dfa.Dump("    ", writer);
+                    writer.Write($" '{text.Value}'");
                 }
-                catch (Exception e)
+            }
+            else
+            {
+                writer.Write($"{terminal.Name}");
+            }
+            writer.WriteLine($"  [{terminal.Bytes.Length} bytes]");
+
+            try
+            {
+                terminal.Dfa.Dump("    ", writer);
+                writer.WriteLine("    ----");
+                var roundtrip = Reader.ReadDfa(terminal.Bytes);
+                var iwriter = new IWriter();
+                iwriter.Indend(() =>
                 {
-                    writer.WriteLine($"{e}");
-                }
+                    new DfaDump().Dump(iwriter, roundtrip);
+                });
+                iwriter.Dump(writer);
+            }
+            catch (Exception e)
+            {
+                writer.WriteLine($"{e}");
             }
         }
 

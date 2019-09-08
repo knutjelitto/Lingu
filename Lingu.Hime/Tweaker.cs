@@ -1,9 +1,10 @@
 ﻿using Lingu.Commons;
+using Mean.Maker.Builders;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Hime
 {
     public class Tweaker
     {
@@ -16,7 +17,27 @@ namespace Lingu.Bootstrap
             this.outputFile = outputFile;
         }
 
-        public void Tweak()
+        public void TweakLexer(FileRef lexer)
+        {
+            var lines = new List<string>();
+            foreach (var line in File.ReadAllLines(lexer))
+            {
+                lines.Add(line.Replace("LinguLexer.bin", "LinguLexer"));
+            }
+            File.WriteAllLines(lexer, lines);
+        }
+
+        public void TweakParser(FileRef lexer)
+        {
+            var lines = new List<string>();
+            foreach (var line in File.ReadAllLines(lexer))
+            {
+                lines.Add(line.Replace("LinguParser.bin", "LinguParser"));
+            }
+            File.WriteAllLines(lexer, lines);
+        }
+
+        public void TweakVisitor()
         {
             var inlines = File.ReadAllLines(inputFile);
             var outlines = new IWriter();

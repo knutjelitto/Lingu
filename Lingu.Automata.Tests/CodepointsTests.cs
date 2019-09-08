@@ -3,7 +3,7 @@
 namespace Lingu.Automata.Tests
 {
     [TestClass]
-    public class IntegerSetTests
+    public class CodepointsTests
     {
         [TestMethod]
         public void TestSimple()

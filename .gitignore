@@ -336,3 +336,5 @@ Lingu.Bootstrap/Hime
 Mean.Language/Generated/*.txt
 Mean.Language/Generated/*.dot
 Mean.Language/Generated/*.dll
+Lingu.Hime/*.dot
+Lingu.Hime/*.txt

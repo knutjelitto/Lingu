@@ -11,9 +11,19 @@ namespace Lingu.Commons
             stream = new MemoryStream();
         }
 
+        public byte[] ToArray()
+        {
+            return stream.ToArray();
+        }
+
         public void Write(int value)
         {
             Write7BitEncodedInt(value);
+        }
+
+        public void Write(bool value)
+        {
+            WriteByte((byte)(value ? 1 : 0));
         }
 
         protected void WriteByte(byte value)

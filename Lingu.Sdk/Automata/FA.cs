@@ -33,7 +33,6 @@ namespace Lingu.Automata
 
         public State Start { get; }
         public State Final { get; private set; }
-        public FAKind Kind { get; private set; }
         public List<State> States { get; }
         public IEnumerable<State> Finals => States.Where(state => state.IsFinal);
         public IEnumerable<State> Inners => States.Where(state => state.IsFinal);
@@ -60,7 +59,7 @@ namespace Lingu.Automata
                 writer.WriteLine($"{prefix}{finA}{state.Id}{finB}");
                 foreach (var transition in state.TerminalTransitions)
                 {
-                    writer.WriteLine($"{prefix}    {transition.Target.Id} <= {transition.Terminal}");
+                    writer.WriteLine($"{prefix}    {transition.Target.Id} <= {transition.Set}");
                 }
                 foreach (var transition in state.EpsilonTransitions)
                 {
@@ -128,7 +127,7 @@ namespace Lingu.Automata
 
                     foreach (var transition in state.Transitions)
                     {
-                        mapped.Add(transition.Terminal, Map(transition.Target));
+                        mapped.Add(transition.Set, Map(transition.Target));
                     }
                 }
 

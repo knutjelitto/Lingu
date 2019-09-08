@@ -17,5 +17,6 @@ namespace Lingu.Tree
         public bool IsFragment { get; set; }
 
         public FA Dfa { get; set; }
+        public byte[] Bytes { get; set; }
     }
 }
