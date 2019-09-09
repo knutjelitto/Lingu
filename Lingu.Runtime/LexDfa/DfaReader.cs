@@ -7,6 +7,11 @@
         {
         }
 
+        public DfaReader(byte[] bytes)
+            : this(bytes, 0)
+        {
+        }
+
         public Dfa Read()
         {
 

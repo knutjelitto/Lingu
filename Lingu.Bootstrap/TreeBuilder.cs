@@ -17,11 +17,11 @@ namespace Lingu.Bootstrap
 
         private ReferenceKind CurrentContext { get; set; } = ReferenceKind.Illegal;
 
-        private GrammarTree Grammar { get; set; }
+        private TreeGrammar Grammar { get; set; }
 
-        public GrammarTree Visit(ASTNode node)
+        public TreeGrammar Visit(ASTNode node)
         {
-            VisitNode<GrammarTree>(node);
+            VisitNode<TreeGrammar>(node);
             
             Grammar.Resolve();
 
@@ -52,14 +52,14 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(node.Children.Count == 1);
 
-            return VisitChild<GrammarTree>(node, 0);
+            return VisitChild<TreeGrammar>(node, 0);
         }
 
         protected override object OnVariableCfGrammar(ASTNode node)
         {
             var name =  VisitChild<Name>(node, 0);
 
-            Grammar = new GrammarTree(name);
+            Grammar = new TreeGrammar(name.Name);
 
 
             foreach (var subNode in node.Children.Skip(1))
@@ -67,7 +67,7 @@ namespace Lingu.Bootstrap
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarOptions)
                 {
                     CurrentContext = ReferenceKind.Illegal;
-                    Grammar.Options.AddRange(VisitChildren<TreeOption>(subNode));
+                    Grammar.TreeOptions.AddRange(VisitChildren<TreeOption>(subNode));
                 }
 
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarTerminals)
@@ -79,7 +79,19 @@ namespace Lingu.Bootstrap
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarRules)
                 {
                     CurrentContext = ReferenceKind.TerminalOrRule;
-                    Grammar.Rules.AddRange(VisitChildren<RuleDefinition>(subNode));
+                    IEnumerable<RuleDefinition> definitions = VisitChildren<RuleDefinition>(subNode);
+                    foreach (var definition in definitions)
+                    {
+                        if (definition.Name == "shiftExpression")
+                        {
+                            Debug.Assert(true);
+                        }
+                        if (Grammar.Nonterminals.TryGetValue(definition, out var already))
+                        {
+                            Debug.Assert(true);
+                        }
+                    }
+                    Grammar.Nonterminals.AddRange(definitions);
                 }
             }
 
@@ -88,7 +100,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableOption(ASTNode node)
         {
-            return new TreeOption(VisitChild<Name>(node, 0), VisitChild<Name>(node, 1));
+            return new TreeOption(VisitChild<Name>(node, 0).Name, VisitChild<Name>(node, 1));
         }
 
         protected override object OnVariableTerminalRule(ASTNode node)
@@ -215,15 +227,15 @@ namespace Lingu.Bootstrap
 
             if (CurrentContext == ReferenceKind.TerminalOrRule)
             {
-                foreach (var t in Grammar.Terminals)
+                foreach (var t in Grammar.Terminals.Cast<TerminalDefinition>())
                 {
                     if (t.IsGenerated && t.Expression.Equals(text))
                     {
-                        return NewReference(t.Name, ReferenceKind.Terminal);
+                        return NewReference(t, ReferenceKind.Terminal);
                     }
                 }
 
-                return NewReference(Grammar.GenTerminal(text).Name, ReferenceKind.Terminal);
+                return NewReference(Grammar.GenTerminal(text), ReferenceKind.Terminal);
             }
 
             return text;
@@ -315,7 +327,7 @@ namespace Lingu.Bootstrap
 #if true
             var rule = new RuleDefinition(true, name, expr);
 
-            Grammar.Rules.Add(rule);
+            Grammar.Nonterminals.Add(rule);
 
             return NewReference(name, ReferenceKind.TerminalOrRule);
 #else
@@ -359,7 +371,7 @@ namespace Lingu.Bootstrap
 
         // #####################################################################
 
-        private Reference NewReference(Name name, ReferenceKind kind)
+        private Reference NewReference(Grammars.Symbol name, ReferenceKind kind)
         {
             var reference = new Reference(name, kind);
 

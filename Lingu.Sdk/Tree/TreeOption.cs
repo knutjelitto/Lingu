@@ -1,10 +1,11 @@
 ﻿using Lingu.Commons;
+using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public class TreeOption : NamedNode
+    public class TreeOption : Symbol
     {
-        public TreeOption(Name name, Name value)
+        public TreeOption(string name, Name value)
             : base(name)
         {
             Value = value;
@@ -14,10 +15,7 @@ namespace Lingu.Tree
 
         public override void Dump(IWriter output, bool top)
         {
-            Name.Dump(output, top);
-            output.Write(" = ");
-            Value.Dump(output, top);
-            output.WriteLine(";");
+            output.WriteLine($"{this} = {Value};");
         }
     }
 }

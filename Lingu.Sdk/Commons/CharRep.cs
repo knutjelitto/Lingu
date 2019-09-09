@@ -17,9 +17,9 @@ namespace Lingu.Commons
 
             if (!result.StartsWith("U+"))
             {
-                return $"'{result}'";
+                return $"'{result}'+{value}";
             }
-            return result;
+            return $"{result}+{value}";
         }
 
         public static string Convert(int value)

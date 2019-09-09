@@ -1,13 +1,14 @@
 ﻿using Lingu.Commons;
+using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public abstract class Definition : NamedNode
+    public abstract class Definition : Symbol
     {
-        public Definition(bool generated, Name name, Expression expression)
+        public Definition(bool isGenerated, string name, Expression expression)
             : base(name)
         {
-            IsGenerated = generated;
+            IsGenerated = isGenerated;
             Expression = expression;
         }
 

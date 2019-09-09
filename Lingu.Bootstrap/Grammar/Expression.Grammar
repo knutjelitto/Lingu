@@ -80,7 +80,11 @@
 
         shiftExpression
             : {shlOp: shiftExpression '<<'! addExpression}^
-            | {shrOp: shiftExpression '>>'! addExpression}^
+            | addExpression^
+            ;
+
+        shiftExpression
+            : {shrOp: shiftExpression '>>'! addExpression}^
             | addExpression^
             ;
 

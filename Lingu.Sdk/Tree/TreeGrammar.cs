@@ -1,30 +1,26 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 using Lingu.Commons;
 using Lingu.Errors;
-using Lingu.Automata;
 using Lingu.Tools;
+using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public class GrammarTree : IDumpable
+    public class TreeGrammar : Grammar
     {
-        public GrammarTree(Name name)
+        public TreeGrammar(string name)
+            : base(name)
         {
-            Name = name;
-            Options = new Options();
-            Terminals = new Terminals();
-            Rules = new Rules();
-
+            TreeOptions = new TreeOptions();
             References = new List<Reference>();
         }
 
-        public Name Name { get; }
-        public Options Options { get; }
-        public Terminals Terminals { get; }
-        public Rules Rules { get; }
+        public TreeOptions TreeOptions { get; }
+        //public Rules Rules { get; }
 
         public List<Reference> References { get; }
 
@@ -45,7 +41,7 @@ namespace Lingu.Tree
 
             var terminal = new RuleDefinition(true, name, expression);
 
-            Rules.Add(terminal);
+            Nonterminals.Add(terminal);
 
             return terminal;
         }
@@ -56,25 +52,25 @@ namespace Lingu.Tree
             {
                 if (reference.Kind == ReferenceKind.Terminal)
                 {
-                    if (!Terminals.TryGetValue(reference.Name.Text, out var terminal))
+                    if (!Terminals.TryGetValue(reference.Name, out var terminal))
                     {
                         throw new TreeException($"can't resolve reference to terminal `{reference.Name}`");
                     }
-                    reference.ResolveTo(terminal);
+                    reference.ResolveTo((TerminalDefinition)terminal);
                 }
                 else if (reference.Kind == ReferenceKind.TerminalOrRule)
                 {
-                    if (!Rules.TryGetValue(reference.Name.Text, out var rule))
+                    if (!Nonterminals.TryGetValue(reference.Name, out var rule))
                     {
-                        if (!Terminals.TryGetValue(reference.Name.Text, out var terminal))
+                        if (!Terminals.TryGetValue(reference.Name, out var terminal))
                         {
                             throw new TreeException($"can't resolve reference to rule or terminal `{reference.Name}`");
                         }
-                        reference.ResolveTo(terminal);
+                        reference.ResolveTo((TerminalDefinition)terminal);
                     }
                     else
                     {
-                        reference.ResolveTo(rule);
+                        reference.ResolveTo((RuleDefinition)rule);
                     }
                 }
             }
@@ -82,7 +78,7 @@ namespace Lingu.Tree
 
         public void DumpTerminals(TextWriter writer)
         {
-            foreach (var terminal in Terminals)
+            foreach (var terminal in Terminals.Cast<TerminalDefinition>())
             {
                 DumpTerminal(terminal, writer);
             }
@@ -96,7 +92,7 @@ namespace Lingu.Tree
             }
             if (terminal.IsGenerated)
             {
-                writer.Write($"[{terminal.Name}]");
+                writer.Write($"[{terminal.Name}] ({terminal.Id})");
                 if (terminal.IsGenerated && terminal.Expression is String text)
                 {
                     writer.Write($" '{text.Value}'");
@@ -104,15 +100,13 @@ namespace Lingu.Tree
             }
             else
             {
-                writer.Write($"{terminal.Name}");
+                writer.Write($"{terminal.Name} ({terminal.Id})");
             }
-            writer.WriteLine($"  [{terminal.Bytes.Length} bytes]");
+            writer.WriteLine();
 
             try
             {
-                terminal.Dfa.Dump("    ", writer);
-                writer.WriteLine("    ----");
-                var roundtrip = Reader.ReadDfa(terminal.Bytes);
+                var roundtrip = terminal.Dfa;
                 var iwriter = new IWriter();
                 iwriter.Indend(() =>
                 {
@@ -135,13 +129,27 @@ namespace Lingu.Tree
             output.Dump(writer);
         }
 
-        public void Dump(IWriter output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Block($"grammar {Name}", () =>
             {
-                Options.Dump(output, top);
-                Terminals.Dump(output, top);
-                Rules.Dump(output, top);
+                DumpSet(output, top, "options", false, TreeOptions);
+                DumpSet(output, top, "terminals", true, Terminals);
+                DumpSet(output, top, "rules", true, Nonterminals);
+            });
+        }
+
+        private static void DumpSet(IWriter output, bool top, string name, bool separate, IEnumerable<Symbol> members)
+        {
+            output.Block(name, () =>
+            {
+                var more = false;
+                foreach (var item in members)
+                {
+                    if (separate && more) output.WriteLine();
+                    item.Dump(output, top);
+                    more = true;
+                }
             });
         }
 

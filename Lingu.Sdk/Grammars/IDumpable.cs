@@ -1,6 +1,6 @@
 ﻿using Lingu.Commons;
 
-namespace Lingu.Tree
+namespace Lingu.Grammars
 {
     public interface IDumpable
     {

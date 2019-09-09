@@ -1,12 +1,16 @@
-﻿using Lingu.Commons;
+﻿using System;
+
+using Lingu.Commons;
+using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public abstract class NamedSet<T> : UniqueList<string, T>, IDumpable
-        where T : INamed, IDumpable
+    public abstract class NamedSet<TKey, TValue> : UniqueList<TKey, TValue>, IDumpable
+        where TKey : Symbol, IDumpable
+        where TValue : IDumpable 
     {
-        public NamedSet(string setname, bool separate)
-            : base(item => item.Name.Text)
+        public NamedSet(string setname, bool separate, Func<TValue, TKey> getKey)
+            : base(getKey)
         {
             Setname = setname;
             Separate = separate;

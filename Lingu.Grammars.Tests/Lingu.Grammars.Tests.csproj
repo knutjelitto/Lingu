@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lingu.Earley\Lingu.Earley.csproj" />
-    <ProjectReference Include="..\Lingu.Samples\Lingu.Samples.csproj" />
+    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,8 @@ using System.Linq;
 
 using Lingu.Automata;
 using Lingu.Errors;
+using Lingu.Grammars;
+using Lingu.Runtime.LexDfa;
 using Lingu.Tree;
 
 using Mean.Maker.Builders;
@@ -12,20 +14,26 @@ namespace Lingu.Build
 {
     public class Builder
     {
-        public Builder(GrammarTree tree)
+        public Builder(TreeGrammar tree)
         {
-            Tree = tree;
+            Grammar = tree;
         }
 
-        public GrammarTree Tree { get; }
+        public TreeGrammar Grammar { get; }
 
         public void Build()
         {
             CheckTerminals();
             CheckFragments();
-            CheckOptions();
 
             BuildTerminals();
+
+            if (Grammar.Options.Newline != null)
+                Grammar.Options.Newline.IsFragment = false;
+            if (Grammar.Options.Separator != null)
+                Grammar.Options.Separator.IsFragment = false;
+
+            RenumberTerminals();
         }
 
         public void Dump(FileRef dests)
@@ -35,17 +43,17 @@ namespace Lingu.Build
 
             using (var writer = new StreamWriter(grammarDump))
             {
-                Tree.Dump(writer);
+                Grammar.Dump(writer);
             }
             using (var writer = new StreamWriter(terminals))
             {
-                Tree.DumpTerminals(writer);
+                Grammar.DumpTerminals(writer);
             }
         }
 
         private void CheckTerminals()
         {
-            foreach (var terminal in Tree.Terminals)
+            foreach (var terminal in Grammar.Terminals.Cast<TerminalDefinition>())
             {
                 CheckTerminal(terminal);
             }
@@ -53,72 +61,43 @@ namespace Lingu.Build
 
         private void CheckTerminal(TerminalDefinition terminal)
         {
-            var path = new Stack<Name>();
-            CheckTerminal(terminal.Name, path, terminal.Expression);
+            var path = new Stack<TerminalDefinition>();
+            CheckTerminal(terminal, path, terminal.Expression);
         }
 
-        private void CheckTerminal(Name name, Stack<Name> path, Expression expression)
+        private void CheckTerminal(TerminalDefinition terminal, Stack<TerminalDefinition> path, Expression expression)
         {
             if (expression is Reference reference)
             {
-                var terminal = reference.Definition;
+                var definition = (TerminalDefinition)reference.Definition;
 
-                if (name.Equals(terminal.Name))
+                if (terminal.Equals(definition))
                 {
-                    var msg = $"terminal rule `{name}´ is recursive (via ->{string.Join("->", path.Reverse())}->{name})";
+                    var msg = $"terminal rule `{terminal.Name}´ is recursive (via ->{string.Join("->", path.Reverse())}->{terminal.Name})";
                     throw new GrammarException(msg);
                 }
 
-                path.Push(terminal.Name);
-                CheckTerminal(name, path, terminal.Expression);
+                path.Push(definition);
+                CheckTerminal(terminal, path, definition.Expression);
                 path.Pop();
             }
             else
             {
                 foreach (var childExpression in expression.Children)
                 {
-                    CheckTerminal(name, path, childExpression);
-                }
-            }
-        }
-
-        private void CheckOptions()
-        {
-            foreach (var option in Tree.Options)
-            {
-                switch (option.Name.Text.ToLowerInvariant())
-                {
-                    case "start":
-                        break;
-                    case "separator":
-                        if (!Tree.Terminals.TryGetValue(option.Value.Text, out var separator))
-                        {
-                            throw new GrammarException($"option `{option.Name}´: no such terminal rule `{option.Value}´");
-                        }
-                        separator.IsFragment = false;
-                        break;
-                    case "newline":
-                        if (!Tree.Terminals.TryGetValue(option.Value.Text, out var newline))
-                        {
-                            throw new GrammarException($"option `{option.Name}´: no such terminal rule `{option.Value}´");
-                        }
-                        newline.IsFragment = false;
-
-                        break;
-                    default:
-                        throw new GrammarException($"option `{option.Name}´: no such option");
+                    CheckTerminal(terminal, path, childExpression);
                 }
             }
         }
 
         private void CheckFragments()
         {
-            foreach (var terminal in Tree.Terminals)
+            foreach (var terminal in Grammar.Terminals)
             {
                 terminal.IsFragment = true;
             }
 
-            foreach (var rule in Tree.Rules)
+            foreach (var rule in Grammar.Nonterminals.Cast<RuleDefinition>())
             {
                 CheckFragment(rule.Expression);
             }
@@ -137,18 +116,34 @@ namespace Lingu.Build
             }
         }
 
-        private void BuildTerminals()
+        private void RenumberTerminals()
         {
-            foreach (var terminal in Tree.Terminals)
+            int id = 0;
+            foreach (var terminal in Grammar.Terminals.Where(t => !t.IsFragment))
             {
-                BuildTerminal(terminal);
+                terminal.Id = id;
+                id += 1;
+            }
+            foreach (var terminal in Grammar.Terminals.Where(t => t.IsFragment))
+            {
+                terminal.Id = id;
+                id += 1;
             }
         }
 
-        private void BuildTerminal(TerminalDefinition terminal)
+        private void BuildTerminals()
         {
-            terminal.Dfa = terminal.Expression.GetFA().ToDfa().Minimize().RemoveDead();
-            terminal.Bytes = Writer.Compact(terminal.Dfa);
+            foreach (var definition in Grammar.Terminals.Cast<TerminalDefinition>())
+            {
+                BuildTerminal(definition);
+            }
+        }
+
+        private void BuildTerminal(TerminalDefinition definition)
+        {
+            definition.Alias = definition.IsGenerated ? definition.Expression.ToString() : null;
+            definition.Bytes = Writer.Compact(definition.Expression.GetFA().ToDfa().Minimize().RemoveDead());
+            definition.Dfa = new DfaReader(definition.Bytes).Read();
         }
     }
 }

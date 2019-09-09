@@ -1,9 +1,11 @@
-﻿namespace Lingu.Tree
+﻿using Lingu.Grammars;
+
+namespace Lingu.Tree
 {
-    public sealed class Rules : NamedSet<RuleDefinition>
+    public sealed class Rules : NamedSet<Symbol, RuleDefinition>
     {
         public Rules()
-            : base("rules", true)
+            : base("rules", true, rule => rule)
         {
         }
     }

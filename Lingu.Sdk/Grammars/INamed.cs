@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lingu.Tree
+namespace Lingu.Grammars
 {
     public interface INamed
     {
-        Name Name { get; }
+        string Name { get; }
     }
 }

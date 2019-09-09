@@ -1,38 +1,37 @@
 ﻿using System;
 
 using Lingu.Commons;
+using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public class Name : Node
+    public class Name : Symbol, IDumpable
     {
         public static readonly Name Empty = new Name(string.Empty);
 
-        public Name(string text)
+        public Name(string name)
+            : base(name)
         {
-            Text = text;
         }
-
-        public string Text { get; }
 
         public override bool Equals(object obj)
         {
-            return obj is Name other && Text.Equals(other.Text, StringComparison.Ordinal);
+            return obj is Name other && Name.Equals(other.Name, StringComparison.Ordinal);
         }
 
         public override int GetHashCode()
         {
-            return Text.GetHashCode(); ;
+            return Name.GetHashCode(); ;
         }
 
         public override string ToString()
         {
-            return Text;
+            return Name;
         }
 
         public override void Dump(IWriter output, bool top)
         {
-            output.Write(Text);
+            output.Write(ToString());
         }
     }
 }
