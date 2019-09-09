@@ -10,7 +10,7 @@ namespace Lingu.Tree
             {
                 return true;
             }
-            if (expression is AtomText text && text.Value.Length == 1)
+            if (expression is String text && text.Value.Length == 1)
             {
                 return true;
             }
@@ -24,7 +24,7 @@ namespace Lingu.Tree
             {
                 return codePoint.Value;
             }
-            if (expression is AtomText text && text.Value.Length == 1)
+            if (expression is String text && text.Value.Length == 1)
             {
                 return text.Value[0];
             }

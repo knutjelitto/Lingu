@@ -3,9 +3,9 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class AtomRange : Atom
+    public class Range : Atom
     {
-        public AtomRange(Expression from, Expression to)
+        public Range(Expression from, Expression to)
         {
             From = from;
             To = to;

@@ -8,13 +8,13 @@ namespace Lingu.Tree
 {
     public class Reference : Expression
     {
-        public Reference(AtomName name, ReferenceKind kind)
+        public Reference(Name name, ReferenceKind kind)
         {
             Name = name;
             Kind = kind;
         }
 
-        public AtomName Name { get; }
+        public Name Name { get; }
         public ReferenceKind Kind { get; }
         public Definition Definition { get; private set; }
         public override IEnumerable<Expression> Children => Enumerable.Empty<Expression>();

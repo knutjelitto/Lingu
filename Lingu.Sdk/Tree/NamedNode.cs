@@ -2,11 +2,11 @@
 {
     public abstract class NamedNode : Node, INamed
     {
-        public NamedNode(AtomName name)
+        public NamedNode(Name name)
         {
             Name = name;
         }
 
-        public AtomName Name { get; }
+        public Name Name { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace Lingu.Bootstrap
 {
     public class Parser
     {
-        public static Tree.Grammar Parse(FileRef file)
+        public static Tree.GrammarTree Parse(FileRef file)
         {
             var source = File.ReadAllText(file);
 
@@ -39,7 +39,7 @@ namespace Lingu.Bootstrap
             return result;
         }
 
-        private static Tree.Grammar Tree(ASTNode node)
+        private static Tree.GrammarTree Tree(ASTNode node)
         {
             return new TreeBuilder().Visit(node);
         }

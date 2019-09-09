@@ -1,8 +1,9 @@
 ﻿using Lingu.Earley;
-using Lingu.Grammars.Build;
+using Lingu.GrammarsOld.Build;
+using Lingu.GrammarsOld;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Lingu.Grammars.Tests
+namespace Lingu.GrammarsOld.Tests
 {
     [TestClass]
     public class SimpleTests

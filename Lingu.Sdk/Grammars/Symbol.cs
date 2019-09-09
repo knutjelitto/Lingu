@@ -1,19 +1,35 @@
-﻿namespace Lingu.Grammars
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Lingu.Grammars
 {
     public abstract class Symbol
     {
-        protected Symbol(string name)
+        public Symbol(string name)
         {
             Name = name;
         }
 
         public string Name { get; }
+    }
 
-        public bool IsNullable { get; set; }
-
-        public override string ToString()
+    public abstract class Symbol<T> : Symbol
+        where T : Symbol<T>
+    {
+        public Symbol(string name)
+            : base(name)
         {
-            return Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is T other && Name.Equals(other.Name, StringComparison.Ordinal);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

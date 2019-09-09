@@ -1,32 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lingu.Grammars
 {
     public class Production : IReadOnlyList<Symbol>
     {
-        public Production(Nonterminal head, List<Symbol> body)
+        public Production(Nonterminal nonterminal, IEnumerable<Symbol> symbols)
         {
-            Head = head;
-            Body = body;
+            Symbols = symbols.ToArray();
+            Nonterminal = nonterminal;
         }
 
-        public int Count => Body.Count;
+        public Nonterminal Nonterminal { get; }
+        public IReadOnlyList<Symbol> Symbols { get; }
 
-        public Nonterminal Head { get; }
-
-        private List<Symbol> Body { get; }
-
-        public Symbol this[int index] => Body[index];
+        public Symbol this[int index] => Symbols[index];
+        public int Count => Symbols.Count;
 
         public IEnumerator<Symbol> GetEnumerator()
         {
-            return Body.GetEnumerator();
-        }
-
-        public override string ToString()
-        {
-            return $"{Head} <- {string.Join(" ", Body)}";
+            return Symbols.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

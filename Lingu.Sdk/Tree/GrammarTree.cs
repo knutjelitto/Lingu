@@ -9,9 +9,9 @@ using Lingu.Tools;
 
 namespace Lingu.Tree
 {
-    public class Grammar : IDumpable
+    public class GrammarTree : IDumpable
     {
-        public Grammar(AtomName name)
+        public GrammarTree(Name name)
         {
             Name = name;
             Options = new Options();
@@ -21,7 +21,7 @@ namespace Lingu.Tree
             References = new List<Reference>();
         }
 
-        public AtomName Name { get; }
+        public Name Name { get; }
         public Options Options { get; }
         public Terminals Terminals { get; }
         public Rules Rules { get; }
@@ -30,7 +30,7 @@ namespace Lingu.Tree
 
         public TerminalDefinition GenTerminal(Expression expression)
         {
-            var name = new AtomName("$T" + nextTerminalId++);
+            var name = new Name("$T" + nextTerminalId++);
 
             var terminal = new TerminalDefinition(true, name, expression);
 
@@ -41,7 +41,7 @@ namespace Lingu.Tree
 
         public RuleDefinition GenRule(Expression expression)
         {
-            var name = new AtomName("$R" + nextRuleId++);
+            var name = new Name("$R" + nextRuleId++);
 
             var terminal = new RuleDefinition(true, name, expression);
 
@@ -97,7 +97,7 @@ namespace Lingu.Tree
             if (terminal.IsGenerated)
             {
                 writer.Write($"[{terminal.Name}]");
-                if (terminal.IsGenerated && terminal.Expression is AtomText text)
+                if (terminal.IsGenerated && terminal.Expression is String text)
                 {
                     writer.Write($" '{text.Value}'");
                 }

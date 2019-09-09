@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lingu.Grammars;
+using Lingu.GrammarsOld;
 
 namespace Lingu.Earley
 {

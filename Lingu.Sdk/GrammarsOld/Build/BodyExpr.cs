@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Lingu.Grammars.Build
+namespace Lingu.GrammarsOld.Build
 {
     public class BodyExpr : List<ChainExpr>
     {

@@ -17,11 +17,11 @@ namespace Lingu.Bootstrap
 
         private ReferenceKind CurrentContext { get; set; } = ReferenceKind.Illegal;
 
-        private Grammar Grammar { get; set; }
+        private GrammarTree Grammar { get; set; }
 
-        public Grammar Visit(ASTNode node)
+        public GrammarTree Visit(ASTNode node)
         {
-            VisitNode<Grammar>(node);
+            VisitNode<GrammarTree>(node);
             
             Grammar.Resolve();
 
@@ -52,14 +52,14 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(node.Children.Count == 1);
 
-            return VisitChild<Grammar>(node, 0);
+            return VisitChild<GrammarTree>(node, 0);
         }
 
         protected override object OnVariableCfGrammar(ASTNode node)
         {
-            var name =  VisitChild<AtomName>(node, 0);
+            var name =  VisitChild<Name>(node, 0);
 
-            Grammar = new Grammar(name);
+            Grammar = new GrammarTree(name);
 
 
             foreach (var subNode in node.Children.Skip(1))
@@ -67,7 +67,7 @@ namespace Lingu.Bootstrap
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarOptions)
                 {
                     CurrentContext = ReferenceKind.Illegal;
-                    Grammar.Options.AddRange(VisitChildren<Option>(subNode));
+                    Grammar.Options.AddRange(VisitChildren<TreeOption>(subNode));
                 }
 
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarTerminals)
@@ -88,12 +88,12 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableOption(ASTNode node)
         {
-            return new Option(VisitChild<AtomName>(node, 0), VisitChild<AtomText>(node, 1));
+            return new TreeOption(VisitChild<Name>(node, 0), VisitChild<Name>(node, 1));
         }
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
-            return new TerminalDefinition(VisitChild<AtomName>(node, 0), VisitChild<Expression>(node, 1));
+            return new TerminalDefinition(VisitChild<Name>(node, 0), VisitChild<Expression>(node, 1));
         }
 
         protected override object OnVariableTerminalExpression(ASTNode node)
@@ -147,7 +147,7 @@ namespace Lingu.Bootstrap
                     {
                         if (rep.Symbol.ID == Hime.LinguParser.ID.VirtualRange)
                         {
-                            var int1 = VisitChild<AtomInteger>(rep, 0);
+                            var int1 = VisitChild<Integer>(rep, 0);
                             if (rep.Children.Count == 1)
                             {
                                 // exactly
@@ -156,7 +156,7 @@ namespace Lingu.Bootstrap
                             if (rep.Children.Count == 2)
                             {
                                 // from .. to
-                                var int2 = VisitChild<AtomInteger>(rep, 1);
+                                var int2 = VisitChild<Integer>(rep, 1);
 
                                 return new Repetition(expression, int1.Value, int2.Value);
                             }
@@ -202,7 +202,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableRange(ASTNode node)
         {
-            return new AtomRange(
+            return new Tree.Range(
                 VisitChild<Expression>(node, 0),
                 VisitChild<Expression>(node, 1));
         }
@@ -211,7 +211,7 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            var text = new AtomText(node.Value);
+            var text = new Tree.String(node.Value);
 
             if (CurrentContext == ReferenceKind.TerminalOrRule)
             {
@@ -243,19 +243,19 @@ namespace Lingu.Bootstrap
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomName(node.Value);
+            return new Name(node.Value);
         }
 
         protected override object OnTerminalInteger(ASTNode node)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(node.Value));
 
-            return new AtomInteger(node.Value);
+            return new Integer(node.Value);
         }
 
         protected override object OnVariableRule(ASTNode node)
         {
-            return new RuleDefinition(VisitChild<AtomName>(node, 0), VisitChild<Expression>(node, 1));
+            return new RuleDefinition(VisitChild<Name>(node, 0), VisitChild<Expression>(node, 1));
         }
 
         protected override object OnVariableRuleExpression(ASTNode node)
@@ -310,7 +310,7 @@ namespace Lingu.Bootstrap
  
         protected override object OnVariableRuleSub(ASTNode node)
         {
-            var name = VisitChild<AtomName>(node, 0);
+            var name = VisitChild<Name>(node, 0);
             var expr = VisitChild<Expression>(node, 1);
 #if true
             var rule = new RuleDefinition(true, name, expr);
@@ -349,7 +349,7 @@ namespace Lingu.Bootstrap
         {
             if (CurrentContext != ReferenceKind.Illegal)
             {
-                var name = VisitChild<AtomName>(node, 0);
+                var name = VisitChild<Name>(node, 0);
 
                 return NewReference(name, CurrentContext);
             }
@@ -359,7 +359,7 @@ namespace Lingu.Bootstrap
 
         // #####################################################################
 
-        private Reference NewReference(AtomName name, ReferenceKind kind)
+        private Reference NewReference(Name name, ReferenceKind kind)
         {
             var reference = new Reference(name, kind);
 

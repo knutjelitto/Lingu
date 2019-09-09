@@ -5,9 +5,9 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class AtomText : Atom
+    public class String : Atom
     {
-        public AtomText(string text)
+        public String(string text)
         {
             Text = text;
             Value = Convert(text.Substring(1, text.Length - 2)); // drop '' and convert
@@ -28,7 +28,7 @@ namespace Lingu.Tree
 
         public override bool Equals(object obj)
         {
-            return obj is AtomText other && Value == other.Value;
+            return obj is String other && Value == other.Value;
         }
 
         public override int GetHashCode()

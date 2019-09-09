@@ -1,4 +1,4 @@
-﻿namespace Lingu.Grammars.Build
+﻿namespace Lingu.GrammarsOld.Build
 {
     public class RuleExpr : SymbolExpr
     {

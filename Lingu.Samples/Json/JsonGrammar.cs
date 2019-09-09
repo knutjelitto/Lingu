@@ -1,6 +1,6 @@
 ﻿using Lingu.Automata;
-using Lingu.Grammars;
-using Lingu.Grammars.Build;
+using Lingu.GrammarsOld;
+using Lingu.GrammarsOld.Build;
 
 namespace Lingu.Samples.Json
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Lingu.Grammars;
+using Lingu.GrammarsOld;
 
 namespace Lingu.Earley
 {

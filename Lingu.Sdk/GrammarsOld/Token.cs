@@ -1,4 +1,4 @@
-﻿namespace Lingu.Grammars
+﻿namespace Lingu.GrammarsOld
 {
     public class Token : IToken
     {

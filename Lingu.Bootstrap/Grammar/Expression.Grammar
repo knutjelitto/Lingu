@@ -2,8 +2,9 @@
 {
     options
     {
-        Axiom = 'expression';
-        Separator = 'separator';
+        Start = expression;
+        Newline = newline;
+        Separator = separator;
     }
     terminals
     {
@@ -39,7 +40,7 @@
             ;
 
         separator
-            : (newline | whitespace | lineComment | blockComment)+
+            : (newline | whitespace | lineComment | blockComment)*
             ;
 
         identifierStart

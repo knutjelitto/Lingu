@@ -2,15 +2,15 @@
 
 namespace Lingu.Tree
 {
-    public class Option : NamedNode
+    public class TreeOption : NamedNode
     {
-        public Option(AtomName name, AtomText value)
+        public TreeOption(Name name, Name value)
             : base(name)
         {
             Value = value;
         }
 
-        public AtomText Value { get; }
+        public Name Value { get; }
 
         public override void Dump(IWriter output, bool top)
         {

@@ -1,4 +1,4 @@
-﻿using Lingu.Grammars;
+﻿using Lingu.GrammarsOld;
 
 namespace Lingu.Earley
 {

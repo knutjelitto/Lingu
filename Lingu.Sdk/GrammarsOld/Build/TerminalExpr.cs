@@ -1,7 +1,7 @@
 ﻿using Lingu.Automata;
 using Lingu.Grammars;
 
-namespace Lingu.Grammars.Build
+namespace Lingu.GrammarsOld.Build
 {
     public class TerminalExpr : SymbolExpr
     {

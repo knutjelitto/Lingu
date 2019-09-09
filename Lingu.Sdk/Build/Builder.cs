@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using Lingu.Automata;
 using Lingu.Errors;
 using Lingu.Tree;
@@ -11,21 +12,19 @@ namespace Lingu.Build
 {
     public class Builder
     {
-        public Builder(Grammar grammar)
+        public Builder(GrammarTree tree)
         {
-            Grammar = grammar;
+            Tree = tree;
         }
 
-        public Grammar Grammar { get; }
-
-        public void Check()
-        {
-            CheckTerminals();
-            CheckFragments();
-        }
+        public GrammarTree Tree { get; }
 
         public void Build()
         {
+            CheckTerminals();
+            CheckFragments();
+            CheckOptions();
+
             BuildTerminals();
         }
 
@@ -36,17 +35,17 @@ namespace Lingu.Build
 
             using (var writer = new StreamWriter(grammarDump))
             {
-                Grammar.Dump(writer);
+                Tree.Dump(writer);
             }
             using (var writer = new StreamWriter(terminals))
             {
-                Grammar.DumpTerminals(writer);
+                Tree.DumpTerminals(writer);
             }
         }
 
-        public void CheckTerminals()
+        private void CheckTerminals()
         {
-            foreach (var terminal in Grammar.Terminals)
+            foreach (var terminal in Tree.Terminals)
             {
                 CheckTerminal(terminal);
             }
@@ -54,11 +53,11 @@ namespace Lingu.Build
 
         private void CheckTerminal(TerminalDefinition terminal)
         {
-            var path = new Stack<AtomName>();
+            var path = new Stack<Name>();
             CheckTerminal(terminal.Name, path, terminal.Expression);
         }
 
-        private void CheckTerminal(AtomName name, Stack<AtomName> path, Expression expression)
+        private void CheckTerminal(Name name, Stack<Name> path, Expression expression)
         {
             if (expression is Reference reference)
             {
@@ -83,14 +82,43 @@ namespace Lingu.Build
             }
         }
 
+        private void CheckOptions()
+        {
+            foreach (var option in Tree.Options)
+            {
+                switch (option.Name.Text.ToLowerInvariant())
+                {
+                    case "start":
+                        break;
+                    case "separator":
+                        if (!Tree.Terminals.TryGetValue(option.Value.Text, out var separator))
+                        {
+                            throw new GrammarException($"option `{option.Name}´: no such terminal rule `{option.Value}´");
+                        }
+                        separator.IsFragment = false;
+                        break;
+                    case "newline":
+                        if (!Tree.Terminals.TryGetValue(option.Value.Text, out var newline))
+                        {
+                            throw new GrammarException($"option `{option.Name}´: no such terminal rule `{option.Value}´");
+                        }
+                        newline.IsFragment = false;
+
+                        break;
+                    default:
+                        throw new GrammarException($"option `{option.Name}´: no such option");
+                }
+            }
+        }
+
         private void CheckFragments()
         {
-            foreach (var terminal in Grammar.Terminals)
+            foreach (var terminal in Tree.Terminals)
             {
                 terminal.IsFragment = true;
             }
 
-            foreach (var rule in Grammar.Rules)
+            foreach (var rule in Tree.Rules)
             {
                 CheckFragment(rule.Expression);
             }
@@ -109,10 +137,9 @@ namespace Lingu.Build
             }
         }
 
-
         private void BuildTerminals()
         {
-            foreach (var terminal in Grammar.Terminals)
+            foreach (var terminal in Tree.Terminals)
             {
                 BuildTerminal(terminal);
             }

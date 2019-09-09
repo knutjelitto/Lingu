@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Lingu.Grammars;
+using Lingu.GrammarsOld;
 
 namespace Lingu.Earley
 {

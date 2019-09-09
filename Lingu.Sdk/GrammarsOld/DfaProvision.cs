@@ -1,7 +1,7 @@
 ﻿using Lingu.Automata;
 using Lingu.Grammars;
 
-namespace Lingu.Grammars
+namespace Lingu.GrammarsOld
 {
     public class DfaProvision : Provision
     {

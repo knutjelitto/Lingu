@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lingu.Grammars.Build
+namespace Lingu.GrammarsOld.Build
 {
     public class GrammarBuilder
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Lingu.Earley;
-using Lingu.Grammars;
+using Lingu.GrammarsOld;
 using Lingu.Samples.Expr;
 
 namespace Lingu.Check

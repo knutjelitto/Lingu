@@ -42,7 +42,6 @@ namespace Lingu.Bootstrap
             {
                 var builder = new Build.Builder(grammar);
 
-                builder.Check();
                 builder.Build();
                 builder.Dump(dests);
             }

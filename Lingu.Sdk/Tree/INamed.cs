@@ -6,6 +6,6 @@ namespace Lingu.Tree
 {
     public interface INamed
     {
-        AtomName Name { get; }
+        Name Name { get; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace Lingu.Tree
 {
-    public class AtomInteger : Node
+    public class Integer : Node
     {
-        public AtomInteger(string text)
+        public Integer(string text)
         {
             Text = text;
             Value = int.Parse(Text);

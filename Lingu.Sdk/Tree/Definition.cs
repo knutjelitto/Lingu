@@ -4,7 +4,7 @@ namespace Lingu.Tree
 {
     public abstract class Definition : NamedNode
     {
-        public Definition(bool generated, AtomName name, Expression expression)
+        public Definition(bool generated, Name name, Expression expression)
             : base(name)
         {
             IsGenerated = generated;

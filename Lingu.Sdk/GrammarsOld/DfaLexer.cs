@@ -1,7 +1,6 @@
 ﻿using Lingu.Automata;
-using Lingu.Grammars.Build;
 
-namespace Lingu.Grammars
+namespace Lingu.GrammarsOld
 {
     public class DfaLexer : Lexer
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace Lingu.Grammars
+namespace Lingu.GrammarsOld
 {
     public class GrammarPlumber
     {

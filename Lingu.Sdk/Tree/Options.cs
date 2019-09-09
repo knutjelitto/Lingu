@@ -4,7 +4,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Options : NamedSet<Option>
+    public class Options : NamedSet<TreeOption>
     {
         public Options()
             : base("options", false)

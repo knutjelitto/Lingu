@@ -4,12 +4,12 @@ namespace Lingu.Tree
 {
     public sealed class TerminalDefinition : Definition
     {
-        public TerminalDefinition(bool generated, AtomName name, Expression expression)
+        public TerminalDefinition(bool generated, Name name, Expression expression)
             : base(generated, name, expression)
         {
         }
 
-        public TerminalDefinition(AtomName name, Expression expression)
+        public TerminalDefinition(Name name, Expression expression)
             : base(false, name, expression)
         {
         }

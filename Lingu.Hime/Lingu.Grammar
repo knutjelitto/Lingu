@@ -80,7 +80,7 @@
             ;
 
         option
-            -> NAME '='! LITERAL_TEXT ';'!
+            -> NAME '='! NAME ';'!
             ;
 
         /* TERMINALS *

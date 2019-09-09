@@ -1,18 +1,22 @@
-﻿namespace Lingu.Grammars
+﻿using Lingu.Runtime.LexDfa;
+
+namespace Lingu.Grammars
 {
-    public class Terminal : Symbol
+    public class Terminal : Symbol<Terminal>
     {
-        public Terminal(Provision provision)
-            : base(provision.Name)
+        public Terminal(string name, Dfa dfa)
+            : this(name, null, dfa)
         {
-            Provision = provision;
         }
 
-        public Provision Provision { get; }
-
-        public Lexer MakeLexer(int offset)
+        public Terminal(string name, string alias, Dfa dfa)
+            : base(name)
         {
-            return Provision.MakeLexer(offset);
+            Alias = alias;
+            Dfa = dfa;
         }
+
+        public string Alias { get; }
+        public Dfa Dfa { get; }
     }
 }

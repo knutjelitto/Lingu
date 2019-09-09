@@ -1,4 +1,4 @@
-﻿namespace Lingu.Grammars
+﻿namespace Lingu.GrammarsOld
 {
     public abstract class Lexer
     {
