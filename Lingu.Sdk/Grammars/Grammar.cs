@@ -11,8 +11,8 @@ namespace Lingu.Grammars
         public Grammar(string name)
             : base(name)
         {
-            Terminals = new UniqueList<Symbol, Terminal>(t => t);
-            Nonterminals = new UniqueList<Symbol, Nonterminal>(n => n);
+            Terminals = new Terminals();
+            Nonterminals = new Nonterminals();
             Productions = new List<Production>();
 
             Options = new Options((TreeGrammar)this);
@@ -24,8 +24,8 @@ namespace Lingu.Grammars
         public Terminal Separator { get; set; }
         public Terminal Newline { get; set; }
 
-        public virtual UniqueList<Symbol, Terminal> Terminals { get; }
-        public UniqueList<Symbol, Nonterminal> Nonterminals { get; }
+        public virtual Terminals Terminals { get; }
+        public Nonterminals Nonterminals { get; }
         public List<Production> Productions { get; }
     }
 }

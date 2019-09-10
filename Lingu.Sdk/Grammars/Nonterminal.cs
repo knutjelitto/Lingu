@@ -3,10 +3,16 @@ using Lingu.Commons;
 
 namespace Lingu.Grammars
 {
-    public abstract class Nonterminal : Symbol
+    public abstract class Nonterminal : Rule
     {
+        public Nonterminal(int id, string name)
+            : base(id, name)
+        {
+            Productions = new List<Production>();
+        }
+
         public Nonterminal(string name)
-            : base(name)
+            : this(-1, name)
         {
             Productions = new List<Production>();
         }

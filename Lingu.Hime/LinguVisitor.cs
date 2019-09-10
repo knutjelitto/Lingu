@@ -50,9 +50,9 @@ namespace Lingu.Bootstrap.Hime
                 case 0x0029: return (T)OnVariableRuleRepetition(node);
                 case 0x002A: return (T)OnVariableRuleTreeAction(node);
                 case 0x002B: return (T)OnVariableRuleElement(node);
-                case 0x002C: return (T)OnVariableRuleSub(node);
-                case 0x002D: return (T)OnVariableRuleAtom(node);
-                case 0x002E: return (T)OnVariableRuleAction(node);
+                case 0x002C: return (T)OnVariableSubRule(node);
+                case 0x002D: return (T)OnVariableRuleSub(node);
+                case 0x002E: return (T)OnVariableRuleAtom(node);
                 case 0x002F: return (T)OnVariableReference(node);
                 case 0x0048: return (T)OnVirtualRange(node);
                 default:
@@ -213,15 +213,15 @@ namespace Lingu.Bootstrap.Hime
         {
             return VisitChildren(node).FirstOrDefault();
         }
+        protected virtual object OnVariableSubRule(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
+        }
         protected virtual object OnVariableRuleSub(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }
         protected virtual object OnVariableRuleAtom(ASTNode node)
-        {
-            return VisitChildren(node).FirstOrDefault();
-        }
-        protected virtual object OnVariableRuleAction(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }

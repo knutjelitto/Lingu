@@ -65,7 +65,7 @@ namespace Lingu.Build
             CheckTerminal(terminal, path, terminal.Expression);
         }
 
-        private void CheckTerminal(TerminalDefinition terminal, Stack<TerminalDefinition> path, Expression expression)
+        private void CheckTerminal(TerminalDefinition terminal, Stack<TerminalDefinition> path, IExpression expression)
         {
             if (expression is Reference reference)
             {
@@ -103,7 +103,7 @@ namespace Lingu.Build
             }
         }
 
-        private void CheckFragment(Expression expression)
+        private void CheckFragment(IExpression expression)
         {
             if (expression is Reference reference && reference.Definition is TerminalDefinition terminal)
             {
@@ -129,6 +129,8 @@ namespace Lingu.Build
                 terminal.Id = id;
                 id += 1;
             }
+
+            Grammar.Terminals.Sort(terminal => terminal.Id);
         }
 
         private void BuildTerminals()

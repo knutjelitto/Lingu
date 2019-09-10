@@ -2,7 +2,7 @@
 
 namespace Lingu.Grammars
 {
-    public interface IDumpable
+    public interface ICanDump
     {
         void Dump(IWriter output, bool top);
     }

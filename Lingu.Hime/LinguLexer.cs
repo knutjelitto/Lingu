@@ -17,7 +17,7 @@ namespace Lingu.Bootstrap.Hime
 		/// <summary>
 		/// The automaton for this lexer
 		/// </summary>
-		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer.bin");
+		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer");
 		/// <summary>
 		/// Contains the constant IDs for the terminals for this lexer
 		/// </summary>
@@ -110,8 +110,7 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x0049, ","),
 			new Symbol(0x004A, "rules"),
 			new Symbol(0x004E, "!"),
-			new Symbol(0x004F, "^"),
-			new Symbol(0x0050, "@") };
+			new Symbol(0x004F, "^") };
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>

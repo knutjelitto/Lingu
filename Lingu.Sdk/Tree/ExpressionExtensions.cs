@@ -4,7 +4,7 @@ namespace Lingu.Tree
 {
     public static class ExpressionExtensions
     {
-        public static bool IsSingleCodePoint(this Expression expression)
+        public static bool IsSingleCodePoint(this IExpression expression)
         {
             if (expression is UcCodepoint)
             {
@@ -18,7 +18,7 @@ namespace Lingu.Tree
             return false;
         }
 
-        public static int GetSingleCodePoint(this Expression expression)
+        public static int GetSingleCodePoint(this IExpression expression)
         {
             if (expression is UcCodepoint codePoint)
             {

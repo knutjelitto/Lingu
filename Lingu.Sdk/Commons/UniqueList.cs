@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lingu.Commons
 {
@@ -58,7 +59,7 @@ namespace Lingu.Commons
             return false;
         }
 
-        public int Add(TValue value)
+        public virtual int Add(TValue value)
         {
             var key = GetKey(value);
             if (Index.TryGetValue(key, out var i))
@@ -76,6 +77,14 @@ namespace Lingu.Commons
             {
                 Add(value);
             }
+        }
+
+        public void Sort<TSort>(Func<TValue, TSort> order)
+        {
+            var list = new List<TValue>(Values.OrderBy(value => order(value)));
+            Values.Clear();
+            Index.Clear();
+            AddRange(list);
         }
 
         public IEnumerator<TValue> GetEnumerator()

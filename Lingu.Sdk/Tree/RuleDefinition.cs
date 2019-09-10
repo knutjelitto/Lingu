@@ -6,20 +6,19 @@ namespace Lingu.Tree
 {
     public sealed class RuleDefinition : Nonterminal
     {
-        public RuleDefinition(bool isGenerated, Name name, Expression expression)
+        public RuleDefinition(bool isGenerated, Name name, IExpression expression)
             : base(name.Name)
         {
             IsGenerated = isGenerated;
             Expression = expression;
         }
 
-        public RuleDefinition(Name name, Expression expression)
+        public RuleDefinition(Name name, IExpression expression)
             : this(false, name, expression)
         {
         }
 
-        public bool IsGenerated { get; }
-        public Expression Expression { get; }
+        public IExpression Expression { get; }
         public int UseCount { get; private set; }
         public void Use()
         {

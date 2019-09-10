@@ -3,16 +3,19 @@ using Lingu.Runtime.LexDfa;
 
 namespace Lingu.Grammars
 {
-    public abstract class Terminal : Symbol
+    public abstract class Terminal : Rule
     {
-        public Terminal(string name)
-            : base(name)
+        public Terminal(int id, string name)
+            : base(id, name)
         {
         }
 
-        public int Id { get; set;  }
+        public Terminal(string name)
+            : this(-1, name)
+        {
+        }
+
         public bool IsFragment { get; set; }
-        public bool IsGenerated { get; set; }
         public Dfa Dfa { get; set; }
         public string Alias { get; set; }
     }

@@ -1,21 +1,22 @@
 ﻿using Lingu.Automata;
 using Lingu.Commons;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Lingu.Tree
 {
-    public class Alternates : Expression
+    public class Alternates : IExpression
     {
-        public Alternates(IEnumerable<Expression> expressions)
+        public Alternates(IEnumerable<IExpression> expressions)
         {
             Expressions = expressions.ToArray();
         }
 
-        public IReadOnlyList<Expression> Expressions { get; }
-        public override IEnumerable<Expression> Children => Expressions;
+        public IReadOnlyList<IExpression> Expressions { get; }
+        public IEnumerable<IExpression> Children => Expressions;
 
-        public override FA GetFA()
+        public FA GetFA()
         {
             var nfa = Expressions.First().GetFA();
             foreach (var expr in Expressions.Skip(1))
@@ -25,7 +26,7 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public override void Dump(IWriter output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             var more = false;
             if (top)
@@ -53,5 +54,5 @@ namespace Lingu.Tree
                 output.Write(")");
             }
         }
-   }
+    }
 }

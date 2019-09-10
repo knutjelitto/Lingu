@@ -9,7 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Generated\" />
+    <EmbeddedResource Remove="Generated\MeanExpressionLexer.bin" />
+    <EmbeddedResource Remove="Generated\MeanExpressionParser.bin" />
+    <EmbeddedResource Remove="Generated\MeanLexer.bin" />
+    <EmbeddedResource Remove="Generated\MeanParser.bin" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +32,11 @@
     <GrammarOutputs>$(Generateds)MeanParser.bin</GrammarOutputs>
   </PropertyGroup>
 
+  <!--
   <PropertyGroup>
     <Tweak>..\Mean.Hime.Tweak\bin\Debug\netcoreapp2.2\Mean.Hime.Tweak.dll</Tweak>
   </PropertyGroup>
+  -->
 
   <!--<Target Name="HimeCC" BeforeTargets="Compile;CoreCompile;Build;CoreBuild" Inputs="$(GrammarInputs)" Outputs="$(GrammarOutputs)">-->
   <!--

@@ -1,10 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Lingu.Automata;
+using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public abstract class Atom : Expression
+    public abstract class Atom : IExpression
     {
-        public override IEnumerable<Expression> Children => Enumerable.Empty<Expression>();
+        public virtual IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
+
+        public abstract void Dump(IWriter output, bool top);
+        public abstract FA GetFA();
+
+        public IEnumerator<IExpression> GetEnumerator()
+        {
+            return Children.GetEnumerator();
+        }
     }
 }

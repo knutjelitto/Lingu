@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 
 using Hime.Redist;
-
+using Lingu.Bootstrap.Hime;
+using Lingu.Grammars;
 using Lingu.Tree;
 
 namespace Lingu.Bootstrap
 {
-    public class TreeBuilder :Hime.LinguVisitor
+    public class TreeBuilder : LinguVisitor
     {
         public TreeBuilder()
         {
@@ -48,6 +49,13 @@ namespace Lingu.Bootstrap
             return node.Children.Skip(skip).Select(VisitNode<T>);
         }
 
+        // #####################################################################
+
+        protected override object OnVariableSubRule(ASTNode node)
+        {
+            return base.OnVariableSubRule(node);
+        }
+
         protected override object OnVariableFile(ASTNode node)
         {
             Debug.Assert(node.Children.Count == 1);
@@ -79,19 +87,7 @@ namespace Lingu.Bootstrap
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarRules)
                 {
                     CurrentContext = ReferenceKind.TerminalOrRule;
-                    IEnumerable<RuleDefinition> definitions = VisitChildren<RuleDefinition>(subNode);
-                    foreach (var definition in definitions)
-                    {
-                        if (definition.Name == "shiftExpression")
-                        {
-                            Debug.Assert(true);
-                        }
-                        if (Grammar.Nonterminals.TryGetValue(definition, out var already))
-                        {
-                            Debug.Assert(true);
-                        }
-                    }
-                    Grammar.Nonterminals.AddRange(definitions);
+                    Grammar.Nonterminals.AddRange(VisitChildren<RuleDefinition>(subNode));
                 }
             }
 
@@ -105,42 +101,42 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
-            return new TerminalDefinition(VisitChild<Name>(node, 0), VisitChild<Expression>(node, 1));
+            return new TerminalDefinition(VisitChild<Name>(node, 0), VisitChild<IExpression>(node, 1));
         }
 
         protected override object OnVariableTerminalExpression(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<Expression>(node, 0);
+                return VisitChild<IExpression>(node, 0);
 
             }
-            return new Alternates(VisitChildren<Expression>(node));
+            return new Alternates(VisitChildren<IExpression>(node));
         }
 
         protected override object OnVariableTerminalDifference(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<Expression>(node, 0);
+                return VisitChild<IExpression>(node, 0);
 
             }
-            return new Difference(VisitChildren<Expression>(node));
+            return new Difference(VisitChildren<IExpression>(node));
         }
 
         protected override object OnVariableTerminalSequence(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<Expression>(node, 0);
+                return VisitChild<IExpression>(node, 0);
 
             }
-            return new Sequence(VisitChildren<Expression>(node));
+            return new Sequence(VisitChildren<IExpression>(node));
         }
 
         protected override object OnVariableTerminalRepetition(ASTNode node)
         {
-            var expression = VisitChild<Expression>(node, 0);
+            var expression = VisitChild<IExpression>(node, 0);
             if (node.Children.Count == 1)
             {
                 return expression;
@@ -183,12 +179,12 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableTerminalNot(ASTNode node)
         {
-            return new Not(VisitChild<Expression>(node, 0));
+            return new Not(VisitChild<IExpression>(node, 0));
         }
 
         protected override object OnVariableText(ASTNode node)
         {
-            return VisitChild<Expression>(node, 0);
+            return VisitChild<IExpression>(node, 0);
         }
 
         protected override object OnTerminalUnicodeCodepoint(ASTNode node)
@@ -215,8 +211,8 @@ namespace Lingu.Bootstrap
         protected override object OnVariableRange(ASTNode node)
         {
             return new Tree.Range(
-                VisitChild<Expression>(node, 0),
-                VisitChild<Expression>(node, 1));
+                VisitChild<IExpression>(node, 0),
+                VisitChild<IExpression>(node, 1));
         }
 
         protected override object OnTerminalLiteralText(ASTNode node)
@@ -248,7 +244,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableCharacter(ASTNode node)
         {
-            return VisitChild<Expression>(node, 0);
+            return VisitChild<IExpression>(node, 0);
         }
 
         protected override object OnTerminalName(ASTNode node)
@@ -267,27 +263,48 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableRule(ASTNode node)
         {
-            return new RuleDefinition(VisitChild<Name>(node, 0), VisitChild<Expression>(node, 1));
+            var name = VisitChild<Name>(node, 0);
+            var expression = VisitChild<IExpression>(node, 1);
+            var rule = new RuleDefinition(name, expression);
+#if false
+            if (expression is Alternates alternates)
+            {
+                foreach (var sequence in alternates.Expressions)
+                {
+                    var symbols = sequence.Children.Cast<Grammars.Symbol>().ToList();
+                    var production = new Production(rule, symbols);
+                    rule.Productions.Add(production);
+                }
+            }
+            else
+            {
+                var symbols = expression.Children.Cast<Grammars.Symbol>().ToList();
+                var production = new Production(rule, symbols);
+                rule.Productions.Add(production);
+            }
+#endif
+
+            return rule;
         }
 
         protected override object OnVariableRuleExpression(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<Expression>(node, 0);
+                return VisitChild<IExpression>(node, 0);
             }
 
-            return new Alternates(VisitChildren<Expression>(node));
+            return new Alternates(VisitChildren<IExpression>(node));
         }
 
         protected override object OnVariableRuleSequence(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
-                return VisitChild<Expression>(node, 0);
+                return VisitChild<IExpression>(node, 0);
             }
 
-            return new Sequence(VisitChildren<Expression>(node));
+            return new Sequence(VisitChildren<IExpression>(node));
         }
 
         protected override object OnVariableRuleAlternative(ASTNode node)
@@ -297,12 +314,12 @@ namespace Lingu.Bootstrap
                 return new Epsilon();
             }
 
-            return VisitChild<Expression>(node, 0);
+            return VisitChild<IExpression>(node, 0);
         }
 
         protected override object OnVariableRuleRepetition(ASTNode node)
         {
-            var expression = VisitChild<Expression>(node, 0);
+            var expression = VisitChild<IExpression>(node, 0);
             if (node.Children.Count == 1)
             {
                 return expression;
@@ -323,22 +340,18 @@ namespace Lingu.Bootstrap
         protected override object OnVariableRuleSub(ASTNode node)
         {
             var name = VisitChild<Name>(node, 0);
-            var expr = VisitChild<Expression>(node, 1);
-#if true
+            var expr = VisitChild<IExpression>(node, 1);
+
             var rule = new RuleDefinition(true, name, expr);
 
             Grammar.Nonterminals.Add(rule);
 
             return NewReference(name, ReferenceKind.TerminalOrRule);
-#else
-
-            return new SubRule(name, expr);
-#endif
         }
 
         protected override object OnVariableRuleTreeAction(ASTNode node)
         {
-            var expression = VisitChild<Expression>(node, 0);
+            var expression = VisitChild<IExpression>(node, 0);
             if (node.Children.Count == 1)
             {
                 return expression;
@@ -398,11 +411,6 @@ namespace Lingu.Bootstrap
         }
 
         protected override object OnTerminalSeparator(ASTNode node)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override object OnVariableRuleAction(ASTNode node)
         {
             throw new NotImplementedException();
         }

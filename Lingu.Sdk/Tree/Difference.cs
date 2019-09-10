@@ -5,17 +5,17 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Difference : Expression
+    public class Difference : IExpression
     {
-        public Difference(IEnumerable<Expression> expressions)
+        public Difference(IEnumerable<IExpression> expressions)
         {
             Expressions = expressions.ToArray();
         }
 
-        public IReadOnlyList<Expression> Expressions { get; }
-        public override IEnumerable<Expression> Children => Expressions;
+        public IReadOnlyList<IExpression> Expressions { get; }
+        public IEnumerable<IExpression> Children => Expressions;
 
-        public override FA GetFA()
+        public FA GetFA()
         {
             if (Expressions.Count != 2)
             {
@@ -30,7 +30,7 @@ namespace Lingu.Tree
             return cross; ;
         }
 
-        public override void Dump(IWriter output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;
@@ -44,6 +44,11 @@ namespace Lingu.Tree
                 more = true;
             }
             if (!top) output.Write(")");
+        }
+
+        public IEnumerator<IExpression> GetEnumerator()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -7,18 +7,17 @@ using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public class Reference : Expression
+    public class Reference : Symbol, IExpression
     {
         public Reference(Symbol name, ReferenceKind kind)
+            : base(name.Name)
         {
-            Name = name;
             Kind = kind;
         }
 
-        public Symbol Name { get; }
         public ReferenceKind Kind { get; }
         public Symbol Definition { get; private set; }
-        public override IEnumerable<Expression> Children => Enumerable.Empty<Expression>();
+        public IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
 
         public void ResolveTo(TerminalDefinition definition)
         {
@@ -32,7 +31,7 @@ namespace Lingu.Tree
             definition.Use();
         }
 
-        public override FA GetFA()
+        public FA GetFA()
         {
             return ((TerminalDefinition)Definition).Expression.GetFA();
         }
@@ -45,8 +44,13 @@ namespace Lingu.Tree
             }
             else
             {
-                Name.Dump(output, top);
+                output.Write(Name);
             }
+        }
+
+        public IEnumerator<IExpression> GetEnumerator()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

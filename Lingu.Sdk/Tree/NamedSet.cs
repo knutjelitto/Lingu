@@ -5,9 +5,9 @@ using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public abstract class NamedSet<TKey, TValue> : UniqueList<TKey, TValue>, IDumpable
-        where TKey : Symbol, IDumpable
-        where TValue : IDumpable 
+    public abstract class NamedSet<TKey, TValue> : UniqueList<TKey, TValue>, ICanDump
+        where TKey : Symbol, ICanDump
+        where TValue : ICanDump 
     {
         public NamedSet(string setname, bool separate, Func<TValue, TKey> getKey)
             : base(getKey)

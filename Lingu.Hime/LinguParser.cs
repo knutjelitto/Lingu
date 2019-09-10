@@ -16,7 +16,7 @@ namespace Lingu.Bootstrap.Hime
 		/// <summary>
 		/// The automaton for this parser
 		/// </summary>
-		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser.bin");
+		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser");
 		/// <summary>
 		/// Contains the constant IDs for the variables and virtuals in this parser
 		/// </summary>
@@ -127,17 +127,17 @@ namespace Lingu.Bootstrap.Hime
 			/// </summary>
 			public const int VariableRuleElement = 0x002B;
 			/// <summary>
+			/// The unique identifier for variable sub_rule
+			/// </summary>
+			public const int VariableSubRule = 0x002C;
+			/// <summary>
 			/// The unique identifier for variable rule_sub
 			/// </summary>
-			public const int VariableRuleSub = 0x002C;
+			public const int VariableRuleSub = 0x002D;
 			/// <summary>
 			/// The unique identifier for variable rule_atom
 			/// </summary>
-			public const int VariableRuleAtom = 0x002D;
-			/// <summary>
-			/// The unique identifier for variable rule_action
-			/// </summary>
-			public const int VariableRuleAction = 0x002E;
+			public const int VariableRuleAtom = 0x002E;
 			/// <summary>
 			/// The unique identifier for variable reference
 			/// </summary>
@@ -181,9 +181,9 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x0029, "rule_repetition"), 
 			new Symbol(0x002A, "rule_tree_action"), 
 			new Symbol(0x002B, "rule_element"), 
-			new Symbol(0x002C, "rule_sub"), 
-			new Symbol(0x002D, "rule_atom"), 
-			new Symbol(0x002E, "rule_action"), 
+			new Symbol(0x002C, "sub_rule"), 
+			new Symbol(0x002D, "rule_sub"), 
+			new Symbol(0x002E, "rule_atom"), 
 			new Symbol(0x002F, "reference"), 
 			new Symbol(0x0032, "__V50"), 
 			new Symbol(0x0035, "__V53"), 
@@ -194,7 +194,7 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x004B, "__V75"), 
 			new Symbol(0x004C, "__V76"), 
 			new Symbol(0x004D, "__V77"), 
-			new Symbol(0x0051, "__VAxiom") };
+			new Symbol(0x0050, "__VAxiom") };
 		/// <summary>
 		/// The collection of virtuals matched by this parser
 		/// </summary>
@@ -250,9 +250,9 @@ namespace Lingu.Bootstrap.Hime
 			public virtual void OnVariableRuleRepetition(ASTNode node) {}
 			public virtual void OnVariableRuleTreeAction(ASTNode node) {}
 			public virtual void OnVariableRuleElement(ASTNode node) {}
+			public virtual void OnVariableSubRule(ASTNode node) {}
 			public virtual void OnVariableRuleSub(ASTNode node) {}
 			public virtual void OnVariableRuleAtom(ASTNode node) {}
-			public virtual void OnVariableRuleAction(ASTNode node) {}
 			public virtual void OnVariableReference(ASTNode node) {}
 			public virtual void OnVirtualRange(ASTNode node) {}
 		}
@@ -309,9 +309,9 @@ namespace Lingu.Bootstrap.Hime
 				case 0x0029: visitor.OnVariableRuleRepetition(node); break;
 				case 0x002A: visitor.OnVariableRuleTreeAction(node); break;
 				case 0x002B: visitor.OnVariableRuleElement(node); break;
-				case 0x002C: visitor.OnVariableRuleSub(node); break;
-				case 0x002D: visitor.OnVariableRuleAtom(node); break;
-				case 0x002E: visitor.OnVariableRuleAction(node); break;
+				case 0x002C: visitor.OnVariableSubRule(node); break;
+				case 0x002D: visitor.OnVariableRuleSub(node); break;
+				case 0x002E: visitor.OnVariableRuleAtom(node); break;
 				case 0x002F: visitor.OnVariableReference(node); break;
 				case 0x0048: visitor.OnVirtualRange(node); break;
 			}

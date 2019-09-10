@@ -4,14 +4,14 @@ namespace Lingu.Tree
 {
     public class SubRule : Node
     {
-        public SubRule(Name name, Expression expression)
+        public SubRule(Name name, IExpression expression)
         {
             Name = name;
             Expression = expression;
         }
 
         public Name Name { get; }
-        public Expression Expression { get; }
+        public IExpression Expression { get; }
 
         public override void Dump(IWriter output, bool top)
         {

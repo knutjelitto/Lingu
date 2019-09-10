@@ -5,20 +5,21 @@
         Start = expression;
         Newline = newline;
         Separator = separator;
+        Keywords = identifier;
     }
     terminals
     {
         newline
-            : U+000A        // LF
-            | U+000D U+000A // CR LF
+            : '\n'          // LF
+            | '\r' '\n'     // CR LF
 			| U+0085        // NL Next line character
 			| U+2028        // LS Line separator character
 			| U+2029        // PS Paragraph separator character
             ;
 
         newlineChar
-            : U+000A        // LF
-            | U+000D        // CR
+            : '\n'          // LF
+            | '\n'          // CR LF
 			| U+0085        // NL Next line character
 			| U+2028        // LS Line separator character
 			| U+2029        // PS Paragraph separator character
@@ -75,39 +76,22 @@
     rules
     {
         expression
-            : shiftExpression
+            : {shlOp: prefix '<<'! prefix}^
+            | {shrOp: prefix '>>'! prefix}^
+            | {addOp: prefix '+'!  prefix}^
+            | {subOp: prefix '-'!  prefix}^
+            | {mulOp: prefix '*'!  prefix}^
+            | {divOp: prefix '/'!  prefix}^
+            | {remOp: prefix '%'!  prefix}^
+            | {modOp: prefix '%%'! prefix}^
             ;
 
-        shiftExpression
-            : {shlOp: shiftExpression '<<'! addExpression}^
-            | addExpression^
+        prefix
+            : {negOp: '-'! prefix}^
+            | primary^
             ;
 
-        shiftExpression
-            : {shrOp: shiftExpression '>>'! addExpression}^
-            | addExpression^
-            ;
-
-        addExpression
-            : {addOp: addExpression '+'! mulExpression}^
-            | {subOp: addExpression '-'! mulExpression}^
-            | mulExpression^
-            ;
-
-        mulExpression
-            : {mulOp: mulExpression '*'! primaryExpression}^
-            | {divOp: mulExpression '/'! primaryExpression}^
-            | {remOp: mulExpression '%'! primaryExpression}^
-            | {modOp: mulExpression 'mod'! primaryExpression}^
-            | primaryExpression^
-            ;
-
-        prefixExpression
-            : {negOp: '-' prefixExpression}^
-            | primaryExpression^
-            ;
-
-        primaryExpression
+        primary
             : identifier^
             | number^
             | '('! expression^ ')'!

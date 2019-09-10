@@ -6,7 +6,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class TreeAction : Expression
+    public class TreeAction : IExpression
     {
         public enum TreeActionX
         {
@@ -14,23 +14,24 @@ namespace Lingu.Tree
             Promote
         }
 
-        public TreeAction(Expression expression, TreeActionX action)
+        public TreeAction(IExpression expression, TreeActionX action)
         {
             Expression = expression;
             Action = action;
         }
 
-        public Expression Expression { get; }
-        public override IEnumerable<Expression> Children => Enumerable.Repeat(Expression, 1);
+        public IExpression Expression { get; }
 
         public TreeActionX Action { get; }
 
-        public override FA GetFA()
+        public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
+
+        public FA GetFA()
         {
             return Expression.GetFA();
         }
 
-        public override void Dump(IWriter output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             Expression.Dump(output, top);
             switch (Action)

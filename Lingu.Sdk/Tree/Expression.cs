@@ -6,20 +6,15 @@ using System.Text;
 
 namespace Lingu.Tree
 {
-    public abstract class Expression : Node, IEnumerable<Expression>
+    public abstract class Expression : Node, IExpression
     {
         public abstract FA GetFA();
 
-        public abstract IEnumerable<Expression> Children { get; }
+        public abstract IEnumerable<IExpression> Children { get; }
 
-        public IEnumerator<Expression> GetEnumerator()
+        public IEnumerator<IExpression> GetEnumerator()
         {
-            return Children.GetEnumerator(); ;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator(); ;
+            return Children.GetEnumerator();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Lingu.Tree
 {
     public abstract class Definition : Symbol
     {
-        public Definition(bool isGenerated, string name, Expression expression)
+        public Definition(bool isGenerated, string name, IExpression expression)
             : base(name)
         {
             IsGenerated = isGenerated;
@@ -13,7 +13,7 @@ namespace Lingu.Tree
         }
 
         public bool IsGenerated { get; }
-        public Expression Expression { get; }
+        public IExpression Expression { get; }
 
         public int UseCount { get; private set; }
 

@@ -17,7 +17,7 @@ namespace Mean.Language.Generated
 		/// <summary>
 		/// The automaton for this lexer
 		/// </summary>
-		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(MeanExpressionLexer), "MeanExpressionLexer.bin");
+		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(MeanExpressionLexer), "MeanExpressionLexer");
 		/// <summary>
 		/// Contains the constant IDs for the terminals for this lexer
 		/// </summary>

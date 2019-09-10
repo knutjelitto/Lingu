@@ -5,14 +5,14 @@ namespace Lingu.Tree
 {
     public class Range : Atom
     {
-        public Range(Expression from, Expression to)
+        public Range(IExpression from, IExpression to)
         {
             From = from;
             To = to;
         }
 
-        public Expression From { get; }
-        public Expression To { get; }
+        public IExpression From { get; }
+        public IExpression To { get; }
 
         public override FA GetFA()
         {

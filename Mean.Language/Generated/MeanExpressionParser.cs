@@ -16,7 +16,7 @@ namespace Mean.Language.Generated
 		/// <summary>
 		/// The automaton for this parser
 		/// </summary>
-		private static readonly RNGLRAutomaton commonAutomaton = RNGLRAutomaton.Find(typeof(MeanExpressionParser), "MeanExpressionParser.bin");
+		private static readonly RNGLRAutomaton commonAutomaton = RNGLRAutomaton.Find(typeof(MeanExpressionParser), "MeanExpressionParser");
 		/// <summary>
 		/// Contains the constant IDs for the variables and virtuals in this parser
 		/// </summary>

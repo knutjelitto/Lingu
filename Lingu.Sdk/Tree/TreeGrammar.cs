@@ -24,7 +24,7 @@ namespace Lingu.Tree
 
         public List<Reference> References { get; }
 
-        public TerminalDefinition GenTerminal(Expression expression)
+        public TerminalDefinition GenTerminal(IExpression expression)
         {
             var name = new Name("$T" + nextTerminalId++);
 
@@ -35,7 +35,7 @@ namespace Lingu.Tree
             return terminal;
         }
 
-        public RuleDefinition GenRule(Expression expression)
+        public RuleDefinition GenRule(IExpression expression)
         {
             var name = new Name("$R" + nextRuleId++);
 
@@ -52,7 +52,7 @@ namespace Lingu.Tree
             {
                 if (reference.Kind == ReferenceKind.Terminal)
                 {
-                    if (!Terminals.TryGetValue(reference.Name, out var terminal))
+                    if (!Terminals.TryGetValue(reference, out var terminal))
                     {
                         throw new TreeException($"can't resolve reference to terminal `{reference.Name}`");
                     }
@@ -60,9 +60,9 @@ namespace Lingu.Tree
                 }
                 else if (reference.Kind == ReferenceKind.TerminalOrRule)
                 {
-                    if (!Nonterminals.TryGetValue(reference.Name, out var rule))
+                    if (!Nonterminals.TryGetValue(reference, out var rule))
                     {
-                        if (!Terminals.TryGetValue(reference.Name, out var terminal))
+                        if (!Terminals.TryGetValue(reference, out var terminal))
                         {
                             throw new TreeException($"can't resolve reference to rule or terminal `{reference.Name}`");
                         }

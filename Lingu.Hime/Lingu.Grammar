@@ -185,18 +185,13 @@
                 |  rule_atom^
                 ;
 
-            rule_sub                
+            rule_sub 
                 -> '{'! NAME ':'! rule_expression '}'!
                 ;
 
             rule_atom
-                -> rule_action^
-                |  reference^
+                -> reference^
                 |  text^
-                ;
-
-            rule_action
-                -> '@'! NAME
                 ;
 
             reference

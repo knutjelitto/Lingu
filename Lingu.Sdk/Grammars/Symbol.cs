@@ -4,7 +4,7 @@ using System;
 
 namespace Lingu.Grammars
 {
-    public abstract class Symbol : IDumpable
+    public abstract class Symbol : ICanDump
     {
         public Symbol(string name)
         {

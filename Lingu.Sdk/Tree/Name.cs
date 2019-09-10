@@ -5,7 +5,7 @@ using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public class Name : Symbol, IDumpable
+    public class Name : Symbol, ICanDump
     {
         public static readonly Name Empty = new Name(string.Empty);
 

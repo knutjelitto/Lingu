@@ -7,22 +7,22 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Repetition : Expression
+    public class Repetition : IExpression
     {
-        public Repetition(Expression expression, int? min = null, int? max = null)
+        public Repetition(IExpression expression, int? min = null, int? max = null)
         {
             Expression = expression;
             Min = min;
             Max = max;
         }
 
-        public Expression Expression { get; }
-        public override IEnumerable<Expression> Children => Enumerable.Repeat(Expression, 1);
+        public IExpression Expression { get; }
+        public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
 
         public int? Min { get; }
         public int? Max { get; }
 
-        public override FA GetFA()
+        public FA GetFA()
         {
             var expr = Expression.GetFA();
 
@@ -70,10 +70,15 @@ namespace Lingu.Tree
             }
         }
 
-        public override void Dump(IWriter output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             Expression.Dump(output, false);
             output.Write(Rep);
+        }
+
+        public IEnumerator<IExpression> GetEnumerator()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

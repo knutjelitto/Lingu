@@ -3,7 +3,7 @@ using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public abstract class Node : IDumpable
+    public abstract class Node : ICanDump
     {
         public virtual void Dump(IWriter output, bool top)
         {

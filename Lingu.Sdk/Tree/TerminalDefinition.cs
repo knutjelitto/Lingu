@@ -6,7 +6,7 @@ namespace Lingu.Tree
 {
     public sealed class TerminalDefinition : Terminal
     {
-        public TerminalDefinition(bool isGenerated, Name name, Expression expression)
+        public TerminalDefinition(bool isGenerated, Name name, IExpression expression)
             : base(name.Name)
         {
             Id = -1;
@@ -14,13 +14,13 @@ namespace Lingu.Tree
             Expression = expression;
         }
 
-        public TerminalDefinition(Name name, Expression expression)
+        public TerminalDefinition(Name name, IExpression expression)
             : this(false, name, expression)
         {
         }
 
         public int UseCount { get; private set; }
-        public Expression Expression { get; }
+        public IExpression Expression { get; }
         public byte[] Bytes { get; set; }
         public void Use()
         {

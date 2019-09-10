@@ -5,17 +5,17 @@ using System.Linq;
 
 namespace Lingu.Tree
 {
-    public class Sequence : Expression
+    public class Sequence : IExpression
     {
-        public Sequence(IEnumerable<Expression> expressions)
+        public Sequence(IEnumerable<IExpression> expressions)
         {
             Expressions = expressions.ToArray();
         }
 
-        public IReadOnlyList<Expression> Expressions { get; }
-        public override IEnumerable<Expression> Children => Expressions;
+        public IReadOnlyList<IExpression> Expressions { get; }
+        public IEnumerable<IExpression> Children => Expressions;
 
-        public override FA GetFA()
+        public FA GetFA()
         {
             var nfa = Expressions.First().GetFA();
             foreach (var expr in Expressions.Skip(1))
@@ -25,7 +25,7 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public override void Dump(IWriter output, bool top)
+        public void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;
@@ -39,6 +39,11 @@ namespace Lingu.Tree
                 more = true;
             }
             if (!top) output.Write(")");
+        }
+
+        public IEnumerator<IExpression> GetEnumerator()
+        {
+            return Children.GetEnumerator();
         }
     }
 }
