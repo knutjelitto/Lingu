@@ -24,22 +24,22 @@ namespace Lingu.Tree
 
         public List<Reference> References { get; }
 
-        public TerminalDefinition GenTerminal(IExpression expression)
+        public TreeTerminal GenTerminal(IExpression expression)
         {
             var name = new Name("$T" + nextTerminalId++);
 
-            var terminal = new TerminalDefinition(true, name, expression);
+            var terminal = new TreeTerminal(true, name, expression);
 
             Terminals.Add(terminal);
 
             return terminal;
         }
 
-        public RuleDefinition GenRule(IExpression expression)
+        public TreeNonterminal GenRule(IExpression expression)
         {
             var name = new Name("$R" + nextRuleId++);
 
-            var terminal = new RuleDefinition(true, name, expression);
+            var terminal = new TreeNonterminal(true, name, expression);
 
             Nonterminals.Add(terminal);
 
@@ -56,7 +56,7 @@ namespace Lingu.Tree
                     {
                         throw new TreeException($"can't resolve reference to terminal `{reference.Name}`");
                     }
-                    reference.ResolveTo((TerminalDefinition)terminal);
+                    reference.ResolveTo((TreeTerminal)terminal);
                 }
                 else if (reference.Kind == ReferenceKind.TerminalOrRule)
                 {
@@ -66,11 +66,11 @@ namespace Lingu.Tree
                         {
                             throw new TreeException($"can't resolve reference to rule or terminal `{reference.Name}`");
                         }
-                        reference.ResolveTo((TerminalDefinition)terminal);
+                        reference.ResolveTo((TreeTerminal)terminal);
                     }
                     else
                     {
-                        reference.ResolveTo((RuleDefinition)rule);
+                        reference.ResolveTo((TreeNonterminal)rule);
                     }
                 }
             }
@@ -78,13 +78,13 @@ namespace Lingu.Tree
 
         public void DumpTerminals(TextWriter writer)
         {
-            foreach (var terminal in Terminals.Cast<TerminalDefinition>())
+            foreach (var terminal in Terminals.Cast<TreeTerminal>())
             {
                 DumpTerminal(terminal, writer);
             }
         }
 
-        public void DumpTerminal(TerminalDefinition terminal, TextWriter writer)
+        public void DumpTerminal(TreeTerminal terminal, TextWriter writer)
         {
             if (terminal.IsFragment)
             {
@@ -146,6 +146,10 @@ namespace Lingu.Tree
                 var more = false;
                 foreach (var item in members)
                 {
+                    if (item is Nonterminal non && non.IsEmbedded)
+                    {
+                        continue;
+                    }
                     if (separate && more) output.WriteLine();
                     item.Dump(output, top);
                     more = true;

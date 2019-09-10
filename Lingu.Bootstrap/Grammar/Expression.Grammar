@@ -19,7 +19,7 @@
 
         newlineChar
             : '\n'          // LF
-            | '\n'          // CR LF
+            | '\r'          // CR
 			| U+0085        // NL Next line character
 			| U+2028        // LS Line separator character
 			| U+2029        // PS Paragraph separator character
@@ -33,7 +33,7 @@
             ;
 
         lineComment
-            : '//' (. - newline)*
+            : '//' (. - newlineChar)*
             ;
 
         blockComment
@@ -65,7 +65,7 @@
             ;
 
         zero
-            : digit - nonzeroDigit
+            : '0'
             ;
 
         number
@@ -76,25 +76,30 @@
     rules
     {
         expression
-            : {shlOp: prefix '<<'! prefix}^
-            | {shrOp: prefix '>>'! prefix}^
-            | {addOp: prefix '+'!  prefix}^
-            | {subOp: prefix '-'!  prefix}^
-            | {mulOp: prefix '*'!  prefix}^
-            | {divOp: prefix '/'!  prefix}^
-            | {remOp: prefix '%'!  prefix}^
-            | {modOp: prefix '%%'! prefix}^
+            : ^{shlOp: prefix ,'<<' prefix}
+			| ^{shrOp: prefix ,'>>' prefix}
+            | ^{addOp: prefix ,'+'  prefix}
+            | ^{subOp: prefix ,'-'  prefix}
+            | ^{mulOp: prefix ,'*'  prefix}
+            | ^{divOp: prefix ,'/'  prefix}
+            | ^{remOp: prefix ,'%'  prefix}
+            | ^{modOp: prefix ,'%%' prefix}
+			| ^prefix
             ;
 
         prefix
-            : {negOp: '-'! prefix}^
-            | primary^
+            : ^{negOp: ,'-' prefix}
+            | ^primary
             ;
 
         primary
-            : identifier^
-            | number^
-            | '('! expression^ ')'!
+            : ^identifier
+            | ^number
+            | ,'(' ^expression ,')'
             ;
+
+		alt
+			: expression (prefix | primary)
+			;
     }
 }

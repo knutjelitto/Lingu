@@ -8,7 +8,13 @@ namespace Lingu.Tree
 {
     public abstract class Atom : IExpression
     {
+        public Atom()
+        {
+            Action = TreeActionKind.None;
+        }
+
         public virtual IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
+        public TreeActionKind Action { get; set; }
 
         public abstract void Dump(IWriter output, bool top);
         public abstract FA GetFA();

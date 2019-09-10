@@ -1,20 +1,29 @@
 ﻿using Lingu.Automata;
 using Lingu.Commons;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Lingu.Tree
 {
-    public class Alternates : IExpression
+    public class Alternates : Node, IExpression
     {
         public Alternates(IEnumerable<IExpression> expressions)
         {
             Expressions = expressions.ToArray();
         }
 
-        public IReadOnlyList<IExpression> Expressions { get; }
+        public IReadOnlyList<IExpression> Expressions { get; private set; }
         public IEnumerable<IExpression> Children => Expressions;
+
+        public void Combine(IEnumerable<IExpression> expressions)
+        {
+            Expressions = Expressions.Concat(expressions).ToArray();
+        }
+
+        public void Combine(IExpression expression)
+        {
+            Expressions = Expressions.Concat(Enumerable.Repeat(expression, 1)).ToArray();
+        }
 
         public FA GetFA()
         {
@@ -26,7 +35,7 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public void Dump(IWriter output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             var more = false;
             if (top)

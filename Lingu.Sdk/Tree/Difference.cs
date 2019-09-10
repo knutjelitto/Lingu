@@ -5,7 +5,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Difference : IExpression
+    public class Difference : Node, IExpression
     {
         public Difference(IEnumerable<IExpression> expressions)
         {
@@ -30,7 +30,7 @@ namespace Lingu.Tree
             return cross; ;
         }
 
-        public void Dump(IWriter output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;

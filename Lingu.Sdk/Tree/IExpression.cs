@@ -12,5 +12,7 @@ namespace Lingu.Tree
         FA GetFA();
 
         IEnumerable<IExpression> Children { get; }
+
+        TreeActionKind Action { get; set; }
     }
 }

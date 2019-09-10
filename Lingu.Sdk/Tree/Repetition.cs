@@ -7,7 +7,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Repetition : IExpression
+    public class Repetition : Node, IExpression
     {
         public Repetition(IExpression expression, int? min = null, int? max = null)
         {
@@ -70,7 +70,7 @@ namespace Lingu.Tree
             }
         }
 
-        public void Dump(IWriter output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             Expression.Dump(output, false);
             output.Write(Rep);

@@ -53,23 +53,23 @@ namespace Lingu.Build
 
         private void CheckTerminals()
         {
-            foreach (var terminal in Grammar.Terminals.Cast<TerminalDefinition>())
+            foreach (var terminal in Grammar.Terminals.Cast<TreeTerminal>())
             {
                 CheckTerminal(terminal);
             }
         }
 
-        private void CheckTerminal(TerminalDefinition terminal)
+        private void CheckTerminal(TreeTerminal terminal)
         {
-            var path = new Stack<TerminalDefinition>();
+            var path = new Stack<TreeTerminal>();
             CheckTerminal(terminal, path, terminal.Expression);
         }
 
-        private void CheckTerminal(TerminalDefinition terminal, Stack<TerminalDefinition> path, IExpression expression)
+        private void CheckTerminal(TreeTerminal terminal, Stack<TreeTerminal> path, IExpression expression)
         {
             if (expression is Reference reference)
             {
-                var definition = (TerminalDefinition)reference.Definition;
+                var definition = (TreeTerminal)reference.Definition;
 
                 if (terminal.Equals(definition))
                 {
@@ -97,7 +97,7 @@ namespace Lingu.Build
                 terminal.IsFragment = true;
             }
 
-            foreach (var rule in Grammar.Nonterminals.Cast<RuleDefinition>())
+            foreach (var rule in Grammar.Nonterminals.Cast<TreeNonterminal>())
             {
                 CheckFragment(rule.Expression);
             }
@@ -105,7 +105,7 @@ namespace Lingu.Build
 
         private void CheckFragment(IExpression expression)
         {
-            if (expression is Reference reference && reference.Definition is TerminalDefinition terminal)
+            if (expression is Reference reference && reference.Definition is TreeTerminal terminal)
             {
                 terminal.IsFragment = false;
             }
@@ -135,13 +135,13 @@ namespace Lingu.Build
 
         private void BuildTerminals()
         {
-            foreach (var definition in Grammar.Terminals.Cast<TerminalDefinition>())
+            foreach (var definition in Grammar.Terminals.Cast<TreeTerminal>())
             {
                 BuildTerminal(definition);
             }
         }
 
-        private void BuildTerminal(TerminalDefinition definition)
+        private void BuildTerminal(TreeTerminal definition)
         {
             definition.Alias = definition.IsGenerated ? definition.Expression.ToString() : null;
             definition.Bytes = Writer.Compact(definition.Expression.GetFA().ToDfa().Minimize().RemoveDead());

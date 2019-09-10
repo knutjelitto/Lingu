@@ -37,16 +37,13 @@ namespace Lingu.Hime
             var lexer = FileRef.Source($"{ProjectDir}LinguLexer.cs");
             var visitor = FileRef.Source($"{ProjectDir}LinguVisitor.cs");
 
-            //if (source.NewerThan(parser))
-            //{
-                Generate(options, source);
+            Generate(options, source);
 
-                var tweaker = new Tweaker(parser, visitor);
-                Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.File} ...");
-                tweaker.TweakVisitor();
-                tweaker.TweakLexer(lexer);
-                tweaker.TweakParser(parser);
-            //}
+            var tweaker = new Tweaker(parser, visitor);
+            Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.File} ...");
+            tweaker.TweakVisitor();
+            //tweaker.TweakLexer(lexer);
+            //tweaker.TweakParser(parser);
         }
 
         private Report Generate(HimeTaskOptions options, params FileRef[] grammarInputs)

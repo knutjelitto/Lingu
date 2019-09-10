@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Lingu.Tree
 {
-    public class Sequence : IExpression
+    public class Sequence : Node, IExpression
     {
         public Sequence(IEnumerable<IExpression> expressions)
         {
@@ -25,7 +25,7 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public void Dump(IWriter output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;

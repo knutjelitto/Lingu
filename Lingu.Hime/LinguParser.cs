@@ -16,7 +16,7 @@ namespace Lingu.Bootstrap.Hime
 		/// <summary>
 		/// The automaton for this parser
 		/// </summary>
-		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser");
+		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser.bin");
 		/// <summary>
 		/// Contains the constant IDs for the variables and virtuals in this parser
 		/// </summary>
@@ -127,25 +127,21 @@ namespace Lingu.Bootstrap.Hime
 			/// </summary>
 			public const int VariableRuleElement = 0x002B;
 			/// <summary>
-			/// The unique identifier for variable sub_rule
-			/// </summary>
-			public const int VariableSubRule = 0x002C;
-			/// <summary>
 			/// The unique identifier for variable rule_sub
 			/// </summary>
-			public const int VariableRuleSub = 0x002D;
+			public const int VariableRuleSub = 0x002C;
 			/// <summary>
 			/// The unique identifier for variable rule_atom
 			/// </summary>
-			public const int VariableRuleAtom = 0x002E;
+			public const int VariableRuleAtom = 0x002D;
 			/// <summary>
 			/// The unique identifier for variable reference
 			/// </summary>
-			public const int VariableReference = 0x002F;
+			public const int VariableReference = 0x002E;
 			/// <summary>
 			/// The unique identifier for virtual range
 			/// </summary>
-			public const int VirtualRange = 0x0048;
+			public const int VirtualRange = 0x0047;
 		}
 		/// <summary>
 		/// The collection of variables matched by this parser
@@ -181,20 +177,19 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x0029, "rule_repetition"), 
 			new Symbol(0x002A, "rule_tree_action"), 
 			new Symbol(0x002B, "rule_element"), 
-			new Symbol(0x002C, "sub_rule"), 
-			new Symbol(0x002D, "rule_sub"), 
-			new Symbol(0x002E, "rule_atom"), 
-			new Symbol(0x002F, "reference"), 
-			new Symbol(0x0032, "__V50"), 
-			new Symbol(0x0035, "__V53"), 
-			new Symbol(0x0039, "__V57"), 
-			new Symbol(0x003D, "__V61"), 
+			new Symbol(0x002C, "rule_sub"), 
+			new Symbol(0x002D, "rule_atom"), 
+			new Symbol(0x002E, "reference"), 
+			new Symbol(0x0031, "__V49"), 
+			new Symbol(0x0034, "__V52"), 
+			new Symbol(0x0038, "__V56"), 
+			new Symbol(0x003C, "__V60"), 
+			new Symbol(0x003E, "__V62"), 
 			new Symbol(0x003F, "__V63"), 
-			new Symbol(0x0040, "__V64"), 
+			new Symbol(0x004A, "__V74"), 
 			new Symbol(0x004B, "__V75"), 
 			new Symbol(0x004C, "__V76"), 
-			new Symbol(0x004D, "__V77"), 
-			new Symbol(0x0050, "__VAxiom") };
+			new Symbol(0x004E, "__VAxiom") };
 		/// <summary>
 		/// The collection of virtuals matched by this parser
 		/// </summary>
@@ -203,7 +198,7 @@ namespace Lingu.Bootstrap.Hime
 		/// so that virtual indices in the automaton can be used to retrieve the virtuals in this table
 		/// </remarks>
 		private static readonly Symbol[] virtuals = {
-			new Symbol(0x0048, "range") };
+			new Symbol(0x0047, "range") };
 		/// <summary>
 		/// Initializes a new instance of the parser
 		/// </summary>
@@ -250,7 +245,6 @@ namespace Lingu.Bootstrap.Hime
 			public virtual void OnVariableRuleRepetition(ASTNode node) {}
 			public virtual void OnVariableRuleTreeAction(ASTNode node) {}
 			public virtual void OnVariableRuleElement(ASTNode node) {}
-			public virtual void OnVariableSubRule(ASTNode node) {}
 			public virtual void OnVariableRuleSub(ASTNode node) {}
 			public virtual void OnVariableRuleAtom(ASTNode node) {}
 			public virtual void OnVariableReference(ASTNode node) {}
@@ -309,11 +303,10 @@ namespace Lingu.Bootstrap.Hime
 				case 0x0029: visitor.OnVariableRuleRepetition(node); break;
 				case 0x002A: visitor.OnVariableRuleTreeAction(node); break;
 				case 0x002B: visitor.OnVariableRuleElement(node); break;
-				case 0x002C: visitor.OnVariableSubRule(node); break;
-				case 0x002D: visitor.OnVariableRuleSub(node); break;
-				case 0x002E: visitor.OnVariableRuleAtom(node); break;
-				case 0x002F: visitor.OnVariableReference(node); break;
-				case 0x0048: visitor.OnVirtualRange(node); break;
+				case 0x002C: visitor.OnVariableRuleSub(node); break;
+				case 0x002D: visitor.OnVariableRuleAtom(node); break;
+				case 0x002E: visitor.OnVariableReference(node); break;
+				case 0x0047: visitor.OnVirtualRange(node); break;
 			}
 		}
 	}

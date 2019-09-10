@@ -6,7 +6,7 @@ using Lingu.Commons;
 
 namespace Lingu.Tree
 {
-    public class Not : IExpression
+    public class Not : Node, IExpression
     {
         public Not(IExpression expression)
         {
@@ -22,7 +22,7 @@ namespace Lingu.Tree
             return Expression.GetFA().ToDfa().Complete().Negate().RemoveDead().ToNfa();
         }
 
-        public void Dump(IWriter output, bool top)
+        public override void Dump(IWriter output, bool top)
         {
             output.Write("~");
             Expression.Dump(output, false);

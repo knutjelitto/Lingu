@@ -17,6 +17,8 @@ namespace Lingu.Grammars
             Productions = new List<Production>();
         }
 
+        public bool IsEmbedded { get; set; }
+
         public List<Production> Productions { get; set; }
     }
 }

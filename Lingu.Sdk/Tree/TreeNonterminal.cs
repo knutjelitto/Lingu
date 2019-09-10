@@ -4,26 +4,21 @@ using System.Diagnostics;
 
 namespace Lingu.Tree
 {
-    public sealed class RuleDefinition : Nonterminal
+    public sealed class TreeNonterminal : Nonterminal
     {
-        public RuleDefinition(bool isGenerated, Name name, IExpression expression)
+        public TreeNonterminal(bool isGenerated, Name name, IExpression expression)
             : base(name.Name)
         {
             IsGenerated = isGenerated;
             Expression = expression;
         }
 
-        public RuleDefinition(Name name, IExpression expression)
+        public TreeNonterminal(Name name, IExpression expression)
             : this(false, name, expression)
         {
         }
 
-        public IExpression Expression { get; }
-        public int UseCount { get; private set; }
-        public void Use()
-        {
-            UseCount += 1;
-        }
+        public IExpression Expression { get; set; }
 
         public override void Dump(IWriter output, bool top)
         {

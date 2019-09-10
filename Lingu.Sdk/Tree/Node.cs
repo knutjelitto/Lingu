@@ -9,5 +9,7 @@ namespace Lingu.Tree
         {
             output.WriteLine(GetType().Name);
         }
+
+        public TreeActionKind Action { get; set; }
     }
 }

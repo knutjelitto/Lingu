@@ -5,7 +5,6 @@ using System.Linq;
 
 using Hime.Redist;
 using Lingu.Bootstrap.Hime;
-using Lingu.Grammars;
 using Lingu.Tree;
 
 namespace Lingu.Bootstrap
@@ -51,11 +50,6 @@ namespace Lingu.Bootstrap
 
         // #####################################################################
 
-        protected override object OnVariableSubRule(ASTNode node)
-        {
-            return base.OnVariableSubRule(node);
-        }
-
         protected override object OnVariableFile(ASTNode node)
         {
             Debug.Assert(node.Children.Count == 1);
@@ -72,22 +66,22 @@ namespace Lingu.Bootstrap
 
             foreach (var subNode in node.Children.Skip(1))
             {
-                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarOptions)
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarOptions)
                 {
                     CurrentContext = ReferenceKind.Illegal;
                     Grammar.TreeOptions.AddRange(VisitChildren<TreeOption>(subNode));
                 }
 
-                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarTerminals)
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarTerminals)
                 {
                     CurrentContext = ReferenceKind.Terminal;
-                    Grammar.Terminals.AddRange(VisitChildren<TerminalDefinition>(subNode));
+                    Grammar.Terminals.AddRange(VisitChildren<TreeTerminal>(subNode));
                 }
 
-                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == Hime.LinguParser.ID.VariableGrammarRules)
+                if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarRules)
                 {
                     CurrentContext = ReferenceKind.TerminalOrRule;
-                    Grammar.Nonterminals.AddRange(VisitChildren<RuleDefinition>(subNode));
+                    Grammar.Nonterminals.AddRange(VisitChildren<TreeNonterminal>(subNode));
                 }
             }
 
@@ -101,7 +95,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
-            return new TerminalDefinition(VisitChild<Name>(node, 0), VisitChild<IExpression>(node, 1));
+            return new TreeTerminal(VisitChild<Name>(node, 0), VisitChild<IExpression>(node, 1));
         }
 
         protected override object OnVariableTerminalExpression(ASTNode node)
@@ -223,7 +217,7 @@ namespace Lingu.Bootstrap
 
             if (CurrentContext == ReferenceKind.TerminalOrRule)
             {
-                foreach (var t in Grammar.Terminals.Cast<TerminalDefinition>())
+                foreach (var t in Grammar.Terminals.Cast<TreeTerminal>())
                 {
                     if (t.IsGenerated && t.Expression.Equals(text))
                     {
@@ -265,24 +259,7 @@ namespace Lingu.Bootstrap
         {
             var name = VisitChild<Name>(node, 0);
             var expression = VisitChild<IExpression>(node, 1);
-            var rule = new RuleDefinition(name, expression);
-#if false
-            if (expression is Alternates alternates)
-            {
-                foreach (var sequence in alternates.Expressions)
-                {
-                    var symbols = sequence.Children.Cast<Grammars.Symbol>().ToList();
-                    var production = new Production(rule, symbols);
-                    rule.Productions.Add(production);
-                }
-            }
-            else
-            {
-                var symbols = expression.Children.Cast<Grammars.Symbol>().ToList();
-                var production = new Production(rule, symbols);
-                rule.Productions.Add(production);
-            }
-#endif
+            var rule = new TreeNonterminal(name, expression);
 
             return rule;
         }
@@ -342,7 +319,10 @@ namespace Lingu.Bootstrap
             var name = VisitChild<Name>(node, 0);
             var expr = VisitChild<IExpression>(node, 1);
 
-            var rule = new RuleDefinition(true, name, expr);
+            var rule = new TreeNonterminal(true, name, expr)
+            {
+                IsEmbedded = true
+            };
 
             Grammar.Nonterminals.Add(rule);
 
@@ -351,20 +331,24 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableRuleTreeAction(ASTNode node)
         {
-            var expression = VisitChild<IExpression>(node, 0);
             if (node.Children.Count == 1)
             {
-                return expression;
+                return VisitChild<IExpression>(node, 0);
             }
             if (node.Children.Count == 2)
             {
-                switch (node.Children[1].Value)
+                var expression = VisitChild<IExpression>(node, 1);
+
+                switch (node.Children[0].Value)
                 {
                     case "^":
-                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Promote);
-                    case "!":
-                        return new Tree.TreeAction(expression, Tree.TreeAction.TreeActionX.Drop);
+                        expression.Action = TreeActionKind.Promote;
+                        break;
+                    case ",":
+                        expression.Action = TreeActionKind.Drop;
+                        break;
                 }
+                return expression;
             }
 
             throw new NotImplementedException();

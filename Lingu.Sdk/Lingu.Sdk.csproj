@@ -5,13 +5,20 @@
     <RootNamespace>Lingu</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
-    <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
+    <Compile Remove="Lexing\**" />
+    <EmbeddedResource Remove="Lexing\**" />
+    <None Remove="Lexing\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Lexing\" />
+    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
+    <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
   </ItemGroup>
 
 </Project>

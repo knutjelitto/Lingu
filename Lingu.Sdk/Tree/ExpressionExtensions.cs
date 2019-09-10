@@ -1,9 +1,30 @@
-﻿using System;
+﻿using Lingu.Commons;
+using System;
 
 namespace Lingu.Tree
 {
     public static class ExpressionExtensions
     {
+        public static string ActionPrefix(this IExpression expression)
+        {
+            switch (expression.Action)
+            {
+                case TreeActionKind.None:
+                    return string.Empty;
+                case TreeActionKind.Drop:
+                    return ",";
+                case TreeActionKind.Promote:
+                    return "^";
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static void ActionPrefix(this IExpression expression, IWriter output)
+        {
+            output.Write(expression.ActionPrefix());
+        }
+
         public static bool IsSingleCodePoint(this IExpression expression)
         {
             if (expression is UcCodepoint)

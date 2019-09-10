@@ -176,7 +176,7 @@
                 ;
 
             rule_tree_action
-                -> rule_element ('!' | '^')?
+                -> (',' | '^')? rule_element
                 ;
 
             rule_element

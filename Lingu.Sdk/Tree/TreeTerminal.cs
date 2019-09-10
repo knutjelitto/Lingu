@@ -4,9 +4,9 @@ using Lingu.Grammars;
 
 namespace Lingu.Tree
 {
-    public sealed class TerminalDefinition : Terminal
+    public sealed class TreeTerminal : Terminal
     {
-        public TerminalDefinition(bool isGenerated, Name name, IExpression expression)
+        public TreeTerminal(bool isGenerated, Name name, IExpression expression)
             : base(name.Name)
         {
             Id = -1;
@@ -14,18 +14,13 @@ namespace Lingu.Tree
             Expression = expression;
         }
 
-        public TerminalDefinition(Name name, IExpression expression)
+        public TreeTerminal(Name name, IExpression expression)
             : this(false, name, expression)
         {
         }
 
-        public int UseCount { get; private set; }
         public IExpression Expression { get; }
         public byte[] Bytes { get; set; }
-        public void Use()
-        {
-            UseCount += 1;
-        }
 
         public override void Dump(IWriter output, bool top)
         {

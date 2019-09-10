@@ -18,14 +18,15 @@ namespace Lingu.Tree
         public ReferenceKind Kind { get; }
         public Symbol Definition { get; private set; }
         public IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
+        public TreeActionKind Action { get; set; }
 
-        public void ResolveTo(TerminalDefinition definition)
+        public void ResolveTo(TreeTerminal definition)
         {
             Definition = definition;
             definition.Use();
         }
 
-        public void ResolveTo(RuleDefinition definition)
+        public void ResolveTo(TreeNonterminal definition)
         {
             Definition = definition;
             definition.Use();
@@ -33,14 +34,21 @@ namespace Lingu.Tree
 
         public FA GetFA()
         {
-            return ((TerminalDefinition)Definition).Expression.GetFA();
+            return ((TreeTerminal)Definition).Expression.GetFA();
         }
 
         public override void Dump(IWriter output, bool top)
         {
-            if (Definition is TerminalDefinition terminalDefinition && terminalDefinition.IsGenerated)
+            this.ActionPrefix(output);
+            if (Definition is TreeTerminal terminalDefinition && terminalDefinition.IsGenerated)
             {
                 terminalDefinition.Expression.Dump(output, top);
+            }
+            else if (Definition is TreeNonterminal non && non.IsEmbedded)
+            {
+                output.Write($"{{{Definition.Name}: ");
+                non.Expression.Dump(output, top);
+                output.Write("}");
             }
             else
             {
