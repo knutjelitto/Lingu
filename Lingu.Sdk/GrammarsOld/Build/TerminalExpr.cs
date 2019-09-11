@@ -25,7 +25,7 @@ namespace Lingu.GrammarsOld.Build
 
         public static implicit operator TerminalExpr(char @char)
         {
-            return new TerminalExpr(DfaProvision.From(@char.ToString(), @char));
+            return new TerminalExpr(DfaProvision.From(@char.ToString(), (FA)@char));
         }
 
         public static implicit operator TerminalExpr(string chars)

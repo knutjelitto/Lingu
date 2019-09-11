@@ -12,7 +12,9 @@ namespace Lingu.Bootstrap
     {
         private static string projectDir;
 
+#pragma warning disable IDE0060 // Remove unused parameter
         static void Main(string[] args)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             var program = new Program();
 
@@ -25,7 +27,6 @@ namespace Lingu.Bootstrap
 
         private void Check()
         {
-            var xxx = Assembly.GetExecutingAssembly().GetManifestResourceNames();
         }
 
         private void BuildTree(string stem)

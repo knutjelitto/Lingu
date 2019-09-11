@@ -1,4 +1,6 @@
-﻿namespace Lingu.GrammarsOld.Build
+﻿using Lingu.Automata;
+
+namespace Lingu.GrammarsOld.Build
 {
     public abstract class SymbolExpr
     {
@@ -32,7 +34,7 @@
 
         public static ChainExpr operator +(SymbolExpr terminal, char @char)
         {
-            return new ChainExpr { terminal, TerminalExpr.From(DfaProvision.From(@char.ToString(), @char)) };
+            return new ChainExpr { terminal, TerminalExpr.From(DfaProvision.From(@char.ToString(), (FA)@char)) };
         }
 
         public static ChainExpr operator +(SymbolExpr terminal, string chars)

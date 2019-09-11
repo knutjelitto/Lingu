@@ -63,7 +63,6 @@ namespace Lingu.Bootstrap
 
             Grammar = new TreeGrammar(name.Name);
 
-
             foreach (var subNode in node.Children.Skip(1))
             {
                 if (subNode.SymbolType == SymbolType.Variable && subNode.Symbol.ID == LinguParser.ID.VariableGrammarOptions)
@@ -95,7 +94,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
-            return new TreeTerminal(VisitChild<Name>(node, 0), VisitChild<IExpression>(node, 1));
+            return new TreeTerminal(VisitChild<Name>(node, 0).Name, VisitChild<IExpression>(node, 1));
         }
 
         protected override object OnVariableTerminalExpression(ASTNode node)
@@ -259,7 +258,7 @@ namespace Lingu.Bootstrap
         {
             var name = VisitChild<Name>(node, 0);
             var expression = VisitChild<IExpression>(node, 1);
-            var rule = new TreeNonterminal(name, expression);
+            var rule = new TreeNonterminal(name.Name, expression);
 
             return rule;
         }
@@ -319,7 +318,7 @@ namespace Lingu.Bootstrap
             var name = VisitChild<Name>(node, 0);
             var expr = VisitChild<IExpression>(node, 1);
 
-            var rule = new TreeNonterminal(true, name, expr)
+            var rule = new TreeNonterminal(true, name.Name, expr)
             {
                 IsEmbedded = true
             };

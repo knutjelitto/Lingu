@@ -42,7 +42,7 @@ namespace Lingu.Automata.Tests
         public void Automata3()
         {
             // [0]|[1-9][0-9]*
-            var nfa = '0' | (('1', '9') + ((FA)('0', '9')).Star());
+            var nfa = (FA)'0' | (('1', '9') + ((FA)('0', '9')).Star());
 
 
             var dfa = nfa.ToDfa();

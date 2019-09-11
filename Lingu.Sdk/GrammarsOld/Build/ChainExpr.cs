@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Lingu.Automata;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Lingu.GrammarsOld.Build
@@ -43,7 +44,7 @@ namespace Lingu.GrammarsOld.Build
 
         public static ChainExpr operator +(char @char, ChainExpr chain)
         {
-            return new ChainExpr(Enumerable.Repeat(TerminalExpr.From(DfaProvision.From(@char.ToString(), @char)), 1).Concat(chain));
+            return new ChainExpr(Enumerable.Repeat(TerminalExpr.From(DfaProvision.From(@char.ToString(), (FA)@char)), 1).Concat(chain));
         }
 
         public static BodyExpr operator |(RuleExpr rule, ChainExpr chain)

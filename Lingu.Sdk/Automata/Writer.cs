@@ -6,14 +6,9 @@ using System.Text;
 
 namespace Lingu.Automata
 {
-    public class Writer
+    public static class Writer
     {
-        public Writer(FA dfa)
-        {
-            Compact(dfa);
-        }
-
-        public static byte[] Compact(FA dfa)
+        public static byte[] GetBytes(FA dfa)
         {
             var sets = new UniqueList<Codepoints>();
             var transitions = new UniqueList<Transition>(new TransitionEq());

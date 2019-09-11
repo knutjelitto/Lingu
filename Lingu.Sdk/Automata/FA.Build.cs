@@ -1,4 +1,6 @@
-﻿namespace Lingu.Automata
+﻿using System.Linq;
+
+namespace Lingu.Automata
 {
     public partial class FA
     {
@@ -33,12 +35,23 @@
             return Builder.From(from, to);
         }
 
+        public static FA From(FA first, params FA[] nexts)
+        {
+            var fa = first;
+            foreach (var next in nexts)
+            {
+                fa = fa.Concat(next);
+            }
+
+            return fa;
+        }
+
         public static implicit operator FA((char first, char last) range)
         {
             return Builder.From(range.first, range.last);
         }
 
-        public static implicit operator FA(char @char)
+        public static explicit operator FA(char @char)
         {
             return Builder.From(@char);
         }

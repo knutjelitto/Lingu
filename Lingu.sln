@@ -46,6 +46,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Runtime", "Lingu.Runt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Hime", "Lingu.Hime\Lingu.Hime.csproj", "{2014C1A0-53EA-40CB-829D-315A3BB6090D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinguCC", "LinguCC\LinguCC.csproj", "{DA62B8AE-4056-4FA2-90B5-AD4EAC592625}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2014C1A0-53EA-40CB-829D-315A3BB6090D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA62B8AE-4056-4FA2-90B5-AD4EAC592625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA62B8AE-4056-4FA2-90B5-AD4EAC592625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA62B8AE-4056-4FA2-90B5-AD4EAC592625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA62B8AE-4056-4FA2-90B5-AD4EAC592625}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

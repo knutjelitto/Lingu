@@ -15,11 +15,19 @@ namespace Lingu.Commons
         {
             var result = Convert(value);
 
+#if true
+            if (!result.StartsWith("U+"))
+            {
+                return $"'{result}'";
+            }
+            return $"{result}";
+#else
             if (!result.StartsWith("U+"))
             {
                 return $"'{result}'+{value}";
             }
             return $"{result}+{value}";
+#endif
         }
 
         public static string Convert(int value)

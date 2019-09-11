@@ -26,7 +26,7 @@ namespace Lingu.Tree
 
         public TreeTerminal GenTerminal(IExpression expression)
         {
-            var name = new Name("$T" + nextTerminalId++);
+            var name = "__T" + nextTerminalId++;
 
             var terminal = new TreeTerminal(true, name, expression);
 
@@ -37,7 +37,7 @@ namespace Lingu.Tree
 
         public TreeNonterminal GenRule(IExpression expression)
         {
-            var name = new Name("$R" + nextRuleId++);
+            var name = "__N" + nextRuleId++;
 
             var terminal = new TreeNonterminal(true, name, expression);
 

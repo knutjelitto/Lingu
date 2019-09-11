@@ -6,14 +6,14 @@ namespace Lingu.Tree
 {
     public sealed class TreeNonterminal : Nonterminal
     {
-        public TreeNonterminal(bool isGenerated, Name name, IExpression expression)
-            : base(name.Name)
+        public TreeNonterminal(bool isGenerated, string name, IExpression expression)
+            : base(name)
         {
             IsGenerated = isGenerated;
             Expression = expression;
         }
 
-        public TreeNonterminal(Name name, IExpression expression)
+        public TreeNonterminal(string name, IExpression expression)
             : this(false, name, expression)
         {
         }

@@ -51,7 +51,7 @@ namespace Lingu.Automata.Tests
         private static Matcher MakeMatcher()
         {
             // [0]|[1-9][0-9]*
-            var nfa = '0' | (('1', '9') + ((FA)('0', '9')).Star());
+            var nfa = (FA)'0' | (('1', '9') + ((FA)('0', '9')).Star());
 
             var dfa = nfa.ToDfa().Minimize();
             return new Matcher(dfa);

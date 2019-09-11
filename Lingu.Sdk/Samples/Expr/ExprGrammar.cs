@@ -44,7 +44,7 @@ namespace Lingu.Samples.Expr
             // [-+]?[0-9]+
 
             var digit = (FA)('0', '9');
-            var sign = (FA)'+' | '-';
+            var sign = (FA)'+' | (FA)'-';
 
             var number = sign.Opt() + digit.Plus();
 

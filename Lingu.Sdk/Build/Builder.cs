@@ -144,7 +144,7 @@ namespace Lingu.Build
         private void BuildTerminal(TreeTerminal definition)
         {
             definition.Alias = definition.IsGenerated ? definition.Expression.ToString() : null;
-            definition.Bytes = Writer.Compact(definition.Expression.GetFA().ToDfa().Minimize().RemoveDead());
+            definition.Bytes = Writer.GetBytes(definition.Expression.GetFA().ToDfa().Minimize().RemoveDead());
             definition.Dfa = new DfaReader(definition.Bytes).Read();
         }
     }

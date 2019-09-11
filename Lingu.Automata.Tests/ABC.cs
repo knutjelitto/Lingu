@@ -43,6 +43,10 @@ namespace Lingu.Automata.Tests
         private static Matcher MakeMatcher()
         {
             // a?b?c?
+            var aaa = FA.From('a').Opt();
+            var bbb = FA.From('b').Opt();
+            var ccc = FA.From('c').Opt();
+
             var nfa = ((FA) 'a').Opt() + ((FA) 'b').Opt() + ((FA) 'c').Opt();
 
             return new Matcher(nfa.ToDfa().Minimize());

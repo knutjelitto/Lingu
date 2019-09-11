@@ -1,4 +1,5 @@
-﻿using Lingu.Earley;
+﻿using Lingu.Automata;
+using Lingu.Earley;
 using Lingu.GrammarsOld;
 using Lingu.GrammarsOld.Build;
 
@@ -18,8 +19,8 @@ namespace Lingu.Check
             RuleExpr argumentList = "argument-list";
             RuleExpr atom = "atom";
 
-            var name = TerminalExpr.From(DfaProvision.From("name", 'n'));
-            var number = TerminalExpr.From(DfaProvision.From("number", '1'));
+            var name = TerminalExpr.From(DfaProvision.From("name", (FA)'n'));
+            var number = TerminalExpr.From(DfaProvision.From("number", (FA)'1'));
 
             argument.Body = atom;
             argumentList.Body = argument | (argumentList + ',' + argument);

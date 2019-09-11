@@ -6,15 +6,15 @@ namespace Lingu.Tree
 {
     public sealed class TreeTerminal : Terminal
     {
-        public TreeTerminal(bool isGenerated, Name name, IExpression expression)
-            : base(name.Name)
+        public TreeTerminal(bool isGenerated, string name, IExpression expression)
+            : base(name)
         {
             Id = -1;
             IsGenerated = isGenerated;
             Expression = expression;
         }
 
-        public TreeTerminal(Name name, IExpression expression)
+        public TreeTerminal(string name, IExpression expression)
             : this(false, name, expression)
         {
         }
