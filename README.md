@@ -21,3 +21,8 @@ Try to understand (programming-) Languages
 ### Rust
 [Rust reference](https://doc.rust-lang.org/reference/index.html)
 
+### Pony
+[Orca GC](https://www.ponylang.io/media/papers/orca_gc_and_type_system_co-design_for_actor_languages.pdf)
+[Some Papers](https://wrigstad.com/papers.html)
+[Sylvan Clebsch](https://scholar.google.co.uk/citations?user=HLoiL2cAAAAJ&hl=en)
+
