@@ -1,7 +1,10 @@
-﻿using System;
+using System;
 using System.Text;
+
 using Lingu.Automata;
 using Lingu.Commons;
+using Lingu.Grammars;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -16,12 +19,14 @@ namespace Lingu.Tree
         public string Text { get; }
         public string Value { get; }
 
+        public Terminal Terminal { get; set; }
+
         public override FA GetFA()
         {
             return FA.From(Value);
         }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             output.Write(ToString());
         }

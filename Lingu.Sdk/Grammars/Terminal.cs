@@ -1,22 +1,25 @@
-﻿using Lingu.Commons;
 using Lingu.Runtime.LexDfa;
+using Lingu.Tree;
+using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
-    public abstract class Terminal : Rule
+    public class Terminal : Rule
     {
-        public Terminal(int id, string name)
-            : base(id, name)
-        {
-        }
-
         public Terminal(string name)
-            : this(-1, name)
+            : base(name)
         {
         }
 
         public bool IsFragment { get; set; }
         public Dfa Dfa { get; set; }
+        public byte[] Bytes { get; set; }
         public string Alias { get; set; }
+        public RawTerminal Raw { get; set; }
+
+        public override void Dump(IndentWriter output, bool top)
+        {
+            Raw.Dump(output, top);
+        }
     }
 }

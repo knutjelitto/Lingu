@@ -1,31 +1,37 @@
-﻿using System;
 using System.Collections.Generic;
 
-using Lingu.Commons;
 using Lingu.Tree;
+using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
-    public abstract class Grammar : Symbol
+    public class Grammar : Symbol
     {
         public Grammar(string name)
             : base(name)
         {
+            Options = new Options();
+            Optionator = new Optionator(this);
+
             Terminals = new Terminals();
             Nonterminals = new Nonterminals();
             Productions = new List<Production>();
-
-            Options = new Options((TreeGrammar)this);
         }
 
+
+        public Nonterminal Start => Optionator.Start;
+        public Terminal Separator => Optionator.Separator;
+        public Terminal Newline => Optionator.Newline;
+
         public Options Options { get; }
-
-        public Nonterminal Start { get; set; }
-        public Terminal Separator { get; set; }
-        public Terminal Newline { get; set; }
-
-        public virtual Terminals Terminals { get; }
+        public Optionator Optionator { get; } 
+        public Terminals Terminals { get; }
         public Nonterminals Nonterminals { get; }
         public List<Production> Productions { get; }
+
+        public override void Dump(IndentWriter output, bool top)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

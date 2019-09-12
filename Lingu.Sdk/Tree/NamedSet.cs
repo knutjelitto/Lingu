@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 
 using Lingu.Commons;
 using Lingu.Grammars;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -19,7 +20,7 @@ namespace Lingu.Tree
         public string Setname { get; }
         public bool Separate { get; }
 
-        public void Dump(IWriter output, bool top)
+        public void Dump(IndentWriter output, bool top)
         {
             output.Block(Setname, () =>
             {

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 
 using Lingu.Automata;
-using Lingu.Commons;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -22,7 +22,7 @@ namespace Lingu.Tree
             throw new NotImplementedException();
         }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             output.Write(Text);
         }

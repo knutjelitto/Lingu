@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,5 +14,6 @@ namespace Lingu.Tree
         IEnumerable<IExpression> Children { get; }
 
         TreeActionKind Action { get; set; }
+        Repeat Repeat { get; set; }
     }
 }

@@ -1,5 +1,6 @@
-﻿using Lingu.Commons;
 using System;
+
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -20,9 +21,9 @@ namespace Lingu.Tree
             throw new NotImplementedException();
         }
 
-        public static void ActionPrefix(this IExpression expression, IWriter output)
+        public static void ActionPrefix(this IExpression expression, IndentWriter writer)
         {
-            output.Write(expression.ActionPrefix());
+            writer.Write(expression.ActionPrefix());
         }
 
         public static bool IsSingleCodePoint(this IExpression expression)

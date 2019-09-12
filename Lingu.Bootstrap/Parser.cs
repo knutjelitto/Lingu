@@ -10,7 +10,7 @@ namespace Lingu.Bootstrap
 {
     public class Parser
     {
-        public static Tree.TreeGrammar Parse(FileRef file)
+        public static RawGrammar Parse(FileRef file)
         {
             var source = File.ReadAllText(file);
 
@@ -23,7 +23,7 @@ namespace Lingu.Bootstrap
 
             if (result.IsSuccess)
             {
-                return Tree(result.Root);
+                return Raw(result.Root);
             }
 
             return null;
@@ -39,11 +39,10 @@ namespace Lingu.Bootstrap
             return result;
         }
 
-        private static Tree.TreeGrammar Tree(ASTNode node)
+        private static RawGrammar Raw(ASTNode node)
         {
             return new TreeBuilder().Visit(node);
         }
-
     }
 
 }

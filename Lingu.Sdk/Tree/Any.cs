@@ -1,5 +1,5 @@
-﻿using Lingu.Automata;
-using Lingu.Commons;
+using Lingu.Automata;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -12,7 +12,7 @@ namespace Lingu.Tree
             return ".";
         }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             output.Write(this.ToString());
         }

@@ -1,9 +1,9 @@
-﻿using Lingu.Commons;
+using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
     public interface ICanDump
     {
-        void Dump(IWriter output, bool top);
+        void Dump(IndentWriter output, bool top);
     }
 }

@@ -1,6 +1,6 @@
-﻿using Lingu.Commons;
-
 using System;
+
+using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
@@ -13,7 +13,7 @@ namespace Lingu.Grammars
 
         public string Name { get; }
 
-        public abstract void Dump(IWriter output, bool top);
+        public abstract void Dump(IndentWriter output, bool top);
 
         public override bool Equals(object obj)
         {
@@ -38,7 +38,7 @@ namespace Lingu.Grammars
             {
             }
 
-            public override void Dump(IWriter output, bool top)
+            public override void Dump(IndentWriter output, bool top)
             {
                 output.Write(Name);
             }

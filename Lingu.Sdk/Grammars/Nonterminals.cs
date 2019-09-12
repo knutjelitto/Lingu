@@ -17,9 +17,9 @@ namespace Lingu.Grammars
 
         public override int Add(Nonterminal value)
         {
-            if (TryGetValue(value, out var found) && found is TreeNonterminal already)
+            if (TryGetValue(value, out var found) && found is RawNonterminal already)
             {
-                var newExpression = ((TreeNonterminal)value).Expression;
+                var newExpression = ((RawNonterminal)value).Expression;
                 var oldExpression = already.Expression;
 
                 if (oldExpression is Alternates oAlt)

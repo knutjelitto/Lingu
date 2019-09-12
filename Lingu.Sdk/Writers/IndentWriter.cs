@@ -1,17 +1,18 @@
-﻿using System;
+using Lingu.Commons;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Lingu.Commons
+namespace Lingu.Writers
 {
-    public class IWriter
+    public class IndentWriter
     {
         private readonly List<string> lines;
         private readonly string tab;
         private string prefix;
         private string current;
 
-        public IWriter(string tab = "    ")
+        public IndentWriter(string tab = "    ")
         {
             lines = new List<string>();
             this.tab = tab;
@@ -34,7 +35,18 @@ namespace Lingu.Commons
             Add(line);
         }
 
-        private void AddLine(string line)
+        public void Block(string head, Action body)
+        {
+            AddLine(head);
+            AddLine("{");
+            using (Indent())
+            {
+                body();
+            }
+            AddLine("}");
+        }
+
+        protected void AddLine(string line)
         {
             Begin();
             lines.Add(current + line);
@@ -55,17 +67,6 @@ namespace Lingu.Commons
             }
         }
 
-        public void Block(string head, Action body)
-        {
-            AddLine(head);
-            AddLine("{");
-            using (Indent())
-            {
-                body();
-            }
-            AddLine("}");
-        }
-
         public void Indend(string head, Action body)
         {
             AddLine(head);
@@ -83,7 +84,7 @@ namespace Lingu.Commons
             }
         }
 
-        private IDisposable Indent()
+        protected IDisposable Indent()
         {
             var prevPrefix = prefix;
             prefix = prefix + tab;

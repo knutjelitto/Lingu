@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Lingu.Commons;
+using Lingu.Tree;
+using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
-    public abstract class Nonterminal : Rule
+    public class Nonterminal : Rule
     {
-        public Nonterminal(int id, string name)
-            : base(id, name)
-        {
-            Productions = new List<Production>();
-        }
-
         public Nonterminal(string name)
-            : this(-1, name)
+            : base(name)
         {
             Productions = new List<Production>();
         }
 
         public bool IsEmbedded { get; set; }
+        public RawNonterminal Raw { get; set; }
 
         public List<Production> Productions { get; set; }
+
+        public override void Dump(IndentWriter output, bool top)
+        {
+            Raw.Dump(output, top);
+        }
     }
 }

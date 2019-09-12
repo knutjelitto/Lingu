@@ -50,6 +50,17 @@ namespace Lingu.Runtime.Tests
             Assert.AreEqual(9, target.GetLineNoFromIndex(last + 100));
         }
 
+        [TestMethod]
+        public void TestsShouldMatch()
+        {
+            var target = MakeSource();
+
+            var expected = string.Join(string.Empty, loremIpsums);
+            var actual = string.Join(string.Empty, target.GetLines());
+
+            Assert.AreEqual(expected, actual);
+        }
+
         private Source MakeSource()
         {
             var loremIpsum = string.Join(Environment.NewLine, loremIpsums);

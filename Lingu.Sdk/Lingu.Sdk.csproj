@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Writers\" />
-  </ItemGroup>
-
 </Project>

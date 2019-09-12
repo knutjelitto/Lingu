@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -14,109 +15,255 @@ namespace Lingu.Build
 {
     public class Builder
     {
-        public Builder(TreeGrammar tree)
+        public Builder(RawGrammar tree)
         {
-            Grammar = tree;
+            Raw = tree;
+            Grammar = new Grammar(Raw.Name);
         }
 
-        public TreeGrammar Grammar { get; }
+        public RawGrammar Raw { get; }
+        public Grammar Grammar { get; }
 
-        public void Build()
+        public Grammar Build()
         {
-            CheckTerminals();
-            CheckFragments();
+            BuildOptions();
 
-            BuildTerminals();
+            BuildTerminalsPass1(); // create
+            BuildTerminalsPass2(); // link
+            BuildTerminalsPass3(); // recursion
 
-            if (Grammar.Options.Newline != null)
-                Grammar.Options.Newline.IsFragment = false;
-            if (Grammar.Options.Separator != null)
-                Grammar.Options.Separator.IsFragment = false;
+            BuildNonterminalsPass1(); // create
+            BuildNonterminalsPass2(); // link
 
-            RenumberTerminals();
+            BuildTerminalsPass4(); // fragments
+            BuildTerminalsPass5(); // renumber
+            BuildTerminalsPass6(); // compile
+
+            return Grammar;
         }
 
-        public void Dump(FileRef dests)
+        private string NextTerminalName()
         {
-            var grammarDump = dests.Add(".Grammar");
-            var terminals = dests.Add(".Terminals");
+            return $"__T{nextTerminalId++}";
+        }
 
-            using (var writer = new StreamWriter(grammarDump))
+        private string NextNonterminalName()
+        {
+            return $"__T{nextNonterminalId++}";
+        }
+
+        private void BuildNonterminalsPass1()
+        {
+            foreach (var raw in Raw.Nonterminals)
             {
-                Grammar.Dump(writer);
-            }
-            using (var writer = new StreamWriter(terminals))
-            {
-                Grammar.DumpTerminals(writer);
-            }
-        }
-
-        private void CheckTerminals()
-        {
-            foreach (var terminal in Grammar.Terminals.Cast<TreeTerminal>())
-            {
-                CheckTerminal(terminal);
-            }
-        }
-
-        private void CheckTerminal(TreeTerminal terminal)
-        {
-            var path = new Stack<TreeTerminal>();
-            CheckTerminal(terminal, path, terminal.Expression);
-        }
-
-        private void CheckTerminal(TreeTerminal terminal, Stack<TreeTerminal> path, IExpression expression)
-        {
-            if (expression is Reference reference)
-            {
-                var definition = (TreeTerminal)reference.Definition;
-
-                if (terminal.Equals(definition))
+                var nonterminal = new Nonterminal(raw.Name)
                 {
-                    var msg = $"terminal rule `{terminal.Name}´ is recursive (via ->{string.Join("->", path.Reverse())}->{terminal.Name})";
-                    throw new GrammarException(msg);
+                    Raw = raw
+                };
+
+                if (Grammar.Nonterminals.Contains(nonterminal))
+                {
+                    throw new GrammarException($"nonterminal: `{nonterminal.Name}´ already defined before");
                 }
 
-                path.Push(definition);
-                CheckTerminal(terminal, path, definition.Expression);
-                path.Pop();
+                Grammar.Nonterminals.Add(nonterminal);
             }
-            else
+        }
+
+        private void BuildNonterminalsPass2()
+        {
+            foreach (var terminal in Grammar.Nonterminals)
             {
-                foreach (var childExpression in expression.Children)
+                Resolve(terminal.Raw.Expression);
+            }
+
+            void Resolve(IExpression expr)
+            {
+                if (expr is Name name)
                 {
-                    CheckTerminal(terminal, path, childExpression);
+                    var sym = (Symbol)name.Text;
+
+                    if (!Grammar.Nonterminals.TryGetValue(sym, out var nonterminal))
+                    {
+                        if (!Grammar.Terminals.TryGetValue(sym, out var terminal))
+                        {
+                            throw new GrammarException($"nonterminal: reference to `{terminal.Name}´ can't be resolved");
+                        }
+                        else
+                        {
+                            name.Rule = terminal;
+                        }
+                    }
+                    else
+                    {
+                        name.Rule = nonterminal;
+                    }
+
+                }
+                else if (expr is Tree.String str)
+                {
+                    var tname = (Symbol)NextTerminalName(); ;
+
+                    if (!Grammar.Terminals.TryGetValue(tname, out var terminal))
+                    {
+                        var rawTerminal = new RawTerminal(tname.Name, expr);
+                        terminal = new Terminal(tname.Name)
+                        {
+                            Alias = str.Value,
+                            Raw = rawTerminal
+                        };
+                        Grammar.Terminals.Add(terminal);
+                    }
+
+                    str.Terminal = terminal;
+
+                }
+                else
+                {
+                    foreach (var subExpr in expr.Children)
+                    {
+                        Resolve(subExpr);
+                    }
                 }
             }
         }
 
-        private void CheckFragments()
+        private void BuildOptions()
+        {
+            foreach (var raw in Raw.Options)
+            {
+                var option = raw;
+                if (Grammar.Options.Contains(option))
+                {
+                    throw new GrammarException($"option: `{option.Name}´ already defined before");
+                }
+                Grammar.Options.Add(option);
+            }
+        }
+
+        private void BuildTerminalsPass1()
+        {
+            foreach (var raw in Raw.Terminals)
+            {
+                var terminal = new Terminal(raw.Name)
+                {
+                    Raw = raw
+                };
+
+                if (Grammar.Terminals.Contains(terminal))
+                {
+                    throw new GrammarException($"terminal: `{terminal.Name}´ already defined before");
+                }
+
+                Grammar.Terminals.Add(terminal);
+            }
+        }
+
+        private void BuildTerminalsPass2()
+        {
+            foreach (var terminal in Grammar.Terminals)
+            {
+                Resolve(terminal.Raw.Expression);
+            }
+
+            void Resolve(IExpression expr)
+            {
+                if (expr is Name name)
+                {
+                    if (!Grammar.Terminals.TryGetValue((Symbol)name.Text, out var terminal))
+                    {
+                        throw new GrammarException($"terminal: reference to `{terminal.Name}´ can't be resolved");
+                    }
+                    name.Rule = terminal;
+                }
+                else
+                {
+                    foreach (var subExpr in expr.Children)
+                    {
+                        Resolve(subExpr);
+                    }
+                }
+            }
+        }
+
+        private void BuildTerminalsPass3()
+        {
+            foreach (var terminal in Grammar.Terminals)
+            {
+                CheckTerminalRecursion(terminal);
+            }
+
+            void CheckTerminalRecursion(Terminal terminal)
+            {
+                var path = new Stack<RawTerminal>();
+
+                CheckTerminalRecursion2(terminal.Raw, path, terminal.Raw.Expression);
+            }
+
+            void CheckTerminalRecursion2(Terminal terminal, Stack<RawTerminal> path, IExpression expression)
+            {
+                if (expression is Name name)
+                {
+                    var definition = (Terminal)name.Rule;
+
+                    if (terminal.Equals(definition))
+                    {
+                        var msg = $"terminal: `{terminal.Name}´ is recursive (via ->{string.Join("->", path.Reverse())}->{terminal.Name})";
+                        throw new GrammarException(msg);
+                    }
+
+                    path.Push(definition.Raw);
+                    CheckTerminalRecursion2(terminal, path, definition.Raw.Expression);
+                    path.Pop();
+                }
+                else
+                {
+                    foreach (var childExpression in expression.Children)
+                    {
+                        CheckTerminalRecursion2(terminal, path, childExpression);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determine ``IsFragment´´ status of terminals.
+        /// </summary>
+        private void BuildTerminalsPass4()
         {
             foreach (var terminal in Grammar.Terminals)
             {
                 terminal.IsFragment = true;
             }
 
-            foreach (var rule in Grammar.Nonterminals.Cast<TreeNonterminal>())
+            foreach (var rule in Grammar.Nonterminals)
             {
-                CheckFragment(rule.Expression);
+                CheckFragment(rule.Raw.Expression);
+            }
+
+            if (Grammar.Newline != null)
+                Grammar.Newline.IsFragment = false;
+            if (Grammar.Separator != null)
+                Grammar.Separator.IsFragment = false;
+
+            void CheckFragment(IExpression expression)
+            {
+                if (expression is Ref reference && reference.Rule is RawTerminal terminal)
+                {
+                    terminal.IsFragment = false;
+                }
+
+                foreach (var subExpression in expression.Children)
+                {
+                    CheckFragment(subExpression);
+                }
             }
         }
 
-        private void CheckFragment(IExpression expression)
-        {
-            if (expression is Reference reference && reference.Definition is TreeTerminal terminal)
-            {
-                terminal.IsFragment = false;
-            }
-
-            foreach (var subExpression in expression.Children)
-            {
-                CheckFragment(subExpression);
-            }
-        }
-
-        private void RenumberTerminals()
+        /// <summary>
+        /// Renumbering
+        /// </summary>
+        private void BuildTerminalsPass5()
         {
             int id = 0;
             foreach (var terminal in Grammar.Terminals.Where(t => !t.IsFragment))
@@ -133,19 +280,25 @@ namespace Lingu.Build
             Grammar.Terminals.Sort(terminal => terminal.Id);
         }
 
-        private void BuildTerminals()
+        /// <summary>
+        /// Compile
+        /// </summary>
+        private void BuildTerminalsPass6()
         {
-            foreach (var definition in Grammar.Terminals.Cast<TreeTerminal>())
+            foreach (var terminal in Grammar.Terminals)
             {
-                BuildTerminal(definition);
+                BuildTerminal(terminal);
+            }
+
+            void BuildTerminal(Terminal terminal)
+            {
+                terminal.Alias = terminal.IsGenerated ? terminal.Raw.Expression.ToString() : null;
+                terminal.Bytes = Writer.GetBytes(terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead());
+                terminal.Dfa = new DfaReader(terminal.Bytes).Read();
             }
         }
 
-        private void BuildTerminal(TreeTerminal definition)
-        {
-            definition.Alias = definition.IsGenerated ? definition.Expression.ToString() : null;
-            definition.Bytes = Writer.GetBytes(definition.Expression.GetFA().ToDfa().Minimize().RemoveDead());
-            definition.Dfa = new DfaReader(definition.Bytes).Read();
-        }
+        private int nextTerminalId = 1;
+        private int nextNonterminalId = 1;
     }
 }

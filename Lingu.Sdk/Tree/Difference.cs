@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+
 using Lingu.Automata;
-using Lingu.Commons;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -30,7 +31,7 @@ namespace Lingu.Tree
             return cross; ;
         }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;
@@ -44,11 +45,6 @@ namespace Lingu.Tree
                 more = true;
             }
             if (!top) output.Write(")");
-        }
-
-        public IEnumerator<IExpression> GetEnumerator()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

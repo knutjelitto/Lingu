@@ -1,7 +1,8 @@
-﻿using System.Globalization;
+using System.Globalization;
+
 using Lingu.Automata;
-using Lingu.Commons;
 using Lingu.Errors;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -39,7 +40,7 @@ namespace Lingu.Tree
             return FA.From(Value);
         }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             output.Write(Text);
         }

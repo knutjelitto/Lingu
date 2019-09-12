@@ -1,8 +1,8 @@
-﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Lingu.Automata;
-using Lingu.Commons;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -15,8 +15,9 @@ namespace Lingu.Tree
 
         public virtual IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
         public TreeActionKind Action { get; set; }
+        public Repeat Repeat { get; set; }
 
-        public abstract void Dump(IWriter output, bool top);
+        public abstract void Dump(IndentWriter output, bool top);
         public abstract FA GetFA();
 
         public IEnumerator<IExpression> GetEnumerator()

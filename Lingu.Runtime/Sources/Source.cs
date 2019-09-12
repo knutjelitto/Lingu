@@ -6,6 +6,8 @@ namespace Lingu.Runtime.Sources
     public class Source
     {
         private static readonly string lineEndings = "\u000A\u000B\u000C\u000D\u0085\u2028\u2029";
+        private static readonly string otherLineEndings = "\u000B\u000C\u0085\u2028\u2029";
+
         private readonly Lazy<List<int>> lazyLines;
 
         public Source(string name, string content)
@@ -38,6 +40,14 @@ namespace Lingu.Runtime.Sources
             }
 
             return GetSpan(start, next - start);
+        }
+
+        public IEnumerable<string> GetLines()
+        {
+            for (var lineNo = 1;  lineNo <= LineCount; ++lineNo)
+            {
+                yield return GetLine(lineNo).ToString();
+            }
         }
 
         public int GetIndexFromLineNo(int lineNo)
@@ -90,13 +100,7 @@ namespace Lingu.Runtime.Sources
 
             bool IsLineEnding(char c1, char c2)
             {
-                // other characters
-                if (c2 == '\u000B' || c2 == '\u000C' || c2 == '\u0085' || c2 == '\u2028' || c2 == '\u2029')
-                    return true;
-                // matches [\r, \n] [\r, ??] and  [??, \n]
-                if (c1 == '\u000D' || c2 == '\u000A')
-                    return true;
-                return false;
+                return otherLineEndings.Contains(c2) || c1 == '\u000D' || c2 == '\u000A';
             }
 
             void AddLine(int index)

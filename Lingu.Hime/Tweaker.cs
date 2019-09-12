@@ -1,8 +1,9 @@
-﻿using Lingu.Commons;
-using Mean.Maker.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
+using Mean.Maker.Builders;
+using Lingu.Writers;
 
 namespace Lingu.Hime
 {
@@ -40,7 +41,7 @@ namespace Lingu.Hime
         public void TweakVisitor()
         {
             var inlines = File.ReadAllLines(inputFile);
-            var outlines = new IWriter();
+            var outlines = new CsWriter();
             
             outlines.WriteLine($"using System;");
             outlines.WriteLine($"using System.Collections.Generic;");
@@ -103,7 +104,7 @@ namespace Lingu.Hime
             outlines.Persist(outputFile);
         }
 
-        private void Switch(IReadOnlyList<string> inlines, IWriter outlines)
+        private void Switch(IReadOnlyList<string> inlines, IndentWriter outlines)
         {
             var start = 0;
             for (; start < inlines.Count; ++start)
@@ -138,7 +139,7 @@ namespace Lingu.Hime
             });
         }
 
-        private void Virtuals(IReadOnlyList<string> inlines, IWriter outlines)
+        private void Virtuals(IReadOnlyList<string> inlines, IndentWriter outlines)
         {
             var start = 0;
             for (; start < inlines.Count; ++start)
@@ -164,7 +165,7 @@ namespace Lingu.Hime
             }
         }
 
-        private void Virtual(string line, IWriter outlines)
+        private void Virtual(string line, IndentWriter outlines)
         {
             line = line.Substring(1); // remove '\t'
             line = line.Replace(" {}", string.Empty);

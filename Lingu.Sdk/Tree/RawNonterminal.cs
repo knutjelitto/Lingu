@@ -1,26 +1,25 @@
-﻿using Lingu.Commons;
 using Lingu.Grammars;
-using System.Diagnostics;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
-    public sealed class TreeNonterminal : Nonterminal
+    public sealed class RawNonterminal : Nonterminal
     {
-        public TreeNonterminal(bool isGenerated, string name, IExpression expression)
+        public RawNonterminal(bool isGenerated, string name, IExpression expression)
             : base(name)
         {
             IsGenerated = isGenerated;
             Expression = expression;
         }
 
-        public TreeNonterminal(string name, IExpression expression)
+        public RawNonterminal(string name, IExpression expression)
             : this(false, name, expression)
         {
         }
 
         public IExpression Expression { get; set; }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             output.Indend($"{Name}", () =>
             {

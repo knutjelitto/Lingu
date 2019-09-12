@@ -1,10 +1,8 @@
-﻿using Hime.SDK;
-using Hime.SDK.Output;
-using Mean.Maker.Builders;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+
+using Mean.Maker.Builders;
 
 namespace Lingu.Bootstrap
 {
@@ -37,14 +35,14 @@ namespace Lingu.Bootstrap
 
             var dests = source.With(".Out");
 
-            var grammar = Parser.Parse(source);
+            var raw = Parser.Parse(source);
 
-            if (grammar != null)
+            if (raw != null)
             {
-                var builder = new Build.Builder(grammar);
+                var builder = new Build.Builder(raw);
 
-                builder.Build();
-                builder.Dump(dests);
+                var grammar = builder.Build();
+                new Build.Dumper(grammar).Dump(dests);
             }
         }
 

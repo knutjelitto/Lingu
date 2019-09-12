@@ -1,14 +1,14 @@
-﻿using Lingu.Commons;
-using Lingu.Runtime.LexDfa;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+
+using Lingu.Commons;
+using Lingu.Runtime.LexDfa;
+using Lingu.Writers;
 
 namespace Lingu.Tools
 {
     public class DfaDump
     {
-        public void Dump(IWriter writer, Dfa dfa)
+        public void Dump(IndentWriter writer, Dfa dfa)
         {
             foreach (var state in dfa.States)
             {
@@ -16,7 +16,7 @@ namespace Lingu.Tools
             }
         }
 
-        public void Dump(IWriter writer, DfaState state)
+        public void Dump(IndentWriter writer, DfaState state)
         {
             var finA = state.IsFinal ? "(" : ".";
             var finB = state.IsFinal ? ")" : ".";

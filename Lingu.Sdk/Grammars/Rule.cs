@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Lingu.Commons;
@@ -7,10 +7,10 @@ namespace Lingu.Grammars
 {
     public abstract class Rule : Symbol
     {
-        public Rule(int id, string name)
+        public Rule(string name)
             : base(name)
         {
-            Id = id;
+            Id = -1;
         }
 
         public int Id { get; set;  }

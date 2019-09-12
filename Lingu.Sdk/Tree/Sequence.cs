@@ -1,7 +1,8 @@
-﻿using Lingu.Automata;
-using Lingu.Commons;
 using System.Collections.Generic;
 using System.Linq;
+
+using Lingu.Automata;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -25,7 +26,7 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public override void Dump(IWriter output, bool top)
+        public override void Dump(IndentWriter output, bool top)
         {
             if (!top) output.Write("(");
             var more = false;
