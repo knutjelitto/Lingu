@@ -22,6 +22,7 @@ namespace Lingu.Grammars
         public Nonterminal Start => Optionator.Start;
         public Terminal Separator => Optionator.Separator;
         public Terminal Newline => Optionator.Newline;
+        public Terminal Keywords => Optionator.Keywords;
 
         public Options Options { get; }
         public Optionator Optionator { get; } 

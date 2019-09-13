@@ -16,16 +16,16 @@ namespace Lingu.Grammars
             productions = new List<Production>();
         }
 
-        public bool IsEmbedded { get; set; }
         public RepeatKind Repeat { get; set; }
+        public bool Lift { get; set; }
 
         public IReadOnlyList<Production> Productions => productions;
 
-        public void AddProductions(params IEnumerable<Symbol>[] symss)
+        public void AddProductions(params IEnumerable<ProdSymbol>[] symss)
         {
             foreach (var syms in symss)
             {
-                var symbols = Symbols.From(syms);
+                var symbols = ProdSymbols.From(syms);
 
                 foreach (var production in productions)
                 {
@@ -42,9 +42,11 @@ namespace Lingu.Grammars
 
         public override void Dump(IndentWriter writer, bool top)
         {
+            var p = IsPrivate ? " private" : "";
             var r = Rep();
+            var l = Lift ? " (^)" : string.Empty;
 
-            writer.Indend($"{Name}  //{r}", () =>
+            writer.Indend($"{Name} //{p}{r}{l}", () =>
             {
                 bool more = false;
                 foreach (var production in Productions)

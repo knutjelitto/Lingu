@@ -15,6 +15,7 @@ namespace Lingu.Grammars
 
         public int Id { get; set;  }
         public bool IsGenerated { get; set; }
+        public bool IsPrivate { get; set; }
         public int UseCount { get; private set; }
         public void Use()
         {

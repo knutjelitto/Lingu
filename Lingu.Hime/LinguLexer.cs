@@ -17,7 +17,7 @@ namespace Lingu.Bootstrap.Hime
 		/// <summary>
 		/// The automaton for this lexer
 		/// </summary>
-		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer.bin");
+		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer");
 		/// <summary>
 		/// Contains the constant IDs for the terminals for this lexer
 		/// </summary>
@@ -89,27 +89,27 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x000F, "UNICODE_BLOCK"),
 			new Symbol(0x0010, "UNICODE_CATEGORY"),
 			new Symbol(0x0011, "UNICODE_CODEPOINT"),
-			new Symbol(0x002F, "grammar"),
-			new Symbol(0x0030, "{"),
-			new Symbol(0x0032, "}"),
-			new Symbol(0x0033, "options"),
-			new Symbol(0x0035, "="),
-			new Symbol(0x0036, ";"),
-			new Symbol(0x0037, "terminals"),
-			new Symbol(0x0039, ":"),
-			new Symbol(0x003A, "->"),
-			new Symbol(0x003B, "|"),
-			new Symbol(0x003D, "-"),
-			new Symbol(0x0040, "("),
-			new Symbol(0x0041, ")"),
-			new Symbol(0x0042, "~"),
-			new Symbol(0x0043, ".."),
-			new Symbol(0x0044, "?"),
-			new Symbol(0x0045, "*"),
-			new Symbol(0x0046, "+"),
-			new Symbol(0x0048, ","),
-			new Symbol(0x0049, "rules"),
-			new Symbol(0x004D, "^") };
+			new Symbol(0x0030, "grammar"),
+			new Symbol(0x0031, "{"),
+			new Symbol(0x0033, "}"),
+			new Symbol(0x0034, "options"),
+			new Symbol(0x0036, "="),
+			new Symbol(0x0037, ";"),
+			new Symbol(0x0038, "terminals"),
+			new Symbol(0x003A, ":"),
+			new Symbol(0x003B, "->"),
+			new Symbol(0x003C, "|"),
+			new Symbol(0x003E, "-"),
+			new Symbol(0x0041, "("),
+			new Symbol(0x0042, ")"),
+			new Symbol(0x0043, "~"),
+			new Symbol(0x0044, ".."),
+			new Symbol(0x0045, "?"),
+			new Symbol(0x0046, "*"),
+			new Symbol(0x0047, "+"),
+			new Symbol(0x0049, ","),
+			new Symbol(0x004A, "rules"),
+			new Symbol(0x004C, "^") };
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>

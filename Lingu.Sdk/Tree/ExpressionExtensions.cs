@@ -6,26 +6,6 @@ namespace Lingu.Tree
 {
     public static class ExpressionExtensions
     {
-        public static string ActionPrefix(this IExpression expression)
-        {
-            switch (expression.Action)
-            {
-                case ActionKind.None:
-                    return string.Empty;
-                case ActionKind.Drop:
-                    return ",";
-                case ActionKind.Promote:
-                    return "^";
-            }
-
-            throw new NotImplementedException();
-        }
-
-        public static void ActionPrefix(this IExpression expression, IndentWriter writer)
-        {
-            writer.Write(expression.ActionPrefix());
-        }
-
         public static bool IsSingleCodePoint(this IExpression expression)
         {
             if (expression is UcCodepoint)

@@ -9,8 +9,6 @@ namespace Lingu.Tree
         {
             writer.WriteLine(GetType().Name);
         }
-
-        public ActionKind Action { get; set; }
         public Repeat Repeat { get; set; }
     }
 }

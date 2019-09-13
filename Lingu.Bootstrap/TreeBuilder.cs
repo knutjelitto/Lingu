@@ -227,9 +227,10 @@ namespace Lingu.Bootstrap
         protected override object OnVariableRule(ASTNode node)
         {
             var name = VisitChild<Name>(node, 0);
-            var expression = VisitChild<IExpression>(node, 1);
+            var promote = node.Children[1].Children.Count == 1;
+            var expression = VisitChild<IExpression>(node, 2);
 
-            return RawNonterminal.From(name.Text, expression);
+            return RawNonterminal.From(name.Text, promote, expression);
         }
 
         protected override object OnVariableRuleExpression(ASTNode node)
@@ -293,7 +294,7 @@ namespace Lingu.Bootstrap
             return new SubRule(name, expr);
         }
 
-        protected override object OnVariableRuleTreeAction(ASTNode node)
+        protected override object OnVariableRuleDropAction(ASTNode node)
         {
             if (node.Children.Count == 1)
             {
@@ -305,10 +306,8 @@ namespace Lingu.Bootstrap
 
                 switch (node.Children[0].Value)
                 {
-                    case "^":
-                        return new Tree.TreeAction(ActionKind.Promote, expression);
                     case ",":
-                        return new Tree.TreeAction(ActionKind.Drop, expression);
+                        return new Drop(expression);
                 }
             }
 

@@ -10,11 +10,9 @@ namespace Lingu.Tree
     {
         public Atom()
         {
-            Action = ActionKind.None;
         }
 
         public virtual IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
-        public ActionKind Action { get; set; }
         public Repeat Repeat { get; set; }
 
         public abstract void Dump(IndentWriter output, bool top);

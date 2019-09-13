@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Grammar\Boot.Grammar" />
     <None Remove="Grammar\Expression.Grammar" />
+    <None Remove="Grammar\Lingu.Grammar" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Grammar\Boot.Grammar" />
+    <EmbeddedResource Include="Grammar\Lingu.Grammar" />
     <EmbeddedResource Include="Grammar\Expression.Grammar" />
     <EmbeddedResource Include="..\Lingu.Hime\LinguLexer.bin" Link="Hime\LinguLexer.bin" />
     <EmbeddedResource Include="..\Lingu.Hime\LinguParser.bin" Link="Hime\LinguParser.bin" />

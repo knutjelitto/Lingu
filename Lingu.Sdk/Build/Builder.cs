@@ -164,7 +164,7 @@ namespace Lingu.Build
         {
             foreach (var terminal in Grammar.Terminals)
             {
-                terminal.IsFragment = true;
+                terminal.IsPrivate = true;
             }
 
             foreach (var nonterminal in Grammar.Nonterminals)
@@ -173,18 +173,22 @@ namespace Lingu.Build
                 {
                     foreach (var terminal in production.Symbols.OfType<Terminal>())
                     {
-                        terminal.IsFragment = false;
+                        terminal.IsPrivate = false;
                     }
                 }
             }
 
             if (Grammar.Newline != null)
             {
-                Grammar.Newline.IsFragment = false;
+                Grammar.Newline.IsPrivate = false;
             }
             if (Grammar.Separator != null)
             {
-                Grammar.Separator.IsFragment = false;
+                Grammar.Separator.IsPrivate = false;
+            }
+            if (Grammar.Keywords != null)
+            {
+                Grammar.Keywords.IsPrivate = false;
             }
         }
 
@@ -194,13 +198,13 @@ namespace Lingu.Build
         private void BuildTerminalsPass5()
         {
             int id = 2;
-            foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsFragment))
+            foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsPrivate))
             {
                 terminal.Id = id;
                 terminal.Raw.Id = id;
                 id += 1;
             }
-            foreach (var terminal in Grammar.Terminals.Where(t => t.Raw.IsFragment))
+            foreach (var terminal in Grammar.Terminals.Where(t => t.Raw.IsPrivate))
             {
                 terminal.Id = id;
                 terminal.Raw.Id = id;

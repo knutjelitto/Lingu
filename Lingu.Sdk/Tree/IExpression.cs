@@ -12,8 +12,6 @@ namespace Lingu.Tree
         FA GetFA();
 
         IEnumerable<IExpression> Children { get; }
-
-        ActionKind Action { get; set; }
         Repeat Repeat { get; set; }
     }
 }

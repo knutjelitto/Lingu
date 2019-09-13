@@ -44,7 +44,7 @@ namespace Lingu.Build
 
         public void DumpTerminal(Terminal terminal, TextWriter writer)
         {
-            if (terminal.IsFragment)
+            if (terminal.IsPrivate)
             {
                 writer.Write("fragment ");
             }

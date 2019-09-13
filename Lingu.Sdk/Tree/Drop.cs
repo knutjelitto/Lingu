@@ -6,17 +6,15 @@ using Lingu.Automata;
 
 namespace Lingu.Tree
 {
-    public class TreeAction : Node, IExpression
+    public class Drop : Node, IExpression
     {
-        public TreeAction(ActionKind kind, IExpression expression)
+        public Drop(IExpression expression)
         {
-            Kind = kind;
             Expression = expression;
         }
 
         public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
 
-        public ActionKind Kind { get; }
         public IExpression Expression { get; }
 
         public FA GetFA()

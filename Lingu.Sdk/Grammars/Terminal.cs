@@ -11,7 +11,6 @@ namespace Lingu.Grammars
         {
         }
 
-        public bool IsFragment { get; set; }
         public Dfa Dfa { get; set; }
         public byte[] Bytes { get; set; }
         public string Visual { get; set; }
@@ -19,9 +18,9 @@ namespace Lingu.Grammars
 
         public override void Dump(IndentWriter output, bool top)
         {
-            var f = IsFragment ? "fragment " : "";
+            var p = IsPrivate ? "private " : "";
             var a = IsGenerated ? $"{Visual} " : "";
-            output.Indend($"{Name} // {f}{a}({Id})", () =>
+            output.Indend($"{Name} // {p}{a}({Id})", () =>
             {
                 if (Raw.Expression is Alternates)
                 {

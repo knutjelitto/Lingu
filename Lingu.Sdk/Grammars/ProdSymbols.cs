@@ -6,29 +6,29 @@ using System.Text;
 
 namespace Lingu.Grammars
 {
-    public class Symbols : IReadOnlyList<Symbol>
+    public class ProdSymbols : IReadOnlyList<ProdSymbol>
     {
-        private List<Symbol> symbols;
+        private List<ProdSymbol> symbols;
 
-        private Symbols(IEnumerable<Symbol> symbols)
+        private ProdSymbols(IEnumerable<ProdSymbol> symbols)
         {
-            this.symbols = new List<Symbol>(symbols);
+            this.symbols = new List<ProdSymbol>(symbols);
         }
 
-        public Symbol this[int index] => symbols[index];
+        public ProdSymbol this[int index] => symbols[index];
         public int Count => symbols.Count;
 
-        public static Symbols From(IEnumerable<Symbol> symbols)
+        public static ProdSymbols From(IEnumerable<ProdSymbol> symbols)
         {
-            return new Symbols(symbols);
+            return new ProdSymbols(symbols);
         }
 
-        public IEnumerator<Symbol> GetEnumerator() => symbols.GetEnumerator();
+        public IEnumerator<ProdSymbol> GetEnumerator() => symbols.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override bool Equals(object obj)
         {
-            return obj is Symbols other && this.SequenceEqual(other);
+            return obj is ProdSymbols other && this.SequenceEqual(other);
         }
 
         public override int GetHashCode()

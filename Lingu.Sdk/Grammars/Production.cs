@@ -4,21 +4,21 @@ using System.Linq;
 
 namespace Lingu.Grammars
 {
-    public class Production : IReadOnlyList<Symbol>
+    public class Production : IReadOnlyList<ProdSymbol>
     {
-        public Production(Nonterminal nonterminal, Symbols symbols)
+        public Production(Nonterminal nonterminal, ProdSymbols symbols)
         {
             Symbols = symbols;
             Nonterminal = nonterminal;
         }
 
         public Nonterminal Nonterminal { get; }
-        public Symbols Symbols { get; }
+        public ProdSymbols Symbols { get; }
 
-        public Symbol this[int index] => Symbols[index];
+        public ProdSymbol this[int index] => Symbols[index];
         public int Count => Symbols.Count;
 
-        public IEnumerator<Symbol> GetEnumerator() => Symbols.GetEnumerator();
+        public IEnumerator<ProdSymbol> GetEnumerator() => Symbols.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

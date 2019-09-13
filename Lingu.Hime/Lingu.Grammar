@@ -155,7 +155,12 @@
                 ;
 
             rule                        
-                -> NAME (':'|'->')! rule_expression ';'!
+                -> NAME promoteAll (':'|'->')! rule_expression ';'!
+                ;
+
+            promoteAll
+                -> '^'?
+                | // epsilon
                 ;
 
             rule_expression
@@ -172,11 +177,11 @@
                 ;
 
             rule_repetition
-                -> rule_tree_action ('?' | '*' | '+')?
+                -> rule_drop_action ('?' | '*' | '+')?
                 ;
 
-            rule_tree_action
-                -> (',' | '^')? rule_element
+            rule_drop_action
+                -> ','? rule_element
                 ;
 
             rule_element

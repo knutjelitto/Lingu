@@ -17,7 +17,7 @@ namespace Lingu.Bootstrap
             var program = new Program();
 
             program.Check();
-            program.BuildTree("Expression");
+            program.BuildTree("Lingu");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);

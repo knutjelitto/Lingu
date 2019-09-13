@@ -76,33 +76,32 @@
     }
     rules
     {
-        expression
-            : ^{shlOp: prefix ,'<<' prefix}
-			| ^{shrOp: prefix ,'>>' prefix}
-            | ^{addOp: prefix ,'+'  prefix}
-            | ^{addOp2: prefix (,'+'  prefix)*}
-            | ^{subOp: prefix ,'-'  prefix}
-            | ^{mulOp: prefix ,'*'  prefix}
-            | ^{divOp: prefix ,'/'  prefix}
-            | ^{remOp: prefix ,'%'  prefix}
-            | ^{modOp: prefix ,'%%' prefix}
-			| ^prefix
+	    expression^
+            : {shlOp: prefix ,'<<' prefix}
+			| {shrOp: prefix ,'>>' prefix}
+            | {addOp: prefix ,'+'  prefix}
+            | {subOp: prefix ,'-'  prefix}
+            | {mulOp: prefix ,'*'  prefix}
+            | {divOp: prefix ,'/'  prefix}
+            | {remOp: prefix ,'%'  prefix}
+            | {modOp: prefix ,'%%' prefix}
+			| prefix
             ;
 
-        prefix
-            : ^{negOp: ,'-' prefix}
-            | ^primary
+        prefix^
+            : {negOp: ,'-' prefix}
+            | primary
             ;
 
-        primary
-            : ^path
-            | ^number
-            | ,'(' ^expression ,')'
+        primary^
+            : path
+            | number
+            | ,'(' expression ,')'
             ;
 
-        path
-            : ^identifier
-            | ^identifierWithArguments
+        path^
+            : identifier
+            | identifierWithArguments
             ;
 
         identifierWithArguments
@@ -110,21 +109,12 @@
             ;
 
         typeArguments
-            : typeArguments ',' typeArgument
-            | typeArgument
+            : typeArgument (',' typeArgument)*
             | 
             ;
 
         typeArgument
             : identifier
             ;
-
-		alt
-			: expression (prefix | primary)
-			| expression (prefix primary)+
-			| expression (prefix primary)
-			| expression ,(prefix primary)
-			| expression ^(prefix primary)
-			;
     }
 }

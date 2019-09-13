@@ -25,7 +25,10 @@ namespace Lingu.Build
         {
             foreach (var raw in Raw.Nonterminals)
             {
-                var nonterminal = new Nonterminal(raw.Name);
+                var nonterminal = new Nonterminal(raw.Name)
+                {
+                    Lift = raw.Lift
+                };
 
                 if (Grammar.Nonterminals.Contains(nonterminal))
                 {
@@ -42,13 +45,22 @@ namespace Lingu.Build
 
                 BuildNonterminal(nonterminal, expressions);
             }
+
+            foreach (var nonterminal in Grammar.Nonterminals)
+            {
+                if (nonterminal.Lift)
+                {
+                    nonterminal.IsPrivate = true;
+                }
+            }
         }
 
         private void BuildNonterminal(Nonterminal nonterminal, IEnumerable<IExpression> expressions)
         {
             foreach (var expression in expressions)
             {
-                nonterminal.AddProductions(BuildSymbols(expression));
+                var builds = BuildSymbols(expression);
+                nonterminal.AddProductions(builds);
             }
         }
 
@@ -63,7 +75,7 @@ namespace Lingu.Build
             Grammar.Nonterminals.Add(nonterminal);
         }
 
-        private IEnumerable<Symbol> BuildSymbols(IExpression expression)
+        private IEnumerable<ProdSymbol> BuildSymbols(IExpression expression)
         {
             switch (expression)
             {
@@ -75,7 +87,7 @@ namespace Lingu.Build
                         };
 
                         NewNonterminal(nonterminal, alts.Children);
-                        yield return nonterminal;
+                        yield return new ProdSymbol(nonterminal, false);
                     }
                     break;
                 case Sequence sequence:
@@ -103,11 +115,11 @@ namespace Lingu.Build
 
                                     nonterminal.AddProductions(
                                         BuildSymbols(repeat.Expression),
-                                        Enumerable.Empty<Symbol>()
+                                        Enumerable.Empty<ProdSymbol>()
                                     );
 
                                     NewNonterminal(nonterminal);
-                                    yield return nonterminal;
+                                    yield return new ProdSymbol(nonterminal, false);
                                 }
                                 break;
                             case RepeatKind.Star:
@@ -120,13 +132,13 @@ namespace Lingu.Build
 
                                     var symbols = BuildSymbols(repeat.Expression).ToList();
                                     nonterminal.AddProductions(
-                                        Enumerable.Repeat(nonterminal, 1).Concat(symbols),
+                                        Enumerable.Repeat(new ProdSymbol(nonterminal, false), 1).Concat(symbols),
                                         symbols,
-                                        Enumerable.Empty<Symbol>()
+                                        Enumerable.Empty<ProdSymbol>()
                                     );
 
                                     NewNonterminal(nonterminal);
-                                    yield return nonterminal;
+                                    yield return new ProdSymbol(nonterminal, false);
                                 }
                                 break;
                             case RepeatKind.Plus:
@@ -139,12 +151,12 @@ namespace Lingu.Build
 
                                     var symbols = BuildSymbols(repeat.Expression).ToList();
                                     nonterminal.AddProductions(
-                                        Enumerable.Repeat(nonterminal, 1).Concat(symbols),
+                                        Enumerable.Repeat(new ProdSymbol(nonterminal, false), 1).Concat(symbols),
                                         symbols
                                     );
 
                                     NewNonterminal(nonterminal);
-                                    yield return nonterminal;
+                                    yield return new ProdSymbol(nonterminal, false);
                                 }
                                 break;
                         }
@@ -163,7 +175,7 @@ namespace Lingu.Build
                         }
 
                         NewNonterminal(nonterminal, subRule.Children);
-                        yield return nonterminal;
+                        yield return new ProdSymbol(nonterminal, false);
                     }
                     break;
                 case Name name:
@@ -172,13 +184,13 @@ namespace Lingu.Build
 
                         if (Grammar.Nonterminals.TryGetValue(sym, out var nonterminal))
                         {
-                            yield return nonterminal;
+                            yield return new ProdSymbol(nonterminal, false);
                             break;
                         }
 
                         if (Grammar.Terminals.TryGetValue(sym, out var terminal))
                         {
-                            yield return terminal;
+                            yield return new ProdSymbol(terminal, false);
                             break;
                         }
 
@@ -201,7 +213,28 @@ namespace Lingu.Build
 
                             Grammar.Terminals.Add(terminal);
                         }
-                        yield return terminal;
+                        yield return new ProdSymbol(terminal, false);
+                    }
+                    break;
+                case Drop drop:
+                    {
+                        var symbols = BuildSymbols(drop.Expression).ToList();
+                        if (symbols.Count > 1)
+                        {
+                            var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                            {
+                                IsGenerated = true,
+                            };
+
+                            nonterminal.AddProductions(
+                                symbols
+                            );
+
+                            NewNonterminal(nonterminal);
+                            yield return new ProdSymbol(nonterminal, true);
+                            break;
+                        }
+                        yield return new ProdSymbol(symbols[0].Symbol, true);
                     }
                     break;
                 case Epsilon _:
