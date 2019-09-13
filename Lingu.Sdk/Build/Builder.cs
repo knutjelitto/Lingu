@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 using Lingu.Automata;
@@ -8,8 +7,6 @@ using Lingu.Errors;
 using Lingu.Grammars;
 using Lingu.Runtime.LexDfa;
 using Lingu.Tree;
-
-using Mean.Maker.Builders;
 
 namespace Lingu.Build
 {
@@ -28,16 +25,16 @@ namespace Lingu.Build
         {
             BuildOptions();
 
-            BuildTerminalsPass1(); // create
-            BuildTerminalsPass2(); // link
-            BuildTerminalsPass3(); // recursion
+            BuildTerminalsPass1(); // terminal create entities
+            BuildTerminalsPass2(); // terminal resolve references
+            BuildTerminalsPass3(); // terminal detect recursions
 
-            BuildNonterminalsPass1(); // create
-            BuildNonterminalsPass2(); // link
+            BuildNonterminalsPass1(); // nonterminal create
+            BuildNonterminalsPass2(); // nonterminal resolve references
 
-            BuildTerminalsPass4(); // fragments
-            BuildTerminalsPass5(); // renumber
-            BuildTerminalsPass6(); // compile
+            BuildTerminalsPass4(); // terminal fragments (deps on nonterminals)
+            BuildTerminalsPass5(); // terminal renumber (non-fragments first)
+            BuildTerminalsPass6(); // terminal compile (create automatons)
 
             return Grammar;
         }
@@ -50,6 +47,22 @@ namespace Lingu.Build
         private string NextNonterminalName()
         {
             return $"__T{nextNonterminalId++}";
+        }
+
+        /// <summary>
+        /// Simply build options
+        /// </summary>
+        private void BuildOptions()
+        {
+            foreach (var raw in Raw.Options)
+            {
+                var option = raw;
+                if (Grammar.Options.Contains(option))
+                {
+                    throw new GrammarException($"option: `{option.Name}´ already defined before");
+                }
+                Grammar.Options.Add(option);
+            }
         }
 
         private void BuildNonterminalsPass1()
@@ -70,14 +83,25 @@ namespace Lingu.Build
             }
         }
 
+        /// <summary>
+        /// Resolving references
+        /// </summary>
         private void BuildNonterminalsPass2()
         {
-            foreach (var terminal in Grammar.Nonterminals)
+            foreach (var nonterminal in Grammar.Nonterminals)
             {
-                Resolve(terminal.Raw.Expression);
+                Resolve(nonterminal.Raw.Expressions);
             }
 
-            void Resolve(IExpression expr)
+            void Resolve(IEnumerable<IExpression> expressions)
+            {
+                foreach (var expression in expressions)
+                {
+                    Resolve2(expression);
+                }
+            }
+
+            void Resolve2(IExpression expr)
             {
                 if (expr is Name name)
                 {
@@ -87,7 +111,7 @@ namespace Lingu.Build
                     {
                         if (!Grammar.Terminals.TryGetValue(sym, out var terminal))
                         {
-                            throw new GrammarException($"nonterminal: reference to `{terminal.Name}´ can't be resolved");
+                            throw new GrammarException($"nonterminal: reference to `{sym.Name}´ can't be resolved");
                         }
                         else
                         {
@@ -102,14 +126,16 @@ namespace Lingu.Build
                 }
                 else if (expr is Tree.String str)
                 {
+                    var sym = (Symbol)str.Value;
                     var tname = (Symbol)NextTerminalName(); ;
 
-                    if (!Grammar.Terminals.TryGetValue(tname, out var terminal))
+                    if (!Grammar.Terminals.TryGetValue(sym, out var terminal))
                     {
                         var rawTerminal = new RawTerminal(tname.Name, expr);
                         terminal = new Terminal(tname.Name)
                         {
-                            Alias = str.Value,
+                            IsGenerated = true,
+                            Visual = sym.Name,
                             Raw = rawTerminal
                         };
                         Grammar.Terminals.Add(terminal);
@@ -122,25 +148,15 @@ namespace Lingu.Build
                 {
                     foreach (var subExpr in expr.Children)
                     {
-                        Resolve(subExpr);
+                        Resolve2(subExpr);
                     }
                 }
             }
         }
 
-        private void BuildOptions()
-        {
-            foreach (var raw in Raw.Options)
-            {
-                var option = raw;
-                if (Grammar.Options.Contains(option))
-                {
-                    throw new GrammarException($"option: `{option.Name}´ already defined before");
-                }
-                Grammar.Options.Add(option);
-            }
-        }
-
+        /// <summary>
+        /// Create terminals.
+        /// </summary>
         private void BuildTerminalsPass1()
         {
             foreach (var raw in Raw.Terminals)
@@ -159,6 +175,9 @@ namespace Lingu.Build
             }
         }
 
+        /// <summary>
+        /// Resolving references
+        /// </summary>
         private void BuildTerminalsPass2()
         {
             foreach (var terminal in Grammar.Terminals)
@@ -186,6 +205,9 @@ namespace Lingu.Build
             }
         }
 
+        /// <summary>
+        /// Check terminal recursion
+        /// </summary>
         private void BuildTerminalsPass3()
         {
             foreach (var terminal in Grammar.Terminals)
@@ -234,23 +256,34 @@ namespace Lingu.Build
             foreach (var terminal in Grammar.Terminals)
             {
                 terminal.IsFragment = true;
+                terminal.Raw.IsFragment = true;
             }
 
             foreach (var rule in Grammar.Nonterminals)
             {
-                CheckFragment(rule.Raw.Expression);
+                foreach (var raw in rule.Raw.Expressions)
+                {
+                    CheckFragment(raw);
+                }
             }
 
             if (Grammar.Newline != null)
+            {
                 Grammar.Newline.IsFragment = false;
+                Grammar.Newline.Raw.IsFragment = false;
+            }
             if (Grammar.Separator != null)
+            {
                 Grammar.Separator.IsFragment = false;
+                Grammar.Separator.Raw.IsFragment = false;
+            }
 
             void CheckFragment(IExpression expression)
             {
-                if (expression is Ref reference && reference.Rule is RawTerminal terminal)
+                if (expression is Name name && name.Rule is Terminal terminal)
                 {
                     terminal.IsFragment = false;
+                    terminal.Raw.IsFragment = false;
                 }
 
                 foreach (var subExpression in expression.Children)
@@ -265,15 +298,17 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass5()
         {
-            int id = 0;
-            foreach (var terminal in Grammar.Terminals.Where(t => !t.IsFragment))
+            int id = 2;
+            foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsFragment))
             {
                 terminal.Id = id;
+                terminal.Raw.Id = id;
                 id += 1;
             }
-            foreach (var terminal in Grammar.Terminals.Where(t => t.IsFragment))
+            foreach (var terminal in Grammar.Terminals.Where(t => t.Raw.IsFragment))
             {
                 terminal.Id = id;
+                terminal.Raw.Id = id;
                 id += 1;
             }
 
@@ -292,7 +327,7 @@ namespace Lingu.Build
 
             void BuildTerminal(Terminal terminal)
             {
-                terminal.Alias = terminal.IsGenerated ? terminal.Raw.Expression.ToString() : null;
+                terminal.Visual = terminal.IsGenerated ? terminal.Raw.Expression.ToString() : null;
                 terminal.Bytes = Writer.GetBytes(terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead());
                 terminal.Dfa = new DfaReader(terminal.Bytes).Read();
             }

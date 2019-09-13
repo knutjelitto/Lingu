@@ -5,9 +5,9 @@ namespace Lingu.Tree
 {
     public abstract class Node : ICanDump
     {
-        public virtual void Dump(IndentWriter output, bool top)
+        public virtual void Dump(IndentWriter writer, bool top)
         {
-            output.WriteLine(GetType().Name);
+            writer.WriteLine(GetType().Name);
         }
 
         public TreeActionKind Action { get; set; }

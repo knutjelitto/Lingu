@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using Lingu.Grammars;
 using Lingu.Writers;
 
@@ -5,32 +8,32 @@ namespace Lingu.Tree
 {
     public sealed class RawNonterminal : Nonterminal
     {
-        public RawNonterminal(bool isGenerated, string name, IExpression expression)
+        public RawNonterminal(string name, IEnumerable<IExpression> alternates)
             : base(name)
         {
-            IsGenerated = isGenerated;
-            Expression = expression;
+            Expressions = alternates.ToArray();
         }
 
-        public RawNonterminal(string name, IExpression expression)
-            : this(false, name, expression)
-        {
-        }
-
-        public IExpression Expression { get; set; }
+        public IReadOnlyList<IExpression> Expressions { get; set; }
 
         public override void Dump(IndentWriter output, bool top)
         {
             output.Indend($"{Name}", () =>
             {
-                if (Expression is Alternates)
+                bool more = false;
+                foreach (var expression in Expressions)
                 {
-                    Expression.Dump(output, true);
-                }
-                else
-                {
-                    output.Write(": ");
-                    Expression.Dump(output, true);
+                    if (more)
+                    {
+                        output.Write("| ");
+                    }
+                    else
+                    {
+                        output.Write(": ");
+                    }
+                    more = true;
+
+                    expression.Dump(output, top);
                     output.WriteLine();
                 }
                 output.WriteLine(";");

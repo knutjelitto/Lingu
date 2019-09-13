@@ -236,7 +236,8 @@ namespace Lingu.Bootstrap
         {
             var name = VisitChild<Name>(node, 0);
             var expression = VisitChild<IExpression>(node, 1);
-            var rule = new RawNonterminal(name.Text, expression);
+
+            var rule = new RawNonterminal(name.Text, expression.Children);
 
             return rule;
         }

@@ -93,9 +93,28 @@
             ;
 
         primary
-            : ^identifier
+            : ^path
             | ^number
             | ,'(' ^expression ,')'
+            ;
+
+        path
+            : ^identifier
+            | ^identifierWithArguments
+            ;
+
+        identifierWithArguments
+            : identifier ,'<' typeArguments ,'>'
+            ;
+
+        typeArguments
+            : typeArguments ',' typeArgument
+            | typeArgument
+            | 
+            ;
+
+        typeArgument
+            : identifier
             ;
 
 		alt

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Lingu.Writers
 {
-    public class IndentWriter
+    public class IndentWriter : IWriter
     {
         private readonly List<string> lines;
         private readonly string tab;

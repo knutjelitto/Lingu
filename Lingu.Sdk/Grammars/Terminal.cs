@@ -14,12 +14,28 @@ namespace Lingu.Grammars
         public bool IsFragment { get; set; }
         public Dfa Dfa { get; set; }
         public byte[] Bytes { get; set; }
-        public string Alias { get; set; }
+        public string Visual { get; set; }
         public RawTerminal Raw { get; set; }
 
         public override void Dump(IndentWriter output, bool top)
         {
-            Raw.Dump(output, top);
+            var f = IsFragment ? "fragment " : "";
+            var n = Name;
+            var a = IsGenerated ? $"{Visual} " : "";
+            output.Indend($"{f}{Name} // {a}({Id})", () =>
+            {
+                if (Raw.Expression is Alternates)
+                {
+                    Raw.Expression.Dump(output, true);
+                }
+                else
+                {
+                    output.Write(": ");
+                    Raw.Expression.Dump(output, true);
+                    output.WriteLine();
+                }
+                output.WriteLine(";");
+            });
         }
     }
 }
