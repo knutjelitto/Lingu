@@ -8,20 +8,29 @@ namespace Lingu.Tree
 {
     public sealed class RawNonterminal : Nonterminal
     {
-        public RawNonterminal(string name, IEnumerable<IExpression> alternates)
+        private RawNonterminal(string name, IEnumerable<IExpression> alternates)
             : base(name)
         {
-            Expressions = alternates.ToArray();
+            Alternates = alternates.ToArray();
         }
 
-        public IReadOnlyList<IExpression> Expressions { get; set; }
+        public IReadOnlyList<IExpression> Alternates { get; set; }
+
+        public static RawNonterminal From(string name, IExpression expression)
+        {
+            if (expression is Alternates alternates)
+            {
+                return new RawNonterminal(name, alternates.Expressions);
+            }
+            return new RawNonterminal(name, Enumerable.Repeat(expression, 1));
+        }
 
         public override void Dump(IndentWriter output, bool top)
         {
             output.Indend($"{Name}", () =>
             {
                 bool more = false;
-                foreach (var expression in Expressions)
+                foreach (var expression in Alternates)
                 {
                     if (more)
                     {

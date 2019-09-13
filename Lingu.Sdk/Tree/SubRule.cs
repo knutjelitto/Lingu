@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Lingu.Automata;
+using Lingu.Grammars;
 using Lingu.Writers;
 
 namespace Lingu.Tree
@@ -18,6 +19,7 @@ namespace Lingu.Tree
         public Name Name { get; }
         public IExpression Expression { get; }
         public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
+        public Nonterminal Nonterminal { get; set; }
 
         public override void Dump(IndentWriter writer, bool top)
         {

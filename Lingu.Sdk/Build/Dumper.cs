@@ -100,10 +100,6 @@ namespace Lingu.Build
                 var more = false;
                 foreach (var item in members)
                 {
-                    if (item is Nonterminal non && non.IsEmbedded)
-                    {
-                        continue;
-                    }
                     if (separate && more) output.WriteLine();
                     item.Dump(output, top);
                     more = true;

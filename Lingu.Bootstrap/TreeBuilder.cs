@@ -111,27 +111,24 @@ namespace Lingu.Bootstrap
         protected override object OnVariableTerminalRepetition(ASTNode node)
         {
             var expression = VisitChild<IExpression>(node, 0);
+
             if (node.Children.Count == 1)
             {
                 return expression;
             }
+
             if (node.Children.Count == 2)
             {
                 var rep = node.Children[1];
 
-                var repeat = new Repeat(1, 1);
-
                 switch (rep.Value)
                 {
                     case "?":
-                        repeat = new Repeat(0, 1);
-                        break;
+                        return Repeat.From(expression, 0, 1);
                     case "*":
-                        repeat = new Repeat(0);
-                        break;
+                        return Repeat.From(expression, 0);
                     case "+":
-                        repeat = new Repeat(1);
-                        break;
+                        return Repeat.From(expression, 1);
                     case null:
                         {
                             if (rep.Symbol.ID == LinguParser.ID.VirtualRange)
@@ -140,24 +137,19 @@ namespace Lingu.Bootstrap
                                 if (rep.Children.Count == 1)
                                 {
                                     // exactly
-                                    repeat = new Repeat(int1.Value, int1.Value);
+                                    return Repeat.From(expression, int1.Value, int1.Value);
                                 }
                                 if (rep.Children.Count == 2)
                                 {
                                     // from .. to
                                     var int2 = VisitChild<Integer>(rep, 1);
 
-                                    repeat = new Repeat(int1.Value, int2.Value);
+                                    return Repeat.From(expression, int1.Value, int2.Value);
                                 }
                             }
                             break;
                         }
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(node));
                 }
-
-                expression.Repeat = repeat;
-                return expression;
             }
 
             throw new ArgumentOutOfRangeException(nameof(node));
@@ -237,9 +229,7 @@ namespace Lingu.Bootstrap
             var name = VisitChild<Name>(node, 0);
             var expression = VisitChild<IExpression>(node, 1);
 
-            var rule = new RawNonterminal(name.Text, expression.Children);
-
-            return rule;
+            return RawNonterminal.From(name.Text, expression);
         }
 
         protected override object OnVariableRuleExpression(ASTNode node)
@@ -283,25 +273,16 @@ namespace Lingu.Bootstrap
             {
                 var rep = node.Children[1];
 
-                var repeat = new Repeat(1, 1);
-
-                switch (rep.Value)
+                return rep.Value switch
                 {
-                    case "?":
-                        repeat = new Repeat(0, 1);
-                        break;
-                    case "*":
-                        repeat = new Repeat(0);
-                        break;
-                    case "+":
-                        repeat = new Repeat(1);
-                        break;
-                }
-
-                expression.Repeat = repeat;
+                    "?" => Repeat.From(expression, 0, 1),
+                    "*" => Repeat.From(expression, 0),
+                    "+" => Repeat.From(expression, 1),
+                    _ => throw new ArgumentOutOfRangeException(nameof(node)),
+                };
             }
 
-            throw new NotImplementedException();
+            throw new ArgumentOutOfRangeException(nameof(node));
         }
 
         protected override object OnVariableRuleSub(ASTNode node)

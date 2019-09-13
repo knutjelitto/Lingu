@@ -1,26 +1,50 @@
 using System.Collections.Generic;
-using Lingu.Commons;
-using Lingu.Tree;
+using System.Linq;
+
 using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
     public class Nonterminal : Rule
     {
+        private readonly List<Production> productions;
+
         public Nonterminal(string name)
             : base(name)
         {
-            Productions = new List<Production>();
+            productions = new List<Production>();
         }
 
         public bool IsEmbedded { get; set; }
-        public RawNonterminal Raw { get; set; }
 
-        public List<Production> Productions { get; set; }
+        public IReadOnlyList<Production> Productions => productions;
 
-        public override void Dump(IndentWriter output, bool top)
+        public void AddProductions(params IEnumerable<Symbol>[] symbols)
         {
-            Raw.Dump(output, top);
+            productions.AddRange(symbols.Select(s => new Production(this, s)));
+        }
+
+        public override void Dump(IndentWriter writer, bool top)
+        {
+            writer.Indend($"{Name}", () =>
+            {
+                bool more = false;
+                foreach (var production in Productions)
+                {
+                    if (more)
+                    {
+                        writer.Write("| ");
+                    }
+                    else
+                    {
+                        writer.Write(": ");
+                    }
+                    more = true;
+
+                    writer.WriteLine(string.Join(" ", production));
+                }
+                writer.WriteLine(";");
+            });
         }
     }
 }

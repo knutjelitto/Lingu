@@ -13,6 +13,11 @@ namespace Lingu.Tree
             Expressions = expressions.ToArray();
         }
 
+        public Sequence(params IExpression[] expressions)
+            : this(expressions.AsEnumerable())
+        {
+        }
+
         public IReadOnlyList<IExpression> Expressions { get; }
         public IEnumerable<IExpression> Children => Expressions;
 

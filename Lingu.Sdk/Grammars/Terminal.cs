@@ -20,9 +20,8 @@ namespace Lingu.Grammars
         public override void Dump(IndentWriter output, bool top)
         {
             var f = IsFragment ? "fragment " : "";
-            var n = Name;
             var a = IsGenerated ? $"{Visual} " : "";
-            output.Indend($"{f}{Name} // {a}({Id})", () =>
+            output.Indend($"{Name} // {f}{a}({Id})", () =>
             {
                 if (Raw.Expression is Alternates)
                 {

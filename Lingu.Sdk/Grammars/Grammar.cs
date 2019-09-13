@@ -33,5 +33,18 @@ namespace Lingu.Grammars
         {
             throw new System.NotImplementedException();
         }
+
+        public string NextTerminalName()
+        {
+            return $"__T{nextTerminalId++}";
+        }
+
+        public string NextNonterminalName()
+        {
+            return $"__N{nextNonterminalId++}";
+        }
+
+        private int nextTerminalId = 1;
+        private int nextNonterminalId = 1;
     }
 }

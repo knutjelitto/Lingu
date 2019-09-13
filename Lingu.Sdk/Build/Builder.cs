@@ -29,24 +29,13 @@ namespace Lingu.Build
             BuildTerminalsPass2(); // terminal resolve references
             BuildTerminalsPass3(); // terminal detect recursions
 
-            BuildNonterminalsPass1(); // nonterminal create
-            BuildNonterminalsPass2(); // nonterminal resolve references
+            BuildNonterminalsPass3(); // nonterminal build productions
 
             BuildTerminalsPass4(); // terminal fragments (deps on nonterminals)
             BuildTerminalsPass5(); // terminal renumber (non-fragments first)
             BuildTerminalsPass6(); // terminal compile (create automatons)
 
             return Grammar;
-        }
-
-        private string NextTerminalName()
-        {
-            return $"__T{nextTerminalId++}";
-        }
-
-        private string NextNonterminalName()
-        {
-            return $"__T{nextNonterminalId++}";
         }
 
         /// <summary>
@@ -65,94 +54,14 @@ namespace Lingu.Build
             }
         }
 
-        private void BuildNonterminalsPass1()
-        {
-            foreach (var raw in Raw.Nonterminals)
-            {
-                var nonterminal = new Nonterminal(raw.Name)
-                {
-                    Raw = raw
-                };
-
-                if (Grammar.Nonterminals.Contains(nonterminal))
-                {
-                    throw new GrammarException($"nonterminal: `{nonterminal.Name}´ already defined before");
-                }
-
-                Grammar.Nonterminals.Add(nonterminal);
-            }
-        }
-
         /// <summary>
-        /// Resolving references
+        /// Build Productions
         /// </summary>
-        private void BuildNonterminalsPass2()
+        private void BuildNonterminalsPass3()
         {
-            foreach (var nonterminal in Grammar.Nonterminals)
-            {
-                Resolve(nonterminal.Raw.Expressions);
-            }
-
-            void Resolve(IEnumerable<IExpression> expressions)
-            {
-                foreach (var expression in expressions)
-                {
-                    Resolve2(expression);
-                }
-            }
-
-            void Resolve2(IExpression expr)
-            {
-                if (expr is Name name)
-                {
-                    var sym = (Symbol)name.Text;
-
-                    if (!Grammar.Nonterminals.TryGetValue(sym, out var nonterminal))
-                    {
-                        if (!Grammar.Terminals.TryGetValue(sym, out var terminal))
-                        {
-                            throw new GrammarException($"nonterminal: reference to `{sym.Name}´ can't be resolved");
-                        }
-                        else
-                        {
-                            name.Rule = terminal;
-                        }
-                    }
-                    else
-                    {
-                        name.Rule = nonterminal;
-                    }
-
-                }
-                else if (expr is Tree.String str)
-                {
-                    var sym = (Symbol)str.Value;
-                    var tname = (Symbol)NextTerminalName(); ;
-
-                    if (!Grammar.Terminals.TryGetValue(sym, out var terminal))
-                    {
-                        var rawTerminal = new RawTerminal(tname.Name, expr);
-                        terminal = new Terminal(tname.Name)
-                        {
-                            IsGenerated = true,
-                            Visual = sym.Name,
-                            Raw = rawTerminal
-                        };
-                        Grammar.Terminals.Add(terminal);
-                    }
-
-                    str.Terminal = terminal;
-
-                }
-                else
-                {
-                    foreach (var subExpr in expr.Children)
-                    {
-                        Resolve2(subExpr);
-                    }
-                }
-            }
+            new ProductionBuilder(Grammar, Raw).Build();
         }
+
 
         /// <summary>
         /// Create terminals.
@@ -256,40 +165,26 @@ namespace Lingu.Build
             foreach (var terminal in Grammar.Terminals)
             {
                 terminal.IsFragment = true;
-                terminal.Raw.IsFragment = true;
             }
 
-            foreach (var rule in Grammar.Nonterminals)
+            foreach (var nonterminal in Grammar.Nonterminals)
             {
-                foreach (var raw in rule.Raw.Expressions)
+                foreach (var production in nonterminal.Productions)
                 {
-                    CheckFragment(raw);
+                    foreach (var terminal in production.Symbols.OfType<Terminal>())
+                    {
+                        terminal.IsFragment = false;
+                    }
                 }
             }
 
             if (Grammar.Newline != null)
             {
                 Grammar.Newline.IsFragment = false;
-                Grammar.Newline.Raw.IsFragment = false;
             }
             if (Grammar.Separator != null)
             {
                 Grammar.Separator.IsFragment = false;
-                Grammar.Separator.Raw.IsFragment = false;
-            }
-
-            void CheckFragment(IExpression expression)
-            {
-                if (expression is Name name && name.Rule is Terminal terminal)
-                {
-                    terminal.IsFragment = false;
-                    terminal.Raw.IsFragment = false;
-                }
-
-                foreach (var subExpression in expression.Children)
-                {
-                    CheckFragment(subExpression);
-                }
             }
         }
 
@@ -332,8 +227,5 @@ namespace Lingu.Build
                 terminal.Dfa = new DfaReader(terminal.Bytes).Read();
             }
         }
-
-        private int nextTerminalId = 1;
-        private int nextNonterminalId = 1;
     }
 }

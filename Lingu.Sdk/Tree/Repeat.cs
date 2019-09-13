@@ -1,70 +1,113 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using Lingu.Automata;
 
 namespace Lingu.Tree
 {
-    public class Repeat
+    public class Repeat : Node, IExpression
     {
-        public Repeat(int? min = null, int? max = null)
+        private Repeat(IExpression expression, RepeatKind kind, int? min = null, int? max = null)
         {
+            Expression = expression;
+            Kind = kind;
             Min = min;
             Max = max;
         }
 
+        public IExpression Expression { get; }
         public int? Min { get; }
         public int? Max { get; }
+        public RepeatKind Kind { get; }
+        public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
+
+        public static IExpression From(IExpression expression, int? min = null, int? max = null)
+        {
+            if (min == 1 && max == 1)
+            {
+                return expression;
+            }
+
+            RepeatKind kind;
+
+            if (min == 0 && max == 1)
+            {
+                kind = RepeatKind.Optional;
+            }
+            else if (min == 0 && max == null)
+            {
+                kind = RepeatKind.Star;
+            }
+            else if (min == 1 && max == null)
+            {
+                kind = RepeatKind.Plus;
+            }
+            else
+            {
+                kind = RepeatKind.Special;
+            }
+
+            return new Repeat(expression, kind, min, max);
+        }
+
+        public FA GetFA()
+        {
+            return GetNfa(Expression);
+        }
 
         public FA GetNfa(IExpression expression)
         {
             var expr = expression.GetFA();
 
-            if (Min == 1 && Max == 1)
+            switch (Kind)
             {
-                return expr;
-            }
-            if (Min == 0 && Max == 1)
-            {
-                return expr.Opt();
-            }
-            if (Min == 0 && Max == null)
-            {
-                return expr.Star();
-            }
-            if (Min == 1 && Max == null)
-            {
-                return expr.Plus();
+                case RepeatKind.Optional:
+                    return expr.Opt();
+                case RepeatKind.Star:
+                    return expr.Star();
+                case RepeatKind.Plus:
+                    return expr.Plus();
+                case RepeatKind.Special:
+                    {
+                        var nfa = expr;
+                        var i = 1;
+                        for (; i < Min; ++i)
+                        {
+                            nfa = nfa.Concat(expr);
+                        }
+                        expr = expr.Opt();
+                        for (; i < Max; ++i)
+                        {
+                            nfa = nfa.Concat(expr);
+                        }
+                        return nfa;
+                    }
             }
 
-            Debug.Assert(Min != null && Max != null);
-            var nfa = expr;
-            var i = 1;
-            for (; i < Min; ++i)
-            {
-                nfa = nfa.Concat(expr);
-            }
-            expr = expr.Opt();
-            for (; i < Max; ++i)
-            {
-                nfa = nfa.Concat(expr);
-            }
-            return nfa;
+            throw new ArgumentOutOfRangeException(nameof(expression));
         }
 
         public override string ToString()
         {
-            if (Min == 1 && Max == 1)
-                return string.Empty;
-            if (Min == 0 && Max == 1)
-                return "?";
-            if (Min == 0 && Max == null)
-                return "*";
-            if (Min == 1 && Max == null)
-                return "+";
-            Debug.Assert(Min != null && Max != null);
-            if (Min == Max)
-                return $"<{Min}>";
-            return $"<{Min},{Max}>";
+            switch (Kind)
+            {
+                case RepeatKind.Optional:
+                    return "?";
+                case RepeatKind.Star:
+                    return "*";
+                case RepeatKind.Plus:
+                    return "+";
+                case RepeatKind.Special:
+                    {
+                        if (Min == Max)
+                            return $"<{Min}>";
+                        return $"<{Min},{Max}>";
+                    }
+                default:
+                    return string.Empty;
+            }
         }
     }
 }

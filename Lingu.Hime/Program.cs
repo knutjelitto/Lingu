@@ -42,8 +42,8 @@ namespace Lingu.Hime
             var tweaker = new Tweaker(parser, visitor);
             Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.File} ...");
             tweaker.TweakVisitor();
-            tweaker.TweakLexer(lexer);
-            tweaker.TweakParser(parser);
+            //tweaker.TweakLexer(lexer);
+            //tweaker.TweakParser(parser);
         }
 
         private Report Generate(HimeTaskOptions options, params FileRef[] grammarInputs)
