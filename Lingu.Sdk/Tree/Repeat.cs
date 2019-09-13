@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Automata;
+using Lingu.Grammars;
 
 namespace Lingu.Tree
 {

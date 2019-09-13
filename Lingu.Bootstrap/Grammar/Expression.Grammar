@@ -66,7 +66,7 @@
             ;
 
         zero
-            : '0'
+            : digit - nonzeroDigit
             ;
 
         number
@@ -121,6 +121,10 @@
 
 		alt
 			: expression (prefix | primary)
+			| expression (prefix primary)+
+			| expression (prefix primary)
+			| expression ,(prefix primary)
+			| expression ^(prefix primary)
 			;
     }
 }

@@ -10,7 +10,7 @@ namespace Lingu.Tree
             writer.WriteLine(GetType().Name);
         }
 
-        public TreeActionKind Action { get; set; }
+        public ActionKind Action { get; set; }
         public Repeat Repeat { get; set; }
     }
 }

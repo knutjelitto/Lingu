@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Lingu.Tree
+namespace Lingu.Grammars
 {
     public enum RepeatKind
     {
+        None,
         Optional,
         Star,
         Plus,

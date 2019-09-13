@@ -186,7 +186,7 @@
                 ;
 
             rule_sub 
-                -> '{'! NAME ':'! rule_expression '}'!
+                -> '{'! NAME (':'|'->')! rule_expression '}'!
                 ;
 
             rule_atom

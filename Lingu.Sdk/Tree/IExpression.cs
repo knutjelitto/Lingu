@@ -13,7 +13,7 @@ namespace Lingu.Tree
 
         IEnumerable<IExpression> Children { get; }
 
-        TreeActionKind Action { get; set; }
+        ActionKind Action { get; set; }
         Repeat Repeat { get; set; }
     }
 }

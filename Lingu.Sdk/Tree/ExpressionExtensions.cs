@@ -10,11 +10,11 @@ namespace Lingu.Tree
         {
             switch (expression.Action)
             {
-                case TreeActionKind.None:
+                case ActionKind.None:
                     return string.Empty;
-                case TreeActionKind.Drop:
+                case ActionKind.Drop:
                     return ",";
-                case TreeActionKind.Promote:
+                case ActionKind.Promote:
                     return "^";
             }
 

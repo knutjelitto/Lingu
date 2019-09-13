@@ -306,16 +306,13 @@ namespace Lingu.Bootstrap
                 switch (node.Children[0].Value)
                 {
                     case "^":
-                        expression.Action = TreeActionKind.Promote;
-                        break;
+                        return new Tree.TreeAction(ActionKind.Promote, expression);
                     case ",":
-                        expression.Action = TreeActionKind.Drop;
-                        break;
+                        return new Tree.TreeAction(ActionKind.Drop, expression);
                 }
-                return expression;
             }
 
-            throw new NotImplementedException();
+            throw new ArgumentOutOfRangeException(nameof(node));
         }
 
         protected override object OnVariableReference(ASTNode node)

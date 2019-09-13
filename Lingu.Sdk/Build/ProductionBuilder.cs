@@ -32,8 +32,7 @@ namespace Lingu.Build
                     throw new GrammarException($"nonterminal: `{nonterminal.Name}´ already defined before");
                 }
 
-                Grammar.Nonterminals.Add(nonterminal);
-                ToDo.Enqueue((nonterminal, raw.Alternates));
+                NewNonterminal(nonterminal, raw.Alternates);
 
             }
 
@@ -98,7 +97,8 @@ namespace Lingu.Build
                                 {
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
-                                        IsGenerated = true
+                                        IsGenerated = true,
+                                        Repeat = repeat.Kind
                                     };
 
                                     nonterminal.AddProductions(
@@ -114,7 +114,8 @@ namespace Lingu.Build
                                 {
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
-                                        IsGenerated = true
+                                        IsGenerated = true,
+                                        Repeat = repeat.Kind
                                     };
 
                                     var symbols = BuildSymbols(repeat.Expression).ToList();
@@ -132,7 +133,8 @@ namespace Lingu.Build
                                 {
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
-                                        IsGenerated = true
+                                        IsGenerated = true,
+                                        Repeat = repeat.Kind
                                     };
 
                                     var symbols = BuildSymbols(repeat.Expression).ToList();
