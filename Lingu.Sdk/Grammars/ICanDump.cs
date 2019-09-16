@@ -4,6 +4,6 @@ namespace Lingu.Grammars
 {
     public interface ICanDump
     {
-        void Dump(IndentWriter writer, bool top);
+        void Dump(IndentWriter writer);
     }
 }

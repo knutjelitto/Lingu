@@ -14,10 +14,13 @@ namespace Lingu.Grammars
             : base(name)
         {
             productions = new List<Production>();
+            Repeat = RepeatKind.None;
+            Lift = LiftKind.None;
         }
 
         public RepeatKind Repeat { get; set; }
-        public bool Lift { get; set; }
+        public bool IsLift => Lift != LiftKind.None;
+        public LiftKind Lift { get; set; }
 
         public IReadOnlyList<Production> Productions => productions;
 
@@ -40,13 +43,12 @@ namespace Lingu.Grammars
             }
         }
 
-        public override void Dump(IndentWriter writer, bool top)
+        public override void Dump(IndentWriter writer)
         {
-            var p = IsPrivate ? " private" : "";
-            var r = Rep();
-            var l = Lift ? " (^)" : string.Empty;
+            var p = IsPrivate ? "private " : "";
+            var l = Li();
 
-            writer.Indend($"{Name} //{p}{r}{l}", () =>
+            writer.Indend($"{Name} // {p}{l}({Id})", () =>
             {
                 bool more = false;
                 foreach (var production in Productions)
@@ -66,18 +68,20 @@ namespace Lingu.Grammars
                 writer.WriteLine(";");
             });
 
-            string Rep()
+            string Li()
             {
-                switch (Repeat)
+                switch (Lift)
                 {
-                    case RepeatKind.Optional:
-                        return " (?)";
-                    case RepeatKind.Star:
-                        return " (*)";
-                    case RepeatKind.Plus:
-                        return " (+)";
-                    case RepeatKind.Special:
-                        throw new NotImplementedException(); ;
+                    case LiftKind.User:
+                        return "(^^) ";
+                    case LiftKind.Optional:
+                        return "(^?) ";
+                    case LiftKind.Star:
+                        return "(^*) ";
+                    case LiftKind.Plus:
+                        return "(^+) ";
+                    case LiftKind.Alternate:
+                        return "(^|) ";
                     default:
                         return string.Empty;
                 }

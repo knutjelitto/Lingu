@@ -4,6 +4,8 @@
     {
         Start = file;
         Separator = separator;
+        Keyword = identifier;
+        Newline = newline;
     }
 
     terminals
@@ -74,7 +76,7 @@
             | nonzeroDigit digit*
             ;
 
-        hexdigit
+        hexDigit
             : '0' .. '9'
             | 'a' .. 'f'
             | 'A' .. 'f'
@@ -90,7 +92,7 @@
             | '\\r'                         // Carriage return (character 13)
             | '\\t'                         // Horizontal tab (character 9)
             | '\\v'                         // Vertical quote (character 11)
-            | '\\u{' hexdigit{1,6} '}'      // Unicode code point
+            | '\\u{' hexDigit{1,6} '}'      // Unicode code point
             ;
 
         any
@@ -110,11 +112,12 @@
             ;
 
         ucNameEnd
-            : ucNameStart
+            : ucNameStart | '0' .. '9'
             ;
 
         ucName
-            : ucNameStart ucNameInner* ucNameEnd*
+            : ucNameStart ucNameEnd*
+            | ucNameStart ucNameInner+ ucNameEnd
             ;
 
         ucBlock
@@ -133,11 +136,11 @@
     rules
     {
         file
-            : grammar
+            : angrammar
             ;
 
-        grammar
-            : ,'grammar' NAME ,'{' grammar_item+ ,'}'
+        angrammar
+            : ,'grammar' identifier ,'{' grammar_item+ ,'}'
             ;
 
         grammar_item^
@@ -152,7 +155,7 @@
             ;
 
         option
-            : NAME ,'=' NAME ,';'
+            : identifier ,'=' identifier ,';'
             ;
 
         grammar_terminals
@@ -160,7 +163,7 @@
             ;
 
         terminal_rule
-            : NAME ,(':'|'->') terminal_expression,';'
+            : identifier ,(':'|'->') terminal_expression,';'
             ;
 
         terminal_expression
@@ -192,14 +195,14 @@
         terminal_atom^
             : any
             | text
-            | range
+            | characterRange
             | ucCodepoint
             | ucBlock
             | ucCategory
             | reference
             ;
 
-        range
+        characterRange
             : character ,'..' character
             ;
 
@@ -208,65 +211,59 @@
             | text
             ;
 
-        terminal_cardinalilty
-            -> '?'^
-            |  '*'^
-            |  '+'^
-            |  "range"^ '{'! INTEGER (','! INTEGER)? '}'!
+        terminal_cardinalilty^
+            : '?'
+            | '*'
+            | '+'
+            | {range: ,'{' number (,',' number)? ,'}'}
             ;
 
-        /* RULES */
-            grammar_rules
-                -> 'rules'! '{'! rule* '}'!
-                ;
+        grammar_rules
+            : ,'rules' ,'{' rule* ,'}'
+            ;
 
-            rule                        
-                -> NAME promoteAll (':'|'->')! rule_expression ';'!
-                ;
+        rule                        
+            : identifier '^'? ,(':'|'->') rule_expression ,';'
+            ;
 
-            promoteAll
-                -> '^'?
-                | // epsilon
-                ;
+        rule_expression
+            : rule_alternative (,'|' rule_alternative)*
+            ;
 
-            rule_expression
-                -> rule_alternative ('|'! rule_alternative)*
-                ;
+        rule_alternative
+            : rule_sequence
+            | // epsilon
+            ;
 
-            rule_alternative
-                -> rule_sequence
-                | // epsilon
-                ;
+        rule_sequence
+            : rule_repetition+
+            ;
 
-            rule_sequence
-                -> rule_repetition+
-                ;
+        rule_repetition
+            : rule_drop_action ('?' | '*' | '+')?
+            ;
 
-            rule_repetition
-                -> rule_drop_action ('?' | '*' | '+')?
-                ;
+        rule_drop_action
+            : ','? rule_element
+            ;
 
-            rule_drop_action
-                -> ','? rule_element
-                ;
+        rule_element^
+            : rule_sub
+            | ,'(' rule_expression ,')'
+            | rule_atom
+            ;
 
-            rule_element
-                -> rule_sub^
-                |  '('! rule_expression^ ')'!
-                |  rule_atom^
-                ;
+        rule_sub 
+            : ,'{' identifier ,(':'|'->') rule_expression ,'}'
+            ;
 
-            rule_sub 
-                -> '{'! NAME (':'|'->')! rule_expression '}'!
-                ;
+        rule_atom^
+            : reference
+            | text
+            ;
 
-            rule_atom
-                -> reference^
-                |  text^
-                ;
-
-            reference
-                -> NAME
-                ;
+        reference
+            -> identifier
+            ;
     }
 }

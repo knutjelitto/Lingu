@@ -10,14 +10,12 @@ namespace Lingu.Bootstrap
     {
         private static string projectDir;
 
-#pragma warning disable IDE0060 // Remove unused parameter
         static void Main(string[] args)
-#pragma warning restore IDE0060 // Remove unused parameter
         {
             var program = new Program();
 
             program.Check();
-            program.BuildTree("Lingu");
+            program.BuildTree("Expression");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);

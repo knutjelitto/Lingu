@@ -5,6 +5,7 @@ using System.Linq;
 
 using Lingu.Automata;
 using Lingu.Grammars;
+using Lingu.Writers;
 
 namespace Lingu.Tree
 {
@@ -90,7 +91,13 @@ namespace Lingu.Tree
             throw new ArgumentOutOfRangeException(nameof(expression));
         }
 
-        public override string ToString()
+        public override void Dump(IndentWriter writer)
+        {
+            Expression.Dump(writer);
+            writer.Write($"{Rep()}");
+        }
+
+        public string Rep()
         {
             switch (Kind)
             {
@@ -103,8 +110,8 @@ namespace Lingu.Tree
                 case RepeatKind.Special:
                     {
                         if (Min == Max)
-                            return $"<{Min}>";
-                        return $"<{Min},{Max}>";
+                            return $"{{{Min}}}";
+                        return $"{{{Min},{Max}}}";
                     }
                 default:
                     return string.Empty;

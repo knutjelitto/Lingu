@@ -26,7 +26,7 @@ namespace Lingu.Build
 
             using (var writer = new StreamWriter(grammarDump))
             {
-                DumpGrammar(writer);
+                PpGrammar(writer);
             }
             using (var writer = new StreamWriter(terminals))
             {
@@ -78,22 +78,22 @@ namespace Lingu.Build
             }
         }
 
-        private void DumpGrammar(TextWriter writer)
+        private void PpGrammar(TextWriter writer)
         {
             var output = new IndentWriter();
 
             output.Block($"grammar {Grammar.Name}", () =>
             {
-                DumpSet(output, true, "options", false, Grammar.Options);
-                DumpSet(output, true, "terminals", true, Grammar.Terminals);
-                DumpSet(output, true, "rules", true, Grammar.Nonterminals);
+                PpSet(output, true, "options", false, Grammar.Options);
+                PpSet(output, true, "terminals", true, Grammar.Terminals);
+                PpSet(output, true, "rules", true, Grammar.Nonterminals);
             });
 
             output.Dump(writer);
         }
 
 
-        private static void DumpSet(IndentWriter output, bool top, string name, bool separate, IEnumerable<Symbol> members)
+        private static void PpSet(IndentWriter output, bool top, string name, bool separate, IEnumerable<Symbol> members)
         {
             output.Block(name, () =>
             {
@@ -101,7 +101,7 @@ namespace Lingu.Build
                 foreach (var item in members)
                 {
                     if (separate && more) output.WriteLine();
-                    item.Dump(output, top);
+                    item.Dump(output);
                     more = true;
                 }
             });

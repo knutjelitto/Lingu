@@ -41,33 +41,20 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter writer)
         {
             var more = false;
-            if (top)
+            writer.Write("(");
+            foreach (var expression in Expressions)
             {
-                foreach (var expression in Expressions)
+                if (more)
                 {
-                    output.Write(more ? "| " : ": ");
-                    expression.Dump(output, !(expression is Alternates));
-                    output.WriteLine();
-                    more = true;
+                    writer.Write(" | ");
                 }
+                expression.Dump(writer);
+                more = true;
             }
-            else
-            {
-                output.Write("(");
-                foreach (var expression in Expressions)
-                {
-                    if (more)
-                    {
-                        output.Write(" | ");
-                    }
-                    expression.Dump(output, !(expression is Alternates));
-                    more = true;
-                }
-                output.Write(")");
-            }
+            writer.Write(")");
         }
     }
 }

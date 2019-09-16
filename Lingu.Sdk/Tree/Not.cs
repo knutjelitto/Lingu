@@ -22,10 +22,10 @@ namespace Lingu.Tree
             return Expression.GetFA().ToDfa().Complete().Negate().RemoveDead().ToNfa();
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.Write("~");
-            Expression.Dump(output, false);
+            Expression.Dump(output);
         }
 
         public IEnumerator<IExpression> GetEnumerator()

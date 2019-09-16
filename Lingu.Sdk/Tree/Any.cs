@@ -12,7 +12,7 @@ namespace Lingu.Tree
             return ".";
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.Write(this.ToString());
         }

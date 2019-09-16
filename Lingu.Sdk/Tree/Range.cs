@@ -24,13 +24,13 @@ namespace Lingu.Tree
             throw new System.NotImplementedException();
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
-            if (!top) output.Write("(");
-            From.Dump(output, false);
+            output.Write("(");
+            From.Dump(output);
             output.Write(" .. ");
-            To.Dump(output, false);
-            if (!top) output.Write(")");
+            To.Dump(output);
+            output.Write(")");
         }
     }
 }

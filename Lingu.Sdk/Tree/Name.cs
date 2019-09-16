@@ -28,7 +28,7 @@ namespace Lingu.Tree
             return Text;
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.Write(ToString());
         }

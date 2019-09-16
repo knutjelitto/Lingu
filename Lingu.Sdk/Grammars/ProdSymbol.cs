@@ -5,7 +5,7 @@ using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
-    public struct ProdSymbol
+    public class ProdSymbol
     {
         public ProdSymbol(Symbol symbol, bool isDrop)
         {

@@ -40,7 +40,7 @@ namespace Lingu.Tree
             return FA.From(Value);
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.Write(Text);
         }

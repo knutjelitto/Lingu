@@ -8,9 +8,9 @@ using Lingu.Tree;
 
 namespace Lingu.Build
 {
-    public class ProductionBuilder
+    public class NonterminalBuilder
     {
-        public ProductionBuilder(Grammar grammar, RawGrammar raw)
+        public NonterminalBuilder(Grammar grammar, RawGrammar raw)
         {
             Grammar = grammar;
             Raw = raw;
@@ -21,7 +21,7 @@ namespace Lingu.Build
         public RawGrammar Raw { get; }
         private Queue<(Nonterminal, IEnumerable<IExpression>)> ToDo { get; }
 
-        public void Build()
+        public void BuildPass1()
         {
             foreach (var raw in Raw.Nonterminals)
             {
@@ -48,11 +48,29 @@ namespace Lingu.Build
 
             foreach (var nonterminal in Grammar.Nonterminals)
             {
-                if (nonterminal.Lift)
+                if (nonterminal.IsLift)
                 {
                     nonterminal.IsPrivate = true;
                 }
             }
+        }
+
+        public void BuildPass2()
+        {
+            int id = Grammar.Terminals.Last().Id + 1;
+
+            foreach (var nonterminal in Grammar.Nonterminals.Where(t => !t.IsPrivate))
+            {
+                nonterminal.Id = id;
+                id += 1;
+            }
+            foreach (var nonterminal in Grammar.Nonterminals.Where(t => t.IsPrivate))
+            {
+                nonterminal.Id = id;
+                id += 1;
+            }
+
+            Grammar.Nonterminals.Sort(nonterminal => nonterminal.Id);
         }
 
         private void BuildNonterminal(Nonterminal nonterminal, IEnumerable<IExpression> expressions)
@@ -83,7 +101,8 @@ namespace Lingu.Build
                     {
                         var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                         {
-                            IsGenerated = true
+                            IsGenerated = true,
+                            Lift = LiftKind.Alternate
                         };
 
                         NewNonterminal(nonterminal, alts.Children);
@@ -110,6 +129,7 @@ namespace Lingu.Build
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
+                                        Lift = LiftKind.Optional,
                                         Repeat = repeat.Kind
                                     };
 
@@ -127,6 +147,7 @@ namespace Lingu.Build
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
+                                        Lift = LiftKind.Star,
                                         Repeat = repeat.Kind
                                     };
 
@@ -146,6 +167,7 @@ namespace Lingu.Build
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
+                                        Lift = LiftKind.Plus,
                                         Repeat = repeat.Kind
                                     };
 

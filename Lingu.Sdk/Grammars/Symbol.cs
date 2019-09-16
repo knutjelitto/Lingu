@@ -13,7 +13,7 @@ namespace Lingu.Grammars
 
         public string Name { get; }
 
-        public abstract void Dump(IndentWriter output, bool top);
+        public abstract void Dump(IndentWriter output);
 
         public override bool Equals(object obj)
         {
@@ -38,7 +38,7 @@ namespace Lingu.Grammars
             {
             }
 
-            public override void Dump(IndentWriter output, bool top)
+            public override void Dump(IndentWriter output)
             {
                 output.Write(Name);
             }

@@ -12,7 +12,7 @@ namespace Lingu.Grammars
 
         public Symbol Value { get; }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.WriteLine($"{this} = {Value};");
         }

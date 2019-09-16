@@ -22,7 +22,7 @@ namespace Lingu.Tree
             throw new NotImplementedException();
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.Write(Text);
         }

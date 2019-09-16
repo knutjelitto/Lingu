@@ -10,7 +10,7 @@ namespace Lingu.Tree
     {
         public IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             output.Write("ε");
         }

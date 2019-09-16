@@ -9,6 +9,9 @@ namespace Lingu.Tree
         {
             writer.WriteLine(GetType().Name);
         }
+
+        public abstract void Dump(IndentWriter writer);
+
         public Repeat Repeat { get; set; }
     }
 }

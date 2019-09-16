@@ -1,6 +1,7 @@
 using Lingu.Runtime.LexDfa;
 using Lingu.Tree;
 using Lingu.Writers;
+using System.Diagnostics;
 
 namespace Lingu.Grammars
 {
@@ -16,23 +17,38 @@ namespace Lingu.Grammars
         public string Visual { get; set; }
         public RawTerminal Raw { get; set; }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter writer)
         {
             var p = IsPrivate ? "private " : "";
             var a = IsGenerated ? $"{Visual} " : "";
-            output.Indend($"{Name} // {p}{a}({Id})", () =>
+            writer.Indend($"{Name} // {p}{a}({Id})", () =>
             {
-                if (Raw.Expression is Alternates)
+                if (Raw.Expression is Alternates alternates)
                 {
-                    Raw.Expression.Dump(output, true);
+                    bool more = false;
+                    foreach (var alt in alternates.Expressions)
+                    {
+                        if (more)
+                        {
+                            writer.Write("| ");
+                        }
+                        else
+                        {
+                            writer.Write(": ");
+                        }
+                        more = true;
+
+                        alt.Dump(writer);
+                        writer.WriteLine();
+                    }
                 }
                 else
                 {
-                    output.Write(": ");
-                    Raw.Expression.Dump(output, true);
-                    output.WriteLine();
+                    writer.Write(": ");
+                    Raw.Expression.Dump(writer);
+                    writer.WriteLine();
                 }
-                output.WriteLine(";");
+                writer.WriteLine(";");
             });
         }
     }

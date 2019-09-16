@@ -31,9 +31,9 @@ namespace Lingu.Tree
             return nfa;
         }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
-            if (!top) output.Write("(");
+            output.Write("(");
             var more = false;
             foreach (var expression in Expressions)
             {
@@ -41,10 +41,10 @@ namespace Lingu.Tree
                 {
                     output.Write(" ");
                 }
-                expression.Dump(output, false);
+                expression.Dump(output);
                 more = true;
             }
-            if (!top) output.Write(")");
+            output.Write(")");
         }
 
         public IEnumerator<IExpression> GetEnumerator()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,6 +56,8 @@ namespace Lingu.Commons
                         return "\\'";
                     case '\"':
                         return "\\\"";
+                    case '\\':
+                        return "\\\\";
 
                     default:
                         if (value >= 32 && value < 127 || value >= 160 && value <= 255)

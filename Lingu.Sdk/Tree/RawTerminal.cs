@@ -15,7 +15,7 @@ namespace Lingu.Tree
 
         public IExpression Expression { get; }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             throw new NotImplementedException();
         }

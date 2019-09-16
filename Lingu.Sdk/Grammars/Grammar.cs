@@ -30,7 +30,7 @@ namespace Lingu.Grammars
         public Nonterminals Nonterminals { get; }
         public List<Production> Productions { get; }
 
-        public override void Dump(IndentWriter output, bool top)
+        public override void Dump(IndentWriter output)
         {
             throw new System.NotImplementedException();
         }

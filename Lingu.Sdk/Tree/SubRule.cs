@@ -21,10 +21,10 @@ namespace Lingu.Tree
         public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
         public Nonterminal Nonterminal { get; set; }
 
-        public override void Dump(IndentWriter writer, bool top)
+        public override void Dump(IndentWriter writer)
         {
             writer.Write($"{{{Name}: ");
-            Expression.Dump(writer, top);
+            Expression.Dump(writer);
             writer.Write($"}}");
         }
 
