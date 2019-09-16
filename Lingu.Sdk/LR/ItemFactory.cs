@@ -1,35 +1,52 @@
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using Lingu.Grammars;
 
 namespace Lingu.LR
 {
     public class ItemFactory
     {
-        public ItemFactory(IEnumerable<Production> productions)
+        public ItemFactory(IReadOnlyList<Production> productions)
         {
+            index = new Item[productions.Count][];
+
+            var productionId = 0;
+            var itemId = 0;
             foreach (var production in productions)
             {
-                var rules = new LR0Item[production.Count + 1];
-                this.index.Add(production, rules);
+                Debug.Assert(production.Id == productionId);
+                productionId += 1;
+
+                var items = new Item[production.Count + 1];
+                index[production.Id] = items;
                 for (var dot = 0; dot <= production.Count; dot++)
                 {
-                    rules[dot] = new LR0Item(this, production, dot);
+                    items[dot] = new Item(this, itemId, production, dot);
+                    itemId += 1;
                 }
             }
         }
 
-        public LR0Item Get(Production production, int dot)
+        public Item Get(Production production)
         {
-            if (dot >= 0 && dot <= production.Count && this.index.TryGetValue(production, out var dotted) && dot < dotted.Length)
+            return Get(production, 0);
+        }
+
+        public Item Get(Production production, int dot)
+        {
+            if (dot >= 0 && dot <= production.Count)
             {
-                return dotted[dot];
+                var items = index[production.Id];
+                if (dot < items.Length)
+                {
+                    return items[dot];
+                }
             }
 
             throw new ArgumentOutOfRangeException(nameof(dot));
         }
 
-        private readonly Dictionary<Production, LR0Item[]> index = new Dictionary<Production, LR0Item[]>();
+        private readonly Item[][] index;
     }
 }

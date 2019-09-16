@@ -1,4 +1,4 @@
-﻿using Lingu.Commons;
+using Lingu.Commons;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,14 +17,14 @@ namespace Lingu.Automata
             {
                 foreach (var transition in state.Transitions)
                 {
-                    transition.SetId = sets.Add(transition.Set);
+                    transition.SetId = sets.MaybeAlreadyAdd(transition.Set);
                 }
             }
             foreach (var state in dfa.States)
             {
                 foreach (var transition in state.Transitions)
                 {
-                    transition.TransitionId = transitions.Add(transition);
+                    transition.TransitionId = transitions.MaybeAlreadyAdd(transition);
                 }
             }
 

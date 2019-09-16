@@ -5,48 +5,40 @@ using Lingu.Grammars;
 
 namespace Lingu.LR
 {
-    public class LR0Item : IReadOnlyList<ProdSymbol>
+    public class Item : IReadOnlyList<Symbol>
     {
         private readonly ItemFactory factory;
 
-        public LR0Item(ItemFactory factory, Production production, int dot)
+        public Item(ItemFactory factory, int id, Production production, int dot)
         {
             this.factory = factory;
+            Id = id;
             Production = production;
             Dot = dot;
         }
 
-        public LR0Item Next => this.factory.Get(Production, Dot + 1);
+        public Item Next => factory.Get(Production, Dot + 1);
 
+        public int Id { get; }
         public int Dot { get; }
         public Production Production { get; }
 
         public bool IsComplete => Dot == Count;
 
-        public ProdSymbol PostDot => Dot < Count ? this[Dot] : null;
-        public ProdSymbol PreDot => Dot > 0 ? this[Dot - 1] : null;
-
-        public override bool Equals(object obj)
-        {
-            return obj is LR0Item other && Dot.Equals(other.Dot) && Production.Equals(other.Production);
-        }
-
-        public override int GetHashCode()
-        {
-            return (Production, Dot).GetHashCode();
-        }
-
-        public IEnumerator<ProdSymbol> GetEnumerator() => Production.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public Symbol PostDot => Dot < Count ? this[Dot] : null;
+        public Symbol PreDot => Dot > 0 ? this[Dot - 1] : null;
 
         public int Count => Production.Count;
+        public Symbol this[int index] => Production[index];
+        public IEnumerator<Symbol> GetEnumerator() => Production.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public ProdSymbol this[int index] => Production[index];
+        public override bool Equals(object obj) => obj is Item other && Id == other.Id;
+        public override int GetHashCode() => Id;
 
         public override string ToString()
         {
-            const string dot = "\u25CF";
+            const string dot = " \u25CF ";
 
             var builder = new StringBuilder();
 

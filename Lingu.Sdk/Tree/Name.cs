@@ -17,7 +17,7 @@ namespace Lingu.Tree
             Text = name;
         }
 
-        public Rule Rule { get; set; }
+        public Terminal Rule { get; set; }
 
         public IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
 
@@ -35,12 +35,7 @@ namespace Lingu.Tree
 
         public FA GetFA()
         {
-            if (Rule is Terminal terminal)
-            {
-                return terminal.Raw.Expression.GetFA();
-            }
-
-            throw new NotImplementedException();
+            return Rule.Raw.Expression.GetFA();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Lingu.Bootstrap
             var program = new Program();
 
             program.Check();
-            program.BuildTree("Expression");
+            program.BuildTree("G1");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
@@ -40,7 +40,7 @@ namespace Lingu.Bootstrap
                 var builder = new Build.Builder(raw);
 
                 var grammar = builder.Build();
-                new Build.Dumper(grammar).Dump(dests);
+                new Build.GrammarDumper(grammar).Dump(dests);
             }
         }
 

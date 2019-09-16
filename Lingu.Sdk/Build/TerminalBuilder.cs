@@ -107,7 +107,7 @@ namespace Lingu.Build
             {
                 if (expression is Name name)
                 {
-                    var definition = (Terminal)name.Rule;
+                    var definition = name.Rule;
 
                     if (terminal.Equals(definition))
                     {
@@ -143,7 +143,7 @@ namespace Lingu.Build
             {
                 foreach (var production in nonterminal.Productions)
                 {
-                    foreach (var terminal in production.Symbols.Select(p => p.Symbol).OfType<Terminal>())
+                    foreach (var terminal in production.Symbols.OfType<Terminal>())
                     {
                         terminal.IsPrivate = false;
                     }

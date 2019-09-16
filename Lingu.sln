@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Commons.Tests", "Ling
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Grammars.Tests", "Lingu.Grammars.Tests\Lingu.Grammars.Tests.csproj", "{08DC89EC-2910-42C5-B225-FF82C870A7EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Check", "Lingu.Check\Lingu.Check.csproj", "{DF181E97-0375-47D9-A2B8-7EF30E914AB9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Earley.Tests", "Lingu.Earley.Tests\Lingu.Earley.Tests.csproj", "{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Simple.Tests", "Lingu.Simple.Tests\Lingu.Simple.Tests.csproj", "{B6A9E71E-56A8-42E3-9851-733F6FA96AD7}"
@@ -48,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Hime", "Lingu.Hime\Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC", "LinguCC\LinguCC.csproj", "{DA62B8AE-4056-4FA2-90B5-AD4EAC592625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lingu.Runtime.Tests", "Lingu.Runtime.Tests\Lingu.Runtime.Tests.csproj", "{51503D13-8686-4D6A-B166-8B3967E61AAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Runtime.Tests", "Lingu.Runtime.Tests\Lingu.Runtime.Tests.csproj", "{51503D13-8686-4D6A-B166-8B3967E61AAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,10 +66,6 @@ Global
 		{08DC89EC-2910-42C5-B225-FF82C870A7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08DC89EC-2910-42C5-B225-FF82C870A7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08DC89EC-2910-42C5-B225-FF82C870A7EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF181E97-0375-47D9-A2B8-7EF30E914AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF181E97-0375-47D9-A2B8-7EF30E914AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF181E97-0375-47D9-A2B8-7EF30E914AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF181E97-0375-47D9-A2B8-7EF30E914AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D5BAAEB-6D05-4412-8E0D-D7648441E3DF}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,12 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lingu.Errors;
+using Lingu.Tree;
 using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
-    public class Nonterminal : Rule
+    public class Nonterminal : Symbol
     {
         private readonly List<Production> productions;
 
@@ -19,8 +19,8 @@ namespace Lingu.Grammars
         }
 
         public RepeatKind Repeat { get; set; }
-        public bool IsLift => Lift != LiftKind.None;
         public LiftKind Lift { get; set; }
+        public bool IsLift => Lift != LiftKind.None;
 
         public IReadOnlyList<Production> Productions => productions;
 
@@ -28,7 +28,7 @@ namespace Lingu.Grammars
         {
             foreach (var syms in symss)
             {
-                var symbols = ProdSymbols.From(syms);
+                var symbols = SymbolList.From(syms.Select(p => p.Symbol));
 
                 foreach (var production in productions)
                 {
@@ -39,53 +39,12 @@ namespace Lingu.Grammars
                     }
                 }
 
-                productions.Add(new Production(this, symbols));
+                productions.Add(new Production(this, symbols, new Drops(syms.Select(p => p.IsDrop))));
             }
         }
 
         public override void Dump(IndentWriter writer)
         {
-            var p = IsPrivate ? "private " : "";
-            var l = Li();
-
-            writer.Indend($"{Name} // {p}{l}({Id})", () =>
-            {
-                bool more = false;
-                foreach (var production in Productions)
-                {
-                    if (more)
-                    {
-                        writer.Write("| ");
-                    }
-                    else
-                    {
-                        writer.Write(": ");
-                    }
-                    more = true;
-
-                    writer.WriteLine(string.Join(" ", production));
-                }
-                writer.WriteLine(";");
-            });
-
-            string Li()
-            {
-                switch (Lift)
-                {
-                    case LiftKind.User:
-                        return "(^^) ";
-                    case LiftKind.Optional:
-                        return "(^?) ";
-                    case LiftKind.Star:
-                        return "(^*) ";
-                    case LiftKind.Plus:
-                        return "(^+) ";
-                    case LiftKind.Alternate:
-                        return "(^|) ";
-                    default:
-                        return string.Empty;
-                }
-            }
         }
     }
 }

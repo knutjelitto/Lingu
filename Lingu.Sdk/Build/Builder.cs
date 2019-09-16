@@ -29,12 +29,13 @@ namespace Lingu.Build
             var nonterminalBuilder = new NonterminalBuilder(Grammar, Raw);
 
             terminalBuilder.BuildPass1();
-
             nonterminalBuilder.BuildPass1();
-
             terminalBuilder.BuildPass2();
-
             nonterminalBuilder.BuildPass2();
+
+            var setsBuilder = new SetsBuilder(Grammar);
+
+            setsBuilder.Build();
 
             return Grammar;
         }

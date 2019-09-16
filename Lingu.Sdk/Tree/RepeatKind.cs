@@ -1,4 +1,4 @@
-namespace Lingu.Grammars
+namespace Lingu.Tree
 {
     public enum RepeatKind
     {

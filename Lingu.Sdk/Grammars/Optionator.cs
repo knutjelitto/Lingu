@@ -1,7 +1,6 @@
 using System;
 
 using Lingu.Errors;
-using Lingu.Tree;
 
 namespace Lingu.Grammars
 {

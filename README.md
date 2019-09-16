@@ -1,18 +1,17 @@
 # Lingu
 Try to understand (programming-) Languages
 
-## Prereq
+## Links
 
 ### Hime
 [Hime reference](https://cenotelie.fr/projects/hime/reference/index.html)
 [Hime tools](https://bitbucket.org/cenotelie/hime/downloads/hime-v3.4.0.zip)
 [Hime on Github](https://github.com/cenotelie/hime)
 
-## Links
-
 ### Parsing
 [Generalised LR parsing algorithms](https://pdfs.semanticscholar.org/2ff7/4ea9a0147318bc19e30c6d0f72e29a5f92c3.pdf)
 [Practical LR(k) Parser Construction](http://david.tribble.com/text/lrk_parsing.html)
+[LR(k)-Analyse für Pragmatiker](http://amor.cms.hu-berlin.de/~kunert/papers/lr-analyse/) [PDF](http://amor.cms.hu-berlin.de/~kunert/papers/lr-analyse/lr.pdf)
 
 ### DFA/NFA
 [Technique to Remove Indistinguishable State with Unreachable State and Dead State from Deterministic Finite Automata](https://doi.org/10.5120/16311-5540)
@@ -25,4 +24,3 @@ Try to understand (programming-) Languages
 [Orca GC](https://www.ponylang.io/media/papers/orca_gc_and_type_system_co-design_for_actor_languages.pdf)
 [Some Papers](https://wrigstad.com/papers.html)
 [Sylvan Clebsch](https://scholar.google.co.uk/citations?user=HLoiL2cAAAAJ&hl=en)
-

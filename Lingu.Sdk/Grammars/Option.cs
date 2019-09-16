@@ -14,7 +14,6 @@ namespace Lingu.Grammars
 
         public override void Dump(IndentWriter output)
         {
-            output.WriteLine($"{this} = {Value};");
         }
     }
 }

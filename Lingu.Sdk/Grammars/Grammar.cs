@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using Lingu.LR;
 using Lingu.Tree;
 using Lingu.Writers;
 
@@ -10,12 +10,15 @@ namespace Lingu.Grammars
         public Grammar(string name)
             : base(name)
         {
-            Options = new Options();
+            Options = new OptionList();
             Optionator = new Optionator(this);
 
-            Terminals = new Terminals();
-            Nonterminals = new Nonterminals();
+            Terminals = new TerminalList();
+            Nonterminals = new NonterminalList();
             Productions = new List<Production>();
+            ItemSets = new List<ItemSet>();
+
+
         }
 
 
@@ -24,15 +27,15 @@ namespace Lingu.Grammars
         public Terminal Newline => Optionator.Newline;
         public Terminal Keywords => Optionator.Keywords;
 
-        public Options Options { get; }
+        public OptionList Options { get; }
         public Optionator Optionator { get; } 
-        public Terminals Terminals { get; }
-        public Nonterminals Nonterminals { get; }
+        public TerminalList Terminals { get; }
+        public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
+        public List<ItemSet> ItemSets { get; }
 
         public override void Dump(IndentWriter output)
         {
-            throw new System.NotImplementedException();
         }
 
         public string NextTerminalName()

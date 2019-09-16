@@ -59,6 +59,19 @@ namespace Lingu.Build
         {
             int id = Grammar.Terminals.Last().Id + 1;
 
+            var innerStart = Grammar.Start;
+            if (innerStart == null)
+            {
+                innerStart = Grammar.Nonterminals[0];
+            }
+            innerStart.IsPrivate = false;
+
+            var outerStart = new Nonterminal("__Start");
+            outerStart.AddProductions( Enumerable.Repeat(new ProdSymbol(innerStart, false), 1) );
+            outerStart.Id = id;
+            id += 1;
+
+
             foreach (var nonterminal in Grammar.Nonterminals.Where(t => !t.IsPrivate))
             {
                 nonterminal.Id = id;
@@ -70,7 +83,22 @@ namespace Lingu.Build
                 id += 1;
             }
 
+            Grammar.Nonterminals.Add(outerStart);
+
             Grammar.Nonterminals.Sort(nonterminal => nonterminal.Id);
+
+            //
+            // Number Productions
+            //
+            id = 0;
+            foreach (var nonterminal in Grammar.Nonterminals)
+            {
+                foreach (var production in nonterminal.Productions)
+                {
+                    production.Id = id;
+                    id += 1;
+                }
+            }
         }
 
         private void BuildNonterminal(Nonterminal nonterminal, IEnumerable<IExpression> expressions)

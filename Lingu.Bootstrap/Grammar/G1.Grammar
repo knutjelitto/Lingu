@@ -1,0 +1,24 @@
+﻿grammar Expression
+{
+    options
+    {
+		Start = S;
+    }
+    terminals
+    {
+		a	: 'a' ;
+		b	: 'b' ;
+		c	: 'c' ;
+    }
+    rules
+    {
+		S	: S b
+			| b A a
+			;
+
+		A	: a S ,c
+			| a
+			| a S b
+			;
+    }
+}

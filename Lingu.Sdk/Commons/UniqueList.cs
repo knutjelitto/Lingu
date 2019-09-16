@@ -59,7 +59,19 @@ namespace Lingu.Commons
             return false;
         }
 
-        public virtual int Add(TValue value)
+        public virtual bool Add(TValue value)
+        {
+            var key = GetKey(value);
+            if (Index.TryGetValue(key, out var i))
+            {
+                return false;
+            }
+            Index.Add(key, Values.Count);
+            Values.Add(value);
+            return true;
+        }
+
+        public virtual int MaybeAlreadyAdd(TValue value)
         {
             var key = GetKey(value);
             if (Index.TryGetValue(key, out var i))
