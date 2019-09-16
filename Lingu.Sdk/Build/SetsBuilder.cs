@@ -14,27 +14,31 @@ namespace Lingu.Build
         }
 
         public Grammar Grammar { get; }
-        public ItemFactory ItemFactory { get; private set; }
+        public ItemFactory ItemFactory => Grammar.ItemFactory;
 
         public void Build()
         {
-            ItemFactory = new ItemFactory(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
+            Grammar.ItemFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
 
             var start = ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]);
 
-            var set0 = new ItemSet(start);
-            Closure(set0);
+            var set0 = new ItemSet(start).Close();
 
-            Grammar.ItemSets.Add(set0);
+            var todo = new Stack<ItemSet>();
+            todo.Push(set0);
 
-            for (var i = 0; i < Grammar.ItemSets.Count; ++i)
+            while (todo.Count > 0)
             {
-                foreach (var newSet in Goto(Grammar.ItemSets[i]))
+                var set = todo.Pop();
+
+                Grammar.ItemSets.Add(set);
+
+                foreach (var newSet in set.Goto())
                 {
                     bool already = false;
-                    for (var j = 0; j <= i; ++j)
+                    for (var i = 0; i < Grammar.ItemSets.Count; ++i)
                     {
-                        if (newSet.SetEquals(Grammar.ItemSets[j]))
+                        if (newSet.SetEquals(Grammar.ItemSets[i]))
                         {
                             already = true;
                             break;
@@ -42,58 +46,9 @@ namespace Lingu.Build
                     }
                     if (!already)
                     {
-                        Grammar.ItemSets.Add(newSet);
+                        todo.Push(newSet);
                     }
                 }
-            }
-        }
-
-        private Item Start(Production production)
-        {
-            return ItemFactory.Get(production);
-        }
-
-        private void Closure(ItemSet set)
-        {
-            for (int i = 0; i < set.Count; ++i)
-            {
-                var from = set[i];
-
-                if (from.PostDot is Nonterminal nonterminal)
-                {
-                    foreach (var production in nonterminal.Productions)
-                    {
-                        set.Add(Start(production));
-                    }
-                }
-            }
-        }
-
-        private ItemSet Goto(ItemSet itemSet, Symbol symbol)
-        {
-            var newSet = new ItemSet();
-            foreach (var item in itemSet.Where(i => !i.IsComplete))
-            {
-                if (item.PostDot.Equals(symbol))
-                {
-                    newSet.Add(item.Next);
-                }
-            }
-            Closure(newSet);
-
-            return newSet;
-        }
-
-        private IEnumerable<ItemSet> Goto(ItemSet itemSet)
-        {
-            foreach (var nonterminal in itemSet.ItemsOf<Nonterminal>())
-            {
-                yield return Goto(itemSet, nonterminal);
-            }
-
-            foreach (var terminal in itemSet.ItemsOf<Terminal>())
-            {
-                yield return Goto(itemSet, terminal);
             }
         }
     }

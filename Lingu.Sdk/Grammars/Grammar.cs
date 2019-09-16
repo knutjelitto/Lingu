@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Lingu.Commons;
 using Lingu.LR;
-using Lingu.Tree;
 using Lingu.Writers;
 
 namespace Lingu.Grammars
@@ -15,10 +15,11 @@ namespace Lingu.Grammars
 
             Terminals = new TerminalList();
             Nonterminals = new NonterminalList();
+
             Productions = new List<Production>();
-            ItemSets = new List<ItemSet>();
 
-
+            ItemSets = new UniqueList<ItemSet>();
+            ItemFactory = new ItemFactory();
         }
 
 
@@ -32,7 +33,8 @@ namespace Lingu.Grammars
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
-        public List<ItemSet> ItemSets { get; }
+        public UniqueList<ItemSet> ItemSets { get; }
+        public ItemFactory ItemFactory { get; }
 
         public override void Dump(IndentWriter output)
         {

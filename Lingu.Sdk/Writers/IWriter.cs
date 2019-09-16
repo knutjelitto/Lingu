@@ -11,5 +11,9 @@ namespace Lingu.Writers
         void WriteLine(string text);
 
         void WriteLine();
+
+        void Write(object obj);
+
+        void WriteLine(object obj);
     }
 }

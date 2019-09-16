@@ -106,5 +106,15 @@ namespace Lingu.Writers
                 writer.WriteLine(line);
             }
         }
+
+        public void Write(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteLine(object obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

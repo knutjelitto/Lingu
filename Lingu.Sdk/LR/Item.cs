@@ -57,7 +57,7 @@ namespace Lingu.LR
                 builder.Append(dot);
             }
 
-            return builder.ToString();
+            return builder.ToString().TrimEnd();
         }
     }
 }

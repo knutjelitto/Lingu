@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lingu.SdkOld\Lingu.SdkOld.csproj" />
     <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
   </ItemGroup>
 

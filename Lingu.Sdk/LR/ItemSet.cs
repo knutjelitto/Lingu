@@ -19,9 +19,18 @@ namespace Lingu.LR
             AddRange(items);
         }
 
+        public bool Frozen => Ids != null;
+
+        public void Freeze()
+        {
+            Ids = this.Select(i => i.Id).OrderBy(i => i).ToArray();
+        }
+
+        private int[] Ids { get; set; }
+
         public bool SetEquals(ItemSet other)
         {
-            return this.Select(i => i.Id).OrderBy(i => i).SequenceEqual(other.Select(i => i.Id).OrderBy(i => i));
+            return Frozen && other.Frozen == Ids.SequenceEqual(other.Ids);
         }
 
         private class ItemEquality : IEqualityComparer<Item>

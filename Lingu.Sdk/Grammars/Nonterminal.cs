@@ -28,7 +28,9 @@ namespace Lingu.Grammars
         {
             foreach (var syms in symss)
             {
-                var symbols = SymbolList.From(syms.Select(p => p.Symbol));
+                var symbols = syms.ToList();
+                var thisSymbols = SymbolList.From(symbols.Select(p => p.Symbol));
+                var thisDrops = new Drops(symbols.Select(p => p.IsDrop));
 
                 foreach (var production in productions)
                 {
@@ -39,7 +41,7 @@ namespace Lingu.Grammars
                     }
                 }
 
-                productions.Add(new Production(this, symbols, new Drops(syms.Select(p => p.IsDrop))));
+                productions.Add(new Production(this, thisSymbols, thisDrops));
             }
         }
 

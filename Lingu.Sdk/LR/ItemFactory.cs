@@ -7,7 +7,11 @@ namespace Lingu.LR
 {
     public class ItemFactory
     {
-        public ItemFactory(IReadOnlyList<Production> productions)
+        public ItemFactory()
+        {
+        }
+
+        public void Initialize(IReadOnlyList<Production> productions)
         {
             index = new Item[productions.Count][];
 
@@ -17,6 +21,8 @@ namespace Lingu.LR
             {
                 Debug.Assert(production.Id == productionId);
                 productionId += 1;
+
+                production.ItemFactory = this;
 
                 var items = new Item[production.Count + 1];
                 index[production.Id] = items;
@@ -47,6 +53,6 @@ namespace Lingu.LR
             throw new ArgumentOutOfRangeException(nameof(dot));
         }
 
-        private readonly Item[][] index;
+        private Item[][] index;
     }
 }

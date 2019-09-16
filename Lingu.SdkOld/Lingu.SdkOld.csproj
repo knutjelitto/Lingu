@@ -8,14 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Lexing\**" />
-    <EmbeddedResource Remove="Lexing\**" />
-    <None Remove="Lexing\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
-    <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
+    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
   </ItemGroup>
 
 </Project>
