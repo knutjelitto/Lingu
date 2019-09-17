@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Lingu.Commons
 {
@@ -9,28 +9,28 @@ namespace Lingu.Commons
 
         public UniqueQueue()
         {
-            this.set = new Dictionary<T, T>();
-            this.queue = new Queue<T>();
+            set = new Dictionary<T, T>();
+            queue = new Queue<T>();
         }
 
         public void Enqueue(T item)
         {
-            if (!this.set.ContainsKey(item))
+            if (!set.ContainsKey(item))
             {
-                this.set.Add(item, item);
-                this.queue.Enqueue(item);
+                set.Add(item, item);
+                queue.Enqueue(item);
             }
         }
 
         public bool Enqueue(T item, out T already)
         {
-            if (this.set.TryGetValue(item, out already))
+            if (set.TryGetValue(item, out already))
             {
                 return false;
             }
 
-            this.set.Add(item, item);
-            this.queue.Enqueue(item);
+            set.Add(item, item);
+            queue.Enqueue(item);
             already = item;
 
             return true;
@@ -38,11 +38,11 @@ namespace Lingu.Commons
 
         public T Dequeue()
         {
-            return this.queue.Dequeue();
+            return queue.Dequeue();
         }
 
-        public IEnumerable<T> Seen => this.set.Keys;
+        public IEnumerable<T> Seen => set.Keys;
 
-        public int Count => this.queue.Count;
+        public int Count => queue.Count;
     }
 }

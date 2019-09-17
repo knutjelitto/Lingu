@@ -19,9 +19,9 @@ namespace Lingu.Grammars
         public SymbolList Symbols { get; }
         public Drops Drops { get; }
         public int Id { get; set; }
-        public ItemFactory ItemFactory { get; set; }
+        public DottedFactory ItemFactory { get; set; }
 
-        public Item Initial => ItemFactory.Get(this, 0);
+        public Dotted Initial => ItemFactory.Get(this, 0);
 
         public Symbol this[int index] => Symbols[index];
         public int Count => Symbols.Count;

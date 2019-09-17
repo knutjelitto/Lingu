@@ -10,31 +10,25 @@ namespace Lingu.Grammars
         public Grammar(string name)
             : base(name)
         {
-            Options = new OptionList();
-            Optionator = new Optionator(this);
+            OptionList = new OptionList();
+            Options = new Optionator(this);
 
             Terminals = new TerminalList();
             Nonterminals = new NonterminalList();
 
             Productions = new List<Production>();
 
-            ItemSets = new UniqueList<ItemSet>();
-            ItemFactory = new ItemFactory();
+            LR0Sets = new LR0Sets();
+            ItemFactory = new DottedFactory();
         }
 
-
-        public Nonterminal Start => Optionator.Start;
-        public Terminal Separator => Optionator.Separator;
-        public Terminal Newline => Optionator.Newline;
-        public Terminal Keywords => Optionator.Keywords;
-
-        public OptionList Options { get; }
-        public Optionator Optionator { get; } 
+        public OptionList OptionList { get; }
+        public Optionator Options { get; } 
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
-        public UniqueList<ItemSet> ItemSets { get; }
-        public ItemFactory ItemFactory { get; }
+        public LR0Sets LR0Sets { get; }
+        public DottedFactory ItemFactory { get; }
 
         public override void Dump(IndentWriter output)
         {

@@ -150,17 +150,17 @@ namespace Lingu.Build
                 }
             }
 
-            if (Grammar.Newline != null)
+            if (Grammar.Options.Newline != null)
             {
-                Grammar.Newline.IsPrivate = false;
+                Grammar.Options.Newline.IsPrivate = false;
             }
-            if (Grammar.Separator != null)
+            if (Grammar.Options.Separator != null)
             {
-                Grammar.Separator.IsPrivate = false;
+                Grammar.Options.Separator.IsPrivate = false;
             }
-            if (Grammar.Keywords != null)
+            if (Grammar.Options.Keywords != null)
             {
-                Grammar.Keywords.IsPrivate = false;
+                Grammar.Options.Keywords.IsPrivate = false;
             }
         }
 

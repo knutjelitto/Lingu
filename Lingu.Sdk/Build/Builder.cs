@@ -48,11 +48,11 @@ namespace Lingu.Build
             foreach (var raw in Raw.Options)
             {
                 var option = raw;
-                if (Grammar.Options.Contains(option))
+                if (Grammar.OptionList.Contains(option))
                 {
                     throw new GrammarException($"option: `{option.Name}´ already defined before");
                 }
-                Grammar.Options.Add(option);
+                Grammar.OptionList.Add(option);
             }
         }
     }

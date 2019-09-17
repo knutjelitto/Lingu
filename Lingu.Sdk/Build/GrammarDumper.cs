@@ -42,10 +42,10 @@ namespace Lingu.Build
 
         private void DumpSets(TextWriter writer)
         {
-            for (var i = 0; i < Grammar.ItemSets.Count; ++i)
+            for (var i = 0; i < Grammar.LR0Sets.Count; ++i)
             {
                 writer.WriteLine($"set {i}:");
-                foreach (var item in Grammar.ItemSets[i])
+                foreach (var item in Grammar.LR0Sets[i])
                 {
                     writer.WriteLine($"    {item}");
                 }
@@ -102,7 +102,7 @@ namespace Lingu.Build
 
             output.Block($"grammar {Grammar.Name}", () =>
             {
-                PpSet(output, "options", false, Grammar.Options);
+                PpSet(output, "options", false, Grammar.OptionList);
                 PpSet(output, "terminals", true, Grammar.Terminals);
                 PpSet(output, "rules", true, Grammar.Nonterminals);
             });

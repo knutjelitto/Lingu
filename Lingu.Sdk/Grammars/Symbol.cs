@@ -5,7 +5,7 @@ using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
-    public abstract class Symbol : ICanDump
+    public abstract class Symbol : ICanDump, IEquatable<Symbol>
     {
         public Symbol(string name)
         {
@@ -31,6 +31,21 @@ namespace Lingu.Grammars
         public override string ToString()
         {
             return Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Symbol other && Id == other.Id;
+        }
+
+        public bool Equals([AllowNull] Symbol other)
+        {
+            return other != null && Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
 
         public class NamesEquals : IEqualityComparer<Symbol>

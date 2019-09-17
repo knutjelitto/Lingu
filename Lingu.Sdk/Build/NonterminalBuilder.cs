@@ -59,14 +59,14 @@ namespace Lingu.Build
         {
             int id = Grammar.Terminals.Last().Id + 1;
 
-            var innerStart = Grammar.Start;
+            var innerStart = Grammar.Options.Start;
             if (innerStart == null)
             {
                 innerStart = Grammar.Nonterminals[0];
             }
             innerStart.IsPrivate = false;
 
-            var outerStart = new Nonterminal("__Start");
+            var outerStart = new Nonterminal("__start");
             outerStart.AddProductions( Enumerable.Repeat(new ProdSymbol(innerStart, false), 1) );
             outerStart.Id = id;
             id += 1;

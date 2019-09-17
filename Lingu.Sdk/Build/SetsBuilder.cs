@@ -14,37 +14,29 @@ namespace Lingu.Build
         }
 
         public Grammar Grammar { get; }
-        public ItemFactory ItemFactory => Grammar.ItemFactory;
+        public DottedFactory ItemFactory => Grammar.ItemFactory;
 
         public void Build()
         {
-            Grammar.ItemFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
+            ItemFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
 
-            var start = ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]);
+            var start = new LR0(ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]), new Error());
 
-            var set0 = new ItemSet(start).Close();
+            var startSet = new LR0Set(start);
+            startSet.Close();
 
-            var todo = new Stack<ItemSet>();
-            todo.Push(set0);
+            var todo = new Stack<LR0Set>();
+            todo.Push(startSet);
 
             while (todo.Count > 0)
             {
                 var set = todo.Pop();
 
-                Grammar.ItemSets.Add(set);
+                Grammar.LR0Sets.Add(set);
 
                 foreach (var newSet in set.Goto())
                 {
-                    bool already = false;
-                    for (var i = 0; i < Grammar.ItemSets.Count; ++i)
-                    {
-                        if (newSet.SetEquals(Grammar.ItemSets[i]))
-                        {
-                            already = true;
-                            break;
-                        }
-                    }
-                    if (!already)
+                    if (!Grammar.LR0Sets.Contains(newSet))
                     {
                         todo.Push(newSet);
                     }

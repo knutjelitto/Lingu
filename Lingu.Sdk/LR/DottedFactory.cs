@@ -5,15 +5,11 @@ using Lingu.Grammars;
 
 namespace Lingu.LR
 {
-    public class ItemFactory
+    public class DottedFactory
     {
-        public ItemFactory()
-        {
-        }
-
         public void Initialize(IReadOnlyList<Production> productions)
         {
-            index = new Item[productions.Count][];
+            index = new Dotted[productions.Count][];
 
             var productionId = 0;
             var itemId = 0;
@@ -24,35 +20,31 @@ namespace Lingu.LR
 
                 production.ItemFactory = this;
 
-                var items = new Item[production.Count + 1];
+                var items = new Dotted[production.Count + 1];
                 index[production.Id] = items;
                 for (var dot = 0; dot <= production.Count; dot++)
                 {
-                    items[dot] = new Item(this, itemId, production, dot);
+                    items[dot] = new Dotted(this, itemId, production, dot);
                     itemId += 1;
                 }
             }
         }
 
-        public Item Get(Production production)
+        public Dotted Get(Production production)
         {
             return Get(production, 0);
         }
 
-        public Item Get(Production production, int dot)
+        public Dotted Get(Production production, int dot)
         {
             if (dot >= 0 && dot <= production.Count)
             {
-                var items = index[production.Id];
-                if (dot < items.Length)
-                {
-                    return items[dot];
-                }
+                return index[production.Id][dot];
             }
 
             throw new ArgumentOutOfRangeException(nameof(dot));
         }
 
-        private Item[][] index;
+        private Dotted[][] index;
     }
 }
