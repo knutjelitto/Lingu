@@ -2,6 +2,8 @@ using Lingu.Grammars;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+#nullable enable
+
 namespace Lingu.LR
 {
     public class SymbolSet : HashSet<Symbol>

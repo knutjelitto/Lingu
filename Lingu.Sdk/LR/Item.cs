@@ -38,8 +38,10 @@ namespace Lingu.LR
 
         public override string ToString()
         {
-            const string dot = " \u25CF ";
-
+            const string dot = " • ";
+            //const string dot = " ․ ";
+            //const string dot = " ◦ ";
+            
             var builder = new StringBuilder();
 
             builder.Append($"{Production.Nonterminal} ->");

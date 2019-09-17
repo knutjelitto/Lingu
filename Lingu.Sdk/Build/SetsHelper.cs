@@ -15,7 +15,8 @@ namespace Lingu.Build
                 .Where(i => !i.IsComplete && i.PostDot is T)
                 .Select(t => t.PostDot as T)
                 .Distinct()
-                .OrderBy(t => t.Id);
+                .OrderBy(t => t.Id)
+                .Where(t => t != null);
         }
 
 

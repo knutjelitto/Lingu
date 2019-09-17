@@ -1,4 +1,4 @@
-﻿using Lingu.Commons;
+using Lingu.Commons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
