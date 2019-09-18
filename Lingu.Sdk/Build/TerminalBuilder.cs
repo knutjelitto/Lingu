@@ -8,6 +8,8 @@ using Lingu.Grammars;
 using Lingu.Runtime.LexDfa;
 using Lingu.Tree;
 
+#nullable enable
+
 namespace Lingu.Build
 {
     public class TerminalBuilder
@@ -109,7 +111,7 @@ namespace Lingu.Build
                 {
                     var definition = name.Rule;
 
-                    if (terminal.Equals(definition))
+                    if (terminal.Name.Equals(definition.Name))
                     {
                         var msg = $"terminal: `{terminal.Name}´ is recursive (via ->{string.Join("->", path.Reverse())}->{terminal.Name})";
                         throw new GrammarException(msg);
@@ -165,11 +167,14 @@ namespace Lingu.Build
         }
 
         /// <summary>
-        /// Renumbering
+        /// Add `eof´ + renumbering
         /// </summary>
         private void BuildTerminalsPass5()
         {
-            int id = 2;
+            var eof = new Terminal("$");
+            eof.Raw = new RawTerminal(eof.Name, new Eof(eof.Name));
+            Grammar.Terminals.Add(eof);
+            int id = 0;
             foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsPrivate))
             {
                 terminal.Id = id;

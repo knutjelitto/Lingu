@@ -35,18 +35,24 @@ namespace Lingu.Writers
             Add(line);
         }
 
-        public void Block(string head, Action body)
+        public void Indend(Action body)
         {
-            AddLine(head);
-            AddLine("{");
             using (Indent())
             {
                 body();
             }
-            AddLine("}");
         }
 
-        protected void AddLine(string line)
+        public void Indend(string head, Action body)
+        {
+            AddLine(head);
+            using (Indent())
+            {
+                body();
+            }
+        }
+
+        public void AddLine(string line)
         {
             Begin();
             lines.Add(current + line);
@@ -67,24 +73,7 @@ namespace Lingu.Writers
             }
         }
 
-        public void Indend(string head, Action body)
-        {
-            AddLine(head);
-            using (Indent())
-            {
-                body();
-            }
-        }
-
-        public void Indend(Action body)
-        {
-            using (Indent())
-            {
-                body();
-            }
-        }
-
-        protected IDisposable Indent()
+        public IDisposable Indent()
         {
             var prevPrefix = prefix;
             prefix = prefix + tab;
@@ -99,7 +88,7 @@ namespace Lingu.Writers
             File.WriteAllLines(path, lines);
         }
 
-        public void Dump(TextWriter writer)
+        public void Dump(IWriter writer)
         {
             foreach (var line in lines)
             {

@@ -6,5 +6,9 @@ namespace Lingu.LR
 {
     public class Error : Action
     {
+        public override string ToString()
+        {
+            return "err";
+        }
     }
 }

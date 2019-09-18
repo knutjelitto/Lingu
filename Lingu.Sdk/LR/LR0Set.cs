@@ -1,5 +1,7 @@
+using Lingu.Grammars;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Lingu.LR
@@ -17,12 +19,14 @@ namespace Lingu.LR
 
         public override void Add(Dotted dotted)
         {
-            Add(new LR0(dotted, new Error()));
-        }
-
-        public override LR0Set NewEmpty()
-        {
-            return new LR0Set();
+            if (!dotted.IsComplete && dotted.PostDot is Terminal)
+            {
+                Add(new LR0(dotted, new Shift(-1)));
+            }
+            else
+            {
+                Add(new LR0(dotted, new Error()));
+            }
         }
     }
 }

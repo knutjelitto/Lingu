@@ -19,7 +19,7 @@ namespace Lingu.Tree
         public FA GetFA()
         {
             //return Expression.GetNfa().ToDfa().Minimize().Complete().Negate();
-            return Expression.GetFA().ToDfa().Complete().Negate().RemoveDead().ToNfa();
+            return Expression.GetFA().ToDfa().Complete().Not().RemoveDead().ToNfa();
         }
 
         public override void Dump(IndentWriter output)

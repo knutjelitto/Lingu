@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+#nullable enable
+
 namespace Lingu.Grammars
 {
     public class SymbolList : IReadOnlyList<Symbol>
@@ -23,7 +25,7 @@ namespace Lingu.Grammars
         public IEnumerator<Symbol> GetEnumerator() => symbols.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is SymbolList other && Count == other.Count && !this.Zip(other, (t, o) => t.Name.Equals(o.Name, StringComparison.Ordinal)).Any(c => c);
         }

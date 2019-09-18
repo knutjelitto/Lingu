@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace Lingu.Automata
 {
@@ -24,7 +24,10 @@ namespace Lingu.Automata
 
         public FA Concat(FA other) => Builder.Concat(this, other);
 
-        public static FA Any => Builder.Dot;
+        public static FA Any()
+        {
+            return Builder.Dot;
+        }
 
         public static FA From(int codePoint) => Builder.From((char)codePoint);
 

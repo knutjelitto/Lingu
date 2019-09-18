@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 using Lingu.Commons;
+
+#nullable enable
 
 namespace Lingu.Automata
 {
@@ -99,7 +102,7 @@ namespace Lingu.Automata
 
         public State DfaState { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Closure other && Set.SetEquals(other.Set);
         }

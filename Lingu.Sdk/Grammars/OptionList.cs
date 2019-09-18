@@ -1,5 +1,7 @@
 using Lingu.Commons;
 
+#nullable enable
+
 namespace Lingu.Grammars
 {
     public class OptionList : UniqueList<Symbol, Option>

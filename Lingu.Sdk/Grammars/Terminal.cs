@@ -15,9 +15,5 @@ namespace Lingu.Grammars
         public byte[] Bytes { get; set; }
         public string Visual { get; set; }
         public RawTerminal Raw { get; set; }
-
-        public override void Dump(IndentWriter writer)
-        {
-        }
     }
 }

@@ -6,7 +6,7 @@ using Lingu.Errors;
 
 namespace Lingu.Grammars
 {
-    public class Optionator
+    public class OptionsMaker
     {
         private readonly Symbol SeparatorId = (Symbol)"Separator";
         private readonly Symbol NewlineId = (Symbol)"Newline";
@@ -18,7 +18,7 @@ namespace Lingu.Grammars
         private readonly Lazy<Terminal?> lazyKeywords;
         private readonly Lazy<Nonterminal?> lazyStart;
 
-        public Optionator(Grammar grammar)
+        public OptionsMaker(Grammar grammar)
         {
             Grammar = grammar;
 

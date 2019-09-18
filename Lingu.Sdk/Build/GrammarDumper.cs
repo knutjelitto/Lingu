@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 using Lingu.Grammars;
 using Lingu.Tools;
 using Lingu.Tree;
 using Lingu.Writers;
+
 using Mean.Maker.Builders;
+
+#nullable enable
 
 namespace Lingu.Build
 {
@@ -28,39 +30,39 @@ namespace Lingu.Build
 
             using (var writer = new StreamWriter(grammarDump))
             {
-                PpGrammar(writer);
+                PpGrammar(new TextIWriter(writer));
             }
             using (var writer = new StreamWriter(terminals))
             {
-                DumpTerminals(writer);
+                DumpTerminals(new TextIWriter(writer));
             }
             using (var writer = new StreamWriter(sets))
             {
-                DumpSets(writer);
+                DumpSets(new TextIWriter(writer));
             }
         }
 
-        private void DumpSets(TextWriter writer)
+        private void DumpSets(IWriter writer)
         {
-            for (var i = 0; i < Grammar.LR0Sets.Count; ++i)
+            foreach (var set in Grammar.LR0Sets)
             {
-                writer.WriteLine($"set {i}:");
-                foreach (var item in Grammar.LR0Sets[i])
+                writer.WriteLine($"set {set.Id}:");
+                for (var i = 0; i < set.Count; ++i)
                 {
-                    writer.WriteLine($"    {item}");
+                    writer.WriteLine($"    /{i}/ {set[i]}");
                 }
             }
         }
 
-        private void DumpTerminals(TextWriter writer)
+        private void DumpTerminals(IWriter writer)
         {
             foreach (var terminal in Grammar.Terminals)
             {
-                DumpTerminal(terminal, writer);
+                DumpTerminal(writer, terminal);
             }
         }
 
-        public void DumpTerminal(Terminal terminal, TextWriter writer)
+        public void DumpTerminal(IWriter writer, Terminal terminal)
         {
             if (terminal.IsPrivate)
             {
@@ -96,7 +98,7 @@ namespace Lingu.Build
             }
         }
 
-        private void PpGrammar(TextWriter writer)
+        private void PpGrammar(IWriter writer)
         {
             var output = new IndentWriter();
 
@@ -206,23 +208,16 @@ namespace Lingu.Build
 
             string Lifta()
             {
-                switch (nonterminal.Lift)
+                return nonterminal.Lift switch
                 {
-                    case LiftKind.User:
-                        return "(^^) ";
-                    case LiftKind.Optional:
-                        return "(^?) ";
-                    case LiftKind.Star:
-                        return "(^*) ";
-                    case LiftKind.Plus:
-                        return "(^+) ";
-                    case LiftKind.Alternate:
-                        return "(^|) ";
-                    case LiftKind.None:
-                        return string.Empty;
-                    default:
-                        throw new NotImplementedException();
-                }
+                    LiftKind.Lift => "(^^) ",
+                    LiftKind.Optional => "(^?) ",
+                    LiftKind.Star => "(^*) ",
+                    LiftKind.Plus => "(^+) ",
+                    LiftKind.Alternate => "(^|) ",
+                    LiftKind.None => string.Empty,
+                    _ => throw new NotImplementedException(),
+                };
             }
         }
 

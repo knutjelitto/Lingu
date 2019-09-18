@@ -115,7 +115,7 @@ namespace Lingu.Automata
                 return dfa;
             }
 
-            public static FA Negate(FA dfa)
+            public static FA Not(FA dfa)
             {
                 EnsureDfa(dfa);
 

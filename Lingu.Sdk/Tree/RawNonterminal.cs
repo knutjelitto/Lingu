@@ -12,7 +12,7 @@ namespace Lingu.Tree
             : base(name)
         {
             Alternates = alternates.ToArray();
-            Lift = lift ? LiftKind.User : LiftKind.None;
+            Lift = lift ? LiftKind.Lift : LiftKind.None;
         }
 
         public IReadOnlyList<IExpression> Alternates { get; set; }
@@ -26,7 +26,7 @@ namespace Lingu.Tree
             return new RawNonterminal(name, promote, Enumerable.Repeat(expression, 1));
         }
 
-        public override void Dump(IndentWriter output)
+        public void Dump(IndentWriter output)
         {
             output.Indend($"{Name}", () =>
             {

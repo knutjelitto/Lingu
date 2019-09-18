@@ -9,7 +9,7 @@ namespace Lingu.Automata.Tests
         public void Automata1()
         {
             // .* [0-5] .* | .* [4-9] .*
-            var dot = FA.Any;
+            var dot = FA.Any();
 
             var nfa = (dot.Star() + ('0', '5') + dot.Plus()) | (dot.Star() + ('4', '9') + dot.Plus());
 
@@ -24,8 +24,8 @@ namespace Lingu.Automata.Tests
         public void Automata2()
         {
             // .*[A-Z].+|.*[0-9].+
-            var dotPlus = FA.Any.Plus();
-            var dotStar = FA.Any.Star();
+            var dotPlus = FA.Any().Plus();
+            var dotStar = FA.Any().Star();
             var letter = (FA)('A', 'Z');
             var digits = (FA)('0', '9');
 

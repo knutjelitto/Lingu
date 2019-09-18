@@ -4,6 +4,8 @@ using System.Linq;
 using Lingu.Grammars;
 using Lingu.LR;
 
+#nullable enable
+
 namespace Lingu.Build
 {
     public class SetsBuilder
@@ -26,19 +28,24 @@ namespace Lingu.Build
             startSet.Close();
 
             var todo = new Stack<LR0Set>();
+
             todo.Push(startSet);
+            Grammar.LR0Sets.Add(startSet);
 
             while (todo.Count > 0)
             {
                 var set = todo.Pop();
 
-                Grammar.LR0Sets.Add(set);
-
                 foreach (var newSet in set.Goto())
                 {
-                    if (!Grammar.LR0Sets.Contains(newSet))
+                    if (Grammar.LR0Sets.TryGetValue(newSet, out var already))
+                    {
+
+                    }
+                    else
                     {
                         todo.Push(newSet);
+                        Grammar.LR0Sets.Add(newSet);
                     }
                 }
             }

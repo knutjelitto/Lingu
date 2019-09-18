@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+
 using Lingu.Writers;
+
+#nullable enable
 
 namespace Lingu.Grammars
 {
-    public abstract class Symbol : ICanDump, IEquatable<Symbol>
+    public abstract class Symbol : IEquatable<Symbol>
     {
         public Symbol(string name)
         {
@@ -24,8 +27,6 @@ namespace Lingu.Grammars
             UseCount += 1;
         }
 
-        public abstract void Dump(IndentWriter writer);
-
         public static explicit operator Symbol(string name) => new InSymbol(name);
 
         public override string ToString()
@@ -33,7 +34,7 @@ namespace Lingu.Grammars
             return Name;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Symbol other && Id == other.Id;
         }
@@ -66,11 +67,6 @@ namespace Lingu.Grammars
         {
             public InSymbol(string name) : base(name)
             {
-            }
-
-            public override void Dump(IndentWriter output)
-            {
-                output.Write(Name);
             }
         }
     }

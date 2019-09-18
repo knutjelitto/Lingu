@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+
 using Lingu.Errors;
 using Lingu.Tree;
 using Lingu.Writers;
+
+#nullable enable
 
 namespace Lingu.Grammars
 {
@@ -43,10 +46,6 @@ namespace Lingu.Grammars
 
                 productions.Add(new Production(this, thisSymbols, thisDrops));
             }
-        }
-
-        public override void Dump(IndentWriter writer)
-        {
         }
     }
 }

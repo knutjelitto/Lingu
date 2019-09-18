@@ -18,13 +18,12 @@ namespace Lingu.LR
         {
             Ids = Array.Empty<int>();
             AddRange(items);
+            Id = -1;
         }
 
         public int Id { get; set; }
 
         public bool Frozen => Ids.Length > 0;
-
-        public abstract TSet NewEmpty();
 
         public void Freeze()
         {

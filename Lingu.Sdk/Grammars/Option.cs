@@ -1,5 +1,7 @@
 using Lingu.Writers;
 
+#nullable enable
+
 namespace Lingu.Grammars
 {
     public class Option : Symbol
@@ -11,9 +13,5 @@ namespace Lingu.Grammars
         }
 
         public Symbol Value { get; }
-
-        public override void Dump(IndentWriter output)
-        {
-        }
     }
 }

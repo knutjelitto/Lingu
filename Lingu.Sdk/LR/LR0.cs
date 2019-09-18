@@ -28,7 +28,7 @@ namespace Lingu.LR
 
         public override string? ToString()
         {
-            return Dotted.ToString();
+            return $"{Dotted.ToString()} -- {Action}";
         }
     }
 }

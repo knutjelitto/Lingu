@@ -99,9 +99,9 @@ namespace Lingu.Automata
             return Operations.RemoveDead(CloneIf(cloned));
         }
 
-        public FA Negate(bool cloned = false)
+        public FA Not(bool cloned = false)
         {
-            return Operations.Negate(CloneIf(cloned));
+            return Operations.Not(CloneIf(cloned));
         }
 
         private FA CloneIf(bool cloned)

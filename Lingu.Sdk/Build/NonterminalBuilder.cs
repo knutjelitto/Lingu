@@ -6,6 +6,8 @@ using Lingu.Errors;
 using Lingu.Grammars;
 using Lingu.Tree;
 
+#nullable enable
+
 namespace Lingu.Build
 {
     public class NonterminalBuilder

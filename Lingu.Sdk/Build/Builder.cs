@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Lingu.Automata;
 using Lingu.Errors;
 using Lingu.Grammars;
-using Lingu.Runtime.LexDfa;
 using Lingu.Tree;
+
+#nullable enable
 
 namespace Lingu.Build
 {

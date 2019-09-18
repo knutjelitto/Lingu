@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+
 using Lingu.Commons;
+
+#nullable enable
 
 namespace Lingu.Automata
 {
@@ -66,7 +70,7 @@ namespace Lingu.Automata
             return new Codepoints(new Interval(min, max));
         }
 
-        public static Codepoints Parse(string str)
+        public static Codepoints? Parse(string str)
         {
             if (TryParse(str, out var set))
             {
@@ -75,7 +79,7 @@ namespace Lingu.Automata
             return null;
         }
 
-        public static bool TryParse(string str, out Codepoints set)
+        public static bool TryParse(string str, [MaybeNullWhen(false)] out Codepoints? set)
         {
             if (str.Length == 0 || str[0] != '[')
             {
@@ -90,7 +94,7 @@ namespace Lingu.Automata
             {
                 while (end < str.Length && str[end] != ',' && str[end] != ']')
                 {
-                    end = end + 1;
+                    end += 1;
                 }
                 if (end > start && Interval.TryParse(str.Substring(start, end - start), out var range))
                 {
@@ -137,7 +141,7 @@ namespace Lingu.Automata
             return Find(value, out var _);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Codepoints other && ranges.SequenceEqual(other.ranges);
         }

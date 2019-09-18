@@ -33,7 +33,7 @@ namespace Lingu.LR
         {
             public bool Equals([AllowNull] TSet set1, [AllowNull] TSet set2)
             {
-                return set1 != null && set2 != null && set1.SetEquals(set2);
+                return set1 != null && set2 != null && set1.Equals(set2);
             }
 
             public int GetHashCode([DisallowNull] TSet set)

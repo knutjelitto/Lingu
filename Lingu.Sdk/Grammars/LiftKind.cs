@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+#nullable enable
 
 namespace Lingu.Grammars
 {
     public enum LiftKind
     {
         None,
-        User,
+        Lift,
         Optional,
         Star,
         Plus,

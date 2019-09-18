@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Lingu.Grammars;
 using Lingu.LR;
+
+#nullable enable
 
 namespace Lingu.Build
 {
