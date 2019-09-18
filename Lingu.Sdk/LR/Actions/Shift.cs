@@ -7,7 +7,12 @@ namespace Lingu.LR
             State = state;
         }
 
-        public int State { get; }
+        public int State { get; private set; }
+
+        public void Patch(int newState)
+        {
+            State = newState;
+        }
 
         public override string ToString()
         {

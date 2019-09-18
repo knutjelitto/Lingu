@@ -9,33 +9,33 @@ using System.Text;
 
 namespace Lingu.LR
 {
-    public class DottedSets : UniqueList<DottedSet>
+    public class CoreSets : UniqueList<CoreSet>
     {
-        public DottedSets(IEqualityComparer<DottedSet> eq)
+        public CoreSets(IEqualityComparer<CoreSet> eq)
             : base(eq)
         {
         }
 
-        public DottedSets()
+        public CoreSets()
             : this(new ItemSetEquality())
         {
         }
 
-        public override bool Add(DottedSet set)
+        public override bool Add(CoreSet set)
         {
             Debug.Assert(!Contains(set));
             set.Id = Count;
             return base.Add(set);
         }
 
-        public class ItemSetEquality : IEqualityComparer<DottedSet>
+        public class ItemSetEquality : IEqualityComparer<CoreSet>
         {
-            public bool Equals([AllowNull] DottedSet set1, [AllowNull] DottedSet set2)
+            public bool Equals([AllowNull] CoreSet set1, [AllowNull] CoreSet set2)
             {
                 return set1 != null && set2 != null && set1.SetEquals(set2);
             }
 
-            public int GetHashCode([DisallowNull] DottedSet set)
+            public int GetHashCode([DisallowNull] CoreSet set)
             {
                 return set.GetHashCode();
             }

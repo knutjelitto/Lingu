@@ -8,7 +8,7 @@ namespace Lingu.LR
 {
     public class LR0 : Item
     {
-        public LR0(Dotted dotted, Action action)
+        public LR0(Core dotted, Action action)
             : base(dotted)
         {
             Action = action;

@@ -16,13 +16,13 @@ namespace Lingu.Build
         }
 
         public Grammar Grammar { get; }
-        public DottedFactory ItemFactory => Grammar.ItemFactory;
+        public CoreFactory ItemFactory => Grammar.ItemFactory;
 
         public void Build()
         {
             ItemFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
 
-            var start = new LR0(ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]), new Error());
+            var start = new LR0(ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]), new None());
 
             var startSet = new LR0Set(start);
             startSet.Close();
@@ -36,17 +36,9 @@ namespace Lingu.Build
             {
                 var set = todo.Pop();
 
-                foreach (var newSet in set.Goto())
+                foreach (var newSet in set.Goto(Grammar.LR0Sets))
                 {
-                    if (Grammar.LR0Sets.TryGetValue(newSet, out var already))
-                    {
-
-                    }
-                    else
-                    {
-                        todo.Push(newSet);
-                        Grammar.LR0Sets.Add(newSet);
-                    }
+                    todo.Push(newSet);
                 }
             }
         }

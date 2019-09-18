@@ -17,7 +17,7 @@ namespace Lingu.LR
         {
         }
 
-        public override void Add(Dotted dotted)
+        public override void Add(Core dotted)
         {
             if (!dotted.IsComplete && dotted.PostDot is Terminal)
             {
@@ -25,7 +25,7 @@ namespace Lingu.LR
             }
             else
             {
-                Add(new LR0(dotted, new Error()));
+                Add(new LR0(dotted, new None()));
             }
         }
     }

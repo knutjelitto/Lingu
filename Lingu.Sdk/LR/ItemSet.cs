@@ -37,29 +37,11 @@ namespace Lingu.LR
             hashCode = hash.ToHashCode();
         }
 
-        public abstract void Add(Dotted dotted);
+        public abstract void Add(Core dotted);
 
         public void AddNext(TItem item)
         {
             Add(item.Dotted.Next);
-        }
-
-        public IEnumerable<TSym> Items<TSym>()
-            where TSym : Symbol
-        {
-            return this
-                .Select(item => item.Dotted)
-                .Where(i => !i.IsComplete)
-                .Select(t => 
-                {
-                    Debug.Assert(!t.IsComplete && t.Dot < t.Count);
-                    return t.PostDot;
-                })
-                .OfType<TSym>()
-                .Distinct()
-                .OrderBy(t => t.Id)
-                .Where(t => t != null)
-                .ToList();
         }
 
         public void Close()
@@ -80,15 +62,26 @@ namespace Lingu.LR
             Freeze();
         }
 
+        private IEnumerable<TSym> Items<TSym>()
+            where TSym : Symbol
+        {
+            return this
+                .Select(item => item.Dotted)
+                .Where(i => !i.IsComplete)
+                .Select(t => t.PostDot)
+                .OfType<TSym>()
+                .Distinct()
+                .OrderBy(t => t.Id);
+        }
 
-        public TSet Goto(Symbol symbol)
+        private TSet Goto(Symbol symbol)
         {
             var newSet = new TSet();
             foreach (var item in this.Where(i => !i.Dotted.IsComplete))
             {
                 if (item.Dotted.PostDot.Equals(symbol))
                 {
-                    newSet.AddNext(item);
+                    newSet.Add(item.Dotted.Next);
                 }
             }
 
@@ -106,6 +99,22 @@ namespace Lingu.LR
             foreach (var nonterminal in this.Items<Nonterminal>())
             {
                 yield return Goto(nonterminal);
+            }
+        }
+
+        public IEnumerable<TSet> Goto(ItemSets<TItem, TSet> sets)
+        {
+            foreach (var newSet in Goto())
+            {
+                if (sets.TryGetValue(newSet, out var already))
+                {
+
+                }
+                else
+                {
+                    sets.Add(newSet);
+                    yield return newSet;
+                }
             }
         }
 

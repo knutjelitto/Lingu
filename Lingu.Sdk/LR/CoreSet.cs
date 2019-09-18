@@ -8,14 +8,14 @@ using Lingu.Commons;
 
 namespace Lingu.LR
 {
-    public class DottedSet : UniqueList<Dotted>
+    public class CoreSet : UniqueList<Core>
     {
-        public DottedSet(params Dotted[] items)
+        public CoreSet(params Core[] items)
             : this(new ItemEquality(), items)
         {
         }
 
-        public DottedSet(IEqualityComparer<Dotted> eq, params Dotted[] items)
+        public CoreSet(IEqualityComparer<Core> eq, params Core[] items)
             : base(eq)
         {
             Ids = Array.Empty<int>();
@@ -40,14 +40,14 @@ namespace Lingu.LR
 
         private int[] Ids { get; set; }
 
-        public bool SetEquals(DottedSet other)
+        public bool SetEquals(CoreSet other)
         {
             return Frozen && other.Frozen && Ids.SequenceEqual(other.Ids);
         }
 
         public override bool Equals(object? obj)
         {
-            return obj is DottedSet other && SetEquals(other);
+            return obj is CoreSet other && SetEquals(other);
         }
 
         public override int GetHashCode()
@@ -57,14 +57,14 @@ namespace Lingu.LR
 
         private int hashCode;
 
-        private class ItemEquality : IEqualityComparer<Dotted>
+        private class ItemEquality : IEqualityComparer<Core>
         {
-            public bool Equals(Dotted? x, Dotted ?y)
+            public bool Equals(Core? x, Core ?y)
             {
                 return x != null && y != null && x.Id == y.Id;
             }
 
-            public int GetHashCode(Dotted obj)
+            public int GetHashCode(Core obj)
             {
                 return obj.Id.GetHashCode();
             }

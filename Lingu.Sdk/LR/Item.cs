@@ -6,11 +6,11 @@ namespace Lingu.LR
 {
     public abstract class Item
     {
-        protected Item(Dotted dotted)
+        protected Item(Core dotted)
         {
             Dotted = dotted;
         }
 
-        public Dotted Dotted { get; }
+        public Core Dotted { get; }
     }
 }

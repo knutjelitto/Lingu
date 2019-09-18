@@ -7,11 +7,11 @@ using Lingu.Grammars;
 
 namespace Lingu.LR
 {
-    public class Dotted : IReadOnlyList<Symbol>
+    public class Core : IReadOnlyList<Symbol>
     {
-        private readonly DottedFactory factory;
+        private readonly CoreFactory factory;
 
-        public Dotted(DottedFactory factory, int id, Production production, int dot)
+        public Core(CoreFactory factory, int id, Production production, int dot)
         {
             this.factory = factory;
             Id = id;
@@ -19,7 +19,7 @@ namespace Lingu.LR
             Dot = dot;
         }
 
-        public Dotted Next => factory.Get(Production, Dot + 1);
+        public Core Next => factory.Get(Production, Dot + 1);
 
         public int Id { get; }
         public int Dot { get; }
@@ -36,7 +36,7 @@ namespace Lingu.LR
         public IEnumerator<Symbol> GetEnumerator() => Production.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public override bool Equals(object? obj) => obj is Dotted other && Id == other.Id;
+        public override bool Equals(object? obj) => obj is Core other && Id == other.Id;
         public override int GetHashCode() => Id.GetHashCode();
 
         public override string ToString()

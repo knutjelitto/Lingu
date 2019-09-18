@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-
+using Lingu.Commons;
 using Lingu.LR;
 using Lingu.Writers;
-
-#nullable enable
 
 namespace Lingu.Grammars
 {
@@ -13,7 +11,7 @@ namespace Lingu.Grammars
             : base(name)
         {
             OptionList = new OptionList();
-            Options = new OptionsMaker(this);
+            Options = new Optionator(this);
 
             Terminals = new TerminalList();
             Nonterminals = new NonterminalList();
@@ -21,16 +19,20 @@ namespace Lingu.Grammars
             Productions = new List<Production>();
 
             LR0Sets = new LR0Sets();
-            ItemFactory = new DottedFactory();
+            ItemFactory = new CoreFactory();
         }
 
         public OptionList OptionList { get; }
-        public OptionsMaker Options { get; } 
+        public Optionator Options { get; } 
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
         public LR0Sets LR0Sets { get; }
-        public DottedFactory ItemFactory { get; }
+        public CoreFactory ItemFactory { get; }
+
+        public override void Dump(IndentWriter output)
+        {
+        }
 
         public string NextTerminalName()
         {
