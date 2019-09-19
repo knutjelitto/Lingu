@@ -1,0 +1,91 @@
+﻿grammar Expr
+{
+    options
+    {
+        Start = expr;
+        Separator = separator;
+    }
+    terminals
+    {
+        newline
+            : '\n'          // LF (Unix)
+            | '\r' '\n'     // CR LF (Windows)
+			| '\r'			// CR (MacOs)
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
+            ;
+
+        newlineChar
+            : '\n'          // LF
+            | '\r'          // CR
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
+            ;
+
+        whitespace
+            : ' '
+            | U+0009
+            | U+000B
+            | U+000C
+            ;
+
+        lineComment
+            : '//' (. - newlineChar)*
+            ;
+
+        blockComment
+            : '/*'  ((. - '*') | '*' (. - '/'))* '*/'
+            ;
+
+        separator
+            : (newline | whitespace | lineComment | blockComment)*
+            ;
+
+        identifierStart
+            : ('a' .. 'z' | 'A' .. 'Z' |  '_')
+            ;
+
+		identifierContinue
+			: identifierStart | digit
+			;
+
+        id
+            : identifierStart identifierContinue*
+            ;
+
+        digit
+            : '0' .. '9'
+            ;
+
+        nonzeroDigit
+            : '1' .. '9'
+            ;
+
+        zero
+            : digit - nonzeroDigit
+            ;
+
+        num
+            : zero
+            | nonzeroDigit digit*
+            ;
+    }
+    rules
+    {
+	    expr^
+            : {add: primary ,'+' primary}
+            | {sub: primary ,'-' primary}
+            | {mul: primary ,'*' primary}
+            | {div: primary ,'/' primary}
+			| primary
+            ;
+
+        primary^
+            : id
+            | num
+            | ,'(' expr ,')'
+            ;
+    }
+}

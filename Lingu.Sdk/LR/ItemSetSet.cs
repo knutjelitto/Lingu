@@ -8,16 +8,17 @@ using Lingu.Commons;
 
 namespace Lingu.LR
 {
-    public class ItemSets<TItem, TSet> : UniqueList<TSet>
-        where TItem : Item
-        where TSet : ItemSet<TItem, TSet>, new()
+    public class ItemSetSet<TItem, TSet, TSetSet> : UniqueList<TSet>
+        where TItem : Item<TItem>
+        where TSet : ItemSet<TItem, TSet, TSetSet>, new()
+        where TSetSet : ItemSetSet<TItem, TSet, TSetSet>, new()
     {
-        public ItemSets(IEqualityComparer<TSet> eq)
+        public ItemSetSet(IEqualityComparer<TSet> eq)
             : base(eq)
         {
         }
 
-        public ItemSets()
+        public ItemSetSet()
             : this(new SetEquality())
         {
         }

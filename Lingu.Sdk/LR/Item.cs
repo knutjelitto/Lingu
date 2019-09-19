@@ -1,40 +1,37 @@
-#nullable enable
-
 using Lingu.Grammars;
+
+#nullable enable
 
 namespace Lingu.LR
 {
-    public abstract class Item
+    public abstract class Item<TItem>
+        where TItem : Item<TItem>
     {
-        protected Item(Core dotted, Action? action = null)
+        protected Item(Core core)
         {
-            Core = dotted;
-            Action = action;
+            Core = core;
+            Num = -1;
         }
 
         public Core Core { get; }
-        public Action? Action { get; private set; }
+        public int Num { get; set; }
 
         public bool IsComplete => Core.IsComplete;
-        public Core Next => Core.Next;
         public Symbol PostDot => Core.PostDot;
         public int Id => Core.Id;
+        public abstract TItem Next();
 
-        public class Patch
+        protected string Action()
         {
-            public Patch(Item item, System.Action<int> make)
+            if (IsComplete)
             {
-                Item = item;
-                Make = make;
+                return $"reduce {Core.Production.Nonterminal.Name}";
             }
-
-            public Item Item { get; }
-            public System.Action<int> Make { get; }
-
-            public void Do(int state)
+            if (PostDot is Terminal)
             {
-                Make(state);
+                return $"shift {Num}";
             }
+            return $"goto {Num}";
         }
     }
 }

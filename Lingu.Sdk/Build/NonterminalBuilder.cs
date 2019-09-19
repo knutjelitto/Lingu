@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Errors;
@@ -254,8 +255,9 @@ namespace Lingu.Build
 
                         if (terminal == null)
                         {
-                            var tname = Grammar.NextTerminalName(); ;
+                            var tname = Grammar.NextTerminalName();
 
+                            Debug.Assert(!str.Value.StartsWith('\''));
                             terminal = new Terminal(tname)
                             {
                                 IsGenerated = true,

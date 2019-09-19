@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Lingu.Grammars;
 
+#nullable enable
+
 namespace Lingu.LR
 {
     public class CoreFactory
@@ -37,6 +39,8 @@ namespace Lingu.LR
 
         public Core Get(Production production, int dot)
         {
+            Debug.Assert(index != null);
+
             if (dot >= 0 && dot <= production.Count)
             {
                 return index[production.Id][dot];
@@ -45,6 +49,6 @@ namespace Lingu.LR
             throw new ArgumentOutOfRangeException(nameof(dot));
         }
 
-        private Core[][] index;
+        private Core[][]? index;
     }
 }

@@ -49,7 +49,7 @@ namespace Lingu.Build
                 writer.WriteLine($"set {set.Id}:");
                 for (var i = 0; i < set.Count; ++i)
                 {
-                    writer.WriteLine($"    /{i}/ {set[i]}");
+                    writer.WriteLine($"    {set[i]}");
                 }
             }
         }

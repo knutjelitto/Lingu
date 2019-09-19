@@ -9,26 +9,27 @@ using Lingu.Grammars;
 
 namespace Lingu.LR
 {
-    public abstract class ItemSet<TItem, TSet> : UniqueList<TItem>
-        where TItem : Item
-        where TSet : ItemSet<TItem, TSet>, new()
+    public abstract class ItemSet<TItem, TSet, TSetSet> : UniqueList<TItem>
+        where TItem : Item<TItem>
+        where TSet : ItemSet<TItem, TSet, TSetSet>, new()
+        where TSetSet : ItemSetSet<TItem, TSet, TSetSet>, new()
     {
         public ItemSet(params TItem[] items)
         {
-            Ids = Array.Empty<int>();
+            ids = Array.Empty<int>();
             AddRange(items);
             Id = -1;
         }
 
         public int Id { get; set; }
 
-        public bool Frozen => Ids.Length > 0;
+        public bool Frozen => ids.Length > 0;
 
-        public void Freeze()
+        protected void Freeze()
         {
-            Ids = this.Select(i => i.Id).OrderBy(i => i).ToArray();
+            ids = this.Select(i => i.Id).OrderBy(i => i).ToArray();
             var hash = new HashCode();
-            foreach (var id in Ids)
+            foreach (var id in ids)
             {
                 hash.Add(id);
             }
@@ -36,116 +37,109 @@ namespace Lingu.LR
             hashCode = hash.ToHashCode();
         }
 
-        public abstract Item.Patch Add(Core dotted);
-        public void Close()
+        public void Add(TItem itemToPatch, TItem newItem)
         {
-            for (int i = 0; i < Count; ++i)
-            {
-                var from = this[i];
+            patches.Add(itemToPatch);
+            Add(newItem);
+        }
 
-                if (!from.IsComplete && from.PostDot is Nonterminal nonterminal)
+        public void Patch(int num)
+        {
+            foreach (var item in patches)
+            {
+                item.Num = num;
+            }
+            patches.Clear();
+        }
+
+        public abstract TSet Close();
+
+        private List<TItem> patches = new List<TItem>();
+
+        public class Goner
+        {
+            public Goner(TSetSet sets, TSet set)
+            {
+                Sets = sets;
+                StartSet = set;
+            }
+
+            public TSetSet Sets { get; }
+            public TSet StartSet { get; }
+
+            public void Go()
+            {
+                var todo = new Queue<TSet>();
+
+                todo.Enqueue(StartSet);
+                Sets.Add(StartSet);
+
+                while (todo.Count > 0)
                 {
-                    foreach (var production in nonterminal.Productions)
+                    var set = todo.Dequeue();
+
+                    foreach (var newSet in Goto(Sets, set))
                     {
-                        Add(production.Initial);
+                        todo.Enqueue(newSet);
                     }
                 }
             }
 
-            Freeze();
-        }
-
-        private IEnumerable<TSym> Items<TSym>()
-            where TSym : Symbol
-        {
-            return this
-                .Select(item => item.Core)
-                .Where(i => !i.IsComplete)
-                .Select(t => t.PostDot)
-                .OfType<TSym>()
-                .Distinct()
-                .OrderBy(t => t.Id);
-        }
-
-        private (TSet, IEnumerable<Item.Patch>) ShiftTerminal(Terminal terminal)
-        {
-            var newSet = new TSet();
-            var patches = new List<Item.Patch>();
-
-            foreach (var item in this.Where(i => !i.IsComplete && i.PostDot.Equals(terminal)))
+            public IEnumerable<TSet> Goto(TSetSet sets, TSet set)
             {
-                var patch = newSet.Add(item.Next);
-                patches.Add(patch);
-            }
-
-            newSet.Close();
-
-            return (newSet, patches);
-        }
-
-        private (TSet, IEnumerable<Item.Patch>) ReduceNonterminal(Symbol symbol)
-        {
-            var newSet = new TSet();
-            var patches = new List<Item.Patch>();
-
-            foreach (var item in this.Where(i => !i.IsComplete))
-            {
-                if (item.PostDot.Equals(symbol))
+                foreach (var newSet in Goto(set))
                 {
-                    var patch = newSet.Add(item.Next);
-                    patches.Add(patch);
-                }
-            }
-
-            newSet.Close();
-
-            return (newSet, patches);
-        }
-
-        public IEnumerable<(TSet, IEnumerable<Item.Patch>)> Goto()
-        {
-            foreach (var terminal in this.Items<Terminal>())
-            {
-                yield return ShiftTerminal(terminal);
-            }
-            foreach (var nonterminal in this.Items<Nonterminal>())
-            {
-                yield return ReduceNonterminal(nonterminal);
-            }
-        }
-
-        public IEnumerable<TSet> Goto(ItemSets<TItem, TSet> sets)
-        {
-            foreach (var (newSet, patches) in Goto())
-            {
-                if (sets.TryGetValue(newSet, out var already))
-                {
-                    foreach (var patch in patches)
+                    if (sets.TryGetValue(newSet, out var already))
                     {
-                        patch.Do(already.Id);
+                        newSet.Patch(already.Id);
+                    }
+                    else
+                    {
+                        sets.Add(newSet);
+                        newSet.Patch(newSet.Id);
+                        yield return newSet;
                     }
                 }
-                else
+            }
+
+            private IEnumerable<Symbol> Items(TSet set)
+            {
+                return set
+                    .Select(item => item.Core)
+                    .Where(i => !i.IsComplete)
+                    .Select(t => t.PostDot)
+                    .Distinct()
+                    .OrderBy(t => t.Id);
+            }
+
+            private IEnumerable<TSet> Goto(TSet set)
+            {
+                foreach (var symbol in Items(set))
                 {
-                    sets.Add(newSet);
-                    foreach (var patch in patches)
-                    {
-                        patch.Do(newSet.Id);
-                    }
-                    yield return newSet;
+                    yield return AddAll(set, symbol);
+                }
+            }
+
+            private TSet AddAll(TSet set, Symbol symbol)
+            {
+                var newSet = new TSet();
+
+                foreach (var item in set.Where(i => !i.IsComplete && i.PostDot.Equals(symbol)))
+                {
+                    newSet.Add(item, item.Next());
                 }
 
+                newSet.Close();
+
+                return newSet;
             }
         }
 
-
-
-        private int[] Ids { get; set; }
-
-        public bool SetEquals(TSet other) => Frozen && other.Frozen && Ids.SequenceEqual(other.Ids);
+        public bool SetEquals(TSet other) => Frozen && other.Frozen && ids.SequenceEqual(other.ids);
         public override bool Equals(object? obj) => obj is TSet other && SetEquals(other);
         public override int GetHashCode() => hashCode;
 
+        private int[] ids;
         private int hashCode;
     }
 }

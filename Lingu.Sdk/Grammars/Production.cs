@@ -31,6 +31,11 @@ namespace Lingu.Grammars
         public override bool Equals(object obj) => obj is Production other && Id == other.Id;
         public override int GetHashCode() => Id;
 
+        public string ToStringShort()
+        {
+            return string.Join(" ", Symbols);
+        }
+
         public override string ToString()
         {
             return $"/*{Id}*/ {string.Join(" ", Symbols.Zip(Drops, (s, d) => new ProdSymbol(s, d)))}";

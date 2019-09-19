@@ -16,31 +16,18 @@ namespace Lingu.Build
         }
 
         public Grammar Grammar { get; }
-        public CoreFactory ItemFactory => Grammar.ItemFactory;
+        public CoreFactory CoreFactory => Grammar.ItemFactory;
 
         public void Build()
         {
-            ItemFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
+            CoreFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
 
-            var start = new LR0(ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]));
+            var start = new LR0(CoreFactory.Get(Grammar.Nonterminals[0].Productions[0]));
+            var startSet = new LR0Set(start).Close();
 
-            var startSet = new LR0Set(start);
-            startSet.Close();
+            var goner = new LR0Set.Goner(Grammar.LR0Sets, startSet);
 
-            var todo = new Stack<LR0Set>();
-
-            todo.Push(startSet);
-            Grammar.LR0Sets.Add(startSet);
-
-            while (todo.Count > 0)
-            {
-                var set = todo.Pop();
-
-                foreach (var newSet in set.Goto(Grammar.LR0Sets))
-                {
-                    todo.Push(newSet);
-                }
-            }
+            goner.Go();
         }
     }
 }

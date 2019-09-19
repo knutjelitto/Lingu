@@ -4,27 +4,24 @@ using System;
 
 namespace Lingu.LR
 {
-    public class LR0 : Item
+    public class LR0 : Item<LR0>
     {
-        public LR0(Core dotted, Action? action = null)
-            : base(dotted, action)
+        public LR0(Core core)
+            : base(core)
         {
         }
 
-        public override bool Equals(object? obj)
+        public override LR0 Next()
         {
-            return obj is LR0 other && other.Core.Id == Core.Id;
+            return new LR0(Core.Next);
         }
 
-        public override int GetHashCode()
-        {
-            return Core.GetHashCode();
-        }
+        public override bool Equals(object? obj) => obj is LR0 other && Id == other.Id;
+        public override int GetHashCode() => Core.GetHashCode();
 
         public override string? ToString()
         {
-            var a = Action?.ToString() ?? "none";
-            return $"{Core.ToString()} -- {a}";
+            return $"[{Core.ToString()}] -> {Action()}";
         }
     }
 }

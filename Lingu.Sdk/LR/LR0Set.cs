@@ -9,7 +9,7 @@ using Lingu.Grammars;
 
 namespace Lingu.LR
 {
-    public class LR0Set : ItemSet<LR0, LR0Set>
+    public class LR0Set : ItemSet<LR0, LR0Set, LR0SetSet>
     {
         public LR0Set()
         {
@@ -20,23 +20,24 @@ namespace Lingu.LR
         {
         }
 
-        public override Item.Patch Add(Core dotted)
+        public override LR0Set Close()
         {
-            if (!dotted.IsComplete && dotted.PostDot is Terminal)
+            for (int i = 0; i < Count; ++i)
             {
-                var shift = new Shift(-1);
-                var item = new LR0(dotted, shift);
-                var patch = new Item.Patch(item, state => shift.Patch(state));
+                var from = this[i];
 
-                Add(item);
-                return patch;
+                if (!from.IsComplete && from.PostDot is Nonterminal nonterminal)
+                {
+                    foreach (var production in nonterminal.Productions)
+                    {
+                        Add(new LR0(production.Initial));
+                    }
+                }
             }
-            else
-            {
-                var item = new LR0(dotted);
-                Add(item);
-                return new Item.Patch(item, x => { });
-            }
+
+            Freeze();
+
+            return this;
         }
     }
 }

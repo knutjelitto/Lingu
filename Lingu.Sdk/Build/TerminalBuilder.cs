@@ -203,7 +203,7 @@ namespace Lingu.Build
 
             void BuildTerminal(Terminal terminal)
             {
-                terminal.Visual = terminal.IsGenerated ? terminal.Raw.Expression.ToString() : null;
+                //terminal.Visual = terminal.IsGenerated ? terminal.Raw.Expression.ToString() : string.Empty;
                 terminal.Bytes = Writer.GetBytes(terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead());
                 terminal.Dfa = new DfaReader(terminal.Bytes).Read();
             }

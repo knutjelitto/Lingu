@@ -18,7 +18,7 @@ namespace Lingu.Grammars
 
             Productions = new List<Production>();
 
-            LR0Sets = new LR0Sets();
+            LR0Sets = new LR0SetSet();
             ItemFactory = new CoreFactory();
         }
 
@@ -27,7 +27,7 @@ namespace Lingu.Grammars
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
-        public LR0Sets LR0Sets { get; }
+        public LR0SetSet LR0Sets { get; }
         public CoreFactory ItemFactory { get; }
 
         public string NextTerminalName()
