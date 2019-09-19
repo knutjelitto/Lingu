@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Commons;
@@ -27,7 +26,7 @@ namespace Lingu.LR
 
         public void Freeze()
         {
-            Ids = this.Select(i => i.Dotted.Id).OrderBy(i => i).ToArray();
+            Ids = this.Select(i => i.Id).OrderBy(i => i).ToArray();
             var hash = new HashCode();
             foreach (var id in Ids)
             {
@@ -37,20 +36,14 @@ namespace Lingu.LR
             hashCode = hash.ToHashCode();
         }
 
-        public abstract void Add(Core dotted);
-
-        public void AddNext(TItem item)
-        {
-            Add(item.Dotted.Next);
-        }
-
+        public abstract Item.Patch Add(Core dotted);
         public void Close()
         {
             for (int i = 0; i < Count; ++i)
             {
                 var from = this[i];
 
-                if (!from.Dotted.IsComplete && from.Dotted.PostDot is Nonterminal nonterminal)
+                if (!from.IsComplete && from.PostDot is Nonterminal nonterminal)
                 {
                     foreach (var production in nonterminal.Productions)
                     {
@@ -66,7 +59,7 @@ namespace Lingu.LR
             where TSym : Symbol
         {
             return this
-                .Select(item => item.Dotted)
+                .Select(item => item.Core)
                 .Where(i => !i.IsComplete)
                 .Select(t => t.PostDot)
                 .OfType<TSym>()
@@ -74,47 +67,74 @@ namespace Lingu.LR
                 .OrderBy(t => t.Id);
         }
 
-        private TSet Goto(Symbol symbol)
+        private (TSet, IEnumerable<Item.Patch>) ShiftTerminal(Terminal terminal)
         {
             var newSet = new TSet();
-            foreach (var item in this.Where(i => !i.Dotted.IsComplete))
+            var patches = new List<Item.Patch>();
+
+            foreach (var item in this.Where(i => !i.IsComplete && i.PostDot.Equals(terminal)))
             {
-                if (item.Dotted.PostDot.Equals(symbol))
+                var patch = newSet.Add(item.Next);
+                patches.Add(patch);
+            }
+
+            newSet.Close();
+
+            return (newSet, patches);
+        }
+
+        private (TSet, IEnumerable<Item.Patch>) ReduceNonterminal(Symbol symbol)
+        {
+            var newSet = new TSet();
+            var patches = new List<Item.Patch>();
+
+            foreach (var item in this.Where(i => !i.IsComplete))
+            {
+                if (item.PostDot.Equals(symbol))
                 {
-                    newSet.Add(item.Dotted.Next);
+                    var patch = newSet.Add(item.Next);
+                    patches.Add(patch);
                 }
             }
 
             newSet.Close();
 
-            return newSet;
+            return (newSet, patches);
         }
 
-        public IEnumerable<TSet> Goto()
+        public IEnumerable<(TSet, IEnumerable<Item.Patch>)> Goto()
         {
             foreach (var terminal in this.Items<Terminal>())
             {
-                yield return Goto(terminal);
+                yield return ShiftTerminal(terminal);
             }
             foreach (var nonterminal in this.Items<Nonterminal>())
             {
-                yield return Goto(nonterminal);
+                yield return ReduceNonterminal(nonterminal);
             }
         }
 
         public IEnumerable<TSet> Goto(ItemSets<TItem, TSet> sets)
         {
-            foreach (var newSet in Goto())
+            foreach (var (newSet, patches) in Goto())
             {
                 if (sets.TryGetValue(newSet, out var already))
                 {
-
+                    foreach (var patch in patches)
+                    {
+                        patch.Do(already.Id);
+                    }
                 }
                 else
                 {
                     sets.Add(newSet);
+                    foreach (var patch in patches)
+                    {
+                        patch.Do(newSet.Id);
+                    }
                     yield return newSet;
                 }
+
             }
         }
 

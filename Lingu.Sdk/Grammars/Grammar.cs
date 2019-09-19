@@ -11,7 +11,7 @@ namespace Lingu.Grammars
             : base(name)
         {
             OptionList = new OptionList();
-            Options = new Optionator(this);
+            Options = new OptionsMaker(this);
 
             Terminals = new TerminalList();
             Nonterminals = new NonterminalList();
@@ -23,16 +23,12 @@ namespace Lingu.Grammars
         }
 
         public OptionList OptionList { get; }
-        public Optionator Options { get; } 
+        public OptionsMaker Options { get; } 
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
         public LR0Sets LR0Sets { get; }
         public CoreFactory ItemFactory { get; }
-
-        public override void Dump(IndentWriter output)
-        {
-        }
 
         public string NextTerminalName()
         {

@@ -1,6 +1,5 @@
 using Lingu.Runtime.LexDfa;
 using Lingu.Tree;
-using Lingu.Writers;
 
 namespace Lingu.Grammars
 {

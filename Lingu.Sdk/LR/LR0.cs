@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 #nullable enable
 
@@ -8,27 +6,25 @@ namespace Lingu.LR
 {
     public class LR0 : Item
     {
-        public LR0(Core dotted, Action action)
-            : base(dotted)
+        public LR0(Core dotted, Action? action = null)
+            : base(dotted, action)
         {
-            Action = action;
         }
-
-        public Action Action { get; }
 
         public override bool Equals(object? obj)
         {
-            return obj is LR0 other && other.Dotted.Id == Dotted.Id;
+            return obj is LR0 other && other.Core.Id == Core.Id;
         }
 
         public override int GetHashCode()
         {
-            return Dotted.GetHashCode();
+            return Core.GetHashCode();
         }
 
         public override string? ToString()
         {
-            return $"{Dotted.ToString()} -- {Action}";
+            var a = Action?.ToString() ?? "none";
+            return $"{Core.ToString()} -- {a}";
         }
     }
 }

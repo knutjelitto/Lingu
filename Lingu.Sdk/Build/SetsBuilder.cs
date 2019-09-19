@@ -22,7 +22,7 @@ namespace Lingu.Build
         {
             ItemFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
 
-            var start = new LR0(ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]), new None());
+            var start = new LR0(ItemFactory.Get(Grammar.Nonterminals[0].Productions[0]));
 
             var startSet = new LR0Set(start);
             startSet.Close();

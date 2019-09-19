@@ -71,7 +71,7 @@ namespace Lingu.Build
             if (terminal.IsGenerated)
             {
                 writer.Write($"[{terminal.Name}] ({terminal.Id})");
-                if (terminal.IsGenerated && terminal.Raw.Expression is Tree.String text)
+                if (terminal.IsGenerated && terminal.Raw?.Expression is Tree.String text)
                 {
                     writer.Write($" '{text.Value}'");
                 }

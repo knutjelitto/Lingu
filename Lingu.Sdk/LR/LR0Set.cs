@@ -1,8 +1,11 @@
-using Lingu.Grammars;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+
+using Lingu.Grammars;
+
+#nullable enable
 
 namespace Lingu.LR
 {
@@ -17,15 +20,22 @@ namespace Lingu.LR
         {
         }
 
-        public override void Add(Core dotted)
+        public override Item.Patch Add(Core dotted)
         {
             if (!dotted.IsComplete && dotted.PostDot is Terminal)
             {
-                Add(new LR0(dotted, new Shift(-1)));
+                var shift = new Shift(-1);
+                var item = new LR0(dotted, shift);
+                var patch = new Item.Patch(item, state => shift.Patch(state));
+
+                Add(item);
+                return patch;
             }
             else
             {
-                Add(new LR0(dotted, new None()));
+                var item = new LR0(dotted);
+                Add(item);
+                return new Item.Patch(item, x => { });
             }
         }
     }
