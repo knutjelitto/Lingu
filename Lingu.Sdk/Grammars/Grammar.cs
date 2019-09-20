@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Lingu.Commons;
 using Lingu.LR;
-using Lingu.Writers;
 
 namespace Lingu.Grammars
 {
@@ -19,6 +17,8 @@ namespace Lingu.Grammars
             Productions = new List<Production>();
 
             LR0Sets = new LR0SetSet();
+            LR1Sets = new LR1SetSet();
+
             ItemFactory = new CoreFactory();
         }
 
@@ -27,7 +27,11 @@ namespace Lingu.Grammars
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
+
+        public Nonterminal Accept { get; set; }
+        public Terminal Eof { get; set; }
         public LR0SetSet LR0Sets { get; }
+        public LR1SetSet LR1Sets { get; }
         public CoreFactory ItemFactory { get; }
 
         public string NextTerminalName()

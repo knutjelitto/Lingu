@@ -25,6 +25,7 @@ namespace Lingu.Grammars
 
         public Symbol this[int index] => Symbols[index];
         public int Count => Symbols.Count;
+        public bool IsEpsilon => Count == 0;
         public IEnumerator<Symbol> GetEnumerator() => Symbols.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

@@ -1,13 +1,16 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+
 using Lingu.Grammars;
 
 #nullable enable
 
 namespace Lingu.LR
 {
-    public class CoreFactory
+    public class CoreFactory : IEnumerable<Core>
     {
         public void Initialize(IReadOnlyList<Production> productions)
         {
@@ -48,6 +51,21 @@ namespace Lingu.LR
 
             throw new ArgumentOutOfRangeException(nameof(dot));
         }
+
+        public IEnumerator<Core> GetEnumerator()
+        {
+            Debug.Assert(index != null);
+
+            for (var p = 0; p < index.Length; p += 1)
+            {
+                foreach (var core in index[p])
+                {
+                    yield return core;
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private Core[][]? index;
     }

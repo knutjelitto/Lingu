@@ -21,7 +21,7 @@ namespace Lingu.Grammars
             {
                 return $"'{Visual}'";
             }
-            return $"`{Name}";
+            return $"'{Name}";
         }
     }
 }

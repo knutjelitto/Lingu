@@ -174,6 +174,7 @@ namespace Lingu.Build
             var eof = new Terminal("$");
             eof.Raw = new RawTerminal(eof.Name, new Eof(eof.Name));
             Grammar.Terminals.Add(eof);
+            Grammar.Eof = eof;
             int id = 0;
             foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsPrivate))
             {

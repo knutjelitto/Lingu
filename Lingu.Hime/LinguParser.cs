@@ -16,7 +16,7 @@ namespace Lingu.Bootstrap.Hime
 		/// <summary>
 		/// The automaton for this parser
 		/// </summary>
-		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser");
+		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser.bin");
 		/// <summary>
 		/// Contains the constant IDs for the variables and virtuals in this parser
 		/// </summary>

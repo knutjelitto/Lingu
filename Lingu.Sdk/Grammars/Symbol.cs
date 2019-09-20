@@ -14,6 +14,7 @@ namespace Lingu.Grammars
         {
             Name = name;
             Id = -1;
+            First = new TerminalSet();
         }
 
         public string Name { get; }
@@ -26,6 +27,8 @@ namespace Lingu.Grammars
         {
             UseCount += 1;
         }
+
+        public TerminalSet First { get; }
 
         public static explicit operator Symbol(string name) => new InSymbol(name);
 

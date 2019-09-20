@@ -19,6 +19,7 @@ namespace Lingu.LR
             Id = id;
             Production = production;
             Dot = dot;
+            First = new TerminalSet();
         }
 
         public Core Next => factory.Get(Production, Dot + 1);
@@ -26,6 +27,7 @@ namespace Lingu.LR
         public int Id { get; }
         public int Dot { get; }
         public Production Production { get; }
+        public TerminalSet First { get; }
 
         public bool IsComplete => Dot == Count;
         public bool IsInitial => Dot == 0;
@@ -82,6 +84,8 @@ namespace Lingu.LR
             builder.Append(LHStoString());
             builder.Append(" -> ");
             builder.Append(RHStoString());
+            builder.Append(" ");
+            builder.Append(First.ToString());
 
             return builder.ToString();
         }
