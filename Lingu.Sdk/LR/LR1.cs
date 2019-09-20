@@ -10,15 +10,15 @@ namespace Lingu.LR
 {
     public class LR1 : Item<LR1>
     {
-        public LR1(Core core, Terminal lookahead)
-            : base(core)
+        public LR1(Core core, bool inKernel, Terminal lookahead)
+            : base(core, inKernel)
         {
             Lookahead = lookahead;
         }
 
         public Terminal Lookahead { get; }
 
-        public override LR1 Next()
+        public override LR1 Next(bool inKernel)
         {
             throw new NotImplementedException();
         }

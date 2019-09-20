@@ -22,8 +22,8 @@ namespace Lingu.Build
         {
             CoreFactory.Initialize(Grammar.Nonterminals.SelectMany(n => n.Productions).ToList());
 
-            var start = new LR0(CoreFactory.Get(Grammar.Nonterminals[0].Productions[0]));
-            var startSet = new LR0Set(start).Close();
+            var start = new LR0(CoreFactory.Get(Grammar.Nonterminals[0].Productions[0]), true);
+            var startSet = new LR0Set(null, start).Close();
 
             var goner = new LR0Set.Goner(Grammar.LR0Sets, startSet);
 

@@ -10,8 +10,8 @@ namespace Lingu.LR
 {
     public class ItemSetSet<TItem, TSet, TSetSet> : UniqueList<TSet>
         where TItem : Item<TItem>
-        where TSet : ItemSet<TItem, TSet, TSetSet>, new()
-        where TSetSet : ItemSetSet<TItem, TSet, TSetSet>, new()
+        where TSet : ItemSet<TItem, TSet, TSetSet>
+        where TSetSet : ItemSetSet<TItem, TSet, TSetSet>
     {
         public ItemSetSet(IEqualityComparer<TSet> eq)
             : base(eq)

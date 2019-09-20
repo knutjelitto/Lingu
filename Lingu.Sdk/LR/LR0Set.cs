@@ -11,13 +11,14 @@ namespace Lingu.LR
 {
     public class LR0Set : ItemSet<LR0, LR0Set, LR0SetSet>
     {
-        public LR0Set()
+        public LR0Set(From<LR0, LR0Set, LR0SetSet>? from, params LR0[] items)
+            : base(from, items)
         {
         }
 
-        public LR0Set(params LR0[] items)
-            : base(items)
+        public override LR0Set WithFrom(Symbol symbol)
         {
+            return new LR0Set(new From<LR0, LR0Set, LR0SetSet>(this, symbol));
         }
 
         public override LR0Set Close()
@@ -30,7 +31,7 @@ namespace Lingu.LR
                 {
                     foreach (var production in nonterminal.Productions)
                     {
-                        Add(new LR0(production.Initial));
+                        Add(new LR0(production.Initial, false));
                     }
                 }
             }

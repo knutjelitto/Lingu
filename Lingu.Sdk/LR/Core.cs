@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+
 using Lingu.Grammars;
 
 #nullable enable
@@ -39,29 +41,47 @@ namespace Lingu.LR
         public override bool Equals(object? obj) => obj is Core other && Id == other.Id;
         public override int GetHashCode() => Id.GetHashCode();
 
-        public override string ToString()
+        public string LHStoString()
         {
-            //const string dot = " ◦ "; // \u25E6
-            //const string dot = " • "; // \u2022
-            //const string dot = " ● "; // \u25CF
-            const string dot = " ♦ "; // \u2666
+            return $"{Production.Nonterminal}";
+        }
+
+        public string RHStoString()
+        {
+            //const string dotter = "◦"; // \u25E6
+            //const string dotter = "•"; // \u2022
+            //const string dotter = "●"; // \u25CF
+            const string dotter = "♦"; // \u2666
 
             var builder = new StringBuilder();
 
-            builder.Append($"{Production.Nonterminal} ->");
+            var items = Production
+                .Take(Dot).Select(p => p.ToString())
+                .Concat(Enumerable.Repeat(dotter, 1))
+                .Concat(Production.Skip(Dot).Select(p => p.ToString()));
 
-            for (var p = 0; p < Production.Count; p++)
+
+            var more = false;
+            foreach (var item in items)
             {
-                builder.AppendFormat(
-                    "{0}{1}",
-                    p == Dot ? dot : " ",
-                    Production[p]);
+                if (more)
+                {
+                    builder.Append(" ");
+                }
+                builder.Append(item);
+                more = true;
             }
 
-            if (Dot == Production.Count)
-            {
-                builder.Append(dot).Remove(builder.Length - 1, 1);
-            }
+            return builder.ToString();
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.Append(LHStoString());
+            builder.Append(" -> ");
+            builder.Append(RHStoString());
 
             return builder.ToString();
         }

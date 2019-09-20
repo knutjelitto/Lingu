@@ -69,7 +69,7 @@ namespace Lingu.Build
             }
             innerStart.IsPrivate = false;
 
-            var outerStart = new Nonterminal("__start");
+            var outerStart = new Nonterminal("$accept");
             outerStart.AddProductions( Enumerable.Repeat(new ProdSymbol(innerStart, false), 1) );
             outerStart.Id = id;
             id += 1;

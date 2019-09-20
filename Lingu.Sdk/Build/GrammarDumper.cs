@@ -44,12 +44,56 @@ namespace Lingu.Build
 
         private void DumpSets(IWriter writer)
         {
+#if true
+            DumpLR0Sets(writer);
+#else
             foreach (var set in Grammar.LR0Sets)
             {
                 writer.WriteLine($"set {set.Id}:");
+                var items = new List<string>();
+
+                var length = 0;
+                for (var i = 0; i < set.Count; ++i)
+                {
+                    var item = set[i].ToString();
+                    length = Math.Max(length, item.Length);
+                    items.Add(item);
+                }
                 for (var i = 0; i < set.Count; ++i)
                 {
                     writer.WriteLine($"    {set[i]}");
+                }
+            }
+#endif
+        }
+
+        private void DumpLR0Sets(IWriter writer)
+        {
+            var namesLength = 0;
+            var bodyLength = 0;
+
+            foreach (var set in Grammar.LR0Sets)
+            {
+                for (var i = 0; i < set.Count; ++i)
+                {
+                    namesLength = Math.Max(namesLength, set[i].Core.LHStoString().Length);
+                    bodyLength = Math.Max(bodyLength, set[i].Core.RHStoString().Length);
+                }
+            }
+
+            string namesFormat = $"{{0,-{namesLength}}}";
+            string bodyFormat = $"{{0,-{bodyLength}}}";
+
+            foreach (var set in Grammar.LR0Sets)
+            {
+                writer.WriteLine($"{set}");
+
+                for (var i = 0; i < set.Count; ++i)
+                {
+                    var name = string.Format(namesFormat, set[i].Core.LHStoString());
+                    var body =  string.Format(bodyFormat, set[i].Core.RHStoString());
+                    var kernel = set[i].InKernel ? "k" : " ";
+                    writer.WriteLine($"    [{name} -> {body} ]{kernel}");
                 }
             }
         }

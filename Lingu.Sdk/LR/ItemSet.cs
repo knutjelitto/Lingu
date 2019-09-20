@@ -11,19 +11,22 @@ namespace Lingu.LR
 {
     public abstract class ItemSet<TItem, TSet, TSetSet> : UniqueList<TItem>
         where TItem : Item<TItem>
-        where TSet : ItemSet<TItem, TSet, TSetSet>, new()
-        where TSetSet : ItemSetSet<TItem, TSet, TSetSet>, new()
+        where TSet : ItemSet<TItem, TSet, TSetSet>
+        where TSetSet : ItemSetSet<TItem, TSet, TSetSet>
     {
-        public ItemSet(params TItem[] items)
+        public ItemSet(From<TItem, TSet, TSetSet>? from, params TItem[] items)
         {
             ids = Array.Empty<int>();
             AddRange(items);
             Id = -1;
+            From = from;
         }
 
         public int Id { get; set; }
 
         public bool Frozen => ids.Length > 0;
+
+        public From<TItem, TSet, TSetSet>? From { get; }
 
         protected void Freeze()
         {
@@ -55,6 +58,22 @@ namespace Lingu.LR
         public abstract TSet Close();
 
         private List<TItem> patches = new List<TItem>();
+
+        public abstract TSet WithFrom(Symbol symbol);
+
+        public override string ToString()
+        {
+            string from;
+            if (From == null)
+            {
+                from = "from thin air";
+            }
+            else
+            {
+                from = $"from i{From.Set.Id} {From.Symbol}";
+            }
+            return $"i{Id}. {from}";
+        }
 
         public class Goner
         {
@@ -122,11 +141,11 @@ namespace Lingu.LR
 
             private TSet AddAll(TSet set, Symbol symbol)
             {
-                var newSet = new TSet();
+                var newSet = set.WithFrom(symbol);
 
                 foreach (var item in set.Where(i => !i.IsComplete && i.PostDot.Equals(symbol)))
                 {
-                    newSet.Add(item, item.Next());
+                    newSet.Add(item, item.Next(true));
                 }
 
                 newSet.Close();
