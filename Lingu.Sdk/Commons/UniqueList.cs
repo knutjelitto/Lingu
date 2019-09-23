@@ -21,16 +21,21 @@ namespace Lingu.Commons
     public class UniqueList<TKey, TValue> : IReadOnlyList<TValue>
     {
         public UniqueList(Func<TValue, TKey> getKey)
-            : this(getKey, EqualityComparer<TKey>.Default)
+            : this(getKey, new Dictionary<TKey, int>())
         {
         }
 
         public UniqueList(Func<TValue, TKey> getKey, IEqualityComparer<TKey> eq)
+            : this(getKey, new Dictionary<TKey, int>(eq))
+        {
+        }
+
+        private UniqueList(Func<TValue, TKey> getKey, Dictionary<TKey, int> index)
         {
             GetKey = getKey;
 
             Values = new List<TValue>();
-            Index = new Dictionary<TKey, int>(eq);
+            Index = index;
         }
 
         private List<TValue> Values { get; }
@@ -63,7 +68,7 @@ namespace Lingu.Commons
         public virtual bool Add(TValue value)
         {
             var key = GetKey(value);
-            if (Index.TryGetValue(key, out var i))
+            if (Index.TryGetValue(key, out var _))
             {
                 return false;
             }

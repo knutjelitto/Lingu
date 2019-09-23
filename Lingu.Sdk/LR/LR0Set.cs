@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-
 using Lingu.Grammars;
 
 #nullable enable
@@ -11,14 +6,14 @@ namespace Lingu.LR
 {
     public class LR0Set : ItemSet<LR0, LR0Set, LR0SetSet>
     {
-        public LR0Set(From<LR0, LR0Set, LR0SetSet>? from, params LR0[] items)
-            : base(from, items)
+        public LR0Set()
+            : base()
         {
         }
 
-        public override LR0Set WithFrom(Symbol symbol)
+        public LR0Set(params LR0[] items)
+            : base(items)
         {
-            return new LR0Set(new From<LR0, LR0Set, LR0SetSet>(this, symbol));
         }
 
         public override LR0Set Close()

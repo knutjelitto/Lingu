@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-
 using Lingu.Grammars;
+using System.Diagnostics;
 
 #nullable enable
 
@@ -11,14 +7,14 @@ namespace Lingu.LR
 {
     public class LR1Set : ItemSet<LR1, LR1Set, LR1SetSet>
     {
-        public LR1Set(From<LR1, LR1Set, LR1SetSet>? from, params LR1[] items)
-            : base(from, items)
+        public LR1Set()
+            : base()
         {
         }
 
-        public override LR1Set WithFrom(Symbol symbol)
+        public LR1Set(params LR1[] items)
+            : base(items)
         {
-            return new LR1Set(new From<LR1, LR1Set, LR1SetSet>(this, symbol));
         }
 
         public override LR1Set Close()
@@ -29,6 +25,8 @@ namespace Lingu.LR
 
                 if (!from.IsComplete && from.PostDot is Nonterminal nonterminal)
                 {
+                    Debug.Assert(nonterminal.IsPid);
+
                     var lookahead = new TerminalSet(from.Core.Next.First);
                     if (lookahead.WithEpsilon)
                     {

@@ -29,6 +29,7 @@ namespace Lingu.Build
             var terminals = dests.Add(".Terminals");
             var nonterminals = dests.Add(".Nonterminals");
             var sets = dests.Add(".Sets");
+            var table = dests.Add(".Table");
 
             using (var writer = new StreamWriter(grammarDump))
             {
@@ -45,6 +46,10 @@ namespace Lingu.Build
             using (var writer = new StreamWriter(sets))
             {
                 DumpSets(new TextIWriter(writer));
+            }
+            using (var writer = new StreamWriter(table))
+            {
+                new TableDumper(Grammar).Dump(new TextIWriter(writer));
             }
         }
 
@@ -92,7 +97,7 @@ namespace Lingu.Build
                 }
                 else
                 {
-                    return $"({item.PostDot},i{item.Num})";
+                    return $"({item.PostDot},i{item.ToState})";
                 }
             }
         }
@@ -103,6 +108,7 @@ namespace Lingu.Build
             var bodyLength = 0;
             var actionLeft = 0;
             var actionRight = (int)Math.Log10(Grammar.LR1Sets.Count) + 1;
+            var productions = (int)Math.Log10(Grammar.Productions.Count) + 1;
 
             foreach (var set in Grammar.LR1Sets)
             {
@@ -122,6 +128,7 @@ namespace Lingu.Build
             string bodyFormat = $"{{0,-{bodyLength}}}";
             string aleftFormat = $"{{0,-{actionLeft}}}";
             string arightFormat = $"i{{0,-{actionRight}}}";
+            string prodFormat = $"{{0,{productions}}}";
 
             foreach (var set in Grammar.LR1Sets)
             {
@@ -140,16 +147,22 @@ namespace Lingu.Build
             {
                 if (item.IsComplete)
                 {
-                    var spaces = Math.Max(0, actionLeft + actionRight);
-                    return $"(R<{item.Core.Production.Id}>{new string(' ', spaces)})";
+                    var spaces = Math.Max(0, actionLeft + actionRight - 4 - productions);
+                    var id = string.Format(prodFormat, item.Core.Production.Id);
+                    return $"(reduce«{id}»{new string(' ', spaces)})";
                 }
                 else
                 {
                     var left = string.Format(aleftFormat, item.PostDot);
-                    var right = string.Format(arightFormat, item.Num);
+                    var right = string.Format(arightFormat, item.ToState);
                     return $"({left} , {right})";
                 }
             }
+        }
+
+        private void DumpTable()
+        {
+
         }
 
         private void DumpNonterminals(IWriter writer)
@@ -164,7 +177,6 @@ namespace Lingu.Build
         {
             writer.WriteLine($"{nonterminal.Name}  {nonterminal.First}");
         }
-
 
         private void DumpTerminals(IWriter writer)
         {

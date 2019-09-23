@@ -1,8 +1,11 @@
-﻿using Lingu.Commons;
-using Lingu.Runtime.LexDfa;
 using System;
 using System.Collections.Generic;
 using System.Text;
+
+using Lingu.Commons;
+using Lingu.Runtime.Lexing;
+
+#nullable enable
 
 namespace Lingu.Automata
 {

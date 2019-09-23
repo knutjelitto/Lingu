@@ -54,8 +54,8 @@ namespace Lingu.Grammars
 
         public override string ToString()
         {
-            var members = string.Join(",", this);
-            var epsilon = WithEpsilon ? (Count > 0 ? ",ε" : "ε") : string.Empty;
+            var members = string.Join(", ", this);
+            var epsilon = WithEpsilon ? (Count > 0 ? ", ε" : "ε") : string.Empty;
             return $"{{{members}{epsilon}}}";
         }
     }

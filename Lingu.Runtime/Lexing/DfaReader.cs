@@ -1,4 +1,4 @@
-﻿namespace Lingu.Runtime.LexDfa
+﻿namespace Lingu.Runtime.Lexing
 {
     public class DfaReader : ByteReader
     {

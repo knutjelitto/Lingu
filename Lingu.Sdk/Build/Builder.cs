@@ -29,6 +29,26 @@ namespace Lingu.Build
             terminalBuilder.BuildPass2();
             nonterminalBuilder.BuildPass2();
 
+            var pid = 0;
+            foreach (var t in Grammar.Terminals)
+            {
+                if (!t.IsPrivate)
+                {
+                    Grammar.PSymbols.Add(t);
+                    t.Pid = pid;
+                    pid += 1;
+                }
+            }
+            foreach (var n in Grammar.Nonterminals)
+            {
+                if (!ReferenceEquals(n, Grammar.Accept))
+                {
+                    Grammar.PSymbols.Add(n);
+                    n.Pid = pid;
+                    pid += 1;
+                }
+            }
+
             var setsBuilder = new SetsBuilder(Grammar);
 
             setsBuilder.Build();

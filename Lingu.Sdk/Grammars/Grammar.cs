@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Lingu.LR;
 
+#nullable enable
+
 namespace Lingu.Grammars
 {
     public class Grammar : Symbol
@@ -15,6 +17,7 @@ namespace Lingu.Grammars
             Nonterminals = new NonterminalList();
 
             Productions = new List<Production>();
+            PSymbols = new List<Symbol>();
 
             LR0Sets = new LR0SetSet();
             LR1Sets = new LR1SetSet();
@@ -27,12 +30,14 @@ namespace Lingu.Grammars
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
         public List<Production> Productions { get; }
+        public List<Symbol> PSymbols { get; }
 
-        public Nonterminal Accept { get; set; }
-        public Terminal Eof { get; set; }
+        public Nonterminal? Accept { get; set; }
+        public Terminal? Eof { get; set; }
         public LR0SetSet LR0Sets { get; }
         public LR1SetSet LR1Sets { get; }
         public CoreFactory ItemFactory { get; }
+        public Cell[,]? Table { get; set; }
 
         public string NextTerminalName()
         {

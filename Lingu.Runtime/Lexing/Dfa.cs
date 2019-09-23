@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#nullable enable
 
-namespace Lingu.Runtime.LexDfa
+namespace Lingu.Runtime.Lexing
 {
     public class Dfa
     {

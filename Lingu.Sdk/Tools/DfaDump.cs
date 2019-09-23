@@ -1,8 +1,10 @@
 using System.Linq;
 
 using Lingu.Commons;
-using Lingu.Runtime.LexDfa;
+using Lingu.Runtime.Lexing;
 using Lingu.Writers;
+
+#nullable enable
 
 namespace Lingu.Tools
 {

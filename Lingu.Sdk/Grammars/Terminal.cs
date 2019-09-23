@@ -1,4 +1,4 @@
-using Lingu.Runtime.LexDfa;
+using Lingu.Runtime.Lexing;
 using Lingu.Tree;
 
 namespace Lingu.Grammars
@@ -21,7 +21,16 @@ namespace Lingu.Grammars
             {
                 return $"'{Visual}'";
             }
-            return $"'{Name}";
+            return $"ˈ{Name}ˈ";
+        }
+
+        public override string ToShort()
+        {
+            if (IsGenerated && !string.IsNullOrEmpty(Visual))
+            {
+                return $"{Visual}";
+            }
+            return $"{Name}";
         }
     }
 }

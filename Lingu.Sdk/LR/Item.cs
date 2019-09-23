@@ -11,12 +11,12 @@ namespace Lingu.LR
         {
             Core = core;
             InKernel = inKernel;
-            Num = -1;
+            ToState = -1;
         }
 
         public Core Core { get; }
         public bool InKernel { get; }
-        public int Num { get; set; }
+        public int ToState { get; set; }
 
         public bool IsComplete => Core.IsComplete;
         public Symbol PostDot => Core.PostDot;
@@ -31,9 +31,9 @@ namespace Lingu.LR
             }
             if (PostDot is Terminal)
             {
-                return $"shift {Num}";
+                return $"shift {ToState}";
             }
-            return $"goto {Num}";
+            return $"goto {ToState}";
         }
     }
 }

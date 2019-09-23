@@ -1,4 +1,6 @@
-﻿namespace Lingu.Simple
+#nullable enable
+
+namespace Lingu.Simple
 {
     public struct Input
     {

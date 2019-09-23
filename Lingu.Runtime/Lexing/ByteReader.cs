@@ -1,4 +1,6 @@
-﻿namespace Lingu.Runtime.LexDfa
+﻿#nullable enable
+
+namespace Lingu.Runtime.Lexing
 {
     public abstract class ByteReader
     {

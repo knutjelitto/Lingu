@@ -67,10 +67,10 @@ namespace Lingu.Build
             {
                 innerStart = Grammar.Nonterminals[0];
             }
-            innerStart.IsPrivate = false;
 
             var outerStart = new Nonterminal("$accept");
             Grammar.Accept = outerStart;
+            outerStart.IsPrivate = true;
             outerStart.AddProductions( Enumerable.Repeat(new ProdSymbol(innerStart, false), 1) );
             outerStart.Id = id;
             id += 1;
@@ -101,6 +101,8 @@ namespace Lingu.Build
                 {
                     production.Id = id;
                     id += 1;
+
+                    Grammar.Productions.Add(production);
                 }
             }
         }

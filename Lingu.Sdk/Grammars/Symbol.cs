@@ -14,13 +14,17 @@ namespace Lingu.Grammars
         {
             Name = name;
             Id = -1;
+            Pid = -1;
             First = new TerminalSet();
         }
 
         public string Name { get; }
         public int Id { get; set; }
+        public int Pid { get; set; }
         public bool IsGenerated { get; set; }
         public bool IsPrivate { get; set; }
+
+        public bool IsPid => Pid >= 0;
 
         public int UseCount { get; private set; }
         public void Use()
@@ -33,6 +37,11 @@ namespace Lingu.Grammars
         public static explicit operator Symbol(string name) => new InSymbol(name);
 
         public override string ToString()
+        {
+            return Name;
+        }
+
+        public virtual string ToShort()
         {
             return Name;
         }
@@ -64,7 +73,6 @@ namespace Lingu.Grammars
                 return obj.Name.GetHashCode();
             }
         }
-
 
         private class InSymbol : Symbol
         {

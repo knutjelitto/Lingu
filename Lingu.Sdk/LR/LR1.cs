@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 using Lingu.Grammars;
 
@@ -22,19 +19,16 @@ namespace Lingu.LR
 
         public override LR1 Next(bool inKernel)
         {
-            var lookahead = new TerminalSet(Core.Next.First);
-            if (lookahead.WithEpsilon)
-            {
-                lookahead.UnionWith(Lookahead);
-                lookahead.WithEpsilon = false;
-            }
-            Debug.Assert(!lookahead.IsEmpty);
-
-            return new LR1(Core.Next, inKernel, lookahead);
+            return new LR1(Core.Next, inKernel, Lookahead);
         }
 
-        public override bool Equals(object? obj) => obj is LR1 other && Id == other.Id && Lookahead.Equals(other.Lookahead);
+        public override bool Equals(object? obj)
+        {
+            return obj is LR1 other && Id == other.Id && Lookahead.Equals(other.Lookahead);
+        }
+
         public override int GetHashCode() => (Core, Lookahead).GetHashCode();
+
         public override string? ToString()
         {
             return $"[{Core.ToString()}; {Lookahead}] -> {Action()}";

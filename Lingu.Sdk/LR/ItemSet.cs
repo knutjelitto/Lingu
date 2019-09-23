@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Lingu.Commons;
@@ -11,28 +13,42 @@ namespace Lingu.LR
 {
     public abstract class ItemSet<TItem, TSet, TSetSet> : UniqueList<TItem>
         where TItem : Item<TItem>
-        where TSet : ItemSet<TItem, TSet, TSetSet>
+        where TSet : ItemSet<TItem, TSet, TSetSet>, new()
         where TSetSet : ItemSetSet<TItem, TSet, TSetSet>
     {
-        public ItemSet(From<TItem, TSet, TSetSet>? from, params TItem[] items)
+        public ItemSet(params TItem[] items)
+            : base(new Eq())
         {
-            ids = Array.Empty<int>();
+            sortedItems = Array.Empty<TItem>();
             AddRange(items);
             Id = -1;
-            From = from;
+        }
+
+        private class Eq : IEqualityComparer<TItem>
+        {
+            public bool Equals([AllowNull] TItem x, [AllowNull] TItem y)
+            {
+                Debug.Assert(x != null && y != null);
+                return x.Equals(y);
+            }
+
+            public int GetHashCode([DisallowNull] TItem obj)
+            {
+                var hash = obj.GetHashCode();
+
+                return hash;
+            }
         }
 
         public int Id { get; set; }
 
-        public bool Frozen => ids.Length > 0;
-
-        public From<TItem, TSet, TSetSet>? From { get; }
+        public bool Frozen => sortedItems.Length > 0;
 
         protected void Freeze()
         {
-            ids = this.Select(i => i.Id).OrderBy(i => i).ToArray();
+            sortedItems = this.OrderBy(i => i.Id).ToArray();
             var hash = new HashCode();
-            foreach (var id in ids)
+            foreach (var id in sortedItems)
             {
                 hash.Add(id);
             }
@@ -46,76 +62,65 @@ namespace Lingu.LR
             Add(newItem);
         }
 
-        public void Patch(int num)
+        public void Patch(TSet set)
         {
             foreach (var item in patches)
             {
-                item.Num = num;
+                item.ToState = set.Id;
             }
             patches.Clear();
         }
 
         public abstract TSet Close();
 
-        private List<TItem> patches = new List<TItem>();
-
-        public abstract TSet WithFrom(Symbol symbol);
+        private readonly List<TItem> patches = new List<TItem>();
 
         public override string ToString()
         {
-            string from;
-            if (From == null)
-            {
-                from = "from thin air";
-            }
-            else
-            {
-                from = $"from i{From.Set.Id} {From.Symbol}";
-            }
-            return $"i{Id}. {from}";
+            return $"i{Id}.";
         }
 
-        public class Goner
+        public class Closer
         {
-            public Goner(TSetSet sets, TSet set)
+            public Closer(TSetSet sets, TSet set)
             {
                 Sets = sets;
-                StartSet = set;
+                Set0 = set;
+                Todo = new Stack<TSet>();
             }
 
             public TSetSet Sets { get; }
-            public TSet StartSet { get; }
+            public TSet Set0 { get; }
+            public Stack<TSet> Todo { get; }
 
             public void Go()
             {
-                var todo = new Queue<TSet>();
+                Todo.Push(Set0);
+                Sets.Add(Set0);
 
-                todo.Enqueue(StartSet);
-                Sets.Add(StartSet);
-
-                while (todo.Count > 0)
+                while (Todo.Count > 0)
                 {
-                    var set = todo.Dequeue();
+                    var set = Todo.Pop();
 
                     foreach (var newSet in Goto(Sets, set))
                     {
-                        todo.Enqueue(newSet);
+                        Todo.Push(newSet);
                     }
                 }
             }
 
-            public IEnumerable<TSet> Goto(TSetSet sets, TSet set)
+            private IEnumerable<TSet> Goto(TSetSet sets, TSet set)
             {
                 foreach (var newSet in Goto(set))
                 {
                     if (sets.TryGetValue(newSet, out var already))
                     {
-                        newSet.Patch(already.Id);
+                        newSet.Patch(already);
                     }
                     else
                     {
                         sets.Add(newSet);
-                        newSet.Patch(newSet.Id);
+                        newSet.Patch(newSet);
                         yield return newSet;
                     }
                 }
@@ -133,7 +138,11 @@ namespace Lingu.LR
 
             private IEnumerable<TSet> Goto(TSet set)
             {
-                foreach (var symbol in Items(set))
+                foreach (var symbol in Items(set).OfType<Nonterminal>())
+                {
+                    yield return AddAll(set, symbol);
+                }
+                foreach (var symbol in Items(set).OfType<Terminal>())
                 {
                     yield return AddAll(set, symbol);
                 }
@@ -141,7 +150,7 @@ namespace Lingu.LR
 
             private TSet AddAll(TSet set, Symbol symbol)
             {
-                var newSet = set.WithFrom(symbol);
+                var newSet = new TSet();
 
                 foreach (var item in set.Where(i => !i.IsComplete && i.PostDot.Equals(symbol)))
                 {
@@ -154,11 +163,93 @@ namespace Lingu.LR
             }
         }
 
-        public bool SetEquals(TSet other) => Frozen && other.Frozen && ids.SequenceEqual(other.ids);
-        public override bool Equals(object? obj) => obj is TSet other && SetEquals(other);
+        public class Closer2
+        {
+            public Closer2(TSetSet sets, TSet set)
+            {
+                Sets = sets;
+                Set0 = set;
+                Todo = new Queue<TSet>();
+            }
+
+            public TSetSet Sets { get; }
+            public TSet Set0 { get; }
+            public Queue<TSet> Todo { get; }
+
+            public void Go()
+            {
+                Todo.Enqueue(Set0);
+
+                while (Todo.Count > 0)
+                {
+                    var set = Todo.Dequeue();
+
+                    if (Complete(set))
+                    {
+                        Goto(set);
+                    }
+                }
+            }
+
+            private bool Complete(TSet set)
+            {
+                set.Close();
+
+                if (Sets.TryGetValue(set, out var already))
+                {
+                    set.Patch(already);
+                    return false;
+                }
+                else
+                {
+                    Sets.Add(set);
+                    set.Patch(set);
+                    return true;
+                }
+            }
+
+            private IEnumerable<Symbol> Items(TSet set)
+            {
+                return set
+                    .Select(item => item.Core)
+                    .Where(i => !i.IsComplete)
+                    .Select(t => t.PostDot)
+                    .Distinct()
+                    .OrderBy(t => t.Id);
+            }
+
+            private void Goto(TSet set)
+            {
+                foreach (var symbol in Items(set).OfType<Nonterminal>())
+                {
+                    AddAll(set, symbol);
+                }
+                foreach (var symbol in Items(set).OfType<Terminal>())
+                {
+                    AddAll(set, symbol);
+                }
+            }
+
+            private void AddAll(TSet set, Symbol symbol)
+            {
+                Debug.Assert(symbol.IsPid);
+
+                var newSet = new TSet();
+
+                foreach (var item in set.Where(i => !i.IsComplete && i.PostDot.Equals(symbol)))
+                {
+                    newSet.Add(item, item.Next(true));
+                }
+
+                Todo.Enqueue(newSet);
+            }
+        }
+
+        public bool SetEquals(TSet other) => Frozen && other.Frozen && sortedItems.SequenceEqual(other.sortedItems);
+        public override bool Equals(object? obj) => Frozen && obj is TSet other && other.Frozen && SetEquals(other);
         public override int GetHashCode() => hashCode;
 
-        private int[] ids;
+        private TItem[] sortedItems;
         private int hashCode;
     }
 }

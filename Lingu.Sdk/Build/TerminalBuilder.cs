@@ -5,7 +5,7 @@ using System.Linq;
 using Lingu.Automata;
 using Lingu.Errors;
 using Lingu.Grammars;
-using Lingu.Runtime.LexDfa;
+using Lingu.Runtime.Lexing;
 using Lingu.Tree;
 
 #nullable enable
@@ -152,6 +152,7 @@ namespace Lingu.Build
                 }
             }
 
+#if false
             if (Grammar.Options.Newline != null)
             {
                 Grammar.Options.Newline.IsPrivate = false;
@@ -164,6 +165,7 @@ namespace Lingu.Build
             {
                 Grammar.Options.Keywords.IsPrivate = false;
             }
+#endif
         }
 
         /// <summary>
@@ -173,6 +175,7 @@ namespace Lingu.Build
         {
             var eof = new Terminal("$");
             eof.Raw = new RawTerminal(eof.Name, new Eof(eof.Name));
+            eof.IsGenerated = true;
             Grammar.Terminals.Add(eof);
             Grammar.Eof = eof;
             int id = 0;

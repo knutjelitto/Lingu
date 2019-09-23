@@ -3,7 +3,6 @@
     options
     {
         Start = expression;
-        Newline = newline;
         Separator = separator;
         Keywords = identifier;
     }
@@ -99,7 +98,11 @@
             | ,'(' expression ,')'
             ;
 
-        path^
+        path
+            : pathPart (,'.' pathPart)*
+            ;
+
+        pathPart^
             : identifier
             | identifierWithArguments
             ;
