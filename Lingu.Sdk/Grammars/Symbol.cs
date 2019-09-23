@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-using Lingu.Writers;
+using Lingu.Runtime.Structures;
 
 #nullable enable
 
 namespace Lingu.Grammars
 {
-    public abstract class Symbol : IEquatable<Symbol>
+    public abstract class Symbol : ISymbol, IEquatable<Symbol>
     {
         public Symbol(string name)
         {

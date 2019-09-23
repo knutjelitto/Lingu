@@ -59,6 +59,17 @@ namespace Lingu.Automata
 
                 foreach (var final in dfa.Finals)
                 {
+                    if (final.IsPayload)
+                    {
+                        if (dfa.Final.IsPayload && dfa.Final.Payload != final.Payload)
+                        {
+                            Debug.Assert(false);
+                        }
+                        else
+                        {
+                            dfa.Final.Payload = final.Payload;
+                        }
+                    }
                     final.Add(dfa.Final);
                 }
 
@@ -646,6 +657,7 @@ namespace Lingu.Automata
                         {
                             var dfaStates = partition.ToList();
                             var premium = dfaStates.First();
+
                             var remove = dfaStates.Skip(1).ToList();
 
                             foreach (var state in all)

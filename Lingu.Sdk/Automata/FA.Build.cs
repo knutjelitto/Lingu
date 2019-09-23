@@ -4,16 +4,6 @@ namespace Lingu.Automata
 {
     public partial class FA
     {
-        public static FA operator +(FA n1, FA n2)
-        {
-            return Builder.Concat(n1, n2);
-        }
-
-        public static FA operator |(FA n1, FA n2)
-        {
-            return Builder.Or(n1, n2);
-        }
-
         public FA Plus() => Builder.Plus(this);
 
         public FA Star() => Builder.Star(this);
@@ -22,7 +12,7 @@ namespace Lingu.Automata
 
         public FA Or(FA other) => Builder.Or(this, other);
 
-        public FA Concat(FA other) => Builder.Concat(this, other);
+        public FA And(FA other) => Builder.Concat(this, other);
 
         public static FA Any()
         {
@@ -38,33 +28,39 @@ namespace Lingu.Automata
             return Builder.From(from, to);
         }
 
-        public static FA From(FA first, params FA[] nexts)
+        public static FA And(FA first, params FA[] nexts)
         {
             var fa = first;
             foreach (var next in nexts)
             {
-                fa = fa.Concat(next);
+                fa = fa.And(next);
             }
 
             return fa;
         }
 
-        public static implicit operator FA((char first, char last) range)
+        public static FA Or(FA first, params FA[] nexts)
         {
-            return Builder.From(range.first, range.last);
+            var fa = first;
+            foreach (var next in nexts)
+            {
+                fa = fa.Or(next);
+            }
+
+            return fa;
         }
 
-        public static explicit operator FA(char @char)
+        public static FA From(char first, char last)
+        {
+            return Builder.From(first, last);
+        }
+
+        public static FA From(char @char)
         {
             return Builder.From(@char);
         }
 
-        public static implicit operator FA(string sequence)
-        {
-            return Builder.From(sequence);
-        }
-
-        public static explicit operator FA(Codepoints terminal)
+        public static FA From(Codepoints terminal)
         {
             return Builder.Single(terminal);
         }

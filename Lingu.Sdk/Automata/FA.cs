@@ -122,7 +122,7 @@ namespace Lingu.Automata
 
                 if (!map.TryGetValue(state, out var mapped))
                 {
-                    mapped = new State(state.IsFinal);
+                    mapped = new State(state.IsFinal) { Payload = state.Payload };
                     map.Add(state, mapped);
 
                     foreach (var transition in state.Transitions)

@@ -45,7 +45,7 @@ namespace Lingu.Automata.Tests
 
         private static Matcher MakeMatcher(string sequence)
         {
-            var nfa = (FA) sequence;
+            var nfa = FA.From(sequence);
 
             return new Matcher(nfa.ToDfa().Minimize());
         }

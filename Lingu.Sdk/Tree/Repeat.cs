@@ -77,12 +77,12 @@ namespace Lingu.Tree
                         var i = 1;
                         for (; i < Min; ++i)
                         {
-                            nfa = nfa.Concat(expr);
+                            nfa = nfa.And(expr);
                         }
                         expr = expr.Opt();
                         for (; i < Max; ++i)
                         {
-                            nfa = nfa.Concat(expr);
+                            nfa = nfa.And(expr);
                         }
                         return nfa;
                     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Automata;
@@ -35,6 +36,36 @@ namespace Lingu.Build
             BuildTerminalsPass4(); // terminal fragments (deps on nonterminals)
             BuildTerminalsPass5(); // terminal renumber (non-fragments first)
             BuildTerminalsPass6(); // terminal compile (create automatons)
+        }
+
+        /// <summary>
+        /// Build common dfa for parser needed terminals
+        /// </summary>
+        public void BuildPass3()
+        {
+            var terminals = Grammar.Terminals.Where(t => t.IsPid).ToList();
+
+            FA? nfa = null;
+            foreach (var terminal in terminals)
+            {
+                var tmp = terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead();
+                foreach (var state in tmp.States.Where(s => s.IsFinal))
+                {
+                    state.Payload = terminal.Id;
+                }
+                if (nfa == null)
+                {
+                    nfa = tmp.ToNfa();
+                }
+                else
+                {
+                    nfa = nfa.Or(tmp.ToNfa());
+                }
+            }
+
+            Debug.Assert(nfa != null);
+
+            var dfa = nfa.ToDfa().Minimize().RemoveDead();
         }
 
         /// <summary>
@@ -151,21 +182,6 @@ namespace Lingu.Build
                     }
                 }
             }
-
-#if false
-            if (Grammar.Options.Newline != null)
-            {
-                Grammar.Options.Newline.IsPrivate = false;
-            }
-            if (Grammar.Options.Separator != null)
-            {
-                Grammar.Options.Separator.IsPrivate = false;
-            }
-            if (Grammar.Options.Keywords != null)
-            {
-                Grammar.Options.Keywords.IsPrivate = false;
-            }
-#endif
         }
 
         /// <summary>
@@ -178,6 +194,19 @@ namespace Lingu.Build
             eof.IsGenerated = true;
             Grammar.Terminals.Add(eof);
             Grammar.Eof = eof;
+
+            if (Grammar.Options.Whitespace == null)
+            {
+                var ws = new Terminal("&");
+                var alt = new Alternates(new Tree.String(" "), new Tree.String("\t"), new Tree.String("\r"), new Tree.String("\n"));
+                ws.Raw = new RawTerminal(ws.Name, alt);
+                Grammar.Whitespace = ws;
+            }
+            else
+            {
+                Grammar.Whitespace = Grammar.Options.Whitespace;
+            }
+
             int id = 0;
             foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsPrivate))
             {
@@ -207,8 +236,7 @@ namespace Lingu.Build
 
             void BuildTerminal(Terminal terminal)
             {
-                //terminal.Visual = terminal.IsGenerated ? terminal.Raw.Expression.ToString() : string.Empty;
-                terminal.Bytes = Writer.GetBytes(terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead());
+                terminal.Bytes = DfaWriter.GetBytes(terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead());
                 terminal.Dfa = new DfaReader(terminal.Bytes).Read();
             }
         }

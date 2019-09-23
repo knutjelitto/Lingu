@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Lingu.Runtime.Structures;
+
 namespace Lingu.Runtime.Sources
 {
-    public class Source
+    public class Source : ISource
     {
         private static readonly string lineEndings = "\u000A\u000B\u000C\u000D\u0085\u2028\u2029";
         private static readonly string otherLineEndings = "\u000B\u000C\u0085\u2028\u2029";

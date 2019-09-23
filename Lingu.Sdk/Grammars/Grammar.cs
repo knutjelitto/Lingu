@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
+
 using Lingu.LR;
+using Lingu.Runtime.Lexing;
+using Lingu.Runtime.Parsing;
 
 #nullable enable
 
@@ -29,15 +33,19 @@ namespace Lingu.Grammars
         public OptionsMaker Options { get; } 
         public TerminalList Terminals { get; }
         public NonterminalList Nonterminals { get; }
+        public IEnumerable<Symbol> Symbols => Terminals.Concat<Symbol>(Nonterminals);
         public List<Production> Productions { get; }
         public List<Symbol> PSymbols { get; }
 
         public Nonterminal? Accept { get; set; }
+        public Dfa? CommonLex { get; set; }
+        public Terminal? Whitespace { get; set; }
         public Terminal? Eof { get; set; }
         public LR0SetSet LR0Sets { get; }
         public LR1SetSet LR1Sets { get; }
         public CoreFactory ItemFactory { get; }
         public Cell[,]? Table { get; set; }
+        public ParseTable? ParseTable { get; set; }
 
         public string NextTerminalName()
         {

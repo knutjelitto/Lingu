@@ -20,5 +20,18 @@ namespace Lingu.Runtime.Lexing
         }
 
         public bool IsFinal => (Flags & DfaStateFlag.Final) != 0;
+
+        public DfaState? Match(int ch)
+        {
+            foreach (var transition in Transitions)
+            {
+                if (transition.Set.Match(ch))
+                {
+                    return transition.Target;
+                }
+            }
+
+            return null;
+        }
     }
 }

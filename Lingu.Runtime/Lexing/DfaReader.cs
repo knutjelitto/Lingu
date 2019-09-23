@@ -14,7 +14,6 @@
 
         public Dfa Read()
         {
-
             var stateCount = ReadInt32();
             var states = new DfaState[stateCount];
             for (var i = 0; i < stateCount; ++i)

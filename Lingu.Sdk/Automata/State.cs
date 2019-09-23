@@ -1,4 +1,4 @@
-﻿using Lingu.Commons;
+using Lingu.Commons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +11,14 @@ namespace Lingu.Automata
         {
             IsFinal = isFinal;
             Id = -1;
+            Payload = -1;
             Transitions = new List<Transition>();
         }
 
         public bool IsFinal { get; set; }
         public int Id { get; set; }
+        public int Payload { get; set; }
+        public bool IsPayload => Payload >= 0;
         public List<Transition> Transitions { get; }
 
         public IEnumerable<Transition> EpsilonTransitions => Transitions.Where(t => t.Set.IsEmpty);
@@ -56,7 +59,7 @@ namespace Lingu.Automata
 
         public override string ToString()
         {
-            return $"({Id},{IsFinal},({string.Join(",", Transitions)}))";
+            return $"({Id},{IsFinal},{Payload},({string.Join(",", Transitions)}))";
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Lingu.Tree
             var nfa = Expressions.First().GetFA();
             foreach (var expr in Expressions.Skip(1))
             {
-                nfa = nfa.Concat(expr.GetFA());
+                nfa = nfa.And(expr.GetFA());
             }
             return nfa;
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Lingu.Runtime.Parsing
+﻿namespace Lingu.Runtime.Parsing
 {
     public enum TableItem : ushort
     {

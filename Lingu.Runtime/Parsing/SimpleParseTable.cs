@@ -1,6 +1,6 @@
 ﻿namespace Lingu.Runtime.Parsing
 {
-    public class SimpleParseTable : ParseTable<TableItem>
+    public class SimpleParseTable : ParseTable
     {
         private readonly TableItem[,] table;
 

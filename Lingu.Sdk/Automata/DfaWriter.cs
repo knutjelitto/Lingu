@@ -1,12 +1,9 @@
 using Lingu.Commons;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Lingu.Automata
 {
-    public static class Writer
+    public static class DfaWriter
     {
         public static byte[] GetBytes(FA dfa)
         {
@@ -54,7 +51,7 @@ namespace Lingu.Automata
             foreach (var state in states)
             {
                 writer.Write(state.IsFinal);
-                writer.Write(0);
+                writer.Write(state.Payload);
                 writer.Write(state.Transitions.Count);
             }
         }

@@ -44,7 +44,7 @@ namespace Lingu.GrammarsOld.Build
 
         public static ChainExpr operator +(char @char, ChainExpr chain)
         {
-            return new ChainExpr(Enumerable.Repeat(TerminalExpr.From(DfaProvision.From(@char.ToString(), (FA)@char)), 1).Concat(chain));
+            return new ChainExpr(Enumerable.Repeat(TerminalExpr.From(DfaProvision.From(@char.ToString(), FA.From(@char))), 1).Concat(chain));
         }
 
         public static BodyExpr operator |(RuleExpr rule, ChainExpr chain)

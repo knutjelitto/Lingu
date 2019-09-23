@@ -1,14 +1,16 @@
-﻿namespace Lingu.Runtime.Parsing
+﻿using Lingu.Runtime.Structures;
+
+namespace Lingu.Runtime.Parsing
 {
-    public struct StackItem
+    internal struct StackItem
     {
         public readonly int State;
-        public readonly object Payload;
+        public readonly IToken Token;
 
-        public StackItem(int state, object payload)
+        public StackItem(int state, IToken token)
         {
             State = state;
-            Payload = payload;
+            Token = token;
         }
     }
 }

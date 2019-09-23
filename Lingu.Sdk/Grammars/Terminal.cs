@@ -1,9 +1,10 @@
 using Lingu.Runtime.Lexing;
+using Lingu.Runtime.Structures;
 using Lingu.Tree;
 
 namespace Lingu.Grammars
 {
-    public class Terminal : Symbol
+    public class Terminal : Symbol, ITerminal
     {
         public Terminal(string name)
             : base(name)

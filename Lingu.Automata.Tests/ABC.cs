@@ -47,7 +47,7 @@ namespace Lingu.Automata.Tests
             var bbb = FA.From('b').Opt();
             var ccc = FA.From('c').Opt();
 
-            var nfa = ((FA) 'a').Opt() + ((FA) 'b').Opt() + ((FA) 'c').Opt();
+            var nfa = FA.And(FA.From('a').Opt(), FA.From('b').Opt(), FA.From('c').Opt());
 
             return new Matcher(nfa.ToDfa().Minimize());
         }

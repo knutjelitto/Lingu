@@ -49,9 +49,9 @@ namespace Lingu.Build
                 }
             }
 
-            var setsBuilder = new SetsBuilder(Grammar);
+            new SetsBuilder(Grammar).Build();
 
-            setsBuilder.Build();
+            terminalBuilder.BuildPass3();
 
             return Grammar;
         }

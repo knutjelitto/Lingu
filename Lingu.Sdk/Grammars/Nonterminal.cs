@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Lingu.Errors;
+using Lingu.Runtime.Structures;
 using Lingu.Tree;
-using Lingu.Writers;
 
 #nullable enable
 
 namespace Lingu.Grammars
 {
-    public class Nonterminal : Symbol
+    public class Nonterminal : Symbol, INonterminal
     {
         private readonly List<Production> productions;
 

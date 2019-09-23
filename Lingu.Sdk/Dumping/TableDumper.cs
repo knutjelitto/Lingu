@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -8,7 +6,7 @@ using Lingu.LR;
 using Lingu.Runtime.Parsing;
 using Lingu.Writers;
 
-namespace Lingu.Build
+namespace Lingu.Dumping
 {
     public class TableDumper
     {
@@ -21,6 +19,15 @@ namespace Lingu.Build
         public Grammar Grammar { get; }
 
         public void Dump(IWriter writer)
+        {
+            DumpSymbols(writer);
+            writer.WriteLine();
+            DumpTable(writer);
+            writer.WriteLine();
+            DumpProductions(writer);
+        }
+
+        public void DumpTable(IWriter writer)
         {
             const string topLeft = "┌";
             const string topRight = "┐";
@@ -40,8 +47,6 @@ namespace Lingu.Build
             const string hBar = "─";
             const string vbar = "│";
             const string vbar2 = "║";
-
-            DumpSymbols(writer);
 
             var tCount = Grammar.PSymbols.Where(s => s is Terminal).Count();
             var nCount = Grammar.PSymbols.Where(s => s is Nonterminal).Count();
@@ -141,7 +146,7 @@ namespace Lingu.Build
             string s = string.Empty;
             if (cell is Reduce reduce)
             {
-                s = $"r{reduce.Production}";
+                s = $"«{reduce.Production}»";
             }
             else if (cell is Shift shift)
             {
@@ -176,7 +181,14 @@ namespace Lingu.Build
             {
                 writer.WriteLine($"N {Private(s)} {Pid(s),4} {s.Id,4}  {Short(s)}  {s}");
             }
-            writer.WriteLine();
+        }
+
+        private void DumpProductions(IWriter writer)
+        {
+            foreach (var production in Grammar.Productions)
+            {
+                writer.WriteLine($"{Short($"«{production.Id}»")} {production.ToStringArrow()}" );
+            }
         }
     }
 }

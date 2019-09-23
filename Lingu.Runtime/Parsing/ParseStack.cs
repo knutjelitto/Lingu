@@ -2,7 +2,7 @@
 
 namespace Lingu.Runtime.Parsing
 {
-    public class ParseStack
+    internal class ParseStack
     {
         private readonly List<StackItem> items = new List<StackItem>();
         private int top = 0;
@@ -27,5 +27,7 @@ namespace Lingu.Runtime.Parsing
             top -= 1;
             return items[top];
         }
+
+        public int State => top == 0 ? 0 : items[top - 1].State;
     }
 }

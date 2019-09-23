@@ -177,7 +177,7 @@ namespace Lingu.Build
             Grammar.Table = table;
         }
 
-        private SimpleParseTable BuildSimpleParseTable()
+        private void BuildSimpleParseTable()
         {
             var fullTable = Grammar.Table ?? throw new ArgumentNullException(nameof(Grammar.Table));
             var numberOfStates = Grammar.LR1Sets.Count;
@@ -213,7 +213,7 @@ namespace Lingu.Build
                 }
             }
 
-            return new SimpleParseTable(table, numberOfTerminals);
+            Grammar.ParseTable = new SimpleParseTable(table, numberOfTerminals);
         }
     }
 }

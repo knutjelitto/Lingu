@@ -25,12 +25,12 @@ namespace Lingu.GrammarsOld.Build
 
         public static implicit operator TerminalExpr(char @char)
         {
-            return new TerminalExpr(DfaProvision.From(@char.ToString(), (FA)@char));
+            return new TerminalExpr(DfaProvision.From(@char.ToString(), FA.From(@char)));
         }
 
         public static implicit operator TerminalExpr(string chars)
         {
-            return new TerminalExpr(DfaProvision.From(chars, chars));
+            return new TerminalExpr(DfaProvision.From(chars, FA.From(chars)));
         }
     }
 }

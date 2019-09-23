@@ -11,7 +11,9 @@ namespace Lingu.Automata.Tests
             // .* [0-5] .* | .* [4-9] .*
             var dot = FA.Any();
 
-            var nfa = (dot.Star() + ('0', '5') + dot.Plus()) | (dot.Star() + ('4', '9') + dot.Plus());
+            var nfa = FA.Or(
+                FA.And(dot.Star(), FA.From('0', '5'), dot.Plus()),
+                FA.And(dot.Star(), FA.From('4', '9'), dot.Plus()));
 
             var dfa = nfa.ToDfa();
 
@@ -26,10 +28,12 @@ namespace Lingu.Automata.Tests
             // .*[A-Z].+|.*[0-9].+
             var dotPlus = FA.Any().Plus();
             var dotStar = FA.Any().Star();
-            var letter = (FA)('A', 'Z');
-            var digits = (FA)('0', '9');
+            var letter = FA.From('A', 'Z');
+            var digits = FA.From('0', '9');
 
-            var nfa = (dotStar + letter + dotPlus) | (dotStar + digits + dotPlus);
+            var nfa = FA.Or(
+                FA.And(dotStar, letter, dotPlus),
+                FA.And(dotStar, digits, dotPlus));
 
             var dfa = nfa.ToDfa();
 
@@ -42,7 +46,9 @@ namespace Lingu.Automata.Tests
         public void Automata3()
         {
             // [0]|[1-9][0-9]*
-            var nfa = (FA)'0' | (('1', '9') + ((FA)('0', '9')).Star());
+            var nfa = FA.Or(
+                FA.From('0'),
+                FA.And(FA.From('1', '9'), FA.From('0', '9').Star()));
 
 
             var dfa = nfa.ToDfa();
@@ -57,11 +63,13 @@ namespace Lingu.Automata.Tests
         public void Automata4()
         {
             // (a+b+c+)+|abc
-            var a = (FA)'a';
-            var b = (FA)'b';
-            var c = (FA)'c';
+            var a = FA.From('a');
+            var b = FA.From('b');
+            var c = FA.From('c');
 
-            var nfa = (a.Plus() + b.Plus() + c.Plus()).Plus() | (a + b + c);
+            var nfa = FA.Or(
+                FA.And(a.Plus(), b.Plus(), c.Plus()).Plus(),
+                FA.And(a, b, c));
 
             var dfa = nfa.ToDfa();
 

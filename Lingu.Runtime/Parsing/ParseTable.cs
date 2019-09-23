@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lingu.Runtime.Parsing
 {
-    public abstract class ParseTable<TItem>
+    public abstract class ParseTable
     {
         public ParseTable(int numberOfStates, int numberOfTerminals, int numberOfSymbols)
         {
@@ -17,6 +17,6 @@ namespace Lingu.Runtime.Parsing
         public int NumberOfTerminals { get; }
         public int NumberOfSymbols { get; }
 
-        public abstract TItem this[int stateNo, int symNo] { get; }
+        public abstract TableItem this[int stateNo, int symNo] { get; }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-
+using Lingu.Dumping;
+using Lingu.Runtime;
 using Mean.Maker.Builders;
 
 namespace Lingu.Bootstrap
@@ -17,10 +18,10 @@ namespace Lingu.Bootstrap
             program.Check();
             //program.BuildTree("Lingu");
             //program.BuildTree("G1");
-            program.BuildTree("Wiki");
+            //program.BuildTree("Wiki");
             //program.BuildTree("Expression");
             //program.BuildTree("Boot");
-            //program.BuildTree("Expr");
+            program.BuildTree("Expr");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
@@ -45,7 +46,14 @@ namespace Lingu.Bootstrap
                 var builder = new Build.Builder(raw);
 
                 var grammar = builder.Build();
-                new Build.GrammarDumper(grammar).Dump(dests);
+                new Dumper(grammar).Dump(dests);
+
+                var context = new LinguContext(
+                    grammar.Symbols,
+                    grammar.ParseTable,
+                    (grammar.Whitespace ?? throw new ArgumentNullException(nameof(grammar.Whitespace))).Dfa);
+
+                context.Try("  a+b");
             }
         }
 

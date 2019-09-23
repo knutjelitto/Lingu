@@ -15,7 +15,7 @@ namespace Lingu.Runtime.Lexing
 
         public bool Match(int value)
         {
-            for (var i = 0; i <= Intervals.Length; ++i)
+            for (var i = 0; i < Intervals.Length; ++i)
             {
                 if (value <= Intervals[i].Max)
                 {

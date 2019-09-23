@@ -6,7 +6,7 @@ using Lingu.Writers;
 
 #nullable enable
 
-namespace Lingu.Tools
+namespace Lingu.Dumping
 {
     public class DfaDump
     {

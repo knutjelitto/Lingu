@@ -46,11 +46,11 @@ namespace Lingu.Samples.Json
         {
             // [-+]?[0-9]*[.]?[0-9]+
 
-            var digit = (FA)('0', '9');
-            var sign = (FA)'+' | (FA)'-';
-            var dot = (FA)'.';
+            var digit = FA.From('0', '9');
+            var sign = FA.Or(FA.From('+'), FA.From('-'));
+            var dot = FA.From('.');
 
-            var number = sign.Opt() + digit.Star() + dot.Opt() + digit.Plus();
+            var number = FA.And(sign.Opt(), digit.Star(), dot.Opt(), digit.Plus());
 
             return TerminalExpr.From(DfaProvision.From("number", number));
         }
@@ -59,10 +59,10 @@ namespace Lingu.Samples.Json
         {
             // ["][^"]*["]
 
-            var quotation = (FA) '"';
-            var notQuotation = (FA) ((Codepoints) '"').Not();
+            var quotation = FA.From('"');
+            var notQuotation = FA.From (((Codepoints) '"').Not());
 
-            var @string = quotation + notQuotation.Star() + quotation;
+            var @string = FA.And(quotation, notQuotation.Star(), quotation);
 
             return TerminalExpr.From(DfaProvision.From("string", @string));
         }

@@ -32,9 +32,14 @@ namespace Lingu.Grammars
         public override bool Equals(object obj) => obj is Production other && Id == other.Id;
         public override int GetHashCode() => Id;
 
-        public string ToStringShort()
+        public string ToStringSymbols()
         {
             return string.Join(" ", Symbols);
+        }
+
+        public string ToStringArrow()
+        {
+            return $"{Nonterminal} -> {ToStringSymbols()}";
         }
 
         public override string ToString()
