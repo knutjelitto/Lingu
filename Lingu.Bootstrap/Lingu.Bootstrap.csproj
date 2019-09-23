@@ -13,6 +13,7 @@
     <None Remove="Grammar\Expression.Grammar" />
     <None Remove="Grammar\G1.Grammar" />
     <None Remove="Grammar\Lingu.Grammar" />
+    <None Remove="Grammar\Wiki.Grammar" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Grammar\Expr.Grammar" />
+    <EmbeddedResource Include="Grammar\Wiki.Grammar" />
     <EmbeddedResource Include="Grammar\G1.Grammar" />
     <EmbeddedResource Include="Grammar\Boot.Grammar" />
     <EmbeddedResource Include="Grammar\Lingu.Grammar" />
