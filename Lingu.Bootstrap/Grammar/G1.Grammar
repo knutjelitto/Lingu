@@ -3,9 +3,11 @@
     options
     {
 		Start = S;
+        Whitespace = ws;
     }
     terminals
     {
+        ws  : ' ' ;
 		a	: 'a' ;
 		b	: 'b' ;
 		c	: 'c' ;

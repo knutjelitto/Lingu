@@ -79,8 +79,8 @@ namespace Lingu.Automata.Tests
             var last = new State();
             var end = new State();
 
-            var ab = Codepoints.From('a', 'b');
-            var ac = Codepoints.From('a', 'c');
+            var ab = Integers.From('a', 'b');
+            var ac = Integers.From('a', 'c');
 
             first.Add(ab, center);
             first.Add(center);

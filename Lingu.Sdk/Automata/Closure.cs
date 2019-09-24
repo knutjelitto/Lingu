@@ -39,16 +39,16 @@ namespace Lingu.Automata
             this.hashCode = Set.Hash();
         }
 
-        public Dictionary<Codepoints, HashSet<State>> UnambiguateTransitions()
+        public Dictionary<Integers, HashSet<State>> UnambiguateTransitions()
         {
-            var transitions = new Dictionary<Codepoints, HashSet<State>>();
+            var transitions = new Dictionary<Integers, HashSet<State>>();
 
-            void Handle(Codepoints terminal, State target)
+            void Handle(Integers terminal, State target)
             {
                 HandleMore(terminal, Enumerable.Repeat(target, 1));
             }
 
-            void HandleMore(Codepoints added, IEnumerable<State> targets)
+            void HandleMore(Integers added, IEnumerable<State> targets)
             {
                 var already = transitions.Keys.FirstOrDefault(t => t.Overlaps(added));
 
@@ -110,7 +110,7 @@ namespace Lingu.Automata
         public override int GetHashCode() => this.hashCode;
 
         [Conditional("DEBUG")]
-        private void EnsureDistinct(Dictionary<Codepoints, HashSet<State>> transitions)
+        private void EnsureDistinct(Dictionary<Integers, HashSet<State>> transitions)
         {
             var terminals = transitions.Keys.ToList();
             var i = 0;

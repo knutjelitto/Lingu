@@ -10,33 +10,33 @@ using Lingu.Commons;
 
 namespace Lingu.Automata
 {
-    public partial class Codepoints : IEnumerable<int>, IEquatable<Codepoints>
+    public partial class Integers : IEnumerable<int>, IEquatable<Integers>
     {
-        public static Codepoints Empty => new Codepoints();
-        public static Codepoints Any => new Codepoints(UnicodeSets.Any());
+        public static Integers Empty => new Integers();
+        public static Integers Any => new Integers(UnicodeSets.Any());
 
-        private Codepoints(Interval range)
+        private Integers(Interval range)
             : this(Enumerable.Repeat(range, 1))
         {
         }
 
-        private Codepoints()
+        private Integers()
             : this(Enumerable.Empty<Interval>())
         {
         }
 
-        private Codepoints(Codepoints other)
+        private Integers(Integers other)
             : this(other.ranges)
         {
 
         }
 
-        public Codepoints(params (int min, int max)[] ranges)
+        public Integers(params (int min, int max)[] ranges)
             : this(ranges.Select(p => new Interval(p.min, p.max)))
         {
         }
 
-        private Codepoints(IEnumerable<Interval> ranges)
+        private Integers(IEnumerable<Interval> ranges)
         {
             this.ranges = new List<Interval>();
             foreach (var range in ranges)
@@ -55,22 +55,22 @@ namespace Lingu.Automata
 
         public int IntervalCount => ranges.Count;
 
-        public static Codepoints From(Codepoints other)
+        public static Integers From(Integers other)
         {
-            return new Codepoints(other);
+            return new Integers(other);
         }
 
-        public static Codepoints From(int minmax)
+        public static Integers From(int minmax)
         {
-            return new Codepoints(new Interval(minmax));
+            return new Integers(new Interval(minmax));
         }
 
-        public static Codepoints From(int min, int max)
+        public static Integers From(int min, int max)
         {
-            return new Codepoints(new Interval(min, max));
+            return new Integers(new Interval(min, max));
         }
 
-        public static Codepoints? Parse(string str)
+        public static Integers? Parse(string str)
         {
             if (TryParse(str, out var set))
             {
@@ -79,7 +79,7 @@ namespace Lingu.Automata
             return null;
         }
 
-        public static bool TryParse(string str, [MaybeNullWhen(false)] out Codepoints? set)
+        public static bool TryParse(string str, [MaybeNullWhen(false)] out Integers? set)
         {
             if (str.Length == 0 || str[0] != '[')
             {
@@ -89,7 +89,7 @@ namespace Lingu.Automata
 
             var start = 1;
             var end = 1;
-            set = new Codepoints();
+            set = new Integers();
             while (end < str.Length)
             {
                 while (end < str.Length && str[end] != ',' && str[end] != ']')
@@ -126,14 +126,14 @@ namespace Lingu.Automata
             Add(rangesToAdd.Select(range => new Interval(range.min, range.max)));
         }
 
-        public void Add(Codepoints other)
+        public void Add(Integers other)
         {
             Add(other.ranges);
         }
 
-        public Codepoints Clone()
+        public Integers Clone()
         {
-            return new Codepoints(ranges);
+            return new Integers(ranges);
         }
 
         public bool Contains(int value)
@@ -143,22 +143,22 @@ namespace Lingu.Automata
 
         public override bool Equals(object? obj)
         {
-            return obj is Codepoints other && ranges.SequenceEqual(other.ranges);
+            return obj is Integers other && ranges.SequenceEqual(other.ranges);
         }
 
-        public bool Equals(Codepoints other)
+        public bool Equals(Integers other)
         {
             return other != null && ranges.SequenceEqual(other.ranges);
         }
 
-        public Codepoints ExceptWith(Codepoints other)
+        public Integers ExceptWith(Integers other)
         {
             var set = Clone();
             set.Sub(other.ranges);
             return set;
         }
 
-        public Codepoints IntersectWith(Codepoints other)
+        public Integers IntersectWith(Integers other)
         {
             var union = UnionWith(other);
             var ex1 = ExceptWith(other);
@@ -193,17 +193,17 @@ namespace Lingu.Automata
             return ranges.SelectMany(range => range);
         }
 
-        public bool IsProperSubsetOf(Codepoints other)
+        public bool IsProperSubsetOf(Integers other)
         {
             return IsSubsetOf(other) && !Equals(other);
         }
 
-        public bool IsProperSupersetOf(Codepoints other)
+        public bool IsProperSupersetOf(Integers other)
         {
             return IsSupersetOf(other) && !Equals(other);
         }
 
-        public bool IsSubsetOf(Codepoints other)
+        public bool IsSubsetOf(Integers other)
         {
             foreach (var range in ranges)
             {
@@ -216,12 +216,12 @@ namespace Lingu.Automata
             return true;
         }
 
-        public bool IsSupersetOf(Codepoints other)
+        public bool IsSupersetOf(Integers other)
         {
             return other.IsSubsetOf(this);
         }
 
-        public bool Overlaps(Codepoints other)
+        public bool Overlaps(Integers other)
         {
             var t = 0;
             var o = 0;
@@ -257,45 +257,45 @@ namespace Lingu.Automata
             Sub(rangesToSub.Select(range => new Interval(range.min, range.max)));
         }
 
-        public Codepoints Substract(Codepoints other)
+        public Integers Substract(Integers other)
         {
             return Clone().Sub(other.ranges);
         }
 
-        public Codepoints Not()
+        public Integers Not()
         {
             return Any.Substract(this);
         }
 
         public override string ToString()
         {
-            return $"[{string.Join(",", ranges)}]";
+            return $"[{string.Join(", ", ranges)}]";
         }
 
         public string ToIString()
         {
-            return $"[{string.Join(",", ranges.Select(r => r.ToIString()))}]";
+            return $"[{string.Join(", ", ranges.Select(r => r.ToIString()))}]";
         }
 
-        public Codepoints UnionWith(Codepoints other)
+        public Integers UnionWith(Integers other)
         {
             var set = Clone();
             set.Add(other.ranges);
             return set;
         }
 
-        public static Codepoints operator +(Codepoints set1, Codepoints set2)
+        public static Integers operator +(Integers set1, Integers set2)
         {
             return set1.UnionWith(set2);
         }
 
-        public static Codepoints operator /(Codepoints set1, Codepoints set2)
+        public static Integers operator /(Integers set1, Integers set2)
         {
             return set1.ExceptWith(set2);
         }
 
 
-        public static explicit operator Codepoints(char ch)
+        public static explicit operator Integers(char ch)
         {
             return From(ch);
         }
@@ -443,7 +443,7 @@ namespace Lingu.Automata
             }
         }
 
-        private Codepoints Sub(IEnumerable<Interval> rangesToSub)
+        private Integers Sub(IEnumerable<Interval> rangesToSub)
         {
             foreach (var range in rangesToSub)
             {

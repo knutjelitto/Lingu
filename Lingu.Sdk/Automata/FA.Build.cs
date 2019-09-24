@@ -60,14 +60,14 @@ namespace Lingu.Automata
             return Builder.From(@char);
         }
 
-        public static FA From(Codepoints terminal)
+        public static FA From(Integers terminal)
         {
             return Builder.Single(terminal);
         }
 
         private static class Builder
         {
-            public static FA Single(Codepoints terminal)
+            public static FA Single(Integers terminal)
             {
                 var start = new State();
                 var end = new State();
@@ -77,16 +77,16 @@ namespace Lingu.Automata
                 return FA.From(start, end);
             }
 
-            public static FA Dot => Single(Codepoints.Any);
+            public static FA Dot => Single(Integers.Any);
 
             public static FA From(char ch)
             {
-                return Single(Codepoints.From(ch));
+                return Single(Integers.From(ch));
             }
 
             public static FA From(int first, int last)
             {
-                return Single(Codepoints.From(first, last));
+                return Single(Integers.From(first, last));
             }
 
             public static FA From(string sequence)
@@ -98,7 +98,7 @@ namespace Lingu.Automata
                 foreach (var ch in sequence)
                 {
                     next = new State();
-                    current.Add(Codepoints.From(ch), next);
+                    current.Add(Integers.From(ch), next);
                     current = next;
                 }
 

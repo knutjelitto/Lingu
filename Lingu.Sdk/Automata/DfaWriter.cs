@@ -1,5 +1,7 @@
-using Lingu.Commons;
 using System.Collections.Generic;
+using System.Linq;
+
+using Lingu.Commons;
 
 namespace Lingu.Automata
 {
@@ -7,7 +9,7 @@ namespace Lingu.Automata
     {
         public static byte[] GetBytes(FA dfa)
         {
-            var sets = new UniqueList<Codepoints>();
+            var sets = new UniqueList<Integers>();
             var transitions = new UniqueList<Transition>(new TransitionEq());
 
             foreach (var state in dfa.States)
@@ -28,7 +30,7 @@ namespace Lingu.Automata
             return Write(dfa.States, sets, transitions);
         }
 
-        private static byte[] Write(IReadOnlyList<State> states, IReadOnlyList<Codepoints> sets, IReadOnlyList<Transition> transitions)
+        private static byte[] Write(IReadOnlyList<State> states, IReadOnlyList<Integers> sets, IReadOnlyList<Transition> transitions)
         {
             var writer = new BinWriter();
 
@@ -51,12 +53,12 @@ namespace Lingu.Automata
             foreach (var state in states)
             {
                 writer.Write(state.IsFinal);
-                writer.Write(state.Payload);
+                writer.Write(/*TODO - real payload*/0);
                 writer.Write(state.Transitions.Count);
             }
         }
 
-        private static void WriteSets(IReadOnlyList<Codepoints> sets, BinWriter writer)
+        private static void WriteSets(IReadOnlyList<Integers> sets, BinWriter writer)
         {
             foreach (var set in sets)
             {

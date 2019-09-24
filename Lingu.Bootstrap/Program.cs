@@ -17,11 +17,11 @@ namespace Lingu.Bootstrap
 
             program.Check();
             //program.BuildTree("Lingu");
-            //program.BuildTree("G1");
+            program.BuildTree("G1");
             //program.BuildTree("Wiki");
             //program.BuildTree("Expression");
             //program.BuildTree("Boot");
-            program.BuildTree("Expr");
+            //program.BuildTree("Expr");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);

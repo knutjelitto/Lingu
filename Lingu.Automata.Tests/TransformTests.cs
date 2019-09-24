@@ -12,9 +12,9 @@ namespace Lingu.Automata.Tests
             var state2 = new State();
             var state3 = new State();
 
-            state1.Add(Codepoints.From('1'), state2);
-            state2.Add(Codepoints.From('2'), state3);
-            state3.Add(Codepoints.From('3'), state1);
+            state1.Add(Integers.From('1'), state2);
+            state2.Add(Integers.From('2'), state3);
+            state3.Add(Integers.From('3'), state1);
 
             var nfa = FA.From(state1, state3);
 

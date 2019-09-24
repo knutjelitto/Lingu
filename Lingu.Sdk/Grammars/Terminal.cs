@@ -1,3 +1,6 @@
+using System;
+
+using Lingu.Automata;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Structures;
 using Lingu.Tree;
@@ -15,6 +18,10 @@ namespace Lingu.Grammars
         public byte[] Bytes { get; set; }
         public string Visual { get; set; }
         public RawTerminal Raw { get; set; }
+        public FA GetDfa()
+        {
+            return Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead();
+        }
 
         public override string ToString()
         {

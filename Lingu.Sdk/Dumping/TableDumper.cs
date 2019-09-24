@@ -3,7 +3,6 @@ using System.Linq;
 
 using Lingu.Grammars;
 using Lingu.LR;
-using Lingu.Runtime.Parsing;
 using Lingu.Writers;
 
 namespace Lingu.Dumping
@@ -120,11 +119,6 @@ namespace Lingu.Dumping
                     string.Join(botMid, Enumerable.Repeat(line, nCount)) +
                     botRight;
             writer.WriteLine(tLine);
-        }
-
-        public void Dump(IWriter writer, SimpleParseTable table)
-        {
-
         }
 
         private string Short(string sym)

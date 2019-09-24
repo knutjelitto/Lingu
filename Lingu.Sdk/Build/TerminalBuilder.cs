@@ -44,28 +44,32 @@ namespace Lingu.Build
         public void BuildPass3()
         {
             var terminals = Grammar.Terminals.Where(t => t.IsPid).ToList();
+            var terminalDfas = terminals.Select(t => t.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead()).ToList();
 
-            FA? nfa = null;
-            foreach (var terminal in terminals)
+            FA? dfa = null;
+            for (var i = 0; i < terminals.Count; ++i)
             {
-                var tmp = terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead();
-                foreach (var state in tmp.States.Where(s => s.IsFinal))
+                foreach (var state in terminalDfas[i].States.Where(s => s.IsFinal))
                 {
-                    state.Payload = terminal.Id;
+                    state.AddPayload(terminals[i].Id);
                 }
-                if (nfa == null)
+                if (dfa == null)
                 {
-                    nfa = tmp.ToNfa();
+                    dfa = terminalDfas[i];
                 }
                 else
                 {
-                    nfa = nfa.Or(tmp.ToNfa());
+                    dfa = dfa.Union(terminalDfas[i]);
                 }
             }
 
-            Debug.Assert(nfa != null);
+            Debug.Assert(dfa != null);
 
-            var dfa = nfa.ToDfa().Minimize().RemoveDead();
+            dfa = dfa.Minimize().RemoveDead();
+
+            Grammar.CommonLex = dfa;
+
+            //Debug.Assert(terminals.Count == dfa.Finals.Count());
         }
 
         /// <summary>
@@ -198,7 +202,7 @@ namespace Lingu.Build
             if (Grammar.Options.Whitespace == null)
             {
                 var ws = new Terminal("&");
-                var alt = new Alternates(new Tree.String(" "), new Tree.String("\t"), new Tree.String("\r"), new Tree.String("\n"));
+                var alt = new Alternates(new Tree.String("' '"), new Tree.String("'\t'"), new Tree.String("'\r'"), new Tree.String("'\n'"));
                 ws.Raw = new RawTerminal(ws.Name, alt);
                 Grammar.Whitespace = ws;
             }

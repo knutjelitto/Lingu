@@ -1,6 +1,9 @@
 using System;
-
+using System.Diagnostics;
+using System.Text;
+using Lingu.Automata;
 using Lingu.Grammars;
+using Lingu.Runtime.Lexing;
 using Lingu.Writers;
 
 #nullable enable
@@ -23,35 +26,53 @@ namespace Lingu.Dumping
             {
                 DumpTerminal(writer, terminal);
             }
+            writer.WriteLine();
+
+            Debug.Assert(Grammar.CommonLex != null);
+
+            DumpTerminal(writer, "Common", Grammar.CommonLex);
         }
 
         public void DumpTerminal(IWriter writer, Terminal terminal)
         {
+            var builder = new StringBuilder();
+
             if (terminal.IsPrivate)
             {
-                writer.Write("fragment ");
+                builder.Append("fragment ");
             }
             if (terminal.IsGenerated)
             {
-                writer.Write($"[{terminal.Name}] ({terminal.Id})");
+                builder.Append($"[{terminal.Name}] «{terminal.Id}»");
                 if (terminal.IsGenerated && terminal.Raw?.Expression is Tree.String text)
                 {
-                    writer.Write($" '{text.Value}'");
+                    builder.Append($" '{text.Value}'");
                 }
             }
             else
             {
-                writer.Write($"{terminal.Name} ({terminal.Id})");
+                builder.Append($"{terminal.Name} «{terminal.Id}»");
             }
-            writer.WriteLine();
+
+            DumpTerminal(writer, builder.ToString(), terminal);
+        }
+
+
+        public void DumpTerminal(IWriter writer, string head, Terminal terminal)
+        {
+            DumpTerminal(writer, head, terminal.GetDfa());
+        }
+
+        public void DumpTerminal(IWriter writer, string head, FA dfa)
+        {
+            writer.WriteLine($"{head}");
 
             try
             {
-                var roundtrip = terminal.Dfa;
                 var iwriter = new IndentWriter();
                 iwriter.Indend(() =>
                 {
-                    new DfaDump().Dump(iwriter, roundtrip);
+                    new FaDfaDumper().Dump(iwriter, dfa);
                 });
                 iwriter.Dump(writer);
             }
@@ -60,6 +81,5 @@ namespace Lingu.Dumping
                 writer.WriteLine($"{e}");
             }
         }
-
     }
 }

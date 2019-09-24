@@ -33,7 +33,7 @@ namespace Lingu.Automata
             }
 
             var setCount = reader.ReadInt32();
-            var sets = new Codepoints[setCount];
+            var sets = new Integers[setCount];
             for (var s = 0; s < setCount; ++s)
             {
                 var intervalCount = reader.ReadInt32();
@@ -42,7 +42,7 @@ namespace Lingu.Automata
                 {
                     intervals[i] = (reader.ReadInt32(), reader.ReadInt32());
                 }
-                sets[s] = new Codepoints(intervals);
+                sets[s] = new Integers(intervals);
             }
 
             var transitionCount = reader.ReadInt32();

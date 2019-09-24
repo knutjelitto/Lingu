@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-
+using Lingu.Automata;
 using Lingu.LR;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
@@ -38,7 +38,7 @@ namespace Lingu.Grammars
         public List<Symbol> PSymbols { get; }
 
         public Nonterminal? Accept { get; set; }
-        public Dfa? CommonLex { get; set; }
+        public FA? CommonLex { get; set; }
         public Terminal? Whitespace { get; set; }
         public Terminal? Eof { get; set; }
         public LR0SetSet LR0Sets { get; }

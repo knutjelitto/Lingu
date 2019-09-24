@@ -8,7 +8,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void SingleCreateString()
         {
-            var sut = Codepoints.From('a');
+            var sut = Integers.From('a');
 
             Assert.AreEqual("['a']", sut.ToString());
         }
@@ -16,7 +16,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void SingleShouldMatch()
         {
-            var sut = Codepoints.From('a');
+            var sut = Integers.From('a');
 
             Assert.IsTrue(sut.Contains('a'));
         }
@@ -24,7 +24,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void SingleShouldntMatch()
         {
-            var sut = Codepoints.From('a');
+            var sut = Integers.From('a');
 
             Assert.IsFalse(sut.Contains('b'));
         }

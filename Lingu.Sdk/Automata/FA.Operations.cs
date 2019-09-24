@@ -36,7 +36,7 @@ namespace Lingu.Automata
                         once.Enqueue(targetClosure, out targetClosure);
                         var target = targetClosure.DfaState;
 
-                        closure.DfaState.Add(Codepoints.From(terminal), target);
+                        closure.DfaState.Add(Integers.From(terminal), target);
                     }
                 }
 
@@ -59,18 +59,8 @@ namespace Lingu.Automata
 
                 foreach (var final in dfa.Finals)
                 {
-                    if (final.IsPayload)
-                    {
-                        if (dfa.Final.IsPayload && dfa.Final.Payload != final.Payload)
-                        {
-                            Debug.Assert(false);
-                        }
-                        else
-                        {
-                            dfa.Final.Payload = final.Payload;
-                        }
-                    }
                     final.Add(dfa.Final);
+                    final.AddPayload(dfa.Final);
                 }
 
                 dfa.Final.Id = dfa.States.Count;
@@ -108,10 +98,10 @@ namespace Lingu.Automata
                         if (sink == null)
                         {
                             sink = new State();
-                            sink.Add(Codepoints.Any, sink);
+                            sink.Add(Integers.Any, sink);
                         }
 
-                        state.Add(Codepoints.From(rest), sink);
+                        state.Add(Integers.From(rest), sink);
                     }
                 }
 
@@ -236,6 +226,7 @@ namespace Lingu.Automata
                     if (!map.TryGetValue(state, out var mapped))
                     {
                         mapped = new State(state.IsFinal);
+                        mapped.AddPayload(state);
                         map.Add(state, mapped);
 
                         foreach (var transition in state.Transitions)
@@ -260,7 +251,7 @@ namespace Lingu.Automata
 
                 foreach (var state in dfa.States)
                 {
-                    var all = new Codepoints();
+                    var all = new Integers();
                     var sum = 0;
                     foreach (var transition in state.Transitions)
                     {
@@ -381,6 +372,8 @@ namespace Lingu.Automata
                         for (var n2 = 0; n2 < dfa2.States.Count; n2 += 1)
                         {
                             cross[n1, n2] = new State(isFinal(dfa1.States[n1], dfa2.States[n2]));
+                            cross[n1, n2].AddPayload(dfa1.States[n1]);
+                            cross[n1, n2].AddPayload(dfa2.States[n2]);
                         }
                     }
 
@@ -392,7 +385,7 @@ namespace Lingu.Automata
                             var ctranses = GetMerge(t1[n1], t2[n2]);
                             foreach (var ctrans in ctranses)
                             {
-                                state.Add(Codepoints.From(ctrans.Range.Min, ctrans.Range.Max), cross[ctrans.Target1, ctrans.Target2]);
+                                state.Add(Integers.From(ctrans.Range.Min, ctrans.Range.Max), cross[ctrans.Target1, ctrans.Target2]);
                             }
                         }
                     }
@@ -577,7 +570,7 @@ namespace Lingu.Automata
                     var partitions = new List<StateSet> { finals, nons };
                     var working = new List<StateSet> { finals };
 
-                    var terminals = new HashSet<Codepoints>(all.SelectMany(state => state.Transitions).Select(transition => transition.Set));
+                    var terminals = new HashSet<Integers>(all.SelectMany(state => state.Transitions).Select(transition => transition.Set));
 
                     while (working.Count > 0)
                     {

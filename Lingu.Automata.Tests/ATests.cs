@@ -53,8 +53,8 @@ namespace Lingu.Automata.Tests
             var last = new State();
             var end = new State();
 
-            var a1 = Codepoints.From('a');
-            var a2 = Codepoints.From('a', 'b');
+            var a1 = Integers.From('a');
+            var a2 = Integers.From('a', 'b');
 
             first.Add(a1, last);
             first.Add(last);

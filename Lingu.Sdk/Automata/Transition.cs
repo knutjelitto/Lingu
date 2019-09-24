@@ -2,7 +2,7 @@
 {
     public class Transition
     {
-        public Transition(Codepoints set, State target)
+        public Transition(Integers set, State target)
         {
             Set = set;
             Target = target;
@@ -10,7 +10,7 @@
             SetId = -1;
         }
 
-        public Codepoints Set { get; }
+        public Integers Set { get; }
         public State Target { get; private set; }
         public int TargetId => Target.Id;
 

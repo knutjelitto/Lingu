@@ -8,7 +8,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void RangeCreateString()
         {
-            var sut = Codepoints.From('u', 'w');
+            var sut = Integers.From('u', 'w');
 
             Assert.AreEqual("['u'-'w']", sut.ToString());
         }
@@ -16,7 +16,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void RangeShouldMatch()
         {
-            var sut = Codepoints.From('u', 'w');
+            var sut = Integers.From('u', 'w');
 
             Assert.IsTrue(sut.Contains('u'));
             Assert.IsTrue(sut.Contains('v'));
@@ -26,7 +26,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void RangeShouldntMatch()
         {
-            var sut = Codepoints.From('u', 'w');
+            var sut = Integers.From('u', 'w');
 
             Assert.IsFalse(sut.Contains('a'));
             Assert.IsFalse(sut.Contains('z'));

@@ -8,7 +8,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotSingleCreateString()
         {
-            var sut = Codepoints.From('a').Not();
+            var sut = Integers.From('a').Not();
 
             Assert.AreEqual("[0-96,98-1114111]", sut.ToIString());
         }
@@ -16,7 +16,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotSingleShouldMatch()
         {
-            var sut = Codepoints.From('a').Not();
+            var sut = Integers.From('a').Not();
 
             Assert.IsFalse(sut.Contains('a'));
         }
@@ -24,7 +24,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotSingleShouldntMatch()
         {
-            var sut = Codepoints.From('a').Not();
+            var sut = Integers.From('a').Not();
 
             Assert.IsTrue(sut.Contains('b'));
         }
@@ -32,7 +32,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotRangeCreateString()
         {
-            var sut = Codepoints.From('u', 'w').Not();
+            var sut = Integers.From('u', 'w').Not();
 
             Assert.AreEqual("[0-116,120-1114111]", sut.ToIString());
         }
@@ -40,7 +40,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotRangeShouldMatch()
         {
-            var sut = Codepoints.From('u', 'w').Not();
+            var sut = Integers.From('u', 'w').Not();
 
             Assert.IsFalse(sut.Contains('u'));
             Assert.IsFalse(sut.Contains('v'));
@@ -50,7 +50,7 @@ namespace Lingu.Automata.Tests
         [TestMethod]
         public void NotRangeShouldntMatch()
         {
-            var sut = Codepoints.From('u', 'w').Not();
+            var sut = Integers.From('u', 'w').Not();
 
             Assert.IsTrue(sut.Contains('a'));
             Assert.IsTrue(sut.Contains('z'));

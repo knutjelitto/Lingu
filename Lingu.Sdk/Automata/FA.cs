@@ -73,6 +73,16 @@ namespace Lingu.Automata
             return Operations.Complete(CloneIf(cloned));
         }
 
+        public FA Union(FA other, bool cloned = false)
+        {
+            return Operations.Union(CloneIf(cloned), other.CloneIf(cloned));
+        }
+
+        public FA Intersect(FA other, bool cloned = false)
+        {
+            return Operations.Intersect(CloneIf(cloned), other.CloneIf(cloned));
+        }
+
         public FA Substract(FA other, bool cloned = false)
         {
             return Operations.Substract(CloneIf(cloned), other.CloneIf(cloned));
@@ -122,7 +132,8 @@ namespace Lingu.Automata
 
                 if (!map.TryGetValue(state, out var mapped))
                 {
-                    mapped = new State(state.IsFinal) { Payload = state.Payload };
+                    mapped = new State(state.IsFinal);
+                    mapped.AddPayload(state);
                     map.Add(state, mapped);
 
                     foreach (var transition in state.Transitions)

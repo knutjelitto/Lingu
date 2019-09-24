@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Lingu.Automata
 {
-    partial class Codepoints
+    partial class Integers
     {
         private struct Interval : IEnumerable<int>
         {
@@ -47,8 +47,25 @@ namespace Lingu.Automata
                 {
                     return $"{Min}";
                 }
+                if (Min == Max - 1)
+                {
+                    return $"{Min}, {Max}";
+                }
+                if (Min == Max - 2)
+                {
+                    return $"{Min}, {Max - 1}, {Max}";
+                }
+                if (Min == Max - 3)
+                {
+                    return $"{Min}, {Max - 2}, {Max - 1}, {Max}";
+                }
 
-                return $"{Min}-{Max}";
+                if (Min == Max - 4)
+                {
+                    return $"{Min}, {Max - 3}, {Max - 2}, {Max - 1}, {Max}";
+                }
+
+                return $"{Min} - {Max}";
             }
 
             public override string ToString()
