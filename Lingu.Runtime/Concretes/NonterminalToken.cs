@@ -1,16 +1,16 @@
-﻿using Lingu.Runtime.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Concretes
 {
     public class NonterminalToken : Token, INonterminalToken
     {
-        public NonterminalToken(INonterminal nonterminal)
+        public NonterminalToken(INonterminal nonterminal, IReadOnlyList<IToken> children)
             : base(nonterminal)
         {
-            Children = Array.Empty<IToken>();
+            Children = children.ToArray();
         }
 
         public INonterminal Nonterminal => (INonterminal)Symbol;

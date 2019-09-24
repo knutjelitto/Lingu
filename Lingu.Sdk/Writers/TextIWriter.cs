@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace Lingu.Writers
@@ -10,6 +11,11 @@ namespace Lingu.Writers
         }
 
         public TextWriter Writer { get; }
+
+        public void Indend(Action body)
+        {
+            body();
+        }
 
         public void Write(string text)
         {

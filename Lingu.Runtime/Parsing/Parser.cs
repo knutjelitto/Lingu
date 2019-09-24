@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
+
 using Lingu.Runtime.Concretes;
+using Lingu.Runtime.Errors;
 using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Parsing
@@ -32,8 +35,7 @@ namespace Lingu.Runtime.Parsing
                 switch (action)
                 {
                     case TableItem.Error:
-                        context = null;
-                        break;
+                        throw new ParserException();
                     case TableItem.Shift:
                         stack.Push(new StackItem(number, context.Token));
                         context = Lexer.Next(context);
@@ -41,12 +43,9 @@ namespace Lingu.Runtime.Parsing
                     case TableItem.Reduce:
                         {
                             var production = Context.Productions[number];
-                            for (var i = 0; i < production.Length; ++i)
-                            {
-                                stack.Pop();
-                            }
+                            var rhs = stack.Pop(production.Length);
                             var shift = (int)table[stack.State, production.Nonterminal.Id] >> 2;
-                            stack.Push(new StackItem(shift, new NonterminalToken(production.Nonterminal)));
+                            stack.Push(new StackItem(shift, new NonterminalToken(production.Nonterminal, rhs)));
                         }
                         break;
                     case TableItem.Accept:

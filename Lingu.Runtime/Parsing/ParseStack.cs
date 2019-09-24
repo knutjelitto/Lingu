@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Lingu.Runtime.Structures;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lingu.Runtime.Parsing
 {
@@ -26,6 +28,21 @@ namespace Lingu.Runtime.Parsing
         {
             top -= 1;
             return items[top];
+        }
+
+        public IReadOnlyList<IToken> Pop(int n)
+        {
+            top -= n;
+
+            return pop().ToArray();
+
+            IEnumerable<IToken> pop()
+            {
+                for (var i = top; i < top + n; ++i)
+                {
+                    yield return items[i].Token;
+                }
+            }
         }
 
         public int State => top == 0 ? 0 : items[top - 1].State;

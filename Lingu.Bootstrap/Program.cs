@@ -18,13 +18,12 @@ namespace Lingu.Bootstrap
             var program = new Program();
 
             program.Check();
-            //program.BuildTree("S1");
-            //program.BuildTree("Lingu");
+            //program.BuildTree("S1", "1+2");
+            //program.BuildTree("Lingu", "grammar {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
-            program.BuildTree("Expression");
-            //program.BuildTree("Boot");
-            //program.BuildTree("Expr");
+            //program.BuildTree("Expression");
+            program.BuildTree("Expr", "(1+2)*3");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
@@ -34,7 +33,7 @@ namespace Lingu.Bootstrap
         {
         }
 
-        private void BuildTree(string stem)
+        private void BuildTree(string stem, string content)
         {
             Environment.CurrentDirectory = $"{ProjectDir}Grammar";
 
@@ -58,7 +57,9 @@ namespace Lingu.Bootstrap
                     grammar.CommonDfa ?? throw new ArgumentNullException(nameof(grammar.CommonDfa)),
                     grammar.WhitespaceDfa ?? throw new ArgumentNullException(nameof(grammar.WhitespaceDfa)));
 
-                context.Try("   a+b");
+                var tree = context.Try(content);
+
+                new TreeDumper(dests.Add(".Tree")).Dump(tree);
             }
         }
 

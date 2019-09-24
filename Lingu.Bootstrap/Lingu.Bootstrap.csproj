@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Grammar\Boot.Grammar" />
     <None Remove="Grammar\Expr.Grammar" />
     <None Remove="Grammar\Expression.Grammar" />
     <None Remove="Grammar\G1.Grammar" />
@@ -28,7 +27,6 @@
     <EmbeddedResource Include="Grammar\S1.Grammar" />
     <EmbeddedResource Include="Grammar\Wiki.Grammar" />
     <EmbeddedResource Include="Grammar\G1.Grammar" />
-    <EmbeddedResource Include="Grammar\Boot.Grammar" />
     <EmbeddedResource Include="Grammar\Lingu.Grammar" />
     <EmbeddedResource Include="Grammar\Expression.Grammar" />
     <EmbeddedResource Include="..\Lingu.Hime\LinguLexer.bin" Link="Hime\LinguLexer.bin" />

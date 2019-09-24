@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
@@ -25,13 +24,15 @@ namespace Lingu.Runtime.Concretes
         public Dfa Common { get; }
         public Dfa Whitespace { get; }
 
-        public void Try(string sourceText)
+        public INonterminalToken Try(string sourceText)
         {
             var source = new Source("<try>", sourceText);
             var lexer = new Lexer(this, source);
             var parser = new Parser(this, lexer);
 
             var tree = parser.Parse();
+
+            return tree;
         }
     }
 }
