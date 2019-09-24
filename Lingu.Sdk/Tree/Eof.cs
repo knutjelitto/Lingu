@@ -22,7 +22,7 @@ namespace Lingu.Tree
 
         public override FA GetFA()
         {
-            return FA.Any().ToDfa().Not();
+            return FA.Any().ToDfa().Complement();
         }
     }
 }

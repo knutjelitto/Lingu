@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 using Lingu.Errors;
 using Lingu.Grammars;
 using Lingu.Tree;
@@ -34,7 +37,6 @@ namespace Lingu.Build
             {
                 if (!t.IsPrivate)
                 {
-                    Grammar.PSymbols.Add(t);
                     t.Pid = pid;
                     pid += 1;
                 }
@@ -43,11 +45,35 @@ namespace Lingu.Build
             {
                 if (!ReferenceEquals(n, Grammar.Accept))
                 {
-                    Grammar.PSymbols.Add(n);
                     n.Pid = pid;
                     pid += 1;
                 }
             }
+
+            var symbols = Grammar.Terminals.Concat<Symbol>(Grammar.Nonterminals).ToList();
+
+            symbols.Sort((s1, s2) =>
+            {
+                if (s1.IsPid && s2.IsPid)
+                {
+                    return s1.Pid.CompareTo(s2.Pid);
+                }
+                else if (!s1.IsPid && !s2.IsPid)
+                {
+                    return s1.Id.CompareTo(s2.Id);
+                }
+                if (s1.IsPid)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            });
+
+            Grammar.Symbols = symbols.Select((s, i) => { s.Id = i; return s; }).ToArray();
+            Grammar.PSymbols = Grammar.Symbols.Where(s => s.IsPid).ToArray();
 
             new SetsBuilder(Grammar).Build();
 

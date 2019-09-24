@@ -18,7 +18,7 @@ namespace Lingu.Build
         }
 
         public Grammar Grammar { get; }
-        public CoreFactory CoreFactory => Grammar.ItemFactory;
+        public CoreFactory CoreFactory => Grammar.CoreFactory;
 
         public void Build()
         {
@@ -138,6 +138,8 @@ namespace Lingu.Build
 
         private void BuildLR1Table()
         {
+            Debug.Assert(Grammar.PSymbols != null);
+
             int states = Grammar.LR1Sets.Count;
             int symbols = Grammar.PSymbols.Count;
 
@@ -179,6 +181,8 @@ namespace Lingu.Build
 
         private void BuildSimpleParseTable()
         {
+            Debug.Assert(Grammar.PSymbols != null);
+
             var fullTable = Grammar.Table ?? throw new ArgumentNullException(nameof(Grammar.Table));
             var numberOfStates = Grammar.LR1Sets.Count;
             var numberOfTerminals = Grammar.PSymbols.Where(s => s is Terminal).Count();

@@ -1,5 +1,7 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Diagnostics;
+using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Lexing
@@ -14,7 +16,10 @@ namespace Lingu.Runtime.Lexing
 
         public IContext Context { get; }
         public ISource Source { get; }
+
+        public IReadOnlyList<ISymbol> Symbols => Context.Symbols;
         public Dfa Whitespace => Context.Whitespace;
+        public Dfa Common => Context.Common;
 
         int index = 0;
 
@@ -22,14 +27,52 @@ namespace Lingu.Runtime.Lexing
         {
             index = 0;
 
-            SkipWhitespace();
-
-            throw new NotImplementedException();
+            return Action();
         }
 
         public IConlex Next(IConlex context)
         {
-            throw new NotImplementedException();
+            return Action();
+        }
+
+        public bool IsEnd()
+        {
+            return Source.IsEnd(index);
+        }
+
+        public IConlex Action()
+        {
+            SkipWhitespace();
+
+            var terminalId = LexCommon();
+
+            var terminal = Symbols[terminalId] as ITerminal;
+
+            Debug.Assert(terminal != null);
+
+            return new Conlex(new TerminalToken(terminal));
+        }
+
+        private int LexCommon()
+        {
+            DfaState? state = Common.Start;
+            while (!Source.IsEnd(index))
+            {
+                var next = state.Match(Source[index]);
+                if (next == null)
+                {
+                    return state.Payload;
+                }
+                state = next;
+                index += 1;
+            }
+
+            if (state != null)
+            {
+                return state.Payload;
+            }
+
+            return -1;
         }
 
         private void SkipWhitespace()
@@ -39,16 +82,6 @@ namespace Lingu.Runtime.Lexing
             {
                 index += 1;
             }
-        }
-
-        private class Conlex : IConlex
-        {
-            public Conlex(ITerminalToken token)
-            {
-                Token = token;
-            }
-
-            public ITerminalToken Token { get; }
         }
     }
 }

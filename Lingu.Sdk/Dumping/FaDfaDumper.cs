@@ -22,7 +22,7 @@ namespace Lingu.Dumping
         {
             var finA = state.IsFinal ? "(" : ".";
             var finB = state.IsFinal ? ")" : ".";
-            var pay = state.IsPayload ? "  " + state.PayloadString : string.Empty;
+            var pay = state.IsPayload ? $"  «{state.Payload}»" : string.Empty;
 
             writer.WriteLine($"{finA}{state.Id}{finB}{pay}");
             writer.Indend(() =>
@@ -36,7 +36,7 @@ namespace Lingu.Dumping
 
         private string Str(Integers set)
         {
-            return $"[{string.Join(",", set.GetIntervals().Select(i => Str(i)))}]";
+            return $"[{string.Join(", ", set.GetIntervals().Select(i => Str(i)))}]";
         }
 
         private string Str((int min, int max) i)
@@ -46,7 +46,7 @@ namespace Lingu.Dumping
                 return CharRep.InRange(i.min);
             }
 
-            return $"{CharRep.InRange(i.min)}-{CharRep.InRange(i.max)}";
+            return $"{CharRep.InRange(i.min)} - {CharRep.InRange(i.max)}";
         }
     }
 }

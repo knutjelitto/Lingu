@@ -7,7 +7,9 @@ namespace Lingu.Runtime.Structures
     public interface IContext
     {
         IReadOnlyList<ISymbol> Symbols { get; }
+        IReadOnlyList<IProduction> Productions { get; }
         ParseTable Table { get; }
         Dfa Whitespace { get; }
+        Dfa Common { get; }
     }
 }

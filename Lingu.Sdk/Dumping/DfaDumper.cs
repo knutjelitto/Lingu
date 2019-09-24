@@ -8,7 +8,7 @@ using Lingu.Writers;
 
 namespace Lingu.Dumping
 {
-    public class DfaDump
+    public class DfaDumper
     {
         public void Dump(IndentWriter writer, Dfa dfa)
         {
@@ -22,7 +22,9 @@ namespace Lingu.Dumping
         {
             var finA = state.IsFinal ? "(" : ".";
             var finB = state.IsFinal ? ")" : ".";
-            writer.WriteLine($"{finA}{state.Id}{finB}");
+            var pay = state.Payload >= 0 ? $"  «{state.Payload}»" : string.Empty;
+
+            writer.WriteLine($"{finA}{state.Id}{finB}{pay}");
             writer.Indend(() =>
             {
                 foreach (var transition in state.Transitions)

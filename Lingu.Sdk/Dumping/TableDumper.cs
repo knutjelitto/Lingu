@@ -21,9 +21,9 @@ namespace Lingu.Dumping
         {
             DumpSymbols(writer);
             writer.WriteLine();
-            DumpTable(writer);
-            writer.WriteLine();
             DumpProductions(writer);
+            writer.WriteLine();
+            DumpTable(writer);
         }
 
         public void DumpTable(IWriter writer)
@@ -174,6 +174,12 @@ namespace Lingu.Dumping
             foreach (var s in Grammar.Nonterminals)
             {
                 writer.WriteLine($"N {Private(s)} {Pid(s),4} {s.Id,4}  {Short(s)}  {s}");
+            }
+            writer.WriteLine();
+            foreach (var s in Grammar.Symbols)
+            {
+                var tn = s is Terminal ? "T" : "N";
+                writer.WriteLine($"{tn} {Private(s)} {Pid(s),4} {s.Id,4}  {Short(s)}  {s}");
             }
         }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Commons;
@@ -53,7 +54,11 @@ namespace Lingu.Automata
             foreach (var state in states)
             {
                 writer.Write(state.IsFinal);
-                writer.Write(/*TODO - real payload*/0);
+                if (state.Payload != -1)
+                {
+                    Debug.Assert(true);
+                }
+                writer.Write(state.Payload);
                 writer.Write(state.Transitions.Count);
             }
         }

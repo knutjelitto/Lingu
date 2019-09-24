@@ -26,7 +26,7 @@ namespace Lingu.Tree
             var nfa1 = Expressions[0].GetFA();
             var nfa2 = Expressions[1].GetFA();
 
-            var cross = nfa1.ToDfa().Substract(nfa2.ToDfa());
+            var cross = nfa1.ToDfa().Difference(nfa2.ToDfa());
 
             return cross; ;
         }

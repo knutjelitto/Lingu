@@ -1,11 +1,12 @@
 using Lingu.LR;
+using Lingu.Runtime.Structures;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Lingu.Grammars
 {
-    public class Production : IReadOnlyList<Symbol>
+    public class Production : IReadOnlyList<Symbol>, IProduction
     {
         public Production(Nonterminal nonterminal, SymbolList symbols, Drops drops)
         {
@@ -16,6 +17,8 @@ namespace Lingu.Grammars
         }
 
         public Nonterminal Nonterminal { get; }
+        INonterminal IProduction.Nonterminal => Nonterminal;
+
         public SymbolList Symbols { get; }
         public Drops Drops { get; }
         public int Id { get; set; }
@@ -25,7 +28,9 @@ namespace Lingu.Grammars
 
         public Symbol this[int index] => Symbols[index];
         public int Count => Symbols.Count;
+        public int Length => Symbols.Count;
         public bool IsEpsilon => Count == 0;
+
         public IEnumerator<Symbol> GetEnumerator() => Symbols.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

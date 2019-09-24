@@ -1,4 +1,4 @@
-﻿namespace Lingu.Automata
+namespace Lingu.Automata
 {
     public class Transition
     {
@@ -24,7 +24,7 @@
 
         public override string ToString()
         {
-            return Set.ToIString();
+            return $"{Set.ToIString()}->{TargetId.ToString()}";
         }
     }
 }

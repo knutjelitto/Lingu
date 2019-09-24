@@ -6,7 +6,7 @@ namespace Lingu.Runtime.Structures
 {
     public interface IToken
     {
-        ILocation Location { get; }
         ISymbol Symbol { get; }
+        ILocation Location { get; }
     }
 }

@@ -1,0 +1,26 @@
+﻿grammar Wiki
+{
+    options
+    {
+		Start = Sum;
+        Whitespace = ws;
+    }
+    terminals
+    {
+        id  : ('a' .. 'z')+
+            ;
+        ws  : ' '
+            ;
+    }
+    rules
+    {
+		Sum
+            : Sum '+' Value
+			| Value
+            ;
+
+        Value
+            : id
+            ;
+    }
+}

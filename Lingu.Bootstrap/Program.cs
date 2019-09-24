@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+
 using Lingu.Dumping;
-using Lingu.Runtime;
+using Lingu.Runtime.Concretes;
 using Mean.Maker.Builders;
 
 namespace Lingu.Bootstrap
@@ -16,10 +18,11 @@ namespace Lingu.Bootstrap
             var program = new Program();
 
             program.Check();
+            //program.BuildTree("S1");
             //program.BuildTree("Lingu");
-            program.BuildTree("G1");
+            //program.BuildTree("G1");
             //program.BuildTree("Wiki");
-            //program.BuildTree("Expression");
+            program.BuildTree("Expression");
             //program.BuildTree("Boot");
             //program.BuildTree("Expr");
 
@@ -50,10 +53,12 @@ namespace Lingu.Bootstrap
 
                 var context = new LinguContext(
                     grammar.Symbols,
+                    grammar.Productions,
                     grammar.ParseTable,
-                    (grammar.Whitespace ?? throw new ArgumentNullException(nameof(grammar.Whitespace))).Dfa);
+                    grammar.CommonDfa ?? throw new ArgumentNullException(nameof(grammar.CommonDfa)),
+                    grammar.WhitespaceDfa ?? throw new ArgumentNullException(nameof(grammar.WhitespaceDfa)));
 
-                context.Try("  a+b");
+                context.Try("   a+b");
             }
         }
 

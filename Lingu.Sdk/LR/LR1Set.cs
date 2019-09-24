@@ -19,36 +19,39 @@ namespace Lingu.LR
 
         public override LR1Set Close()
         {
-            for (var i = 0; i < Count; ++i)
+            for (var repeat = 0; repeat < 2; ++repeat)
             {
-                var from = this[i];
-
-                if (!from.IsComplete && from.PostDot is Nonterminal nonterminal)
+                for (var i = 0; i < Count; ++i)
                 {
-                    Debug.Assert(nonterminal.IsPid);
+                    var from = this[i];
 
-                    var lookahead = new TerminalSet(from.Core.Next.First);
-                    if (lookahead.WithEpsilon)
+                    if (!from.IsComplete && from.PostDot is Nonterminal nonterminal)
                     {
-                        lookahead.UnionWith(from.Lookahead);
-                        lookahead.WithEpsilon = false;
-                    }
+                        Debug.Assert(nonterminal.IsPid);
 
-                    foreach (var production in nonterminal.Productions)
-                    {
-                        var add = true;
-                        foreach (var old in this)
+                        var lookahead = new TerminalSet(from.Core.Next.First);
+                        if (lookahead.WithEpsilon)
                         {
-                            if (old.Core.Equals(production.Initial))
-                            {
-                                old.Lookahead.UnionWith(lookahead);
-                                add = false;
-                                break;
-                            }
+                            lookahead.UnionWith(from.Lookahead);
+                            lookahead.WithEpsilon = false;
                         }
-                        if (add)
+
+                        foreach (var production in nonterminal.Productions)
                         {
-                            Add(new LR1(production.Initial, false, lookahead));
+                            var add = true;
+                            foreach (var old in this)
+                            {
+                                if (old.Core.Equals(production.Initial))
+                                {
+                                    old.Lookahead.UnionWith(lookahead);
+                                    add = false;
+                                    //break;
+                                }
+                            }
+                            if (add)
+                            {
+                                Add(new LR1(production.Initial, false, lookahead));
+                            }
                         }
                     }
                 }

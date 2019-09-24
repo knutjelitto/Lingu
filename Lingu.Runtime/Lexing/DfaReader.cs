@@ -1,4 +1,6 @@
-﻿namespace Lingu.Runtime.Lexing
+﻿using System.Diagnostics;
+
+namespace Lingu.Runtime.Lexing
 {
     public class DfaReader : ByteReader
     {
@@ -20,6 +22,10 @@
             {
                 var flags = ReadBool() ? DfaStateFlag.Final : DfaStateFlag.None;
                 var payload = ReadInt32();
+                if (payload != -1)
+                {
+                    Debug.Assert(true);
+                }
                 var trans = new DfaTrans[ReadInt32()];
                 states[i] = new DfaState(i, flags, payload, trans);
             }

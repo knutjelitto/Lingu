@@ -1,3 +1,4 @@
+using Lingu.Runtime.Lexing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -83,15 +84,22 @@ namespace Lingu.Automata
             return Operations.Intersect(CloneIf(cloned), other.CloneIf(cloned));
         }
 
-        public FA Substract(FA other, bool cloned = false)
+        public FA Difference(FA other, bool cloned = false)
         {
-            return Operations.Substract(CloneIf(cloned), other.CloneIf(cloned));
+            return Operations.Difference(CloneIf(cloned), other.CloneIf(cloned));
         }
 
 
         public FA Minimize(bool cloned = false)
         {
             return Operations.Minimize(CloneIf(cloned));
+        }
+
+        public Dfa Convert(bool cloned = false)
+        {
+            var from = CloneIf(cloned).Minimize().RemoveDead();
+
+            return new DfaReader(DfaWriter.GetBytes(from)).Read();
         }
 
         public FA ToDfa(bool cloned = false)
@@ -109,9 +117,9 @@ namespace Lingu.Automata
             return Operations.RemoveDead(CloneIf(cloned));
         }
 
-        public FA Not(bool cloned = false)
+        public FA Complement(bool cloned = false)
         {
-            return Operations.Not(CloneIf(cloned));
+            return Operations.Complement(CloneIf(cloned));
         }
 
         private FA CloneIf(bool cloned)

@@ -6,40 +6,48 @@ using System.Linq;
 
 namespace Lingu.Automata
 {
+    [DebuggerDisplay("{ToString()}")]
     public class State
     {
         public State(bool isFinal = false)
         {
             IsFinal = isFinal;
             Id = -1;
-            Payload = new Integers();
+            Payload = -1;
             Transitions = new List<Transition>();
         }
 
         public bool IsFinal { get; set; }
         public int Id { get; set; }
-        private Integers Payload { get; }
-        public bool IsPayload => Payload.Cardinality > 0;
-        public string PayloadString => Payload.ToIString();
+        public int Payload { get; private set; }
+        public bool IsPayload => Payload >= 0;
         public List<Transition> Transitions { get; }
 
         public IEnumerable<Transition> EpsilonTransitions => Transitions.Where(t => t.Set.IsEmpty);
         public IEnumerable<Transition> TerminalTransitions => Transitions.Where(t => !t.Set.IsEmpty);
 
-        public void AddPayload(State other)
+        public void AddPayload(State state)
         {
-            Debug.Assert(!Payload.Contains(-1));
-            Debug.Assert(!other.Payload.Contains(-1));
-
-            Payload.Add(other.Payload);
+            if (IsPayload && state.IsPayload)
+            {
+                throw new ArgumentOutOfRangeException(nameof(state));
+            }
+            else if (!IsPayload)
+            {
+                Payload = state.Payload;
+            }
         }
 
-        public void AddPayload(int load)
+        public void SetPayload(int payload)
         {
-            Debug.Assert(!Payload.Contains(-1));
-            Debug.Assert(load != -1);
-
-            Payload.Add(load);
+            if (IsPayload && payload >= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(payload));
+            }
+            else if (!IsPayload)
+            {
+                Payload = payload;
+            }
         }
 
         public void Add(State target)
@@ -77,7 +85,7 @@ namespace Lingu.Automata
 
         public override string ToString()
         {
-            return $"({Id},{IsFinal},{Payload},({string.Join(",", Transitions)}))";
+            return $"({Id},{IsFinal},{Payload.ToString()},({string.Join(",", Transitions)}))";
         }
     }
 }

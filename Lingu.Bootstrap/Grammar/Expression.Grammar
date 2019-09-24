@@ -3,7 +3,7 @@
     options
     {
         Start = expression;
-        Separator = separator;
+        Whitespace = spacing;
         Keywords = identifier;
     }
     terminals
@@ -40,7 +40,7 @@
             : '/*'  ((. - '*') | '*' (. - '/'))* '*/'
             ;
 
-        separator
+        spacing
             : (newline | whitespace | lineComment | blockComment)*
             ;
 

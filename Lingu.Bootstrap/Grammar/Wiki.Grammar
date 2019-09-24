@@ -3,6 +3,7 @@
     options
     {
 		Start = Sums;
+        Whitespace = ws;
     }
     terminals
     {
@@ -10,16 +11,18 @@
             ;
         id  : ('a' .. 'z')+
             ;
+        ws  : ' '
+            ;
     }
     rules
     {
 		Sums
-            : Sums '+' Products
+            : {Sum: Sums '+' Products}
 			| Products
             ;
 
         Products
-            : Products '*' Value
+            : {Prod: Products '*' Value}
             | Value
             ;
 

@@ -49,9 +49,9 @@ namespace Lingu.Build
             FA? dfa = null;
             for (var i = 0; i < terminals.Count; ++i)
             {
-                foreach (var state in terminalDfas[i].States.Where(s => s.IsFinal))
+                foreach (var state in terminalDfas[i].Finals)
                 {
-                    state.AddPayload(terminals[i].Id);
+                    state.SetPayload(terminals[i].Id);
                 }
                 if (dfa == null)
                 {
@@ -65,11 +65,7 @@ namespace Lingu.Build
 
             Debug.Assert(dfa != null);
 
-            dfa = dfa.Minimize().RemoveDead();
-
-            Grammar.CommonLex = dfa;
-
-            //Debug.Assert(terminals.Count == dfa.Finals.Count());
+            Grammar.CommonDfa = dfa.Convert();
         }
 
         /// <summary>
@@ -202,13 +198,17 @@ namespace Lingu.Build
             if (Grammar.Options.Whitespace == null)
             {
                 var ws = new Terminal("&");
+                ws.IsGenerated = true;
                 var alt = new Alternates(new Tree.String("' '"), new Tree.String("'\t'"), new Tree.String("'\r'"), new Tree.String("'\n'"));
-                ws.Raw = new RawTerminal(ws.Name, alt);
-                Grammar.Whitespace = ws;
+                var star = Repeat.From(alt, 0);
+                ws.Raw = new RawTerminal(ws.Name, star);
+                Grammar.Terminals.Add(ws);
+                Grammar.WhitespaceDfa = ws.GetDfa().Convert();
             }
             else
             {
-                Grammar.Whitespace = Grammar.Options.Whitespace;
+                var star = Repeat.From(Grammar.Options.Whitespace.Raw.Expression, 0);
+                Grammar.WhitespaceDfa = star.GetFA().ToDfa().Convert();
             }
 
             int id = 0;

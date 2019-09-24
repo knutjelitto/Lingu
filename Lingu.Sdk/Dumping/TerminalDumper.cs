@@ -28,9 +28,9 @@ namespace Lingu.Dumping
             }
             writer.WriteLine();
 
-            Debug.Assert(Grammar.CommonLex != null);
+            Debug.Assert(Grammar.CommonDfa != null);
 
-            DumpTerminal(writer, "Common", Grammar.CommonLex);
+            DumpTerminal(writer, "Common", Grammar.CommonDfa);
         }
 
         public void DumpTerminal(IWriter writer, Terminal terminal)
@@ -73,6 +73,24 @@ namespace Lingu.Dumping
                 iwriter.Indend(() =>
                 {
                     new FaDfaDumper().Dump(iwriter, dfa);
+                });
+                iwriter.Dump(writer);
+            }
+            catch (Exception e)
+            {
+                writer.WriteLine($"{e}");
+            }
+        }
+        public void DumpTerminal(IWriter writer, string head, Dfa dfa)
+        {
+            writer.WriteLine($"{head}");
+
+            try
+            {
+                var iwriter = new IndentWriter();
+                iwriter.Indend(() =>
+                {
+                    new DfaDumper().Dump(iwriter, dfa);
                 });
                 iwriter.Dump(writer);
             }

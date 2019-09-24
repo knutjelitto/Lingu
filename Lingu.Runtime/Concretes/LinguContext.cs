@@ -6,21 +6,23 @@ using Lingu.Runtime.Parsing;
 using Lingu.Runtime.Sources;
 using Lingu.Runtime.Structures;
 
-namespace Lingu.Runtime
+namespace Lingu.Runtime.Concretes
 {
     public class LinguContext : IContext
     {
-        public LinguContext(IEnumerable<ISymbol> symbols, ParseTable table, Dfa whitespace)
+        public LinguContext(IEnumerable<ISymbol> symbols, IEnumerable<IProduction> productions, ParseTable table, Dfa common, Dfa whitespace)
         {
             Symbols = symbols.ToArray();
+            Productions = productions.ToArray();
             Table = table;
+            Common = common;
             Whitespace = whitespace;
-
-            Debug.Assert(Symbols.Select((terminal, index) => terminal.Id == index).All(b => b));
         }
 
         public IReadOnlyList<ISymbol> Symbols { get; }
+        public IReadOnlyList<IProduction> Productions { get; }
         public ParseTable Table { get; }
+        public Dfa Common { get; }
         public Dfa Whitespace { get; }
 
         public void Try(string sourceText)

@@ -24,6 +24,7 @@ namespace Lingu.Dumping
             var nonterminals = dests.Add(".Nonterminals");
             var sets = dests.Add(".Sets");
             var table = dests.Add(".Table");
+            var cores = dests.Add(".Cores");
 
             using (var writer = new StreamWriter(grammarDump))
             {
@@ -44,6 +45,10 @@ namespace Lingu.Dumping
             using (var writer = new StreamWriter(table))
             {
                 new TableDumper(Grammar).Dump(new TextIWriter(writer));
+            }
+            using (var writer = new StreamWriter(cores))
+            {
+                new CoresDumper(Grammar).Dump(new TextIWriter(writer));
             }
         }
     }
