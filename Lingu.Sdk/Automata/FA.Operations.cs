@@ -113,9 +113,15 @@ namespace Lingu.Automata
                 {
                     throw new Exception("DFA: at least on state");
                 }
+                for (var i = 0; i < dfa.States.Count; ++i)
+                {
+                    if (dfa.States[i].Id != i)
+                    {
+                        throw new Exception("DFA: not properly numbered");
+                    }
+                }
                 EnsureDfaTransitions(dfa);
             }
-
         }
     }
 }

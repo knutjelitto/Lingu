@@ -36,7 +36,7 @@ namespace Lingu.Automata
         public State Final { get; private set; }
         public List<State> States { get; }
         public IEnumerable<State> Finals => States.Where(state => state.IsFinal);
-        public IEnumerable<State> Inners => States.Where(state => state.IsFinal);
+        public IEnumerable<State> Nons => States.Where(state => !state.IsFinal);
 
         public static FA From(State start, State final)
         {

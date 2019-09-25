@@ -7,6 +7,8 @@ namespace Lingu.Tree
 {
     public sealed class RawTerminal : Terminal
     {
+        public static readonly RawTerminal Nope = new RawTerminal("$nope$", new Nope());
+
         public RawTerminal(string name, IExpression expression)
             : base(name)
         {

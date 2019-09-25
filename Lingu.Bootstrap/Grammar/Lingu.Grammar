@@ -3,7 +3,7 @@
     options
     {
         Start = file;
-        Separator = separator;
+        Whitespace = spacing;
         Keyword = identifier;
         Newline = newline;
     }
@@ -42,7 +42,7 @@
             : '/*'  ((. - '*') | '*' (. - '/'))* '*/'
             ;
 
-        separator
+        spacing
             : (newline | whitespace | lineComment | blockComment)*
             ;
 

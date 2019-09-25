@@ -28,28 +28,12 @@ namespace Lingu.Grammars
             lazyStart = new Lazy<Nonterminal?>(() => FindNonterminal(StartId));
         }
 
-        public Terminal? Whitespace { get; private set; }
-        public Terminal? Newline { get; private set; }
-        public Terminal? Keywords { get; private set; }
-        public Nonterminal? Start { get; private set; }
+        public Terminal? Whitespace => lazyWhitespace.Value;
+        public Terminal? Newline => lazyNewline.Value;
+        public Terminal? Keywords => lazyKeywords.Value;
+        public Nonterminal? Start => lazyStart.Value;
 
         public Grammar Grammar { get; }
-
-        public void Resolve()
-        {
-            foreach (var symbol in Grammar.OptionList)
-            {
-                var ttmp = FindTerminal(WhitespaceId);
-                if (ttmp != null && Whitespace != null)
-                {
-                    throw new GrammarException($"{WhitespaceId} already defined before");
-                }
-                else
-                {
-                    Whitespace = ttmp;
-                }
-            }
-        }
 
         private Terminal? FindTerminal(Symbol id)
         {

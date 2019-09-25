@@ -17,10 +17,6 @@ namespace Lingu.Runtime.Lexing
         public IContext Context { get; }
         public ISource Source { get; }
 
-        public IReadOnlyList<ISymbol> Symbols => Context.Symbols;
-        public Dfa Whitespace => Context.Whitespace;
-        public Dfa Common => Context.Common;
-
         int index = 0;
 
         public IConlex First()
@@ -44,9 +40,16 @@ namespace Lingu.Runtime.Lexing
         {
             SkipWhitespace();
 
+            var indexTmp = index;
             var terminalId = LexCommon();
+            if (terminalId == -1)
+            {
+                index = indexTmp;
+                terminalId = LexCommon();
+            }
 
-            var terminal = Symbols[terminalId] as ITerminal;
+
+            var terminal = Context.Symbols[terminalId] as ITerminal;
 
             Debug.Assert(terminal != null);
 
@@ -55,7 +58,7 @@ namespace Lingu.Runtime.Lexing
 
         private int LexCommon()
         {
-            DfaState? state = Common.Start;
+            DfaState? state = Context.Common.Start;
             while (!Source.IsEnd(index))
             {
                 var next = state.Match(Source[index]);
@@ -67,7 +70,7 @@ namespace Lingu.Runtime.Lexing
                 index += 1;
             }
 
-            if (state != null)
+            if (state != null && state.IsFinal)
             {
                 return state.Payload;
             }
@@ -77,7 +80,7 @@ namespace Lingu.Runtime.Lexing
 
         private void SkipWhitespace()
         {
-            DfaState? state = Whitespace.Start;
+            DfaState? state = Context.Whitespace.Start;
             while (!Source.IsEnd(index) && (state = state.Match(Source[index])) != null)
             {
                 index += 1;

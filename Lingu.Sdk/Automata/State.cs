@@ -85,7 +85,7 @@ namespace Lingu.Automata
 
         public override string ToString()
         {
-            return $"({Id},{IsFinal},{Payload.ToString()},({string.Join(",", Transitions)}))";
+            return $"({IsFinal},{Payload.ToString()},({string.Join(",", Transitions)}))";
         }
     }
 }

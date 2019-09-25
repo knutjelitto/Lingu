@@ -19,11 +19,12 @@ namespace Lingu.Bootstrap
 
             program.Check();
             //program.BuildTree("S1", "1+2");
-            //program.BuildTree("Lingu", "grammar {}");
+            program.BuildTree("S2", "gr s2 { }");
+            //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
-            //program.BuildTree("Expression");
-            program.BuildTree("Expr", "(1+2)*3");
+            //program.BuildTree("Expression", "(1+2)*3");
+            //program.BuildTree("Expr", "(1+2)*3");
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
@@ -50,8 +51,11 @@ namespace Lingu.Bootstrap
                 var grammar = builder.Build();
                 new Dumper(grammar).Dump(dests);
 
+                Debug.Assert(grammar.Eof != null);
+
                 var context = new LinguContext(
                     grammar.Symbols,
+                    grammar.Eof,
                     grammar.Productions,
                     grammar.ParseTable,
                     grammar.CommonDfa ?? throw new ArgumentNullException(nameof(grammar.CommonDfa)),

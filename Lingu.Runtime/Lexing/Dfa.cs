@@ -4,9 +4,11 @@ namespace Lingu.Runtime.Lexing
 {
     public class Dfa
     {
+        public static Dfa Nope = new Dfa();
+
         public readonly DfaState[] States;
 
-        public Dfa(DfaState[] states)
+        public Dfa(params DfaState[] states)
         {
             States = states;
         }

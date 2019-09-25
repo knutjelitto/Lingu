@@ -24,7 +24,7 @@ namespace Lingu.Automata
 
         public override string ToString()
         {
-            return $"{Set.ToIString()}->{TargetId.ToString()}";
+            return $"{Set.ToString()}->{TargetId.ToString()}";
         }
     }
 }

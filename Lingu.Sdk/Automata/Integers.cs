@@ -49,6 +49,8 @@ namespace Lingu.Automata
 
         public bool IsEmpty => ranges.Count == 0;
 
+        public bool IsAny => ranges.Count == 1 && Min == Any.Min && Max == Any.Max;
+
         public int Max => ranges.Last().Max;
 
         public int Min => ranges.First().Min;

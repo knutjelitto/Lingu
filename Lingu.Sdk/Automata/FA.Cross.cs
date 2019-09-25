@@ -1,3 +1,4 @@
+using Lingu.Commons;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,17 +52,26 @@ namespace Lingu.Automata
                             var state2 = dfa2.States[n2];
 
                             var newState = new State(isFinal(state1, state2));
-                            //if (newState.IsFinal)
-                            //{
-                                if (state1.IsPayload && !state2.IsPayload)
+                            if (state1.IsPayload && !state2.IsPayload)
+                            {
+                                newState.AddPayload(state1);
+                            }
+                            else if (!state1.IsPayload && state2.IsPayload)
+                            {
+                                newState.AddPayload(state2);
+                            }
+                            else if (state1.IsPayload && state2.IsPayload)
+                            {
+                                Debug.Assert(true);
+                                if (state1.Transitions.Count == 1 && state1.Transitions[0].Set.IsAny)
                                 {
                                     newState.AddPayload(state1);
                                 }
-                                else if (!state1.IsPayload && state2.IsPayload)
+                                else if (state2.Transitions.Count == 1 && state2.Transitions[0].Set.IsAny)
                                 {
                                     newState.AddPayload(state2);
                                 }
-                            //}
+                            }
 
                             cross[n1, n2] = newState;
                         }
@@ -181,6 +191,7 @@ namespace Lingu.Automata
                     return result;
                 }
 
+                [DebuggerDisplay("{DD()}")]
                 private struct Range
                 {
                     public Range(int min, int max)
@@ -190,19 +201,36 @@ namespace Lingu.Automata
                     }
                     public readonly int Min;
                     public readonly int Max;
+
+                    public string DD()
+                    {
+                        return $"[{CharRep.InRange(Min)}-{CharRep.InRange(Max)}]";
+                    }
                 }
 
+                [DebuggerDisplay("{DD()}")]
                 private class Trans
                 {
                     public Range Range;
                     public int Target;
+
+                    public string DD()
+                    {
+                        return $"{Range.DD()}->{Target}";
+                    }
                 }
 
+                [DebuggerDisplay("{DD()}")]
                 private class CrossTrans
                 {
                     public Range Range;
                     public int Target1;
                     public int Target2;
+
+                    public string DD()
+                    {
+                        return $"{Range.DD()}->({Target1},{Target2})";
+                    }
                 }
             }
         }

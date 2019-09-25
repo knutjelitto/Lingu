@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-
-using Lingu.Commons;
 
 namespace Lingu.Automata
 {
@@ -13,7 +9,40 @@ namespace Lingu.Automata
         {
             public static FA Minimize(FA dfa)
             {
-                return new Minimizer().Minimize(dfa);
+                return new Minimizer2().Minimize(dfa);
+            }
+
+            private class Minimizer2
+            {
+                public FA Minimize(FA dfa)
+                {
+                    EnsureDfa(dfa);
+                    dfa = Complete(dfa);
+                    EnsureComplete(dfa);
+
+                    var s = dfa.States;
+                    var n = s.Count;
+
+                    var table = new bool[n, n];
+
+                    for (var i = 0; i < n - 1; ++i)
+                    {
+                        for (var j = i + 1; j < n; ++j)
+                        {
+                            table[i, j] = s[i].IsFinal && !s[j].IsFinal /*|| !s[i].IsFinal && s[j].IsFinal*/;
+                        }
+                    }
+
+                    for (var i = 0; i < n - 1; ++i)
+                    {
+                        for (var j = i + 1; j < n; ++j)
+                        {
+                            
+                        }
+                    }
+
+                    return null;
+                }
             }
 
             private class Minimizer
@@ -67,12 +96,27 @@ namespace Lingu.Automata
                     // Hopcroft's algorithm
                     //
 
+#if true
+                    var nons = new StateSet(dfa.Nons.ToList());
+                    var all = dfa.States.ToList();
+
+                    var partitions = new List<StateSet> { nons };
+                    var working = new List<StateSet> { nons };
+
+                    var fgroups = from state in dfa.Finals group state by state.Payload;
+
+                    foreach (var fgroup in fgroups)
+                    {
+                        partitions.Add(new StateSet(fgroup));
+                    }
+#else
                     var finals = new StateSet(dfa.Finals.ToList());
-                    var nons = new StateSet(dfa.Inners.ToList());
+                    var nons = new StateSet(dfa.Nons.ToList());
                     var all = dfa.States.ToList();
 
                     var partitions = new List<StateSet> { finals, nons };
                     var working = new List<StateSet> { finals };
+#endif
 
                     var terminals = new HashSet<Integers>(all.SelectMany(state => state.Transitions).Select(transition => transition.Set));
 

@@ -7,6 +7,7 @@ namespace Lingu.Runtime.Structures
     public interface IContext
     {
         IReadOnlyList<ISymbol> Symbols { get; }
+        ITerminal Eof { get; }
         IReadOnlyList<IProduction> Productions { get; }
         ParseTable Table { get; }
         Dfa Whitespace { get; }

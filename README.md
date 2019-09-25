@@ -18,6 +18,7 @@ Try to understand (programming-) Languages
 ### DFA/NFA
 [Technique to Remove Indistinguishable State with Unreachable State and Dead State from Deterministic Finite Automata](https://doi.org/10.5120/16311-5540)
 [New method for generating helpful state of deterministic finite automata](http://www.ejournal.aessangli.in/ASEEJournals/CE194.pdf)
+[Minimization](https://arxiv.org/pdf/0802.2826.pdf)
 
 ### Rust
 [Rust reference](https://doc.rust-lang.org/reference/index.html)

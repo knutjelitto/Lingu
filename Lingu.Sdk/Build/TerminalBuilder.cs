@@ -6,7 +6,6 @@ using System.Linq;
 using Lingu.Automata;
 using Lingu.Errors;
 using Lingu.Grammars;
-using Lingu.Runtime.Lexing;
 using Lingu.Tree;
 
 #nullable enable
@@ -35,7 +34,6 @@ namespace Lingu.Build
         {
             BuildTerminalsPass4(); // terminal fragments (deps on nonterminals)
             BuildTerminalsPass5(); // terminal renumber (non-fragments first)
-            BuildTerminalsPass6(); // terminal compile (create automatons)
         }
 
         /// <summary>
@@ -65,7 +63,9 @@ namespace Lingu.Build
 
             Debug.Assert(dfa != null);
 
-            Grammar.CommonDfa = dfa.Convert();
+            var runtimeDfa = dfa.Convert();
+
+            Grammar.CommonDfa = runtimeDfa;
         }
 
         /// <summary>
@@ -129,14 +129,14 @@ namespace Lingu.Build
                 CheckTerminalRecursion(terminal);
             }
 
-            void CheckTerminalRecursion(Terminal terminal)
+            static void CheckTerminalRecursion(Terminal terminal)
             {
                 var path = new Stack<RawTerminal>();
 
                 CheckTerminalRecursion2(terminal.Raw, path, terminal.Raw.Expression);
             }
 
-            void CheckTerminalRecursion2(Terminal terminal, Stack<RawTerminal> path, IExpression expression)
+            static void CheckTerminalRecursion2(Terminal terminal, Stack<RawTerminal> path, IExpression expression)
             {
                 if (expression is Name name)
                 {
@@ -189,7 +189,7 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass5()
         {
-            var eof = new Terminal("$");
+            var eof = new Terminal("$eof$");
             eof.Raw = new RawTerminal(eof.Name, new Eof(eof.Name));
             eof.IsGenerated = true;
             Grammar.Terminals.Add(eof);
@@ -197,8 +197,10 @@ namespace Lingu.Build
 
             if (Grammar.Options.Whitespace == null)
             {
-                var ws = new Terminal("&");
-                ws.IsGenerated = true;
+                var ws = new Terminal("$spc$")
+                {
+                    IsGenerated = true
+                };
                 var alt = new Alternates(new Tree.String("' '"), new Tree.String("'\t'"), new Tree.String("'\r'"), new Tree.String("'\n'"));
                 var star = Repeat.From(alt, 0);
                 ws.Raw = new RawTerminal(ws.Name, star);
@@ -226,23 +228,6 @@ namespace Lingu.Build
             }
 
             Grammar.Terminals.Sort(terminal => terminal.Id);
-        }
-
-        /// <summary>
-        /// Compile
-        /// </summary>
-        private void BuildTerminalsPass6()
-        {
-            foreach (var terminal in Grammar.Terminals)
-            {
-                BuildTerminal(terminal);
-            }
-
-            void BuildTerminal(Terminal terminal)
-            {
-                terminal.Bytes = DfaWriter.GetBytes(terminal.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead());
-                terminal.Dfa = new DfaReader(terminal.Bytes).Read();
-            }
         }
     }
 }

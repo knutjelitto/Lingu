@@ -3,7 +3,7 @@
     options
     {
         Start = expr;
-        Whitepace = separator;
+        Whitespace = separator;
     }
     terminals
     {
