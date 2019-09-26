@@ -1,0 +1,25 @@
+﻿grammar Wiki
+{
+    options
+    {
+		Start = start;
+        Whitespace = ws;
+        Idendifier = id;
+    }
+    rules
+    {
+		start
+            : ,'grammar' id ,'{' item ( ,',' item )* ,'}'
+            ;
+        item
+            : id ,'=' id
+            ;
+    }
+    terminals
+    {
+        id  : ('a' .. 'z') ('a' .. 'z' | '0' .. '9')*
+            ;
+        ws  : ' ' | '\t' | '\n' | '\r'
+            ;
+    }
+}

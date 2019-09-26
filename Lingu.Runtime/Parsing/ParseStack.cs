@@ -1,9 +1,11 @@
-﻿using Lingu.Runtime.Structures;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+
+using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Parsing
 {
+    [DebuggerDisplay("{DD()}")]
     internal class ParseStack
     {
         private readonly List<StackItem> items = new List<StackItem>();
@@ -30,21 +32,29 @@ namespace Lingu.Runtime.Parsing
             return items[top];
         }
 
-        public IReadOnlyList<IToken> Pop(int n)
+        public IEnumerable<IToken> Pop(int n)
         {
             top -= n;
 
-            return pop().ToArray();
-
-            IEnumerable<IToken> pop()
+            for (var i = top; i < top + n; ++i)
             {
-                for (var i = top; i < top + n; ++i)
-                {
-                    yield return items[i].Token;
-                }
+                yield return items[i].Token;
             }
         }
 
         public int State => top == 0 ? 0 : items[top - 1].State;
+
+        public string DD()
+        {
+            return $"[0,{string.Join(",",DDD())}]";
+
+            IEnumerable<string> DDD()
+            {
+                for (var i = 0; i < top; ++i)
+                {
+                    yield return items[i].DD();
+                }
+            }
+        }
     }
 }

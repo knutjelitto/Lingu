@@ -17,14 +17,14 @@ namespace Lingu.Automata
 
             if (final == null)
             {
-                if (!States.Any(state => state.IsFinal))
+                if (!States.Any(state => state.Final))
                 {
                     Debug.Assert(false, "no final state in DFA");
                 }
             }
             else
             {
-                if (States.Any(state => state.IsFinal))
+                if (States.Any(state => state.Final))
                 {
                     Debug.Assert(false, "final state in NFA");
 
@@ -35,8 +35,8 @@ namespace Lingu.Automata
         public State Start { get; }
         public State Final { get; private set; }
         public List<State> States { get; }
-        public IEnumerable<State> Finals => States.Where(state => state.IsFinal);
-        public IEnumerable<State> Nons => States.Where(state => !state.IsFinal);
+        public IEnumerable<State> Finals => States.Where(state => state.Final);
+        public IEnumerable<State> Nons => States.Where(state => !state.Final);
 
         public static FA From(State start, State final)
         {
@@ -55,8 +55,8 @@ namespace Lingu.Automata
         {
             foreach (var state in States)
             {
-                var finA = state.IsFinal ? "(" : (state == Final ? "[" : ".");
-                var finB = state.IsFinal ? ")" : (state == Final ? "]" : ".");
+                var finA = state.Final ? "(" : (state == Final ? "[" : ".");
+                var finB = state.Final ? ")" : (state == Final ? "]" : ".");
                 writer.WriteLine($"{prefix}{finA}{state.Id}{finB}");
                 foreach (var transition in state.TerminalTransitions)
                 {
@@ -140,7 +140,7 @@ namespace Lingu.Automata
 
                 if (!map.TryGetValue(state, out var mapped))
                 {
-                    mapped = new State(state.IsFinal);
+                    mapped = new State(state.Final);
                     mapped.AddPayload(state);
                     map.Add(state, mapped);
 

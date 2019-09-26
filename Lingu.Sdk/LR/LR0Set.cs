@@ -1,4 +1,5 @@
 using Lingu.Grammars;
+using System.Diagnostics;
 
 #nullable enable
 
@@ -26,6 +27,7 @@ namespace Lingu.LR
                 {
                     foreach (var production in nonterminal.Productions)
                     {
+                        Debug.Assert(production.Initial != null);
                         Add(new LR0(production.Initial, false));
                     }
                 }

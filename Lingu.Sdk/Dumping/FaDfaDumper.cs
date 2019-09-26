@@ -20,8 +20,8 @@ namespace Lingu.Dumping
 
         public void Dump(IndentWriter writer, State state)
         {
-            var finA = state.IsFinal ? "(" : ".";
-            var finB = state.IsFinal ? ")" : ".";
+            var finA = state.Final ? "(" : ".";
+            var finB = state.Final ? ")" : ".";
             var pay = state.IsPayload ? $"  «{state.Payload}»" : string.Empty;
 
             writer.WriteLine($"{finA}{state.Id}{finB}{pay}");

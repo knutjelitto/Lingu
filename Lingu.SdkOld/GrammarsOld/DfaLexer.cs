@@ -34,7 +34,7 @@ namespace Lingu.GrammarsOld
             return false;
         }
 
-        public override bool IsFinal => Current.IsFinal;
+        public override bool IsFinal => Current.Final;
 
         public override string Finish(string input)
         {

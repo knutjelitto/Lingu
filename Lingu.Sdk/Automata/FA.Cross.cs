@@ -12,17 +12,17 @@ namespace Lingu.Automata
         {
             public static FA Union(FA dfa1, FA dfa2)
             {
-                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.IsFinal || s2.IsFinal);
+                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.Final || s2.Final);
             }
 
             public static FA Intersect(FA dfa1, FA dfa2)
             {
-                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.IsFinal && s2.IsFinal);
+                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.Final && s2.Final);
             }
 
             public static FA Difference(FA dfa1, FA dfa2)
             {
-                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.IsFinal && !s2.IsFinal);
+                return CrossBuilder.Build(dfa1, dfa2, (s1, s2) => s1.Final && !s2.Final);
             }
 
             private static class CrossBuilder
@@ -63,6 +63,7 @@ namespace Lingu.Automata
                             else if (state1.IsPayload && state2.IsPayload)
                             {
                                 Debug.Assert(true);
+#if true
                                 if (state1.Transitions.Count == 1 && state1.Transitions[0].Set.IsAny)
                                 {
                                     newState.AddPayload(state1);
@@ -71,6 +72,7 @@ namespace Lingu.Automata
                                 {
                                     newState.AddPayload(state2);
                                 }
+#endif
                             }
 
                             cross[n1, n2] = newState;
@@ -97,6 +99,8 @@ namespace Lingu.Automata
                     dfa = dfa.RemoveDead();
 
                     dfa = dfa.Minimize();
+
+                    dfa = dfa.RemoveDead();
 
                     return dfa;
                 }

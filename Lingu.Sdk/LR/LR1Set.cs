@@ -50,6 +50,7 @@ namespace Lingu.LR
                             }
                             if (add)
                             {
+                                Debug.Assert(production.Initial != null);
                                 Add(new LR1(production.Initial, false, lookahead));
                             }
                         }

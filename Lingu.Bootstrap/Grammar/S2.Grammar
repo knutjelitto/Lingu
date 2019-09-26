@@ -15,7 +15,7 @@
     rules
     {
 		start
-            : 'gr' id '{' '}'
+            : ,'grammar' id ,'{' ,'}'
             ;
     }
 }

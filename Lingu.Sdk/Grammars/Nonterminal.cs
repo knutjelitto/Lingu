@@ -3,7 +3,6 @@ using System.Linq;
 
 using Lingu.Errors;
 using Lingu.Runtime.Structures;
-using Lingu.Tree;
 
 #nullable enable
 

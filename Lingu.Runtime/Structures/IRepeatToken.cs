@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Lingu.Runtime.Structures
 {
-    public interface INonterminalToken : INonleafToken
+    public interface IRepeatToken : INonleafToken
     {
-        INonterminal Nonterminal { get; }
+        void Add(IToken token);
     }
 }

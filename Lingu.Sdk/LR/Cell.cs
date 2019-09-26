@@ -1,22 +1,43 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+
+#nullable enable
 
 namespace Lingu.LR
 {
-    public abstract class Cell
+    public class TableCell : IEnumerable<TableAction>
+    {
+        public readonly List<TableAction> Actions = new List<TableAction>();
+
+        public void Add(TableAction action)
+        {
+            Actions.Add(action);
+        }
+
+        public IEnumerator<TableAction> GetEnumerator()
+        {
+            return ((IEnumerable<TableAction>)this.Actions).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<TableAction>)this.Actions).GetEnumerator();
+        }
+    }
+
+    public abstract class TableAction
     {
     }
 
-    public class Accept : Cell
+    public class Accept : TableAction
     {
     }
 
-    public class Error : Cell
+    public class Error : TableAction
     {
     }
 
-    public class Shift : Cell 
+    public class Shift : TableAction 
     {
         public Shift(int state)
         {
@@ -26,7 +47,7 @@ namespace Lingu.LR
         public int State { get; }
     }
 
-    public class Reduce : Cell
+    public class Reduce : TableAction
     {
         public Reduce(int production)
         {

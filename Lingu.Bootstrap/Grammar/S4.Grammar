@@ -1,0 +1,43 @@
+﻿grammar S4
+{
+    options
+    {
+		Start = start;
+        Whitespace = ws;
+    }
+    terminals
+    {
+        text
+            : '\'' ( (. - '\'') | '\\\'' | escapes )+ '\''
+            ;
+
+        hexDigit
+            : '0' .. '9'
+            | 'a' .. 'f'
+            | 'A' .. 'f'
+            ;
+
+        escapes       
+            : '\\\\'                        // Backslash
+            | '\\0'                         // Unicode character 0
+            | '\\a'                         // Alert (character 7)
+            | '\\b'                         // Backspace (character 8)
+            | '\\f'                         // Form feed (character 12)
+            | '\\n'                         // New line (character 10)
+            | '\\r'                         // Carriage return (character 13)
+            | '\\t'                         // Horizontal tab (character 9)
+            | '\\v'                         // Vertical quote (character 11)
+            | '\\u{' hexDigit{1,6} '}'      // Unicode code point
+            ;
+
+        ws  : ' ' | '\t' | '\n' | '\r'
+            ;
+    }
+    rules
+    {
+
+		start
+            : text
+            ;
+    }
+}

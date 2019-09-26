@@ -17,7 +17,7 @@ namespace Lingu.Automata.Tests
             Assert.IsNotNull(sut.Set);
             Assert.AreEqual(0, sut.Set.Count);
             Assert.IsNotNull(sut.DfaState);
-            Assert.AreEqual(false, sut.DfaState.IsFinal);
+            Assert.AreEqual(false, sut.DfaState.Final);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace Lingu.Automata.Tests
             Assert.IsNotNull(sut.Set);
             Assert.AreEqual(1, sut.Set.Count);
             Assert.IsNotNull(sut.DfaState);
-            Assert.AreEqual(true, sut.DfaState.IsFinal);
+            Assert.AreEqual(true, sut.DfaState.Final);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace Lingu.Automata.Tests
             Assert.IsNotNull(sut.Set);
             Assert.AreEqual(2, sut.Set.Count);
             Assert.IsNotNull(sut.DfaState);
-            Assert.AreEqual(true, sut.DfaState.IsFinal);
+            Assert.AreEqual(true, sut.DfaState.Final);
         }
 
 

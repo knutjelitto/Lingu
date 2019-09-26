@@ -20,27 +20,27 @@ namespace Lingu.Runtime.Lexing
             var states = new DfaState[stateCount];
             for (var i = 0; i < stateCount; ++i)
             {
-                var flags = ReadBool() ? DfaStateFlag.Final : DfaStateFlag.None;
+                var final = ReadBool();
                 var payload = ReadInt32();
                 if (payload != -1)
                 {
                     Debug.Assert(true);
                 }
                 var trans = new DfaTrans[ReadInt32()];
-                states[i] = new DfaState(i, flags, payload, trans);
+                states[i] = new DfaState(i, final, payload, trans);
             }
 
             var setCount = ReadInt32();
-            var sets = new DfaSet[setCount];
+            var sets = new Set[setCount];
             for (var s = 0; s < setCount; ++s)
             {
                 var intervalCount = ReadInt32();
-                var intervals = new DfaInterval[intervalCount];
+                var intervals = new Interval[intervalCount];
                 for (var i = 0; i < intervalCount; ++i)
                 {
-                    intervals[i] = new DfaInterval(ReadInt32(), ReadInt32());
+                    intervals[i] = new Interval(ReadInt32(), ReadInt32());
                 }
-                sets[s] = new DfaSet(intervals);
+                sets[s] = new Set(intervals);
             }
 
             var transitionCount = ReadInt32();

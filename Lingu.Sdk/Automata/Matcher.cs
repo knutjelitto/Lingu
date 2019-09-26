@@ -36,7 +36,7 @@
                 }
             }
 
-            return State.IsFinal;
+            return State.Final;
         }
     }
 }

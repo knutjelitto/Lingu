@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Lingu.Runtime.Lexing
 {
-    public struct DfaInterval
+    public struct Interval
     {
         public readonly int Min;
         public readonly int Max;
 
-        public DfaInterval(int min, int max)
+        public Interval(int min, int max)
         {
             Min = min;
             Max = max;

@@ -1,7 +1,6 @@
-﻿using Lingu.Runtime.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+
+using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Concretes
 {
@@ -14,5 +13,10 @@ namespace Lingu.Runtime.Concretes
 
         public ISymbol Symbol { get; }
         public ILocation Location => throw new NotImplementedException();
+
+        public override string? ToString()
+        {
+            return $"{Symbol}"; 
+        }
     }
 }

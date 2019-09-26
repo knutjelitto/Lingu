@@ -32,7 +32,7 @@ namespace Lingu.Automata
                         {
                             if (i >= j) continue;
 
-                            table[i, j] = s[i].IsFinal && !s[j].IsFinal;
+                            table[i, j] = s[i].Final && !s[j].Final || s[i].Final && s[j].Final && s[i].Payload != s[j].Payload;
                         }
                     }
 
@@ -98,32 +98,29 @@ namespace Lingu.Automata
 
                             if (!table[i,j])
                             {
-                                var s1 = s[i];
-                                var s2 = s[j];
-                                bool newSet = true;
-                                foreach (var set in combines)
-                                {
-                                    if (set.Contains(s1))
-                                    {
-                                        set.Add(s2);
-                                        newSet = false;
-                                        continue;
-                                    }
-                                    if (set.Contains(s2))
-                                    {
-                                        set.Add(s1);
-                                        newSet = false;
-                                        continue;
-                                    }
-                                    newSet = true;
-                                }
-                                if (newSet)
-                                {
-                                    combines.Add(new StateSet(s1, s2));
-                                }
+                                combines.Add(new StateSet { s[i], s[j] });
                             }
                         }
                     }
+
+                    var current = 0;
+                    while (current < combines.Count)
+                    {
+                        for (var i = current + 1; i < combines.Count;)
+                        {
+                            if (combines[current].Overlaps(combines[i]))
+                            {
+                                combines[current].Add(combines[i]);
+                                combines.RemoveAt(i);
+                            }
+                            else
+                            {
+                                i += 1;
+                            }
+                        }
+                        current += 1;
+                    }
+
 
                     foreach (var set in combines)
                     {
@@ -147,8 +144,40 @@ namespace Lingu.Automata
 
                     var mini = From(dfa.Start);
 
+                    mini = MergeTransitions(mini);
+
                     return mini;
                 }
+
+                private FA MergeTransitions(FA dfa)
+                {
+                    foreach (var state in dfa.States)
+                    {
+                        //EnsureDfaTransition(state);
+
+                        var i = 0;
+
+                        while (i < state.Transitions.Count)
+                        {
+                            var j = i + 1;
+                            while (j < state.Transitions.Count)
+                            {
+                                if (state.Transitions[i].Target.Equals(state.Transitions[j].Target))
+                                {
+                                    state.Transitions[i].Set.Add(state.Transitions[j].Set);
+                                    state.Transitions.RemoveAt(j);
+                                    continue;
+                                }
+                                j += 1;
+                            }
+                            i += 1;
+                        }
+                    }
+
+                    return dfa;
+                }
+
+
             }
 
             private class Minimizer

@@ -30,9 +30,9 @@ namespace Lingu.Dumping
             writer.WriteLine($"{token.Symbol.Name}");
             writer.Indend(() =>
             {
-                if (token is INonterminalToken nonterminal)
+                if (token is INonleafToken nonleaf)
                 {
-                    foreach (var child in nonterminal.Children)
+                    foreach (var child in nonleaf.Children)
                     {
                         Dump(writer, child);
                     }

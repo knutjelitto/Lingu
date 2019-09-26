@@ -5,6 +5,7 @@ using System.Linq;
 
 using Lingu.Automata;
 using Lingu.Grammars;
+using Lingu.Runtime.Structures;
 using Lingu.Writers;
 
 namespace Lingu.Tree

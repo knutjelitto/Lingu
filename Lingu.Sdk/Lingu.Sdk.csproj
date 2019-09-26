@@ -5,7 +5,10 @@
     <RootNamespace>Lingu</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <!--<Nullable>enable</Nullable>-->
+    <!--
+    <Nullable>enable</Nullable>
+    <NullableContextOptions>enable</NullableContextOptions>
+    -->
   </PropertyGroup>
 
   <ItemGroup>

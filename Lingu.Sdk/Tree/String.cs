@@ -6,6 +6,8 @@ using Lingu.Commons;
 using Lingu.Grammars;
 using Lingu.Writers;
 
+#nullable enable
+
 namespace Lingu.Tree
 {
     public class String : Atom
@@ -19,8 +21,6 @@ namespace Lingu.Tree
         public string Text { get; }
         public string Value { get; }
 
-        public Terminal Terminal { get; set; }
-
         public override FA GetFA()
         {
             return FA.From(Value);
@@ -31,7 +31,7 @@ namespace Lingu.Tree
             output.Write(ToString());
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is String other && Value == other.Value;
         }

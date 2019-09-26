@@ -1,6 +1,6 @@
 #nullable enable
 
-namespace Lingu.Grammars
+namespace Lingu.Runtime.Structures
 {
     public enum LiftKind
     {

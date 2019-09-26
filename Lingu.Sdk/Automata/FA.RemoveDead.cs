@@ -66,7 +66,7 @@ namespace Lingu.Automata
                 {
                     var set = closures[state];
 
-                    if (set.All(s => !s.IsFinal))
+                    if (set.All(s => !s.Final))
                     {
                         Debug.Assert(true);
 
@@ -90,7 +90,7 @@ namespace Lingu.Automata
                 {
                     if (!map.TryGetValue(state, out var mapped))
                     {
-                        mapped = new State(state.IsFinal);
+                        mapped = new State(state.Final);
                         mapped.AddPayload(state);
                         map.Add(state, mapped);
 

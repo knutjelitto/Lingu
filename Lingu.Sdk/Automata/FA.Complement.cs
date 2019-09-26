@@ -17,7 +17,7 @@ namespace Lingu.Automata
 
                 for (var i = 0; i < dfa.States.Count; ++i)
                 {
-                    dfa.States[i].IsFinal = !dfa.States[i].IsFinal;
+                    dfa.States[i].Final = !dfa.States[i].Final;
                 }
 
                 return dfa;

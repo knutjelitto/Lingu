@@ -4,6 +4,7 @@ using System.Linq;
 
 using Lingu.Grammars;
 using Lingu.LR;
+using Lingu.Runtime.Errors;
 using Lingu.Runtime.Parsing;
 
 #nullable enable
@@ -143,7 +144,14 @@ namespace Lingu.Build
             int states = Grammar.LR1Sets.Count;
             int symbols = Grammar.PSymbols.Count;
 
-            var table = new Cell[states, symbols];
+            var table = new TableCell[states, symbols];
+            for (var i = 0; i < states; ++i)
+            {
+                for (var j = 0; j < symbols; ++j)
+                {
+                    table[i, j] = new TableCell();
+                }
+            }
 
             foreach (var state in Grammar.LR1Sets)
             {
@@ -157,21 +165,21 @@ namespace Lingu.Build
                         {
                             if (ReferenceEquals(terminal, Grammar.Eof) && prodId == 0)
                             {
-                                table[state.Id, terminal.Pid] = new Accept();
+                                table[state.Id, terminal.Pid].Add(new Accept());
                             }
                             else
                             {
-                                table[state.Id, terminal.Pid] = new Reduce(item.Core.Production.Id);
+                                table[state.Id, terminal.Pid].Add(new Reduce(item.Core.Production.Id));
                             }
                         }
                     }
                     else if (item.PostDot is Terminal terminal)
                     {
-                        table[state.Id, terminal.Pid] = new Shift(item.ToState);
+                        table[state.Id, terminal.Pid].Add(new Shift(item.ToState));
                     }
                     else if (item.PostDot is Nonterminal nonterminal)
                     {
-                        table[state.Id, nonterminal.Pid] = new Shift(item.ToState);
+                        table[state.Id, nonterminal.Pid].Add(new Shift(item.ToState));
                     }
                 }
             }
@@ -198,7 +206,7 @@ namespace Lingu.Build
                 for (var symNo = 0; symNo < numberOfSymbols; ++symNo)
                 {
                     TableItem entry;
-                    switch (fullTable[stateNo, symNo])
+                    switch (fullTable[stateNo, symNo].LastOrDefault())
                     {
                         case Accept _:
                             entry = TableItem.Accept;

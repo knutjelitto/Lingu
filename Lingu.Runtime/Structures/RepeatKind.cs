@@ -1,4 +1,4 @@
-namespace Lingu.Tree
+namespace Lingu.Runtime.Structures
 {
     public enum RepeatKind
     {

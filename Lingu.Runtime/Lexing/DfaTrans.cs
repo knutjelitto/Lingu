@@ -7,9 +7,9 @@ namespace Lingu.Runtime.Lexing
     public struct DfaTrans
     {
         public readonly DfaState Target;
-        public readonly DfaSet Set;
+        public readonly Set Set;
 
-        public DfaTrans(DfaState target, DfaSet set)
+        public DfaTrans(DfaState target, Set set)
         {
             Target = target;
             Set = set;

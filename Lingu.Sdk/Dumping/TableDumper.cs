@@ -105,7 +105,7 @@ namespace Lingu.Dumping
                         writer.Write(vbar);
                     }
 
-                    writer.Write(Short(table[stateNo, symNo]));
+                    writer.Write(Short(table[stateNo, symNo].LastOrDefault()));
                 }
                 writer.Write(vbar);
 
@@ -135,7 +135,7 @@ namespace Lingu.Dumping
             return Short(symbol.ToShort());
         }
 
-        private string Short(Cell cell)
+        private string Short(TableAction cell)
         {
             string s = string.Empty;
             if (cell is Reduce reduce)

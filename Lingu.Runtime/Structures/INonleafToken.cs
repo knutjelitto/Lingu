@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Lingu.Runtime.Structures
 {
-    public interface INonterminalToken : INonleafToken
+    public interface INonleafToken : IToken
     {
-        INonterminal Nonterminal { get; }
+        IReadOnlyList<IToken> Children { get; }
     }
 }

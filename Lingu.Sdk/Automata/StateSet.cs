@@ -4,6 +4,8 @@ using System.Linq;
 
 using Lingu.Commons;
 
+#nullable enable
+
 namespace Lingu.Automata
 {
     public class StateSet : IEnumerable<State>
@@ -52,12 +54,22 @@ namespace Lingu.Automata
             this.set.Add(state);
         }
 
+        public void Add(StateSet other)
+        {
+            this.set.UnionWith(other);
+        }
+
         public bool Contains(State state)
         {
             return this.set.Contains(state);
         }
 
-        public override bool Equals(object obj)
+        public bool Overlaps(StateSet other)
+        {
+            return other.Any(otherState => Contains(otherState));
+        }
+
+        public override bool Equals(object? obj)
         {
             return obj is StateSet other && this.set.SetEquals(other.set);
         }

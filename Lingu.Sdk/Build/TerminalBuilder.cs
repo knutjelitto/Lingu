@@ -42,7 +42,17 @@ namespace Lingu.Build
         public void BuildPass3()
         {
             var terminals = Grammar.Terminals.Where(t => t.IsPid).ToList();
-            var terminalDfas = terminals.Select(t => t.Raw.Expression.GetFA().ToDfa().Minimize().RemoveDead()).ToList();
+            var terminalDfas = new List<FA>();
+            for (var i = 0; i < terminals.Count; ++i)
+            {
+                var terminal = terminals[i];
+                var fa = terminal.Raw.Expression.GetFA();
+                fa = fa.ToDfa();
+                fa = fa.Minimize();
+                fa = fa.RemoveDead();
+
+                terminalDfas.Add(fa);
+            }
 
             FA? dfa = null;
             for (var i = 0; i < terminals.Count; ++i)

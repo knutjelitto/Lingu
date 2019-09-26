@@ -5,6 +5,7 @@ using System.Linq;
 
 using Lingu.Errors;
 using Lingu.Grammars;
+using Lingu.Runtime.Structures;
 using Lingu.Tree;
 
 #nullable enable

@@ -20,8 +20,8 @@ namespace Lingu.Dumping
 
         public void Dump(IndentWriter writer, DfaState state)
         {
-            var finA = state.IsFinal ? "(" : ".";
-            var finB = state.IsFinal ? ")" : ".";
+            var finA = state.Final ? "(" : ".";
+            var finB = state.Final ? ")" : ".";
             var pay = state.Payload >= 0 ? $"  «{state.Payload}»" : string.Empty;
 
             writer.WriteLine($"{finA}{state.Id}{finB}{pay}");
@@ -34,12 +34,12 @@ namespace Lingu.Dumping
             });
         }
 
-        private string Str(DfaSet set)
+        private string Str(Set set)
         {
             return $"[{string.Join(",", set.Intervals.Select(i => Str(i)))}]";
         }
 
-        private string Str(DfaInterval interval)
+        private string Str(Interval interval)
         {
             if (interval.Min == interval.Max)
             {

@@ -1,3 +1,4 @@
+#if false
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -36,3 +37,4 @@ namespace Lingu.Commons
         }
     }
 }
+#endif

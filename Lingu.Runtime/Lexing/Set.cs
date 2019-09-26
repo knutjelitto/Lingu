@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Lingu.Runtime.Lexing
 {
-    public struct DfaSet
+    public struct Set
     {
-        public readonly DfaInterval[] Intervals;
+        public readonly Interval[] Intervals;
 
-        public DfaSet(DfaInterval[] intervals)
+        public Set(Interval[] intervals)
         {
             Intervals = intervals;
         }

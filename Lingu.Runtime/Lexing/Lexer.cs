@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
 using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Structures;
 
@@ -70,7 +69,7 @@ namespace Lingu.Runtime.Lexing
                 index += 1;
             }
 
-            if (state != null && state.IsFinal)
+            if (state != null && state.Final)
             {
                 return state.Payload;
             }

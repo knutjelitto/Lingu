@@ -19,8 +19,10 @@ namespace Lingu.Bootstrap
 
             program.Check();
             //program.BuildTree("S1", "1+2");
-            program.BuildTree("S2", "gr s2 { }");
-            //program.BuildTree("Lingu", "grammar x {}");
+            //program.BuildTree("S2", "grammar s2 { }");
+            //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
+            //program.BuildTree("S4", "' '");
+            program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
             //program.BuildTree("Expression", "(1+2)*3");

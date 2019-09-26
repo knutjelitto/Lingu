@@ -30,7 +30,7 @@ namespace Lingu.Automata
                 dfa.States.Add(dfa.Final);
                 foreach (var state in dfa.States)
                 {
-                    state.IsFinal = false;
+                    state.Final = false;
                 }
 
                 return dfa;

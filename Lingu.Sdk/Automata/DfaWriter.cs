@@ -53,7 +53,7 @@ namespace Lingu.Automata
         {
             foreach (var state in states)
             {
-                writer.Write(state.IsFinal);
+                writer.Write(state.Final);
                 if (state.Payload != -1)
                 {
                     Debug.Assert(true);

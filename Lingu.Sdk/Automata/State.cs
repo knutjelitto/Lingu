@@ -11,13 +11,13 @@ namespace Lingu.Automata
     {
         public State(bool isFinal = false)
         {
-            IsFinal = isFinal;
+            Final = isFinal;
             Id = -1;
             Payload = -1;
             Transitions = new List<Transition>();
         }
 
-        public bool IsFinal { get; set; }
+        public bool Final { get; set; }
         public int Id { get; set; }
         public int Payload { get; private set; }
         public bool IsPayload => Payload >= 0;
@@ -85,7 +85,7 @@ namespace Lingu.Automata
 
         public override string ToString()
         {
-            return $"({IsFinal},{Payload.ToString()},({string.Join(",", Transitions)}))";
+            return $"({Id},{Final},{Payload.ToString()},({string.Join(",", Transitions)}))";
         }
     }
 }

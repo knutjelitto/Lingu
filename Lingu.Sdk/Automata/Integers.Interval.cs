@@ -1,10 +1,11 @@
-using Lingu.Commons;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+
+using Lingu.Commons;
+
+#nullable enable
 
 namespace Lingu.Automata
 {
@@ -122,7 +123,7 @@ namespace Lingu.Automata
                 return GetEnumerator();
             }
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 return obj is Interval other && Min == other.Min && Max == other.Max;
             }
