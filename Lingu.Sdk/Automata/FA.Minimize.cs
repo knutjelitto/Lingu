@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Lingu.Automata
@@ -25,23 +26,128 @@ namespace Lingu.Automata
 
                     var table = new bool[n, n];
 
-                    for (var i = 0; i < n - 1; ++i)
+                    for (var i = 0; i < n; ++i)
                     {
-                        for (var j = i + 1; j < n; ++j)
+                        for (var j = 0; j < n; ++j)
                         {
-                            table[i, j] = s[i].IsFinal && !s[j].IsFinal /*|| !s[i].IsFinal && s[j].IsFinal*/;
+                            if (i >= j) continue;
+
+                            table[i, j] = s[i].IsFinal && !s[j].IsFinal;
                         }
                     }
 
-                    for (var i = 0; i < n - 1; ++i)
+                    bool more = true;
+                    while (more)
                     {
-                        for (var j = i + 1; j < n; ++j)
+                        more = false;
+                        for (var i = 0; i < n; ++i)
                         {
-                            
+                            for (var j = 0; j < n; ++j)
+                            {
+                                if (i >= j) continue;
+
+                                if (!table[i, j])
+                                {
+                                    foreach (var ti in s[i].Transitions)
+                                    {
+                                        foreach (var tj in s[j].Transitions)
+                                        {
+                                            if (ti.Set.Overlaps(tj.Set))
+                                            {
+                                                var si = ti.Target.Id;
+                                                var sj = tj.Target.Id;
+                                                if (si == sj)
+                                                {
+                                                    continue;
+                                                }
+                                                if (si > sj)
+                                                {
+                                                    var tmp = si;
+                                                    si = sj;
+                                                    sj = tmp;
+
+                                                    Debug.Assert(si < sj);
+                                                }
+
+                                                var before = more;
+                                                if (table[si,sj])
+                                                {
+                                                    var isij = table[i, j];
+                                                    more = more || !table[i, j];
+                                                    if (!before && more)
+                                                    {
+                                                        Debug.Assert(true);
+                                                    }
+                                                    table[i, j] = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
-                    return null;
+                    var combines = new List<StateSet>();
+
+                    for (var i = 0; i < n; ++i)
+                    {
+                        for (var j = 0; j < n; ++j)
+                        {
+                            if (i >= j) continue;
+
+                            if (!table[i,j])
+                            {
+                                var s1 = s[i];
+                                var s2 = s[j];
+                                bool newSet = true;
+                                foreach (var set in combines)
+                                {
+                                    if (set.Contains(s1))
+                                    {
+                                        set.Add(s2);
+                                        newSet = false;
+                                        continue;
+                                    }
+                                    if (set.Contains(s2))
+                                    {
+                                        set.Add(s1);
+                                        newSet = false;
+                                        continue;
+                                    }
+                                    newSet = true;
+                                }
+                                if (newSet)
+                                {
+                                    combines.Add(new StateSet(s1, s2));
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var set in combines)
+                    {
+                        var premium = set.First();
+
+                        var remove = set.Skip(1).ToList();
+
+                        foreach (var state in s)
+                        {
+                            foreach (var transition in state.Transitions)
+                            {
+                                if (remove.Contains(transition.Target))
+                                {
+                                    transition.Retarget(premium);
+                                }
+                            }
+                        }
+
+                        EnsureDistinctTransitions(premium);
+                    }
+
+                    var mini = From(dfa.Start);
+
+                    return mini;
                 }
             }
 
