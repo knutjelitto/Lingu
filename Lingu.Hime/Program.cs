@@ -40,7 +40,7 @@ namespace Lingu.Hime
             Generate(options, source);
 
             var tweaker = new Tweaker(parser, visitor);
-            Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.File} ...");
+            Console.WriteLine($"[Info] Tweaking new Visitor at {visitor.FileName} ...");
             tweaker.TweakVisitor();
             tweaker.TweakLexer(lexer);
             tweaker.TweakParser(parser);

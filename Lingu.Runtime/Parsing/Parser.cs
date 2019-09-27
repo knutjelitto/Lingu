@@ -19,6 +19,7 @@ namespace Lingu.Runtime.Parsing
 
         public IContext Context { get; }
         public ILexer Lexer { get; }
+        public IErrorHandler Errors => Context.Errors;
 
         private readonly ParseStack stack;
 
@@ -32,8 +33,9 @@ namespace Lingu.Runtime.Parsing
                 switch (action)
                 {
                     case TableItem.Error:
-                        var msg = $"expected: {FmtExpected()}";
-                        throw new ParserException(msg);
+                        HandleError(context.Token);
+                        context = null;
+                        break;
                     case TableItem.Shift:
                         Shift(number);
                         break;
@@ -48,6 +50,12 @@ namespace Lingu.Runtime.Parsing
             }
 
             return (INonterminalToken)stack.Pop().Token;
+
+            void HandleError(ITerminalToken token)
+            {
+                var msg = Errors.GetExpectedMessage(token.Location, Errors.GetSymbols(stack.State));
+                throw new ParserException(msg);
+            }
 
             void Shift(int stateId)
             {
@@ -97,6 +105,26 @@ namespace Lingu.Runtime.Parsing
                                 throw new InternalException();
                         }
                         break;
+                    case RepeatKind.Optional:
+                        switch (rhs.Length)
+                        {
+                            case 0:
+                                /* empty part */
+                                {
+                                    token = new RepeatToken(RepeatSymbol.Option);
+                                    break;
+                                }
+                            case 1:
+                                /* core part */
+                                {
+                                    var item = rhs[0];
+                                    token = new RepeatToken(RepeatSymbol.Option, item);
+                                    break;
+                                }
+                            default:
+                                throw new InternalException();
+                        }
+                        break;
                     case RepeatKind.None:
                         if (nonterminal.Lift ==  LiftKind.Lift)
                         {
@@ -134,24 +162,6 @@ namespace Lingu.Runtime.Parsing
             var number = (int)rawaction >> 2;
 
             return (action, number);
-        }
-
-        private string FmtExpected()
-        {
-            return string.Join(", ", GetExpected());
-        }
-
-        private IEnumerable<string> GetExpected()
-        {
-            for (var symId = 0; symId < Context.Table.NumberOfTerminals; ++symId)
-            {
-                var (action, _) = Decode(symId);
-
-                if (action == TableItem.Shift)
-                {
-                    yield return Context.Symbols[symId].ToString() ?? throw new InternalException();
-                }
-            }
         }
     }
 }

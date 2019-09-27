@@ -64,7 +64,7 @@ namespace Lingu.Runtime.Tests
         private Source MakeSource()
         {
             var loremIpsum = string.Join(Environment.NewLine, loremIpsums);
-            return new Source("name", loremIpsum);
+            return Source.FromString(loremIpsum);
         }
 
         private static readonly string[] loremIpsums =

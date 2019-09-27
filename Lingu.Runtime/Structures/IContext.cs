@@ -12,5 +12,7 @@ namespace Lingu.Runtime.Structures
         ParseTable Table { get; }
         Dfa Whitespace { get; }
         Dfa Common { get; }
+
+        IErrorHandler Errors { get; }
     }
 }

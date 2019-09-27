@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.IO;
 
 namespace Mean.Maker.Builders
 {
@@ -67,7 +66,7 @@ namespace Mean.Maker.Builders
         }
 
         public string BaseName => System.IO.Path.GetFileNameWithoutExtension(Path);
-        public string File => System.IO.Path.GetFileName(Path);
+        public string FileName => System.IO.Path.GetFileName(Path);
         public string Directory => System.IO.Path.GetDirectoryName(Path);
 
         public static FileRef Source(string name)

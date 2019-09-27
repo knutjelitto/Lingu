@@ -12,7 +12,6 @@ namespace Lingu.Runtime.Concretes
         }
 
         public ISymbol Symbol { get; }
-        public ILocation Location => throw new NotImplementedException();
 
         public override string? ToString()
         {

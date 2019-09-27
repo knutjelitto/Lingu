@@ -8,18 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Grammar\Expr.Grammar" />
-    <None Remove="Grammar\Expression.Grammar" />
-    <None Remove="Grammar\G1.Grammar" />
-    <None Remove="Grammar\Lingu.Grammar" />
-    <None Remove="Grammar\S1.Grammar" />
-    <None Remove="Grammar\S2.Grammar" />
-    <None Remove="Grammar\S3.Grammar" />
-    <None Remove="Grammar\S4.Grammar" />
-    <None Remove="Grammar\Wiki.Grammar" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\Lingu.Hime\LinguLexer.cs" Link="Hime\LinguLexer.cs" />
     <Compile Include="..\Lingu.Hime\LinguParser.cs" Link="Hime\LinguParser.cs" />
     <Compile Include="..\Lingu.Hime\LinguVisitor.cs" Link="Hime\LinguVisitor.cs" />
@@ -46,6 +34,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
     <ProjectReference Include="..\Mean.Maker\Mean.Maker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Grammar\Out\" />
   </ItemGroup>
 
   <!--

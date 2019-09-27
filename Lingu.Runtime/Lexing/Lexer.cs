@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 using Lingu.Runtime.Concretes;
+using Lingu.Runtime.Errors;
 using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Lexing
@@ -15,6 +18,8 @@ namespace Lingu.Runtime.Lexing
 
         public IContext Context { get; }
         public ISource Source { get; }
+        public IErrorHandler Errors => Context.Errors;
+
 
         int index = 0;
 
@@ -39,31 +44,30 @@ namespace Lingu.Runtime.Lexing
         {
             SkipWhitespace();
 
-            var indexTmp = index;
-            var terminalId = LexCommon();
-            if (terminalId == -1)
-            {
-                index = indexTmp;
-                terminalId = LexCommon();
-            }
+            var token = LexCommon();
 
+            Debug.Assert(token != null);
 
-            var terminal = Context.Symbols[terminalId] as ITerminal;
-
-            Debug.Assert(terminal != null);
-
-            return new Conlex(new TerminalToken(terminal));
+            return new Conlex(token);
         }
 
-        private int LexCommon()
+        private ITerminalToken? LexCommon()
         {
             DfaState? state = Context.Common.Start;
+            var start = index;
             while (!Source.IsEnd(index))
             {
+                Debug.Assert(state != null);
                 var next = state.Match(Source[index]);
                 if (next == null)
                 {
-                    return state.Payload;
+                    if (state.Final)
+                    {
+                        return MakeResult(state.Payload, start, index);
+                    }
+
+                    var msg = Errors.GetExpectedMessage(Location.From(Source, index), Errors.GetSymbols(Context.Common));
+                    throw new ParserException(msg);
                 }
                 state = next;
                 index += 1;
@@ -71,10 +75,18 @@ namespace Lingu.Runtime.Lexing
 
             if (state != null && state.Final)
             {
-                return state.Payload;
+                return MakeResult(state.Payload, start, index);
             }
 
-            return -1;
+            return null;
+        }
+
+        private ITerminalToken MakeResult(int terminalId, int start, int end)
+        {
+            var terminal = (ITerminal)Context.Symbols[terminalId];
+            var location = new Location(Source, start, end);
+
+            return new TerminalToken(terminal, location);
         }
 
         private void SkipWhitespace()

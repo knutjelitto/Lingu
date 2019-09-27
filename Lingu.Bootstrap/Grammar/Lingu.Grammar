@@ -141,7 +141,7 @@
             ;
 
         angrammar
-            : ,'grammar' identifier ,'{' grammar_item+ ,'}'
+            : ,'grammar' identifier ,'{' grammar_item* ,'}'
             ;
 
         grammar_item^

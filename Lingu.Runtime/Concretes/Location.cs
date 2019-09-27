@@ -7,15 +7,20 @@ namespace Lingu.Runtime.Concretes
 {
     public struct Location : ILocation
     {
-        public Location(ISource source, int offset, int length)
+        public Location(ISource source, int start, int end)
         {
             Source = source;
-            Offset = offset;
-            Length = length;
+            Offset = start;
+            Length = end - start;
         }
 
         public ISource Source { get; }
         public int Offset { get; }
         public int Length { get; }
+
+        public static Location From(ISource source, int start)
+        {
+            return new Location(source, start, start);
+        }
     }
 }

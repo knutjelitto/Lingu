@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
 using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Sources
@@ -12,7 +12,7 @@ namespace Lingu.Runtime.Sources
 
         private readonly Lazy<List<int>> lazyLines;
 
-        public Source(string name, string content)
+        private Source(string name, string content)
         {
             Name = name;
             Content = content;
@@ -23,14 +23,33 @@ namespace Lingu.Runtime.Sources
             });
         }
 
-        public readonly string Name;
         public readonly string Content;
+
+        public string Name { get; }
         public int Length => Content.Length;
         protected List<int> Lines => lazyLines.Value;
         public int LineCount => Lines.Count;
 
         public char this[int index] => Content[index];
         public bool IsEnd(int index) => index >= Content.Length;
+
+        public static Source FromFile(string path)
+        {
+            return new Source(path, File.ReadAllText(path));
+        }
+
+        public static Source FromString(string content)
+        {
+            return new Source(string.Empty, content);
+        }
+
+        public (int lineNo, int colNo) GetLineCol(int index)
+        {
+            var lineNo = GetLineNoFromIndex(index);
+            var colNo = index - GetIndexFromLineNo(lineNo) + 1;
+
+            return (lineNo, colNo);
+        }
 
         public ReadOnlySpan<char> GetLine(int lineNo)
         {

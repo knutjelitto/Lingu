@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Lingu.Runtime.Errors;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
 using Lingu.Runtime.Sources;
@@ -17,6 +18,7 @@ namespace Lingu.Runtime.Concretes
             Table = table;
             Common = common;
             Whitespace = whitespace;
+            Errors = new ErrorHandler(this);
         }
 
         public IReadOnlyList<ISymbol> Symbols { get; }
@@ -26,9 +28,10 @@ namespace Lingu.Runtime.Concretes
         public Dfa Common { get; }
         public Dfa Whitespace { get; }
 
-        public INonterminalToken Try(string sourceText)
+        public IErrorHandler Errors { get; }
+
+        public INonterminalToken Try(Source source)
         {
-            var source = new Source("<try>", sourceText);
             var lexer = new Lexer(this, source);
             var parser = new Parser(this, lexer);
 

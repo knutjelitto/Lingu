@@ -1,4 +1,5 @@
 using Lingu.Commons;
+using Lingu.Runtime.Errors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -71,6 +72,18 @@ namespace Lingu.Automata
                                 else if (state2.Transitions.Count == 1 && state2.Transitions[0].Set.IsAny)
                                 {
                                     newState.AddPayload(state2);
+                                }
+                                else
+                                {
+                                    if (state1.Payload > state2.Payload)
+                                    {
+                                        newState.AddPayload(state1);
+                                    }
+                                    else
+                                    {
+                                        newState.AddPayload(state2);
+                                    }
+                                    //throw new InternalException("missing tie break");
                                 }
 #endif
                             }

@@ -5,6 +5,7 @@ using System.Linq;
 
 using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
+using Lingu.Runtime.Sources;
 using Mean.Maker.Builders;
 
 namespace Lingu.Bootstrap
@@ -22,7 +23,9 @@ namespace Lingu.Bootstrap
             //program.BuildTree("S2", "grammar s2 { }");
             //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
             //program.BuildTree("S4", "' '");
-            program.BuildTree("Lingu", "grammar x {}");
+            //program.BuildTree("Lingu", "grammar x {}");
+            program.BuildTree("Lingu", FileRef.Source($"./S4.Grammar"));
+            //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
             //program.BuildTree("Expression", "(1+2)*3");
@@ -40,11 +43,11 @@ namespace Lingu.Bootstrap
         {
             Environment.CurrentDirectory = $"{ProjectDir}Grammar";
 
-            var source = FileRef.Source($"{ProjectDir}Grammar/{stem}.Grammar");
+            var grammarSource = FileRef.Source($"./{stem}.Grammar");
 
-            var dests = source.With(".Out");
+            var dests = FileRef.Source(grammarSource.Directory + "/Out/" + grammarSource.BaseName).With(".Out");
 
-            var raw = Parser.Parse(source);
+            var raw = Parser.Parse(grammarSource);
 
             if (raw != null)
             {
@@ -63,7 +66,18 @@ namespace Lingu.Bootstrap
                     grammar.CommonDfa ?? throw new ArgumentNullException(nameof(grammar.CommonDfa)),
                     grammar.WhitespaceDfa ?? throw new ArgumentNullException(nameof(grammar.WhitespaceDfa)));
 
-                var tree = context.Try(content);
+                Source source;
+
+                if (File.Exists(content))
+                {
+                    source = Source.FromFile(content);
+                }
+                else
+                {
+                    source = Source.FromString(content);
+                }
+
+                var tree = context.Try(source);
 
                 new TreeDumper(dests.Add(".Tree")).Dump(tree);
             }
