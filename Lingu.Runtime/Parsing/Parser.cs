@@ -24,7 +24,7 @@ namespace Lingu.Runtime.Parsing
 
         public INonterminalToken Parse()
         {
-            var context = Lexer.First();
+            IConlex? context = Lexer.First();
             while (context != null)
             {
                 var (action, number) = Decode(context.Token.Terminal.Id);
@@ -51,6 +51,7 @@ namespace Lingu.Runtime.Parsing
 
             void Shift(int stateId)
             {
+                Debug.Assert(context != null);
                 stack.Push(new StackItem(context.Token, stateId));
 
                 context = Lexer.Next(context);
