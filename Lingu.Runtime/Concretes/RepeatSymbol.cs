@@ -8,9 +8,9 @@ namespace Lingu.Runtime.Concretes
 {
     public class RepeatSymbol : ISymbol
     {
-        public static readonly RepeatSymbol Option = new RepeatSymbol(-1, "?");
-        public static readonly RepeatSymbol Star = new RepeatSymbol(-1, "*");
-        public static readonly RepeatSymbol Plus = new RepeatSymbol(-1, "+");
+        public static readonly RepeatSymbol Option = new RepeatSymbol(-1, "$?$");
+        public static readonly RepeatSymbol Star = new RepeatSymbol(-1, "$*$");
+        public static readonly RepeatSymbol Plus = new RepeatSymbol(-1, "$+$");
 
         private RepeatSymbol(int id, string name)
         {

@@ -1,6 +1,7 @@
 using System.Linq;
 
 using Lingu.Commons;
+using Lingu.Runtime.Commons;
 using Lingu.Runtime.Lexing;
 using Lingu.Writers;
 
@@ -36,17 +37,7 @@ namespace Lingu.Dumping
 
         private string Str(Set set)
         {
-            return $"[{string.Join(",", set.Intervals.Select(i => Str(i)))}]";
-        }
-
-        private string Str(Interval interval)
-        {
-            if (interval.Min == interval.Max)
-            {
-                return CharRep.InRange(interval.Min);
-            }
-
-            return $"{CharRep.InRange(interval.Min)}-{CharRep.InRange(interval.Max)}";
+            return set.ToString();
         }
     }
 }

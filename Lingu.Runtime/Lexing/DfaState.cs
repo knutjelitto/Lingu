@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Lingu.Runtime.Lexing
 {
+    [DebuggerDisplay("{DD()}")]
     public class DfaState
     {
         public readonly int Id;
@@ -20,7 +22,6 @@ namespace Lingu.Runtime.Lexing
             Transitions = transitions;
         }
 
-
         public DfaState? Match(int ch)
         {
             foreach (var transition in Transitions)
@@ -32,6 +33,16 @@ namespace Lingu.Runtime.Lexing
             }
 
             return null;
+        }
+
+        public string DD()
+        {
+            return ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"({Id},{Final},{Payload.ToString()},({string.Join(",", Transitions)}))";
         }
     }
 }

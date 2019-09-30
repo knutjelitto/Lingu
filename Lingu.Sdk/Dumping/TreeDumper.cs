@@ -27,17 +27,27 @@ namespace Lingu.Dumping
 
         private void Dump(IWriter writer, IToken token)
         {
-            writer.WriteLine($"{token.Symbol.Name}");
-            writer.Indend(() =>
+            writer.Write($"{token.Symbol.Name}");
+            if (token is INonleafToken nonleaf)
             {
-                if (token is INonleafToken nonleaf)
+                writer.WriteLine();
+                writer.Indend(() =>
                 {
-                    foreach (var child in nonleaf.Children)
+                    if (token is INonleafToken nonleaf)
                     {
-                        Dump(writer, child);
+                        foreach (var child in nonleaf.Children)
+                        {
+                            Dump(writer, child);
+                        }
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                var terminalToken = (ITerminalToken)token;
+
+                writer.WriteLine($" <{terminalToken.Value}>");
+            }
         }
     }
 }

@@ -7,6 +7,11 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\Lingu.Hime\LinguLexer.cs" Link="Hime\LinguLexer.cs" />
     <Compile Include="..\Lingu.Hime\LinguParser.cs" Link="Hime\LinguParser.cs" />

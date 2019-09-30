@@ -25,5 +25,10 @@ namespace Lingu.Runtime.Lexing
 
             return false;
         }
+
+        public override string ToString()
+        {
+            return string.Join(", ", Intervals);
+        }
     }
 }

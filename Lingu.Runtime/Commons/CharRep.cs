@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lingu.Commons
+namespace Lingu.Runtime.Commons
 {
     public static class CharRep
     {
@@ -11,23 +11,20 @@ namespace Lingu.Commons
             return string.Join(string.Empty, value.Select(v => Convert(v)));
         }
 
+        public static string InText(int value)
+        {
+            return Convert(value);
+        }
+
         public static string InRange(int value)
         {
             var result = Convert(value);
 
-#if true
             if (!result.StartsWith("U+"))
             {
                 return $"'{result}'";
             }
             return $"{result}";
-#else
-            if (!result.StartsWith("U+"))
-            {
-                return $"'{result}'+{value}";
-            }
-            return $"{result}+{value}";
-#endif
         }
 
         public static string Convert(int value)
@@ -63,6 +60,10 @@ namespace Lingu.Commons
                         if (value >= 32 && value < 127 || value >= 160 && value <= 255)
                         {
                             return $"{(char)value}";
+                        }
+                        else if (value >= 0 && value <= 244)
+                        {
+                            return "\\x" + value.ToString("X2");
                         }
                         break;
                 }

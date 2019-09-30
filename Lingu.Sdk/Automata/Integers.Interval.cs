@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Commons;
+using Lingu.Runtime.Commons;
 
 #nullable enable
 

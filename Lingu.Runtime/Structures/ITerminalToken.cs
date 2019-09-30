@@ -8,5 +8,7 @@ namespace Lingu.Runtime.Structures
     {
         ITerminal Terminal { get; }
         ILocation Location { get; }
+
+        string Value { get; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 
 using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Errors;
@@ -84,7 +82,7 @@ namespace Lingu.Runtime.Lexing
         private ITerminalToken MakeResult(int terminalId, int start, int end)
         {
             var terminal = (ITerminal)Context.Symbols[terminalId];
-            var location = new Location(Source, start, end);
+            var location = Location.From(Source, start, end);
 
             return new TerminalToken(terminal, location);
         }

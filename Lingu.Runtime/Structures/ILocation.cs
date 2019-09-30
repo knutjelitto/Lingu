@@ -9,5 +9,7 @@ namespace Lingu.Runtime.Structures
         ISource Source { get; }
         int Offset { get; }
         int Length { get; }
+
+        string GetText();
     }
 }

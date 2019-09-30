@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Runtime.Concretes;
@@ -90,6 +89,29 @@ namespace Lingu.Runtime.Parsing
                                 {
                                     var item = rhs[0];
                                     token = new RepeatToken(RepeatSymbol.Star, item);
+                                    break;
+                                }
+                            case 2:
+                                /* recursive part */
+                                {
+                                    var item = rhs[1];
+                                    var repeat = (RepeatToken)rhs[0];
+                                    repeat.Add(item);
+                                    token = repeat;
+                                    break;
+                                }
+                            default:
+                                throw new InternalException();
+                        }
+                        break;
+                    case RepeatKind.Plus:
+                        switch (rhs.Length)
+                        {
+                            case 1:
+                                /* core part */
+                                {
+                                    var item = rhs[0];
+                                    token = new RepeatToken(RepeatSymbol.Plus, item);
                                     break;
                                 }
                             case 2:

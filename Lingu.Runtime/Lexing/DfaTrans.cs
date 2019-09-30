@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Diagnostics;
 
 namespace Lingu.Runtime.Lexing
 {
+    [DebuggerDisplay("{DD()}")]
     public struct DfaTrans
     {
         public readonly DfaState Target;
@@ -13,6 +12,16 @@ namespace Lingu.Runtime.Lexing
         {
             Target = target;
             Set = set;
+        }
+
+        public string DD()
+        {
+            return ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"{Set}->{Target.Id}";
         }
     }
 }

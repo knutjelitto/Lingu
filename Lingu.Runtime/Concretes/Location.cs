@@ -7,7 +7,7 @@ namespace Lingu.Runtime.Concretes
 {
     public struct Location : ILocation
     {
-        public Location(ISource source, int start, int end)
+        private Location(ISource source, int start, int end)
         {
             Source = source;
             Offset = start;
@@ -21,6 +21,16 @@ namespace Lingu.Runtime.Concretes
         public static Location From(ISource source, int start)
         {
             return new Location(source, start, start);
+        }
+
+        public static Location From(ISource source, int start, int end)
+        {
+            return new Location(source, start, end);
+        }
+
+        public string GetText()
+        {
+            return Source.GetText(Offset, Length);
         }
     }
 }

@@ -8,132 +8,6 @@
         Newline = newline;
     }
 
-    terminals
-    {
-        newline
-            : '\n'          // LF (Unix)
-            | '\r' '\n'     // CR LF (Windows)
-			| '\r'			// CR (MacOs)
-			| U+0085        // NL Next line character
-			| U+2028        // LS Line separator character
-			| U+2029        // PS Paragraph separator character
-            ;
-
-        newlineChar
-            : '\n'          // LF
-            | '\r'          // CR
-			| U+0085        // NL Next line character
-			| U+2028        // LS Line separator character
-			| U+2029        // PS Paragraph separator character
-            ;
-
-        whitespace
-            : ' '
-            | U+0009
-            | U+000B
-            | U+000C
-            ;
-
-        lineComment
-            : '//' (. - newlineChar)*
-            ;
-
-        blockComment
-            : '/*'  ((. - '*') | '*' (. - '/'))* '*/'
-            ;
-
-        spacing
-            : (newline | whitespace | lineComment | blockComment)*
-            ;
-
-
-        identifierStart
-            : ('a' .. 'z' | 'A' .. 'Z' |  '_')
-            ;
-
-		identifierContinue
-			: identifierStart | digit
-			;
-
-        identifier
-            : identifierStart identifierContinue*
-            ;
-
-        digit
-            : '0' .. '9'
-            ;
-
-        nonzeroDigit
-            : '1' .. '9'
-            ;
-
-        zero
-            : digit - nonzeroDigit
-            ;
-
-        number
-            : zero
-            | nonzeroDigit digit*
-            ;
-
-        hexDigit
-            : '0' .. '9'
-            | 'a' .. 'f'
-            | 'A' .. 'f'
-            ;
-
-        escapes       
-            : '\\\\'                        // Backslash
-            | '\\0'                         // Unicode character 0
-            | '\\a'                         // Alert (character 7)
-            | '\\b'                         // Backspace (character 8)
-            | '\\f'                         // Form feed (character 12)
-            | '\\n'                         // New line (character 10)
-            | '\\r'                         // Carriage return (character 13)
-            | '\\t'                         // Horizontal tab (character 9)
-            | '\\v'                         // Vertical quote (character 11)
-            | '\\u{' hexDigit{1,6} '}'      // Unicode code point
-            ;
-
-        any
-            : '.'
-            ;
-
-        text
-            : '\'' ( (. - '\'') | '\\\'' | escapes )+ '\''
-            ;
-
-        ucNameStart
-            : 'a' .. 'z' | 'A' .. 'Z'
-            ;
-
-        ucNameInner
-            : ucNameStart | '0' .. '9'  | '_' | '-' | ' '
-            ;
-
-        ucNameEnd
-            : ucNameStart | '0' .. '9'
-            ;
-
-        ucName
-            : ucNameStart ucNameEnd*
-            | ucNameStart ucNameInner+ ucNameEnd
-            ;
-
-        ucBlock
-            : '\\ub' '{' ucName '}'
-            ;
-
-        ucCategory
-            : '\\uc' '{' ucName '}'
-            ;
-
-        ucCodepoint
-            : '\\u{' hexDigit{1,6} '}'
-            | ('u'|'U')'+' hexDigit{1,6}
-            ;
-    }
-
     rules
     {
         file
@@ -164,7 +38,7 @@
             ;
 
         terminal_rule
-            : identifier ,(':'|'->') terminal_expression,';'
+            : identifier ,(':'|'->') terminal_expression ,';'
             ;
 
         terminal_expression
@@ -172,7 +46,7 @@
             ;
 
         terminal_difference
-            : terminal_sequence (,'-' terminal_sequence)*
+            : terminal_sequence (,'-' terminal_sequence)?
             ;
 
         terminal_sequence
@@ -265,6 +139,133 @@
 
         reference
             -> identifier
+            ;
+    }
+
+    terminals
+    {
+        newline
+            : '\n'          // LF (Unix)
+            | '\r' '\n'     // CR LF (Windows)
+			| '\r'			// CR (MacOs)
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
+            ;
+
+        newlineChar
+            : '\n'          // LF
+            | '\r'          // CR
+			| U+0085        // NL Next line character
+			| U+2028        // LS Line separator character
+			| U+2029        // PS Paragraph separator character
+            ;
+
+        whitespace
+            : ' '
+            | U+0009
+            | U+000B
+            | U+000C
+            ;
+
+        lineComment
+            : '//' (. - newlineChar)*
+            ;
+
+        blockComment
+            : '/*'  ((. - '*') | '*' (. - '/'))* '*/'
+            ;
+
+        spacing
+            : (newline | whitespace | lineComment | blockComment)*
+            ;
+
+
+        identifierStart
+            : ('a' .. 'z' | 'A' .. 'Z' |  '_')
+            ;
+
+		identifierContinue
+			: identifierStart | digit
+			;
+
+        identifier
+            : identifierStart identifierContinue*
+            ;
+
+        digit
+            : '0' .. '9'
+            ;
+
+        nonzeroDigit
+            : '1' .. '9'
+            ;
+
+        zero
+            : digit - nonzeroDigit
+            ;
+
+        number
+            : zero
+            | nonzeroDigit digit*
+            ;
+
+        hexDigit
+            : '0' .. '9'
+            | 'a' .. 'f'
+            | 'A' .. 'F'
+            ;
+
+        escapes       
+            : '\\\\'                        // Backslash
+            | '\\\''                        // 
+            | '\\0'                         // Unicode character 0
+            | '\\a'                         // Alert (character 7)
+            | '\\b'                         // Backspace (character 8)
+            | '\\f'                         // Form feed (character 12)
+            | '\\n'                         // New line (character 10)
+            | '\\r'                         // Carriage return (character 13)
+            | '\\t'                         // Horizontal tab (character 9)
+            | '\\v'                         // Vertical quote (character 11)
+            | '\\u{' hexDigit{1,6} '}'      // Unicode code point
+            ;
+
+        any
+            : '.'
+            ;
+
+        text
+            : '\'' ( (. - ('\'' | '\\')) | escapes )+ '\''
+            ;
+
+        ucNameStart
+            : 'a' .. 'z' | 'A' .. 'Z'
+            ;
+
+        ucNameInner
+            : ucNameStart | '0' .. '9'  | '_' | '-' | ' '
+            ;
+
+        ucNameEnd
+            : ucNameStart | '0' .. '9'
+            ;
+
+        ucName
+            : ucNameStart ucNameEnd*
+            | ucNameStart ucNameInner+ ucNameEnd
+            ;
+
+        ucBlock
+            : '\\ub' '{' ucName '}'
+            ;
+
+        ucCategory
+            : '\\uc' '{' ucName '}'
+            ;
+
+        ucCodepoint
+            : '\\u{' hexDigit{1,6} '}'
+            | ('u'|'U')'+' hexDigit{1,6}
             ;
     }
 }

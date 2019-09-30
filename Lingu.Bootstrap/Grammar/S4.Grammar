@@ -8,17 +8,18 @@
     terminals
     {
         text
-            : '\'' ( (. - '\'') | '\\\'' | escapes )+ '\''
+            : '\'' ( (. - ('\'' | '\\')) | escapes )+ '\''
             ;
 
         hexDigit
             : '0' .. '9'
             | 'a' .. 'f'
-            | 'A' .. 'f'
+            | 'A' .. 'F'
             ;
 
         escapes       
             : '\\\\'                        // Backslash
+            | '\\\''                        // 
             | '\\0'                         // Unicode character 0
             | '\\a'                         // Alert (character 7)
             | '\\b'                         // Backspace (character 8)
