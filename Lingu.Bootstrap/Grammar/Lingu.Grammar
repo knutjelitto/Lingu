@@ -20,8 +20,8 @@
 
         grammar_item^
             : grammar_options
-            | grammar_terminals
             | grammar_rules
+            | grammar_terminals
             ;
 
         /* OPTIONS */
@@ -31,66 +31,6 @@
 
         option
             : identifier ,'=' identifier ,';'
-            ;
-
-        grammar_terminals
-            : ,'terminals' ,'{' terminal_rule* ,'}'
-            ;
-
-        terminal_rule
-            : identifier ,(':'|'->') terminal_expression ,';'
-            ;
-
-        terminal_expression
-            : terminal_difference (,'|' terminal_difference)*
-            ;
-
-        terminal_difference
-            : terminal_sequence (,'-' terminal_sequence)?
-            ;
-
-        terminal_sequence
-            : terminal_repetition terminal_repetition*
-            ;
-
-        terminal_repetition     
-            : terminal_element terminal_cardinalilty?
-            ;
-
-        terminal_element^
-            : terminal_atom
-            | terminal_not
-            | ,'(' terminal_expression ,')'
-            ;
-
-        terminal_not
-            : ,'~' terminal_element
-            ;
-
-        terminal_atom^
-            : any
-            | text
-            | characterRange
-            | ucCodepoint
-            | ucBlock
-            | ucCategory
-            | reference
-            ;
-
-        characterRange
-            : character ,'..' character
-            ;
-
-        character
-            : ucCodepoint
-            | text
-            ;
-
-        terminal_cardinalilty^
-            : '?'
-            | '*'
-            | '+'
-            | {range: ,'{' number (,',' number)? ,'}'}
             ;
 
         grammar_rules
@@ -123,12 +63,12 @@
             ;
 
         rule_element^
-            : rule_sub
+            : sub_rule
             | ,'(' rule_expression ,')'
             | rule_atom
             ;
 
-        rule_sub 
+        sub_rule
             : ,'{' identifier ,(':'|'->') rule_expression ,'}'
             ;
 
@@ -139,6 +79,66 @@
 
         reference
             -> identifier
+            ;
+
+        grammar_terminals
+            : ,'terminals' ,'{' terminal_rule* ,'}'
+            ;
+
+        terminal_rule
+            : identifier ,(':'|'->') terminal_expression ,';'
+            ;
+
+        terminal_expression
+            : terminal_difference (,'|' terminal_difference)*
+            ;
+
+        terminal_difference
+            : terminal_sequence (,'-' terminal_sequence)?
+            ;
+
+        terminal_sequence
+            : terminal_repetition terminal_repetition*
+            ;
+
+        terminal_repetition     
+            : terminal_element terminal_cardinalilty?
+            ;
+
+        terminal_cardinalilty^
+            : '?'
+            | '*'
+            | '+'
+            | {range: ,'{' number (,',' number)? ,'}'}
+            ;
+
+        terminal_element^
+            : terminal_atom
+            | terminal_not
+            | ,'(' terminal_expression ,')'
+            ;
+
+        terminal_not
+            : ,'~' terminal_atom
+            ;
+
+        terminal_atom^
+            : any
+            | text
+            | characterRange
+            | ucCodepoint
+            | ucBlock
+            | ucCategory
+            | reference
+            ;
+
+        characterRange
+            : character ,'..' character
+            ;
+
+        character
+            : ucCodepoint
+            | text
             ;
     }
 

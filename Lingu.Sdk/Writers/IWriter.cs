@@ -16,6 +16,6 @@ namespace Lingu.Writers
 
         void WriteLine(object obj);
 
-        void Indend(Action body);
+        void Indent(Action body);
     }
 }

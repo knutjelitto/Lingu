@@ -98,11 +98,11 @@
                 ;
 
             terminal_difference
-                -> terminal_sequence ('-'! terminal_sequence)*
+                -> terminal_sequence ('-'! terminal_sequence)?
                 ;
 
             terminal_sequence
-                -> terminal_repetition terminal_repetition*
+                -> terminal_repetition+
                 ;
 
             terminal_repetition     

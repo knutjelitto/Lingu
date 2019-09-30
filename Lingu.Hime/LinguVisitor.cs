@@ -54,7 +54,7 @@ namespace Lingu.Bootstrap.Hime
                 case 0x002D: return (T)OnVariableRuleSub(node);
                 case 0x002E: return (T)OnVariableRuleAtom(node);
                 case 0x002F: return (T)OnVariableReference(node);
-                case 0x0048: return (T)OnVirtualRange(node);
+                case 0x0047: return (T)OnVirtualRange(node);
                 default:
                     throw new NotImplementedException();
             }

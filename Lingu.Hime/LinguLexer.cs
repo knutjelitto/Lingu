@@ -100,16 +100,16 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x003B, "->"),
 			new Symbol(0x003C, "|"),
 			new Symbol(0x003E, "-"),
-			new Symbol(0x0041, "("),
-			new Symbol(0x0042, ")"),
-			new Symbol(0x0043, "~"),
-			new Symbol(0x0044, ".."),
-			new Symbol(0x0045, "?"),
-			new Symbol(0x0046, "*"),
-			new Symbol(0x0047, "+"),
-			new Symbol(0x0049, ","),
-			new Symbol(0x004A, "rules"),
-			new Symbol(0x004C, "^") };
+			new Symbol(0x0040, "("),
+			new Symbol(0x0041, ")"),
+			new Symbol(0x0042, "~"),
+			new Symbol(0x0043, ".."),
+			new Symbol(0x0044, "?"),
+			new Symbol(0x0045, "*"),
+			new Symbol(0x0046, "+"),
+			new Symbol(0x0048, ","),
+			new Symbol(0x0049, "rules"),
+			new Symbol(0x004B, "^") };
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>

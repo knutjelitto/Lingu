@@ -12,7 +12,7 @@ namespace Lingu.Writers
 
         public TextWriter Writer { get; }
 
-        public void Indend(Action body)
+        public void Indent(Action body)
         {
             body();
         }

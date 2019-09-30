@@ -1,10 +1,6 @@
+using Lingu.Commons;
 using Lingu.Runtime.Structures;
 using Lingu.Writers;
-using Mean.Maker.Builders;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace Lingu.Dumping
 {
@@ -31,7 +27,7 @@ namespace Lingu.Dumping
             if (token is INonleafToken nonleaf)
             {
                 writer.WriteLine();
-                writer.Indend(() =>
+                writer.Indent(() =>
                 {
                     if (token is INonleafToken nonleaf)
                     {

@@ -35,7 +35,7 @@ namespace Lingu.Writers
             Add(line);
         }
 
-        public void Indend(Action body)
+        public void Indent(Action body)
         {
             using (Indent())
             {

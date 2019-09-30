@@ -70,7 +70,7 @@ namespace Lingu.Dumping
             try
             {
                 var iwriter = new IndentWriter();
-                iwriter.Indend(() =>
+                iwriter.Indent(() =>
                 {
                     new FaDfaDumper().Dump(iwriter, dfa);
                 });
@@ -88,7 +88,7 @@ namespace Lingu.Dumping
             try
             {
                 var iwriter = new IndentWriter();
-                iwriter.Indend(() =>
+                iwriter.Indent(() =>
                 {
                     new DfaDumper().Dump(iwriter, dfa);
                 });

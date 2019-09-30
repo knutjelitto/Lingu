@@ -26,7 +26,7 @@ namespace Lingu.Dumping
             var pay = state.IsPayload ? $"  «{state.Payload}»" : string.Empty;
 
             writer.WriteLine($"{finA}{state.Id}{finB}{pay}");
-            writer.Indend(() =>
+            writer.Indent(() =>
             {
                 foreach (var transition in state.Transitions)
                 {

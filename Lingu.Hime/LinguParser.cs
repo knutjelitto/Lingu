@@ -145,7 +145,7 @@ namespace Lingu.Bootstrap.Hime
 			/// <summary>
 			/// The unique identifier for virtual range
 			/// </summary>
-			public const int VirtualRange = 0x0048;
+			public const int VirtualRange = 0x0047;
 		}
 		/// <summary>
 		/// The collection of variables matched by this parser
@@ -190,11 +190,10 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x0039, "__V57"), 
 			new Symbol(0x003D, "__V61"), 
 			new Symbol(0x003F, "__V63"), 
-			new Symbol(0x0040, "__V64"), 
-			new Symbol(0x004B, "__V75"), 
+			new Symbol(0x004A, "__V74"), 
+			new Symbol(0x004C, "__V76"), 
 			new Symbol(0x004D, "__V77"), 
-			new Symbol(0x004E, "__V78"), 
-			new Symbol(0x004F, "__VAxiom") };
+			new Symbol(0x004E, "__VAxiom") };
 		/// <summary>
 		/// The collection of virtuals matched by this parser
 		/// </summary>
@@ -203,7 +202,7 @@ namespace Lingu.Bootstrap.Hime
 		/// so that virtual indices in the automaton can be used to retrieve the virtuals in this table
 		/// </remarks>
 		private static readonly Symbol[] virtuals = {
-			new Symbol(0x0048, "range") };
+			new Symbol(0x0047, "range") };
 		/// <summary>
 		/// Initializes a new instance of the parser
 		/// </summary>
@@ -313,7 +312,7 @@ namespace Lingu.Bootstrap.Hime
 				case 0x002D: visitor.OnVariableRuleSub(node); break;
 				case 0x002E: visitor.OnVariableRuleAtom(node); break;
 				case 0x002F: visitor.OnVariableReference(node); break;
-				case 0x0048: visitor.OnVirtualRange(node); break;
+				case 0x0047: visitor.OnVirtualRange(node); break;
 			}
 		}
 	}

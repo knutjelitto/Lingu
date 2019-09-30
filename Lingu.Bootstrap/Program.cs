@@ -2,53 +2,48 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-
+using Lingu.Build;
+using Lingu.Commons;
 using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Sources;
-using Mean.Maker.Builders;
 
 namespace Lingu.Bootstrap
 {
     public class Program
     {
-        private static string projectDir;
+        private static DirRef projectDir;
 
         static void Main(string[] args)
         {
             var program = new Program();
 
-            program.Check();
             //program.BuildTree("S1", "1+2");
             //program.BuildTree("S2", "grammar s2 { }");
             //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
             //program.BuildTree("S4", @"'\\'");
             //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("Lingu", FileRef.Source($"./S4.Grammar"));
-            program.BuildTree("Lingu", FileRef.Source($"./Lingu.Grammar"));
+            program.BuildTree("Lingu", FileRef.From($"./Lingu.Grammar"));
             //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
             //program.BuildTree("Expression", "(1+2)*3");
             //program.BuildTree("Expr", "(1+2)*3");
 
-#if false
+#if true
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
 #endif
         }
 
-        private void Check()
-        {
-        }
-
         private void BuildTree(string stem, string content)
         {
-            Environment.CurrentDirectory = $"{ProjectDir}Grammar";
+            Environment.CurrentDirectory = ProjectDir.Dir("Grammar");
 
-            var grammarSource = FileRef.Source($"./{stem}.Grammar");
+            var grammarSource = FileRef.From($"./{stem}.Grammar");
 
-            var dests = FileRef.Source(grammarSource.Directory + "/Out/" + grammarSource.BaseName).With(".Out");
+            var dests = FileRef.From(grammarSource.Directory + "/Out/" + grammarSource.BaseName).With(".Out");
 
             var raw = Parser.Parse(grammarSource);
 
@@ -58,6 +53,11 @@ namespace Lingu.Bootstrap
 
                 var grammar = builder.Build();
                 new Dumper(grammar).Dump(dests);
+
+                var ccOut = ProjectDir.Dir("..").Dir("Lingu.CC").Dir("Gen");
+
+                var csharp = new CSharpBuilder(grammar);
+                csharp.Build(ccOut);
 
                 Debug.Assert(grammar.Eof != null);
 
@@ -86,7 +86,7 @@ namespace Lingu.Bootstrap
             }
         }
 
-        private string ProjectDir
+        private DirRef ProjectDir
         {
             get
             {
@@ -99,7 +99,7 @@ namespace Lingu.Bootstrap
                         cwd = Path.GetDirectoryName(cwd);
                     }
 
-                    projectDir = cwd.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + "/";
+                    projectDir = DirRef.From(cwd.Replace("\\", "/"));
                 }
                 return projectDir;
             }
