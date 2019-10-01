@@ -63,7 +63,6 @@ namespace Lingu.Bootstrap
 
                 var context = new LinguContext(
                     grammar.Symbols,
-                    grammar.Eof,
                     grammar.Productions,
                     grammar.ParseTable,
                     grammar.CommonDfa ?? throw new ArgumentNullException(nameof(grammar.CommonDfa)),

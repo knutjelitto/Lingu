@@ -4,6 +4,6 @@ namespace Lingu.Runtime.Structures
 {
     public interface ITerminal : ISymbol
     {
-        Dfa Dfa { get; }
+        string Visual { get; }
     }
 }

@@ -83,6 +83,11 @@ namespace Lingu.Writers
             });
         }
 
+        public int Extend()
+        {
+            return this.current == null ? 0 : this.current.Length;
+        }
+
         public void Persist(string path)
         {
             File.WriteAllLines(path, lines);

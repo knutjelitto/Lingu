@@ -69,7 +69,7 @@ namespace Lingu.Build
                 innerStart = Grammar.Nonterminals[0];
             }
 
-            var outerStart = new Nonterminal("$accept");
+            var outerStart = new Nonterminal("_acc_");
             Grammar.Accept = outerStart;
             outerStart.IsPrivate = true;
             outerStart.AddProductions( Enumerable.Repeat(new ProdSymbol(innerStart, false), 1) );

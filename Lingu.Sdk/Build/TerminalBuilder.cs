@@ -199,9 +199,13 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass5()
         {
-            var eof = new Terminal("$eof$");
+            var eof = new Terminal("_eof_")
+            {
+                Visual = "$eof$",
+                IsGenerated = true,
+
+            };
             eof.Raw = new RawTerminal(eof.Name, new Eof(eof.Name));
-            eof.IsGenerated = true;
             Grammar.Terminals.Add(eof);
             Grammar.Eof = eof;
 

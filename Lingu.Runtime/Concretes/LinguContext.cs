@@ -10,11 +10,10 @@ namespace Lingu.Runtime.Concretes
 {
     public class LinguContext : IContext
     {
-        public LinguContext(IEnumerable<ISymbol> symbols, ITerminal eof, IEnumerable<IProduction> productions, ParseTable table, Dfa common, Dfa whitespace)
+        public LinguContext(IEnumerable<ISymbol> symbols, IEnumerable<IProduction> productions, ParseTable table, Dfa common, Dfa whitespace)
         {
             Symbols = symbols.ToArray();
             Productions = productions.ToArray();
-            Eof = eof;
             Table = table;
             Common = common;
             Whitespace = whitespace;
@@ -22,7 +21,6 @@ namespace Lingu.Runtime.Concretes
         }
 
         public IReadOnlyList<ISymbol> Symbols { get; }
-        public ITerminal Eof { get; }
         public IReadOnlyList<IProduction> Productions { get; }
         public ParseTable Table { get; }
         public Dfa Common { get; }
