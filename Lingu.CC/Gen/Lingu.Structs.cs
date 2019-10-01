@@ -1,15 +1,12 @@
-#if true
 namespace Grammar
 {
-    using System.Collections.Generic;
-    
     using Lingu.Runtime.Concretes;
     using Lingu.Runtime.Parsing;
     using Lingu.Runtime.Structures;
     
     public static partial class Data
     {
-        public static readonly ParseTable Table = new U16ParseTable(u16table, 307, 29, 76);
+        public static readonly ParseTable Table = new U16ParseTable(u16Table, 307, 29, 76);
         
         public static readonly TerminalSymbol identifier = new TerminalSymbol(0, "identifier", "");
         public static readonly TerminalSymbol number = new TerminalSymbol(1, "number", "");
@@ -39,7 +36,7 @@ namespace Grammar
         public static readonly TerminalSymbol __T19 = new TerminalSymbol(25, "__T19", "..");
         public static readonly TerminalSymbol __T20 = new TerminalSymbol(26, "__T20", ":");
         public static readonly TerminalSymbol __T21 = new TerminalSymbol(27, "__T21", "->");
-        public static readonly TerminalSymbol _eof_ = new TerminalSymbol(28, "_eof_", "$eof$");
+        public static readonly TerminalSymbol __eof = new TerminalSymbol(28, "__eof", "$eof$");
         public static readonly NonterminalSymbol file = new NonterminalSymbol(29, "file", RepeatKind.None, LiftKind.None);
         public static readonly NonterminalSymbol angrammar = new NonterminalSymbol(30, "angrammar", RepeatKind.None, LiftKind.None);
         public static readonly NonterminalSymbol grammar_options = new NonterminalSymbol(31, "grammar_options", RepeatKind.None, LiftKind.None);
@@ -104,13 +101,13 @@ namespace Grammar
         public static readonly TerminalSymbol ucNameInner = new TerminalSymbol(90, "ucNameInner", "");
         public static readonly TerminalSymbol ucNameEnd = new TerminalSymbol(91, "ucNameEnd", "");
         public static readonly TerminalSymbol ucName = new TerminalSymbol(92, "ucName", "");
-        public static readonly NonterminalSymbol _acc_ = new NonterminalSymbol(93, "_acc_", RepeatKind.None, LiftKind.None);
+        public static readonly NonterminalSymbol __acc = new NonterminalSymbol(93, "__acc", RepeatKind.None, LiftKind.None);
         
         public static readonly Symbol[] Symbols = 
         {
             identifier, number, any, text, ucBlock, ucCategory, ucCodepoint, __T1,
             __T2, __T3, __T4, __T5, __T6, __T7, __T8, __T9, __T10, __T11, __T12,
-            __T13, __T14, __T15, __T16, __T17, __T18, __T19, __T20, __T21, _eof_,
+            __T13, __T14, __T15, __T16, __T17, __T18, __T19, __T20, __T21, __eof,
             file, angrammar, grammar_options, option, grammar_rules, rule, rule_expression,
             rule_alternative, rule_sequence, rule_repetition, rule_drop_action, sub_rule,
             reference, grammar_terminals, terminal_rule, terminal_expression, terminal_difference,
@@ -120,107 +117,103 @@ namespace Grammar
             __N7, __N9, __N8, __N10, __N11, __N12, __N13, __N14, __N15, __N16, __N17,
             __N18, newline, newlineChar, whitespace, lineComment, blockComment, spacing,
             identifierStart, identifierContinue, digit, nonzeroDigit, zero, hexDigit,
-            escapes, ucNameStart, ucNameInner, ucNameEnd, ucName, _acc_,
-        }
-        ;
+            escapes, ucNameStart, ucNameInner, ucNameEnd, ucName, __acc,
+        };
         
         public static readonly Production[] Productions = 
         {
-            new Production(_acc_, false),
-            new Production(file, false),
-            new Production(angrammar, true, false, true, false, true),
-            new Production(grammar_options, true, true, false, true),
-            new Production(option, false, true, false, true),
-            new Production(grammar_rules, true, true, false, true),
-            new Production(rule, false, false, true, false, true),
-            new Production(rule_expression, false, false),
-            new Production(rule_alternative, false),
-            new Production(rule_alternative),
-            new Production(rule_sequence, false),
-            new Production(rule_repetition, false, false),
-            new Production(rule_drop_action, false, false),
-            new Production(sub_rule, true, false, true, false, true),
-            new Production(reference, false),
-            new Production(grammar_terminals, true, true, false, true),
-            new Production(terminal_rule, false, true, false, true),
-            new Production(terminal_expression, false, false),
-            new Production(terminal_difference, false, false),
-            new Production(terminal_sequence, false, false),
-            new Production(terminal_repetition, false, false),
-            new Production(terminal_not, true, false),
-            new Production(characterRange, false, true, false),
-            new Production(character, false),
-            new Production(character, false),
-            new Production(range, true, false, false, true),
-            new Production(grammar_item, false),
-            new Production(grammar_item, false),
-            new Production(grammar_item, false),
-            new Production(rule_element, false),
-            new Production(rule_element, true, false, true),
-            new Production(rule_element, false),
-            new Production(rule_atom, false),
-            new Production(rule_atom, false),
-            new Production(terminal_cardinalilty, false),
-            new Production(terminal_cardinalilty, false),
-            new Production(terminal_cardinalilty, false),
-            new Production(terminal_cardinalilty, false),
-            new Production(terminal_element, false),
-            new Production(terminal_element, false),
-            new Production(terminal_element, true, false, true),
-            new Production(terminal_atom, false),
-            new Production(terminal_atom, false),
-            new Production(terminal_atom, false),
-            new Production(terminal_atom, false),
-            new Production(terminal_atom, false),
-            new Production(terminal_atom, false),
-            new Production(terminal_atom, false),
-            new Production(__N1, false, false),
-            new Production(__N1, false),
-            new Production(__N1),
-            new Production(__N2, false, false),
-            new Production(__N2, false),
-            new Production(__N2),
-            new Production(__N3, false, false),
-            new Production(__N3, false),
-            new Production(__N3),
-            new Production(__N4, false),
-            new Production(__N4),
-            new Production(__N5, false),
-            new Production(__N5, false),
-            new Production(__N6, false, true, false),
-            new Production(__N6, true, false),
-            new Production(__N6),
-            new Production(__N7, false, false),
-            new Production(__N7, false),
-            new Production(__N9, false),
-            new Production(__N9, false),
-            new Production(__N9, false),
-            new Production(__N8, false),
-            new Production(__N8),
-            new Production(__N10, false),
-            new Production(__N10),
-            new Production(__N11, false),
-            new Production(__N11, false),
-            new Production(__N12, false, false),
-            new Production(__N12, false),
-            new Production(__N12),
-            new Production(__N13, false),
-            new Production(__N13, false),
-            new Production(__N14, false, true, false),
-            new Production(__N14, true, false),
-            new Production(__N14),
-            new Production(__N15, true, false),
-            new Production(__N15),
-            new Production(__N16, false, false),
-            new Production(__N16, false),
-            new Production(__N16),
-            new Production(__N17, false),
-            new Production(__N17),
-            new Production(__N18, true, false),
-            new Production(__N18),
-        }
-        ;
-        
+            new Production(__acc,"__acc -> file", false),
+            new Production(file,"file -> angrammar", false),
+            new Production(angrammar,"angrammar -> ,'grammar' ˈidentifierˈ ,'{' __N1 ,'}'", true, false, true, false, true),
+            new Production(grammar_options,"grammar_options -> ,'options' ,'{' __N2 ,'}'", true, true, false, true),
+            new Production(option,"option -> ˈidentifierˈ ,'=' ˈidentifierˈ ,';'", false, true, false, true),
+            new Production(grammar_rules,"grammar_rules -> ,'rules' ,'{' __N3 ,'}'", true, true, false, true),
+            new Production(rule,"rule -> ˈidentifierˈ __N4 ,__N5 rule_expression ,';'", false, false, true, false, true),
+            new Production(rule_expression,"rule_expression -> rule_alternative __N6", false, false),
+            new Production(rule_alternative,"rule_alternative -> rule_sequence", false),
+            new Production(rule_alternative,"rule_alternative -> "),
+            new Production(rule_sequence,"rule_sequence -> __N7", false),
+            new Production(rule_repetition,"rule_repetition -> rule_drop_action __N8", false, false),
+            new Production(rule_drop_action,"rule_drop_action -> __N10 rule_element", false, false),
+            new Production(sub_rule,"sub_rule -> ,'{' ˈidentifierˈ ,__N11 rule_expression ,'}'", true, false, true, false, true),
+            new Production(reference,"reference -> ˈidentifierˈ", false),
+            new Production(grammar_terminals,"grammar_terminals -> ,'terminals' ,'{' __N12 ,'}'", true, true, false, true),
+            new Production(terminal_rule,"terminal_rule -> ˈidentifierˈ ,__N13 terminal_expression ,';'", false, true, false, true),
+            new Production(terminal_expression,"terminal_expression -> terminal_difference __N14", false, false),
+            new Production(terminal_difference,"terminal_difference -> terminal_sequence __N15", false, false),
+            new Production(terminal_sequence,"terminal_sequence -> terminal_repetition __N16", false, false),
+            new Production(terminal_repetition,"terminal_repetition -> terminal_element __N17", false, false),
+            new Production(terminal_not,"terminal_not -> ,'~' terminal_atom", true, false),
+            new Production(characterRange,"characterRange -> character ,'..' character", false, true, false),
+            new Production(character,"character -> ˈucCodepointˈ", false),
+            new Production(character,"character -> ˈtextˈ", false),
+            new Production(range,"range -> ,'{' ˈnumberˈ __N18 ,'}'", true, false, false, true),
+            new Production(grammar_item,"grammar_item -> grammar_options", false),
+            new Production(grammar_item,"grammar_item -> grammar_rules", false),
+            new Production(grammar_item,"grammar_item -> grammar_terminals", false),
+            new Production(rule_element,"rule_element -> sub_rule", false),
+            new Production(rule_element,"rule_element -> ,'(' rule_expression ,')'", true, false, true),
+            new Production(rule_element,"rule_element -> rule_atom", false),
+            new Production(rule_atom,"rule_atom -> reference", false),
+            new Production(rule_atom,"rule_atom -> ˈtextˈ", false),
+            new Production(terminal_cardinalilty,"terminal_cardinalilty -> '?'", false),
+            new Production(terminal_cardinalilty,"terminal_cardinalilty -> '*'", false),
+            new Production(terminal_cardinalilty,"terminal_cardinalilty -> '+'", false),
+            new Production(terminal_cardinalilty,"terminal_cardinalilty -> range", false),
+            new Production(terminal_element,"terminal_element -> terminal_atom", false),
+            new Production(terminal_element,"terminal_element -> terminal_not", false),
+            new Production(terminal_element,"terminal_element -> ,'(' terminal_expression ,')'", true, false, true),
+            new Production(terminal_atom,"terminal_atom -> ˈanyˈ", false),
+            new Production(terminal_atom,"terminal_atom -> ˈtextˈ", false),
+            new Production(terminal_atom,"terminal_atom -> characterRange", false),
+            new Production(terminal_atom,"terminal_atom -> ˈucCodepointˈ", false),
+            new Production(terminal_atom,"terminal_atom -> ˈucBlockˈ", false),
+            new Production(terminal_atom,"terminal_atom -> ˈucCategoryˈ", false),
+            new Production(terminal_atom,"terminal_atom -> reference", false),
+            new Production(__N1,"__N1 -> __N1 grammar_item", false, false),
+            new Production(__N1,"__N1 -> grammar_item", false),
+            new Production(__N1,"__N1 -> "),
+            new Production(__N2,"__N2 -> __N2 option", false, false),
+            new Production(__N2,"__N2 -> option", false),
+            new Production(__N2,"__N2 -> "),
+            new Production(__N3,"__N3 -> __N3 rule", false, false),
+            new Production(__N3,"__N3 -> rule", false),
+            new Production(__N3,"__N3 -> "),
+            new Production(__N4,"__N4 -> '^'", false),
+            new Production(__N4,"__N4 -> "),
+            new Production(__N5,"__N5 -> ':'", false),
+            new Production(__N5,"__N5 -> '->'", false),
+            new Production(__N6,"__N6 -> __N6 ,'|' rule_alternative", false, true, false),
+            new Production(__N6,"__N6 -> ,'|' rule_alternative", true, false),
+            new Production(__N6,"__N6 -> "),
+            new Production(__N7,"__N7 -> __N7 rule_repetition", false, false),
+            new Production(__N7,"__N7 -> rule_repetition", false),
+            new Production(__N9,"__N9 -> '?'", false),
+            new Production(__N9,"__N9 -> '*'", false),
+            new Production(__N9,"__N9 -> '+'", false),
+            new Production(__N8,"__N8 -> __N9", false),
+            new Production(__N8,"__N8 -> "),
+            new Production(__N10,"__N10 -> ','", false),
+            new Production(__N10,"__N10 -> "),
+            new Production(__N11,"__N11 -> ':'", false),
+            new Production(__N11,"__N11 -> '->'", false),
+            new Production(__N12,"__N12 -> __N12 terminal_rule", false, false),
+            new Production(__N12,"__N12 -> terminal_rule", false),
+            new Production(__N12,"__N12 -> "),
+            new Production(__N13,"__N13 -> ':'", false),
+            new Production(__N13,"__N13 -> '->'", false),
+            new Production(__N14,"__N14 -> __N14 ,'|' terminal_difference", false, true, false),
+            new Production(__N14,"__N14 -> ,'|' terminal_difference", true, false),
+            new Production(__N14,"__N14 -> "),
+            new Production(__N15,"__N15 -> ,'-' terminal_sequence", true, false),
+            new Production(__N15,"__N15 -> "),
+            new Production(__N16,"__N16 -> __N16 terminal_repetition", false, false),
+            new Production(__N16,"__N16 -> terminal_repetition", false),
+            new Production(__N16,"__N16 -> "),
+            new Production(__N17,"__N17 -> terminal_cardinalilty", false),
+            new Production(__N17,"__N17 -> "),
+            new Production(__N18,"__N18 -> ,',' ˈnumberˈ", true, false),
+            new Production(__N18,"__N18 -> "),
+        };
     }
 }
-#endif

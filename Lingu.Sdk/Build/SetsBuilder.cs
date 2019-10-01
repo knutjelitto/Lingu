@@ -225,7 +225,7 @@ namespace Lingu.Build
                 }
             }
 
-            Grammar.ParseTable = StringParseTable.From(table, numberOfTerminals);
+            Grammar.ParseTable = U16ParseTable.From(table, numberOfTerminals);
         }
     }
 }

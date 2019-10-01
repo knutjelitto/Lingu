@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lingu.Runtime.Parsing
 {
     public class U16ParseTable : ParseTable
     {
         public U16ParseTable(ushort[] table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
-            : base(numberOfStates, numberOfTerminals, numberOfSymbols)
+            : base(numberOfStates, numberOfSymbols, numberOfTerminals)
         {
             Table = table;
         }
@@ -31,6 +29,7 @@ namespace Lingu.Runtime.Parsing
                 for (var col = 0; col < table.GetLength(1); col += 1)
                 {
                     shorts[i] = (ushort)table[row, col];
+                    i += 1;
                 }
             }
 

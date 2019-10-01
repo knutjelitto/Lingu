@@ -5,7 +5,7 @@
         private readonly TableItem[,] table;
 
         public SimpleParseTable(TableItem[,] table, int numberOfTerminals)
-            : base(table.GetLength(0), numberOfTerminals, table.GetLength(1))
+            : base(table.GetLength(0), table.GetLength(1), numberOfTerminals)
         {
             this.table = table;
         }

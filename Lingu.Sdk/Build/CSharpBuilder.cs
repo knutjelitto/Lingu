@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Lingu.Automata;
 using Lingu.Commons;
 using Lingu.Grammars;
+using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Structures;
 using Lingu.Writers;
 
@@ -12,6 +14,9 @@ namespace Lingu.Build
     [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
     public class CSharpBuilder
     {
+        private const string terminalType = nameof(TerminalSymbol);
+        private const string nonterminalType = nameof(NonterminalSymbol);
+
         public CSharpBuilder(Grammar grammar)
         {
             Grammar = grammar;
@@ -21,67 +26,45 @@ namespace Lingu.Build
 
         public void Build(DirRef output)
         {
-            const string ns = "Grammar";
+            const string @namespace = "Grammar";
 
             var file = output.WithFile($"{Grammar.Name}.Data.cs");
 
             var writer = new CsWriter();
-            writer.WriteLine("#if true");
-            writer.Block($"namespace {ns}", () =>
+            writer.Block($"namespace {@namespace}", () =>
             {
                 writer.WriteLine("using Lingu.Runtime.Concretes;");
                 writer.WriteLine();
 
                 writer.Block("public static partial class Data", () =>
                 {
-                    writer.Block("public static ushort[] u16table = ", () =>
+                    writer.Data("public static ushort[] u16Table = ", () =>
                     {
-                        var count = 0;
-                        foreach (var value in Enumerate())
-                        {
-                            writer.Write($"{value},");
-                            count += 1;
-                            if (count == 64)
-                            {
-                                writer.WriteLine();
-                                count = 0;
-                            }
-                        }
-                        if (count > 0)
-                        {
-                            writer.WriteLine();
-                        }
-
-                        IEnumerable<string> Enumerate()
-                        {
-                            for (var row = 0; row < Grammar.ParseTable.NumberOfStates; row += 1)
-                            {
-                                for (var col = 0; col < Grammar.ParseTable.NumberOfSymbols; col += 1)
-                                {
-                                    yield return ((ushort) Grammar.ParseTable[row, col]).ToString().PadLeft(5);
-                                }
-                            }
-                        }
+                        WriteMany(writer, 32, Grammar.ParseTable.Select(entry => ((ushort)entry).ToString().PadLeft(5)));
                     });
-                    writer.WriteLine(";");
+
+#if false
+                    writer.Data("public static byte[] whitespace = ", () =>
+                    {
+                        var dfaWriter = DfaWriter.GetBytes(Grammar.WhitespaceDfa);
+                    });
+#endif
                 });
             });
-            writer.WriteLine("#endif");
             writer.Persist(file);
 
 
             file = output.WithFile($"{Grammar.Name}.Structs.cs");
 
             writer = new CsWriter();
-            writer.WriteLine("#if true");
 
-            writer.Block($"namespace {ns}", () =>
+            writer.Block($"namespace {@namespace}", () =>
             {
-                writer.WriteLine("using System.Collections.Generic;");
-                writer.WriteLine();
-                writer.WriteLine("using Lingu.Runtime.Concretes;");
-                writer.WriteLine("using Lingu.Runtime.Parsing;");
-                writer.WriteLine("using Lingu.Runtime.Structures;");
+                //writer.Using("System.Collections.Generic");
+                //writer.WriteLine();
+                writer.Using("Lingu.Runtime.Concretes");
+                writer.Using("Lingu.Runtime.Parsing");
+                writer.Using("Lingu.Runtime.Structures");
                 writer.WriteLine();
 
                 writer.Block("public static partial class Data", () =>
@@ -90,55 +73,51 @@ namespace Lingu.Build
                     var n2 = Grammar.ParseTable.NumberOfTerminals;
                     var n3 = Grammar.ParseTable.NumberOfSymbols;
 
-                    writer.WriteLine($"public static readonly ParseTable Table = new U16ParseTable(u16table, {n1}, {n2}, {n3});");
+                    writer.WriteLine($"public static readonly ParseTable Table = new U16ParseTable(u16Table, {n1}, {n2}, {n3});");
                     writer.WriteLine();
 
                     foreach (var symbol in Grammar.Symbols)
                     {
                         if (symbol is Terminal terminal)
                         {
-                            writer.Write($"public static readonly TerminalSymbol {terminal.Name} = ");
-                            writer.WriteLine($"new TerminalSymbol({terminal.Id}, \"{terminal.Name}\", \"{terminal.Visual}\");");
+                            writer.Write($"public static readonly {terminalType} {terminal.Name} = ");
+                            writer.WriteLine($"new {terminalType}({terminal.Id}, \"{terminal.Name}\", \"{terminal.Visual}\");");
                         }
                         else if (symbol is Nonterminal nonterminal)
                         {
-                            writer.Write($"public static readonly NonterminalSymbol {nonterminal.Name} = ");
-                            writer.WriteLine($"new NonterminalSymbol({nonterminal.Id}, \"{nonterminal.Name}\", {nameof(RepeatKind)}.{nonterminal.Repeat}, {nameof(LiftKind)}.{nonterminal.Lift});");
+                            writer.Write($"public static readonly {nonterminalType} {nonterminal.Name} = ");
+                            writer.WriteLine($"new {nonterminalType}({nonterminal.Id}, \"{nonterminal.Name}\", {nameof(RepeatKind)}.{nonterminal.Repeat}, {nameof(LiftKind)}.{nonterminal.Lift});");
                         }
                     }
 
                     writer.WriteLine();
 
-                    writer.Block("public static readonly Symbol[] Symbols = ",
-                                 () =>
-                                 {
-                                     WriteExtend(writer, Grammar.Symbols.Select(symbol => symbol.Name), 80);
-                                 });
-                    writer.WriteLine(";");
+                    writer.Data("public static readonly Symbol[] Symbols = ",
+                    () =>
+                    {
+                        WriteExtend(writer, 80, Grammar.Symbols.Select(symbol => symbol.Name));
+                    });
 
                     writer.WriteLine();
 
-                    writer.Block("public static readonly Production[] Productions = ",
-                                 () =>
-                                 {
-                                     foreach (var production in Grammar.Productions)
-                                     {
-                                         var drops = string.Join(", ", production.Drops.Select(b => b ? "true" : "false"));
-                                         var sep = drops.Length > 0 ? ", " : string.Empty;
-                                         writer.WriteLine($"new Production({production.Nonterminal.Name}{sep}{drops}),");
-                                     }
-                                 });
-                    writer.WriteLine(";");
-
-                    writer.WriteLine();
+                    writer.Data("public static readonly Production[] Productions = ",
+                    () =>
+                    {
+                        foreach (var production in Grammar.Productions)
+                        {
+                            var drops = string.Join(", ", production.Drops.Select(b => b ? "true" : "false"));
+                            var visual = production.ToString();
+                            var sep = drops.Length > 0 ? ", " : string.Empty;
+                            writer.WriteLine($"new Production({production.Nonterminal.Name},\"{visual}\"{sep}{drops}),");
+                        }
+                    });
                 });
             });
 
-            writer.WriteLine("#endif");
             writer.Persist(file);
         }
 
-        private void WriteExtend(IndentWriter writer, IEnumerable<string> values, int extend)
+        private void WriteExtend(IndentWriter writer, int extend, IEnumerable<string> values)
         {
             foreach (var value in values)
             {
@@ -153,6 +132,25 @@ namespace Lingu.Build
                 }
             }
             if (writer.Extend() > 0 && writer.Extend() < extend)
+            {
+                writer.WriteLine();
+            }
+        }
+
+        private void WriteMany(IndentWriter writer, int perLine, IEnumerable<string> values)
+        {
+            var count = 0;
+            foreach (var value in values)
+            {
+                writer.Write($"{value},");
+                count += 1;
+                if (count == perLine)
+                {
+                    writer.WriteLine();
+                    count = 0;
+                }
+            }
+            if (count > 0)
             {
                 writer.WriteLine();
             }

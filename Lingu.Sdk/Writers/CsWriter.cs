@@ -9,5 +9,21 @@ namespace Lingu.Writers
         public CsWriter()
         {
         }
+
+        public void Using(string @namespace)
+        {
+            WriteLine($"using {@namespace};");
+        }
+
+        public void Data(string head, Action body)
+        {
+            AddLine(head);
+            AddLine("{");
+            using (Indent())
+            {
+                body();
+            }
+            AddLine("};");
+        }
     }
 }

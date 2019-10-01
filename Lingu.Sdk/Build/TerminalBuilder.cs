@@ -199,7 +199,7 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass5()
         {
-            var eof = new Terminal("_eof_")
+            var eof = new Terminal("__eof")
             {
                 Visual = "$eof$",
                 IsGenerated = true,
@@ -211,9 +211,10 @@ namespace Lingu.Build
 
             if (Grammar.Options.Whitespace == null)
             {
-                var ws = new Terminal("$spc$")
+                var ws = new Terminal("__spc")
                 {
-                    IsGenerated = true
+                    Visual = "$spc$",
+                    IsGenerated = true,
                 };
                 var alt = new Alternates(new Tree.String("' '"), new Tree.String("'\t'"), new Tree.String("'\r'"), new Tree.String("'\n'"));
                 var star = Repeat.From(alt, 0);

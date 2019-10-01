@@ -58,7 +58,7 @@ namespace Lingu.Grammars
 
         public override string ToString()
         {
-            return $"/*{Id}*/ {string.Join(" ", Symbols.Zip(Drops, (s, d) => new ProdSymbol(s, d)))}";
+            return $"{Nonterminal} -> {string.Join(" ", Symbols.Zip(Drops, (s, d) => new ProdSymbol(s, d)))}";
         }
     }
 }
