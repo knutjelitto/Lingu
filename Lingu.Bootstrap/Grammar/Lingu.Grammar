@@ -3,7 +3,7 @@
     options
     {
         Start = file;
-        Whitespace = spacing;
+        Spacing = spacing;
         Keyword = identifier;
         Newline = newline;
     }
@@ -45,17 +45,31 @@
             : rule_alternative (,'|' rule_alternative)*
             ;
 
-        rule_alternative
+        rule_alternative^
             : rule_sequence
-            | // epsilon
             ;
 
         rule_sequence
-            : rule_repetition+
+            : rule_repetition*
             ;
 
         rule_repetition
-            : rule_drop_action ('?' | '*' | '+')?
+            : rule_drop_action
+            | rule_optional
+            | rule_star_closure
+            | rule_plus_closure
+            ;
+
+        rule_optional
+            : rule_drop_action ,'?'
+            ;
+
+        rule_star_closure
+            : rule_drop_action ,'*'
+            ;
+
+        rule_plus_closure
+            : rule_drop_action ,'+'
             ;
 
         rule_drop_action

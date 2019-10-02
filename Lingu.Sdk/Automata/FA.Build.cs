@@ -16,17 +16,24 @@ namespace Lingu.Automata
 
         public static FA Any()
         {
-            return Builder.Dot;
+            return Builder.Dot();
+        }
+
+        public static FA Eof()
+        {
+            return Builder.Eof();
+        }
+
+        public static FA None()
+        {
+            return Builder.None();
         }
 
         public static FA From(int codePoint) => Builder.From((char)codePoint);
 
         public static FA From(string sequence) => Builder.From(sequence);
 
-        public static FA From(int from, int to)
-        {
-            return Builder.From(from, to);
-        }
+        public static FA From(int from, int to) => Builder.From(from, to);
 
         public static FA And(FA first, params FA[] nexts)
         {
@@ -77,17 +84,11 @@ namespace Lingu.Automata
                 return FA.From(start, end);
             }
 
-            public static FA Dot => Single(Integers.Any);
+            public static FA Dot() => Single(Integers.Any);
 
-            public static FA From(char ch)
-            {
-                return Single(Integers.From(ch));
-            }
+            public static FA From(char ch) => Single(Integers.From(ch));
 
-            public static FA From(int first, int last)
-            {
-                return Single(Integers.From(first, last));
-            }
+            public static FA From(int first, int last) => Single(Integers.From(first, last));
 
             public static FA From(string sequence)
             {
@@ -103,6 +104,26 @@ namespace Lingu.Automata
                 }
 
                 return FA.From(start, next);
+            }
+
+            public static FA Eof()
+            {
+                var start = new State();
+                var illegal = new State();
+                start.Add(Integers.Any, illegal);
+                illegal.Add(Integers.Any, illegal);
+
+                return FA.From(start, start);
+            }
+
+            public static FA None()
+            {
+                var start = new State();
+                var illegal = new State();
+                start.Add(Integers.Any, illegal);
+                illegal.Add(Integers.Any, illegal);
+
+                return FA.From(start, start);
             }
 
             public static FA Optional(FA fa)

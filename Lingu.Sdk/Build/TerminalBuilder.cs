@@ -209,22 +209,26 @@ namespace Lingu.Build
             Grammar.Terminals.Add(eof);
             Grammar.Eof = eof;
 
-            if (Grammar.Options.Whitespace == null)
+            if (Grammar.Options.Spacing == null)
             {
                 var ws = new Terminal("__spc")
                 {
                     Visual = "$spc$",
                     IsGenerated = true,
                 };
+#if true
+                ws.Raw = new RawTerminal(ws.Name, new None(ws.Name));
+#else
                 var alt = new Alternates(new Tree.String("' '"), new Tree.String("'\t'"), new Tree.String("'\r'"), new Tree.String("'\n'"));
                 var star = Repeat.From(alt, 0);
                 ws.Raw = new RawTerminal(ws.Name, star);
+#endif
                 Grammar.Terminals.Add(ws);
                 Grammar.WhitespaceDfa = ws.GetDfa().Convert();
             }
             else
             {
-                var star = Repeat.From(Grammar.Options.Whitespace.Raw.Expression, 0);
+                var star = Repeat.From(Grammar.Options.Spacing.Raw.Expression, 0);
                 Grammar.WhitespaceDfa = star.GetFA().ToDfa().Convert();
             }
 

@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Lingu.Automata;
 using Lingu.Writers;
 
 namespace Lingu.Tree
 {
-    public class Eof : Atom
+    public class None : Atom
     {
-        public Eof(string name)
+        public None(string name)
         {
             Name = name;
         }
@@ -22,7 +19,7 @@ namespace Lingu.Tree
 
         public override FA GetFA()
         {
-            return FA.Eof();
+            return FA.None();
         }
     }
 }
