@@ -12,7 +12,7 @@ namespace Lingu.Runtime.Lexing
         public readonly bool Final;
         public readonly int Payload;
 
-        public readonly DfaTrans[] Transitions;
+        public DfaTrans[] Transitions = Array.Empty<DfaTrans>();
 
         public DfaState(int id, bool final, int payload, DfaTrans[] transitions)
         {
@@ -20,6 +20,13 @@ namespace Lingu.Runtime.Lexing
             Final = final;
             Payload = payload;
             Transitions = transitions;
+        }
+
+        public DfaState(int id, bool final, int payload)
+        {
+            Id = id;
+            Final = final;
+            Payload = payload;
         }
 
         public DfaState? Match(int ch)

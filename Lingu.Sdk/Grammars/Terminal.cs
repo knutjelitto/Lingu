@@ -20,6 +20,7 @@ namespace Lingu.Grammars
         }
 
         public Dfa Dfa => lazyDfa.Value;
+        public bool IsFragment { get; set; }
         public string Visual { get; set; }
         public RawTerminal Raw { get; set; }
 

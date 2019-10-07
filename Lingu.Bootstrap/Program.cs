@@ -6,6 +6,7 @@ using Lingu.Build;
 using Lingu.Commons;
 using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
+using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Sources;
 
 namespace Lingu.Bootstrap
@@ -22,6 +23,7 @@ namespace Lingu.Bootstrap
             //program.BuildTree("S2", "grammar s2 { }");
             //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
             //program.BuildTree("S4", @"'\\'");
+            //program.BuildTree("S5", @"aaa");
             //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("Lingu", FileRef.Source($"./S4.Grammar"));
             program.BuildTree("Lingu", FileRef.From($"./Lingu.Grammar"));
@@ -56,17 +58,21 @@ namespace Lingu.Bootstrap
 
                 var ccOut = ProjectDir.Dir("..").Dir("Lingu.CC").Dir("Gen");
 
-                var csharp = new CSharpBuilder(grammar);
+                var csharp = new CSharpWriter(grammar);
                 csharp.Build(ccOut);
 
                 Debug.Assert(grammar.Eof != null);
+                Debug.Assert(grammar.SpacingDfa != null);
+                Debug.Assert(grammar.Dfas != null);
+                Debug.Assert(grammar.StateToDfa != null);
+
+                var dfaSet = new DfaSet(grammar.Dfas.Select(dfa => dfa.Convert()).ToArray(), grammar.StateToDfa, grammar.SpacingDfa.Convert());
 
                 var context = new LinguContext(
                     grammar.Symbols,
                     grammar.Productions,
                     grammar.ParseTable,
-                    grammar.CommonDfa ?? throw new ArgumentNullException(nameof(grammar.CommonDfa)),
-                    grammar.WhitespaceDfa ?? throw new ArgumentNullException(nameof(grammar.WhitespaceDfa)));
+                    dfaSet);
 
                 Source source;
 

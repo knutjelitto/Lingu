@@ -77,8 +77,6 @@ namespace Lingu.Build
 
             new SetsBuilder(Grammar).Build();
 
-            terminalBuilder.BuildPass3();
-
             return Grammar;
         }
 

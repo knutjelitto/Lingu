@@ -4,8 +4,8 @@ namespace Lingu.Runtime.Concretes
 {
     public class TerminalSymbol : Symbol, ITerminal
     {
-        public TerminalSymbol(int id, string name, string visual)
-            : base(id, name)
+        public TerminalSymbol(int id, string name, bool visible, string visual)
+            : base(id, name, visible)
         {
             Visual = visual;
         }

@@ -21,16 +21,16 @@ namespace Lingu.Runtime.Lexing
 
         int index = 0;
 
-        public IConlex First()
+        public IConlex First(int stateId)
         {
             index = 0;
 
-            return Action();
+            return Action(stateId);
         }
 
-        public IConlex Next(IConlex context)
+        public IConlex Next(IConlex context, int stateId)
         {
-            return Action();
+            return Action(stateId);
         }
 
         public bool IsEnd()
@@ -38,20 +38,20 @@ namespace Lingu.Runtime.Lexing
             return Source.IsEnd(index);
         }
 
-        public IConlex Action()
+        public IConlex Action(int stateId)
         {
             SkipWhitespace();
 
-            var token = LexCommon();
+            var token = LexCommon(Context.Dfas[stateId]);
 
             Debug.Assert(token != null);
 
             return new Conlex(token);
         }
 
-        private ITerminalToken? LexCommon()
+        private ITerminalToken? LexCommon(Dfa dfa)
         {
-            DfaState? state = Context.Common.Start;
+            DfaState? state = dfa.Start;
             var start = index;
             while (!Source.IsEnd(index))
             {
@@ -64,7 +64,7 @@ namespace Lingu.Runtime.Lexing
                         return MakeResult(state.Payload, start, index);
                     }
 
-                    var msg = Errors.GetExpectedMessage(Location.From(Source, index), Errors.GetSymbols(Context.Common));
+                    var msg = Errors.GetExpectedMessage(Location.From(Source, index), Errors.GetSymbols(dfa));
                     throw new ParserException(msg);
                 }
                 state = next;
@@ -89,7 +89,7 @@ namespace Lingu.Runtime.Lexing
 
         private void SkipWhitespace()
         {
-            DfaState? state = Context.Whitespace.Start;
+            DfaState? state = Context.Dfas.Spacing.Start;
             while (!Source.IsEnd(index) && (state = state.Match(Source[index])) != null)
             {
                 index += 1;

@@ -39,44 +39,6 @@ namespace Lingu.Build
         /// <summary>
         /// Build common dfa for parser needed terminals
         /// </summary>
-        public void BuildPass3()
-        {
-            var terminals = Grammar.Terminals.Where(t => t.IsPid).ToList();
-            var terminalDfas = new List<FA>();
-            for (var i = 0; i < terminals.Count; ++i)
-            {
-                var terminal = terminals[i];
-                var fa = terminal.Raw.Expression.GetFA();
-                fa = fa.ToDfa();
-                fa = fa.Minimize();
-                fa = fa.RemoveDead();
-
-                terminalDfas.Add(fa);
-            }
-
-            FA? dfa = null;
-            for (var i = 0; i < terminals.Count; ++i)
-            {
-                foreach (var state in terminalDfas[i].Finals)
-                {
-                    state.SetPayload(terminals[i].Id);
-                }
-                if (dfa == null)
-                {
-                    dfa = terminalDfas[i];
-                }
-                else
-                {
-                    dfa = dfa.Union(terminalDfas[i]);
-                }
-            }
-
-            Debug.Assert(dfa != null);
-
-            var runtimeDfa = dfa.Convert();
-
-            Grammar.CommonDfa = runtimeDfa;
-        }
 
         /// <summary>
         /// Create terminals.
@@ -179,7 +141,9 @@ namespace Lingu.Build
         {
             foreach (var terminal in Grammar.Terminals)
             {
+                terminal.IsFragment = true;
                 terminal.IsPrivate = true;
+                terminal.IsVisible = false;
             }
 
             foreach (var nonterminal in Grammar.Nonterminals)
@@ -188,7 +152,16 @@ namespace Lingu.Build
                 {
                     foreach (var terminal in production.Symbols.OfType<Terminal>())
                     {
+                        terminal.IsFragment = false;
                         terminal.IsPrivate = false;
+                    }
+
+                    for (var i = 0; i < production.Count; ++i)
+                    {
+                        if (production.Symbols[i] is Terminal && !production.Drops[i])
+                        {
+                            production.Symbols[i].IsVisible = true;
+                        }
                     }
                 }
             }
@@ -211,25 +184,12 @@ namespace Lingu.Build
 
             if (Grammar.Options.Spacing == null)
             {
-                var ws = new Terminal("__spc")
-                {
-                    Visual = "$spc$",
-                    IsGenerated = true,
-                };
-#if true
-                ws.Raw = new RawTerminal(ws.Name, new None(ws.Name));
-#else
-                var alt = new Alternates(new Tree.String("' '"), new Tree.String("'\t'"), new Tree.String("'\r'"), new Tree.String("'\n'"));
-                var star = Repeat.From(alt, 0);
-                ws.Raw = new RawTerminal(ws.Name, star);
-#endif
-                Grammar.Terminals.Add(ws);
-                Grammar.WhitespaceDfa = ws.GetDfa().Convert();
+                Grammar.SpacingDfa = new None("__spc").GetFA().ToDfa().Minimize().RemoveDead();
             }
             else
             {
                 var star = Repeat.From(Grammar.Options.Spacing.Raw.Expression, 0);
-                Grammar.WhitespaceDfa = star.GetFA().ToDfa().Convert();
+                Grammar.SpacingDfa = star.GetFA().ToDfa().Minimize().RemoveDead();
             }
 
             int id = 0;

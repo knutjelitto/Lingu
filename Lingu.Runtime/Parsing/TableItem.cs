@@ -1,4 +1,6 @@
-﻿namespace Lingu.Runtime.Parsing
+﻿using Lingu.Runtime.Structures;
+
+namespace Lingu.Runtime.Parsing
 {
     public enum TableItem : ushort
     {

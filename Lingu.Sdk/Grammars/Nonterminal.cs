@@ -32,7 +32,7 @@ namespace Lingu.Grammars
             {
                 var symbols = syms.ToList();
                 var thisSymbols = SymbolList.From(symbols.Select(p => p.Symbol));
-                var thisDrops = new Drops(symbols.Select(p => p.IsDrop));
+                var thisDrops = new Bools(symbols.Select(p => p.IsDrop));
 
                 foreach (var production in productions)
                 {

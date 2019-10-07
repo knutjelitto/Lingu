@@ -7,7 +7,7 @@ namespace Lingu.Runtime.Structures
     public interface ILexer
     {
         bool IsEnd();
-        IConlex? First();
-        IConlex? Next(IConlex context);
+        IConlex? First(int stateId);
+        IConlex? Next(IConlex context, int stateId);
     }
 }

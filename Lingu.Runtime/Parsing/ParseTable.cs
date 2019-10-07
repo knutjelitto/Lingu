@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Parsing
 {
-    public abstract class ParseTable : IEnumerable<TableItem>
+    public abstract class ParseTable : ITable
     {
         public ParseTable(int numberOfStates, int numberOfSymbols, int numberOfTerminals)
         {
@@ -12,26 +13,12 @@ namespace Lingu.Runtime.Parsing
             NumberOfTerminals = numberOfTerminals;
         }
 
+        public abstract IState this[int stateNo] { get; }
+
         public int NumberOfStates { get; }
         public int NumberOfSymbols { get; }
         public int NumberOfTerminals { get; }
 
-        public abstract TableItem this[int stateNo, int symNo] { get; }
-
-        public IEnumerator<TableItem> GetEnumerator()
-        {
-            for (var row = 0; row < NumberOfStates; row += 1)
-            {
-                for (var col = 0; col < NumberOfSymbols; col += 1)
-                {
-                    yield return this[row, col];
-                }
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public abstract IEnumerable<IStateItem> ReallyAll { get; }
     }
 }

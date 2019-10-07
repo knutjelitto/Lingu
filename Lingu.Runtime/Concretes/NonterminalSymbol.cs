@@ -4,8 +4,8 @@ namespace Lingu.Runtime.Concretes
 {
     public class NonterminalSymbol : Symbol, INonterminal
     {
-        public NonterminalSymbol(int id, string name, RepeatKind repeat, LiftKind lift)
-            : base(id, name)
+        public NonterminalSymbol(int id, string name, bool visible, RepeatKind repeat, LiftKind lift)
+            : base(id, name, visible)
         {
             Repeat = repeat;
             Lift = lift;

@@ -1,41 +1,70 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+using Lingu.Runtime.Concretes;
+using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Parsing
 {
     public class U16ParseTable : ParseTable
     {
-        public U16ParseTable(ushort[] table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
+        private U16ParseTable(IReadOnlyList<IState> table, int numberOfStates, int numberOfSymbols, int numberOfTerminals)
             : base(numberOfStates, numberOfSymbols, numberOfTerminals)
         {
             Table = table;
         }
 
-        public override TableItem this[int stateNo, int symNo]
+        public static U16ParseTable From(ushort[] table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
         {
-            get
+            Debug.Assert(numberOfStates * numberOfSymbols == table.Length);
+
+            var states = new List<IState>();
+
+            for (var offset = 0; offset < table.Length; offset += numberOfSymbols)
             {
-                var index = (stateNo * NumberOfSymbols) + symNo;
-                return (TableItem)Table[index];
+                var items = new ArraySegment<ushort>(table, offset, numberOfSymbols);
+                var state = new SimpleState(items, numberOfTerminals);
+                states.Add(state);
+
             }
+
+            return new U16ParseTable(states, numberOfStates, numberOfTerminals, numberOfSymbols);
         }
+
+        public override IState this[int stateNo] => Table[stateNo];
 
         public static U16ParseTable From(TableItem[,] table, int numberOfTerminals)
         {
-            var shorts = new UInt16[table.Length];
-            var i = 0;
-
-            for (var row = 0; row < table.GetLength(0); row += 1)
+            IEnumerable<ushort> EnumStateItems()
             {
-                for (var col = 0; col < table.GetLength(1); col += 1)
+                for (var row = 0; row < table.GetLength(0); row += 1)
                 {
-                    shorts[i] = (ushort)table[row, col];
-                    i += 1;
+                    for (var col = 0; col < table.GetLength(1); col += 1)
+                    {
+                        yield return (ushort)table[row, col];
+                    }
                 }
             }
 
-            return new U16ParseTable(shorts, table.GetLength(0), numberOfTerminals, table.GetLength(1));
+            return From(EnumStateItems().ToArray(), table.GetLength(0), numberOfTerminals, table.GetLength(1));
         }
 
-        private ushort[] Table { get; }
+        private IReadOnlyList<IState> Table { get; }
+
+        public override IEnumerable<IStateItem> ReallyAll
+        {
+            get
+            {
+                foreach (var state in Table)
+                {
+                    foreach (var item in state.All)
+                    {
+                        yield return item;
+                    }
+                }
+            }
+        }
     }
 }

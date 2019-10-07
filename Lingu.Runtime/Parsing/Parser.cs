@@ -24,7 +24,7 @@ namespace Lingu.Runtime.Parsing
 
         public INonterminalToken Parse()
         {
-            IConlex? context = Lexer.First();
+            IConlex? context = Lexer.First(stack.StateId);
             while (context != null)
             {
                 var (action, number) = Decode(context.Token.Terminal.Id);
@@ -52,7 +52,7 @@ namespace Lingu.Runtime.Parsing
 
             void HandleError(ITerminalToken token)
             {
-                var msg = Errors.GetExpectedMessage(token.Location, Errors.GetSymbols(stack.State));
+                var msg = Errors.GetExpectedMessage(token.Location, Errors.GetSymbols(stack.StateId));
                 throw new ParserException(msg);
             }
 
@@ -61,7 +61,7 @@ namespace Lingu.Runtime.Parsing
                 Debug.Assert(context != null);
                 stack.Push(new StackItem(context.Token, stateId));
 
-                context = Lexer.Next(context);
+                context = Lexer.Next(context, stack.StateId);
             }
 
             void Reduce(int productionId)
@@ -176,12 +176,12 @@ namespace Lingu.Runtime.Parsing
             }
         }
 
-        private (TableItem action, int number) Decode(int id)
+        private (TableItem action, int number) Decode(int symNo)
         {
-            var rawaction = Context.Table[stack.State, id];
+            IStateItem rawaction = Context.Table[stack.StateId, symNo];
 
-            var action = (rawaction & TableItem.ActionBits);
-            var number = (int)rawaction >> 2;
+            var action = rawaction.Action;
+            var number = rawaction.Number;
 
             return (action, number);
         }

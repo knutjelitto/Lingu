@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 using Lingu.Commons;
+
+#nullable enable
 
 namespace Lingu.Automata
 {
@@ -36,47 +36,43 @@ namespace Lingu.Automata
             var writer = new BinWriter();
 
             writer.Write(states.Count);
-            WriteStates(states, writer);
+            WriteStates(writer, states);
 
             writer.Write(sets.Count);
-            WriteSets(sets, writer);
+            WriteSets(writer, sets);
 
             writer.Write(transitions.Count);
-            WriteTransitions(transitions, writer);
+            WriteTransitions(writer, transitions);
 
-            WriteStateTransitions(states, writer);
+            WriteStateTransitions(writer, states);
 
             return writer.ToArray();
         }
 
-        private static void WriteStates(IReadOnlyList<State> states, BinWriter writer)
+        private static void WriteStates(BinWriter writer, IReadOnlyList<State> states)
         {
             foreach (var state in states)
             {
                 writer.Write(state.Final);
-                if (state.Payload != -1)
-                {
-                    Debug.Assert(true);
-                }
-                writer.Write(state.Payload);
+                writer.Write(state.Payload + 1);
                 writer.Write(state.Transitions.Count);
             }
         }
 
-        private static void WriteSets(IReadOnlyList<Integers> sets, BinWriter writer)
+        private static void WriteSets(BinWriter writer, IReadOnlyList<Integers> sets)
         {
             foreach (var set in sets)
             {
                 writer.Write(set.IntervalCount);
-                foreach (var interval in set.GetIntervals())
+                foreach (var (min, max) in set.GetIntervals())
                 {
-                    writer.Write(interval.Min);
-                    writer.Write(interval.Max);
+                    writer.Write(min);
+                    writer.Write(max);
                 }
             }
         }
 
-        private static void WriteTransitions(IReadOnlyList<Transition> transitions, BinWriter writer)
+        private static void WriteTransitions(BinWriter writer, IReadOnlyList<Transition> transitions)
         {
             foreach (var transition in transitions)
             {
@@ -85,7 +81,7 @@ namespace Lingu.Automata
             }
         }
 
-        private static void WriteStateTransitions(IReadOnlyList<State> states, BinWriter writer)
+        private static void WriteStateTransitions(BinWriter writer, IReadOnlyList<State> states)
         {
             foreach (var state in states)
             {

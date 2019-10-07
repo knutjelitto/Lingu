@@ -41,15 +41,13 @@ namespace Lingu.Runtime.Errors
             return dfa.GetPayloads().Select(symId => Context.Symbols[symId]);
         }
 
-        public IEnumerable<ISymbol> GetSymbols(int stateId)
+        public IEnumerable<ISymbol> GetSymbols(int stateNo)
         {
-            for (var symbolId = 0; symbolId < Context.Table.NumberOfTerminals; ++symbolId)
+            foreach (var terminalItem in Context.Table[stateNo].Terminals)
             {
-                var action = Context.Table[stateId, symbolId] & TableItem.ActionBits;
-
-                if (action == TableItem.Shift)
+                if (terminalItem.Action == TableItem.Shift)
                 {
-                    yield return Context.Symbols[symbolId];
+                    yield return Context.Symbols[terminalItem.Number];
                 }
             }
         }

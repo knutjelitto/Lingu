@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LinguCC
+namespace Lingu.CC
 {
     class Program
     {

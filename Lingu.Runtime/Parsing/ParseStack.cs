@@ -42,7 +42,7 @@ namespace Lingu.Runtime.Parsing
             }
         }
 
-        public int State => top == 0 ? 0 : items[top - 1].State;
+        public int StateId => top == 0 ? 0 : items[top - 1].StateId;
 
         public string DD()
         {

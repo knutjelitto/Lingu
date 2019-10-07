@@ -1,0 +1,21 @@
+﻿grammar S5
+{
+    options
+    {
+		Start = start;
+    }
+    terminals
+    {
+        aaa : 'aaa' ;
+        aba : 'aba' ;
+    }
+
+    rules
+    {
+
+		start
+            : aaa
+            | aba
+            ;
+    }
+}

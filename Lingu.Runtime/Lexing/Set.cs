@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Lingu.Runtime.Lexing
 {
@@ -8,9 +8,14 @@ namespace Lingu.Runtime.Lexing
     {
         public readonly Interval[] Intervals;
 
-        public Set(Interval[] intervals)
+        public Set(params Interval[] intervals)
         {
             Intervals = intervals;
+        }
+
+        public Set(params (int min, int max)[] intervals)
+        {
+            Intervals = intervals.Select(minmax => new Interval(minmax.min, minmax.max)).ToArray();
         }
 
         public bool Match(int value)

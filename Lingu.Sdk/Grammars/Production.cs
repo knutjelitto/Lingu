@@ -11,7 +11,7 @@ namespace Lingu.Grammars
 {
     public class Production : IReadOnlyList<Symbol>, IProduction
     {
-        public Production(Nonterminal nonterminal, SymbolList symbols, Drops drops)
+        public Production(Nonterminal nonterminal, SymbolList symbols, Bools drops)
         {
             Nonterminal = nonterminal;
             Symbols = symbols;
@@ -23,7 +23,7 @@ namespace Lingu.Grammars
         INonterminal IProduction.Nonterminal => Nonterminal;
 
         public SymbolList Symbols { get; }
-        public Drops Drops { get; }
+        public Bools Drops { get; }
         public int Id { get; set; }
         public CoreFactory? ItemFactory { get; set; }
 

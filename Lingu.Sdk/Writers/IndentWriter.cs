@@ -2,6 +2,7 @@ using Lingu.Commons;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace Lingu.Writers
 {
@@ -90,7 +91,21 @@ namespace Lingu.Writers
 
         public void Persist(string path)
         {
-            File.WriteAllLines(path, lines);
+            while (true)
+            {
+                try
+                {
+                    File.WriteAllLines(path, lines);
+                    return;
+                }
+                catch
+                {
+                }
+                finally
+                {
+                    Thread.Sleep(42);
+                }
+            }
         }
 
         public void Dump(IWriter writer)

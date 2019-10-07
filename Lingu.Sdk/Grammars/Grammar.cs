@@ -11,6 +11,9 @@ namespace Lingu.Grammars
 {
     public class Grammar : Symbol
     {
+        public static readonly string GeneratedTerminalPrefix = "__T";
+        public static readonly string GeneratedNonterminalPrefix = "__N";
+
         public Grammar(string name)
             : base(name)
         {
@@ -38,8 +41,10 @@ namespace Lingu.Grammars
         public IReadOnlyList<Symbol>? PSymbols { get; set; }
 
         public Nonterminal? Accept { get; set; }
-        public Dfa? CommonDfa { get; set; }
-        public Dfa? WhitespaceDfa { get; set; }
+        public FA? SpacingDfa { get; set; }
+
+        public IReadOnlyList<int>? StateToDfa { get; set; }
+        public IReadOnlyList<FA>? Dfas { get; set; }
         public Terminal? Eof { get; set; }
         public LR0SetSet LR0Sets { get; }
         public LR1SetSet LR1Sets { get; }
@@ -49,12 +54,12 @@ namespace Lingu.Grammars
 
         public string NextTerminalName()
         {
-            return $"__T{nextTerminalId++}";
+            return $"{GeneratedTerminalPrefix}{nextTerminalId++}";
         }
 
         public string NextNonterminalName()
         {
-            return $"__N{nextNonterminalId++}";
+            return $"{GeneratedNonterminalPrefix}{nextNonterminalId++}";
         }
 
         private int nextTerminalId = 1;

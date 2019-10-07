@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Grammar\S5.Grammar" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\Lingu.Hime\LinguLexer.cs" Link="Hime\LinguLexer.cs" />
     <Compile Include="..\Lingu.Hime\LinguParser.cs" Link="Hime\LinguParser.cs" />
     <Compile Include="..\Lingu.Hime\LinguVisitor.cs" Link="Hime\LinguVisitor.cs" />
@@ -20,6 +24,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Grammar\Expr.Grammar" />
+    <EmbeddedResource Include="Grammar\S5.Grammar" />
     <EmbeddedResource Include="Grammar\S4.Grammar" />
     <EmbeddedResource Include="Grammar\S3.Grammar" />
     <EmbeddedResource Include="Grammar\S2.Grammar" />

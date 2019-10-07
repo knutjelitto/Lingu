@@ -21,11 +21,7 @@ namespace Lingu.Runtime.Lexing
             for (var i = 0; i < stateCount; ++i)
             {
                 var final = ReadBool();
-                var payload = ReadInt32();
-                if (payload != -1)
-                {
-                    Debug.Assert(true);
-                }
+                var payload = ReadInt32() - 1;
                 var trans = new DfaTrans[ReadInt32()];
                 states[i] = new DfaState(i, final, payload, trans);
             }

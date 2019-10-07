@@ -8,10 +8,8 @@ namespace Lingu.Runtime.Structures
     {
         IReadOnlyList<ISymbol> Symbols { get; }
         IReadOnlyList<IProduction> Productions { get; }
-        ParseTable Table { get; }
-        Dfa Whitespace { get; }
-        Dfa Common { get; }
-
+        ITable Table { get; }
+        IDfaSet Dfas { get; }
         IErrorHandler Errors { get; }
     }
 }

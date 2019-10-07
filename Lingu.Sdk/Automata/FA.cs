@@ -95,11 +95,9 @@ namespace Lingu.Automata
             return Operations.Minimize(CloneIf(cloned));
         }
 
-        public Dfa Convert(bool cloned = false)
+        public Dfa Convert()
         {
-            var from = CloneIf(cloned).Minimize().RemoveDead();
-
-            return new DfaReader(DfaWriter.GetBytes(from)).Read();
+            return new DfaReader(DfaWriter.GetBytes(this)).Read();
         }
 
         public FA ToDfa(bool cloned = false)

@@ -26,11 +26,18 @@ namespace Lingu.Dumping
             {
                 DumpTerminal(writer, terminal);
             }
+
+            Debug.Assert(Grammar.SpacingDfa != null);
+            Debug.Assert(Grammar.Dfas != null);
+
             writer.WriteLine();
+            DumpTerminal(writer, "Spacing", Grammar.SpacingDfa);
 
-            Debug.Assert(Grammar.CommonDfa != null);
-
-            DumpTerminal(writer, "Common", Grammar.CommonDfa);
+            for (var i = 0; i < Grammar.Dfas.Count; ++i)
+            {
+                writer.WriteLine();
+                DumpTerminal(writer, $"Dfa{i}", Grammar.Dfas[i]);
+            }
         }
 
         public void DumpTerminal(IWriter writer, Terminal terminal)

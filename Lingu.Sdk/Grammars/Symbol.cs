@@ -23,7 +23,7 @@ namespace Lingu.Grammars
         public int Pid { get; set; }
         public bool IsGenerated { get; set; }
         public bool IsPrivate { get; set; }
-
+        public bool IsVisible { get; set; }
         public bool IsPid => Pid >= 0;
 
         public int UseCount { get; private set; }
