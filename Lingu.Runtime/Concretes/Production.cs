@@ -8,14 +8,16 @@ namespace Lingu.Runtime.Concretes
 {
     public class Production : IProduction
     {
-        public Production(INonterminal nonterminal, string visual, params bool[] drops)
+        public Production(INonterminal nonterminal, bool isPromote, string visual, params bool[] drops)
         {
             Nonterminal = nonterminal;
+            IsPromote = isPromote;
             Visual = visual;
             Drops = drops;
         }
 
         public INonterminal Nonterminal { get; }
+        public Boolean IsPromote { get; }
         public string Visual { get; }
         public bool[] Drops { get; }
         public int Length => Drops.Length;

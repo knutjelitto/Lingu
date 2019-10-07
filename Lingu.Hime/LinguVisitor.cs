@@ -44,17 +44,18 @@ namespace Lingu.Bootstrap.Hime
                 case 0x0026: return (T)OnVariableTerminalCardinalilty(node);
                 case 0x0027: return (T)OnVariableGrammarRules(node);
                 case 0x0028: return (T)OnVariableRule(node);
-                case 0x0029: return (T)OnVariablePromoteAll(node);
-                case 0x002A: return (T)OnVariableRuleExpression(node);
-                case 0x002B: return (T)OnVariableRuleAlternative(node);
-                case 0x002C: return (T)OnVariableRuleSequence(node);
-                case 0x002D: return (T)OnVariableRuleRepetition(node);
-                case 0x002E: return (T)OnVariableRuleDropAction(node);
-                case 0x002F: return (T)OnVariableRuleElement(node);
-                case 0x0030: return (T)OnVariableRuleSub(node);
-                case 0x0031: return (T)OnVariableRuleAtom(node);
-                case 0x0032: return (T)OnVariableReference(node);
-                case 0x004A: return (T)OnVirtualRange(node);
+                case 0x0029: return (T)OnVariableRuleExpression(node);
+                case 0x002A: return (T)OnVariableRuleAlternative(node);
+                case 0x002B: return (T)OnVariableRuleSequence(node);
+                case 0x002C: return (T)OnVariableRuleRepetition(node);
+                case 0x002D: return (T)OnVariableRuleDropAction(node);
+                case 0x002E: return (T)OnVariablePromote(node);
+                case 0x002F: return (T)OnVariableDrop(node);
+                case 0x0030: return (T)OnVariableRuleElement(node);
+                case 0x0031: return (T)OnVariableRuleSub(node);
+                case 0x0032: return (T)OnVariableRuleAtom(node);
+                case 0x0033: return (T)OnVariableReference(node);
+                case 0x004B: return (T)OnVirtualRange(node);
                 default:
                     throw new NotImplementedException();
             }
@@ -189,10 +190,6 @@ namespace Lingu.Bootstrap.Hime
         {
             return VisitChildren(node).FirstOrDefault();
         }
-        protected virtual object OnVariablePromoteAll(ASTNode node)
-        {
-            return VisitChildren(node).FirstOrDefault();
-        }
         protected virtual object OnVariableRuleExpression(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
@@ -210,6 +207,14 @@ namespace Lingu.Bootstrap.Hime
             return VisitChildren(node).FirstOrDefault();
         }
         protected virtual object OnVariableRuleDropAction(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
+        }
+        protected virtual object OnVariablePromote(ASTNode node)
+        {
+            return VisitChildren(node).FirstOrDefault();
+        }
+        protected virtual object OnVariableDrop(ASTNode node)
         {
             return VisitChildren(node).FirstOrDefault();
         }

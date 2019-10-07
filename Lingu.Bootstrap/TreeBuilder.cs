@@ -7,6 +7,7 @@ using Hime.Redist;
 using Lingu.Bootstrap.Hime;
 using Lingu.Grammars;
 using Lingu.Tree;
+using Symbol = Hime.Redist.Symbol;
 
 namespace Lingu.Bootstrap
 {
@@ -227,10 +228,9 @@ namespace Lingu.Bootstrap
         protected override object OnVariableRule(ASTNode node)
         {
             var name = VisitChild<Name>(node, 0);
-            var promote = node.Children[1].Children.Count == 1;
-            var expression = VisitChild<IExpression>(node, 2);
+            var expression = VisitChild<IExpression>(node, 1);
 
-            return RawNonterminal.From(name.Text, promote, expression);
+            return RawNonterminal.From(name.Text, false, expression);
         }
 
         protected override object OnVariableRuleExpression(ASTNode node)
@@ -304,14 +304,21 @@ namespace Lingu.Bootstrap
             {
                 var expression = VisitChild<IExpression>(node, 1);
 
-                switch (node.Children[0].Value)
+                switch (node.Children[0].Symbol.ID)
                 {
-                    case ",":
+                    case LinguParser.ID.VariableDrop:
                         return new Drop(expression);
+                    case LinguParser.ID.VariablePromote:
+                        return new Promote(expression);
                 }
             }
 
             throw new ArgumentOutOfRangeException(nameof(node));
+        }
+
+        protected override object OnVariableDrop(ASTNode node)
+        {
+            return base.OnVariableDrop(node);
         }
 
         protected override object OnVariableReference(ASTNode node)

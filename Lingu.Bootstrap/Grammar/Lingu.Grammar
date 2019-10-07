@@ -18,10 +18,10 @@
             : ,'grammar' identifier ,'{' grammar_item* ,'}'
             ;
 
-        grammar_item^
-            : grammar_options
-            | grammar_rules
-            | grammar_terminals
+        grammar_item
+            : ^grammar_options
+            | ^grammar_rules
+            | ^grammar_terminals
             ;
 
         /* OPTIONS */
@@ -38,15 +38,15 @@
             ;
 
         rule                        
-            : identifier '^'? ,(':'|'->') rule_expression ,';'
+            : identifier ,(':'|'->') rule_expression ,';'
             ;
 
         rule_expression
             : rule_alternative (,'|' rule_alternative)*
             ;
 
-        rule_alternative^
-            : rule_sequence
+        rule_alternative
+            : ^rule_sequence
             ;
 
         rule_sequence
@@ -54,41 +54,51 @@
             ;
 
         rule_repetition
-            : rule_drop_action
-            | rule_optional
-            | rule_star_closure
-            | rule_plus_closure
+            : ^rule_optional
+            | ^rule_star_closure
+            | ^rule_plus_closure
+            | ^rule_tree_action
             ;
 
         rule_optional
-            : rule_drop_action ,'?'
+            : rule_tree_action ,'?'
             ;
 
         rule_star_closure
-            : rule_drop_action ,'*'
+            : rule_tree_action ,'*'
             ;
 
         rule_plus_closure
-            : rule_drop_action ,'+'
+            : rule_tree_action ,'+'
             ;
 
-        rule_drop_action
-            : ','? rule_element
+        rule_tree_action
+            : ^rule_drop_element
+            | ^rule_promote_element
+            | ^rule_element
             ;
 
-        rule_element^
-            : sub_rule
-            | ,'(' rule_expression ,')'
-            | rule_atom
+        rule_drop_element
+            : ,',' rule_element
+            ;
+
+        rule_promote_element
+            : ,'^' rule_element
+            ;
+
+        rule_element
+            : ^sub_rule
+            | ,'(' ^rule_expression ,')'
+            | ^rule_atom
             ;
 
         sub_rule
             : ,'{' identifier ,(':'|'->') rule_expression ,'}'
             ;
 
-        rule_atom^
-            : reference
-            | text
+        rule_atom
+            : ^reference
+            | ^text
             ;
 
         reference
@@ -104,46 +114,68 @@
             ;
 
         terminal_expression
-            : terminal_difference (,'|' terminal_difference)*
+            : terminal_alternative (,'|' terminal_alternative)*
             ;
 
-        terminal_difference
-            : terminal_sequence (,'-' terminal_sequence)?
+        terminal_alternative
+            : ^terminal_sequence
+            | ^terminal_diff
+            ;
+
+        terminal_diff
+            : terminal_sequence ,'-' terminal_sequence
             ;
 
         terminal_sequence
-            : terminal_repetition terminal_repetition*
+            : terminal_repetition*
             ;
 
         terminal_repetition     
-            : terminal_element terminal_cardinalilty?
+            : ^terminal_optional
+            | ^terminal_star_closure
+            | ^terminal_plus_closure
+            | ^terminal_range_loop
+            | ^terminal_element
             ;
 
-        terminal_cardinalilty^
-            : '?'
-            | '*'
-            | '+'
-            | {range: ,'{' number (,',' number)? ,'}'}
+        terminal_optional
+            : terminal_element '?'
             ;
 
-        terminal_element^
-            : terminal_atom
-            | terminal_not
-            | ,'(' terminal_expression ,')'
+        terminal_star_closure
+            : terminal_element '*'
+            ;
+
+        terminal_plus_closure
+            : terminal_element '+'
+            ;
+
+        terminal_range_loop
+            : terminal_element range
+            ;
+
+        range
+            : ,'{' number (,',' number)? ,'}'
+            ;
+
+        terminal_element
+            : ^terminal_atom
+            | ^terminal_not
+            | ,'(' ^terminal_expression ,')'
             ;
 
         terminal_not
             : ,'~' terminal_atom
             ;
 
-        terminal_atom^
-            : any
-            | text
-            | characterRange
-            | ucCodepoint
-            | ucBlock
-            | ucCategory
-            | reference
+        terminal_atom
+            : ^any
+            | ^text
+            | ^characterRange
+            | ^ucCodepoint
+            | ^ucBlock
+            | ^ucCategory
+            | ^reference
             ;
 
         characterRange
@@ -151,8 +183,8 @@
             ;
 
         character
-            : ucCodepoint
-            | text
+            : ^ucCodepoint
+            | ^text
             ;
     }
 

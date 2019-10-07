@@ -7,9 +7,9 @@ using Lingu.Writers;
 
 namespace Lingu.Tree
 {
-    public class Drop : Node, IExpression
+    public class Promote : Node, IExpression
     {
-        public Drop(IExpression expression)
+        public Promote(IExpression expression)
         {
             Expression = expression;
         }
@@ -20,7 +20,7 @@ namespace Lingu.Tree
 
         public override void Dump(IndentWriter writer)
         {
-            writer.Write(",");
+            writer.Write("^");
             Expression.Dump(writer);
         }
 

@@ -1,9 +1,9 @@
 ﻿using Hime.SDK;
 using Hime.SDK.Output;
-using Mean.Maker.Builders;
 using System;
 using System.IO;
 using System.Linq;
+using Lingu.Commons;
 
 namespace Lingu.Hime
 {
@@ -32,10 +32,10 @@ namespace Lingu.Hime
 
             Environment.CurrentDirectory = $"{ProjectDir}";
 
-            var source = FileRef.Source($"{ProjectDir}Lingu.Grammar");
-            var parser = FileRef.Source($"{ProjectDir}LinguParser.cs");
-            var lexer = FileRef.Source($"{ProjectDir}LinguLexer.cs");
-            var visitor = FileRef.Source($"{ProjectDir}LinguVisitor.cs");
+            var source = FileRef.From($"{ProjectDir}Lingu.Grammar");
+            var parser = FileRef.From($"{ProjectDir}LinguParser.cs");
+            var lexer = FileRef.From($"{ProjectDir}LinguLexer.cs");
+            var visitor = FileRef.From($"{ProjectDir}LinguVisitor.cs");
 
             Generate(options, source);
 

@@ -1,17 +1,24 @@
+using System;
+using System.Diagnostics;
+
 #nullable enable
 
 namespace Lingu.Grammars
 {
     public class ProdSymbol
     {
-        public ProdSymbol(Symbol symbol, bool isDrop)
+        public ProdSymbol(Symbol symbol, bool isDrop, bool isPromote)
         {
+            Debug.Assert(!(isDrop && isPromote));
+
             Symbol = symbol;
             IsDrop = isDrop;
+            IsPromote = isPromote;
         }
 
         public Symbol Symbol { get; }
         public bool IsDrop { get; }
+        public bool IsPromote { get; }
 
         public override string ToString()
         {
@@ -19,6 +26,11 @@ namespace Lingu.Grammars
             {
                 return $",{Symbol}";
             }
+            if (IsPromote)
+            {
+                return $"^{Symbol}";
+            }
+
             return Symbol.ToString();
         }
     }

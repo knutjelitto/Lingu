@@ -20,6 +20,13 @@ namespace Lingu.Build
 
         protected string Bool(bool b) => b ? "true" : "false";
 
+        protected bool VisitorIgnore(Symbol symbol)
+        {
+            return symbol.Name.StartsWith("__") ||
+                   symbol is Terminal terminal && terminal.IsFragment ||
+                   symbol is Nonterminal nonterminal && nonterminal.IsPrivate;
+        }
+
         protected void WriteExtend(IndentWriter writer, IEnumerable<string> values)
         {
             foreach (var value in values)

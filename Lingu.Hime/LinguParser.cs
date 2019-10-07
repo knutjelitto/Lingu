@@ -103,49 +103,53 @@ namespace Lingu.Bootstrap.Hime
 			/// </summary>
 			public const int VariableRule = 0x0028;
 			/// <summary>
-			/// The unique identifier for variable promoteAll
-			/// </summary>
-			public const int VariablePromoteAll = 0x0029;
-			/// <summary>
 			/// The unique identifier for variable rule_expression
 			/// </summary>
-			public const int VariableRuleExpression = 0x002A;
+			public const int VariableRuleExpression = 0x0029;
 			/// <summary>
 			/// The unique identifier for variable rule_alternative
 			/// </summary>
-			public const int VariableRuleAlternative = 0x002B;
+			public const int VariableRuleAlternative = 0x002A;
 			/// <summary>
 			/// The unique identifier for variable rule_sequence
 			/// </summary>
-			public const int VariableRuleSequence = 0x002C;
+			public const int VariableRuleSequence = 0x002B;
 			/// <summary>
 			/// The unique identifier for variable rule_repetition
 			/// </summary>
-			public const int VariableRuleRepetition = 0x002D;
+			public const int VariableRuleRepetition = 0x002C;
 			/// <summary>
 			/// The unique identifier for variable rule_drop_action
 			/// </summary>
-			public const int VariableRuleDropAction = 0x002E;
+			public const int VariableRuleDropAction = 0x002D;
+			/// <summary>
+			/// The unique identifier for variable promote
+			/// </summary>
+			public const int VariablePromote = 0x002E;
+			/// <summary>
+			/// The unique identifier for variable drop
+			/// </summary>
+			public const int VariableDrop = 0x002F;
 			/// <summary>
 			/// The unique identifier for variable rule_element
 			/// </summary>
-			public const int VariableRuleElement = 0x002F;
+			public const int VariableRuleElement = 0x0030;
 			/// <summary>
 			/// The unique identifier for variable rule_sub
 			/// </summary>
-			public const int VariableRuleSub = 0x0030;
+			public const int VariableRuleSub = 0x0031;
 			/// <summary>
 			/// The unique identifier for variable rule_atom
 			/// </summary>
-			public const int VariableRuleAtom = 0x0031;
+			public const int VariableRuleAtom = 0x0032;
 			/// <summary>
 			/// The unique identifier for variable reference
 			/// </summary>
-			public const int VariableReference = 0x0032;
+			public const int VariableReference = 0x0033;
 			/// <summary>
 			/// The unique identifier for virtual range
 			/// </summary>
-			public const int VirtualRange = 0x004A;
+			public const int VirtualRange = 0x004B;
 		}
 		/// <summary>
 		/// The collection of variables matched by this parser
@@ -175,25 +179,26 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x0026, "terminal_cardinalilty"), 
 			new Symbol(0x0027, "grammar_rules"), 
 			new Symbol(0x0028, "rule"), 
-			new Symbol(0x0029, "promoteAll"), 
-			new Symbol(0x002A, "rule_expression"), 
-			new Symbol(0x002B, "rule_alternative"), 
-			new Symbol(0x002C, "rule_sequence"), 
-			new Symbol(0x002D, "rule_repetition"), 
-			new Symbol(0x002E, "rule_drop_action"), 
-			new Symbol(0x002F, "rule_element"), 
-			new Symbol(0x0030, "rule_sub"), 
-			new Symbol(0x0031, "rule_atom"), 
-			new Symbol(0x0032, "reference"), 
-			new Symbol(0x0035, "__V53"), 
-			new Symbol(0x0038, "__V56"), 
-			new Symbol(0x003C, "__V60"), 
-			new Symbol(0x0040, "__V64"), 
-			new Symbol(0x0042, "__V66"), 
-			new Symbol(0x004D, "__V77"), 
+			new Symbol(0x0029, "rule_expression"), 
+			new Symbol(0x002A, "rule_alternative"), 
+			new Symbol(0x002B, "rule_sequence"), 
+			new Symbol(0x002C, "rule_repetition"), 
+			new Symbol(0x002D, "rule_drop_action"), 
+			new Symbol(0x002E, "promote"), 
+			new Symbol(0x002F, "drop"), 
+			new Symbol(0x0030, "rule_element"), 
+			new Symbol(0x0031, "rule_sub"), 
+			new Symbol(0x0032, "rule_atom"), 
+			new Symbol(0x0033, "reference"), 
+			new Symbol(0x0036, "__V54"), 
+			new Symbol(0x0039, "__V57"), 
+			new Symbol(0x003D, "__V61"), 
+			new Symbol(0x0041, "__V65"), 
+			new Symbol(0x0043, "__V67"), 
+			new Symbol(0x004E, "__V78"), 
 			new Symbol(0x004F, "__V79"), 
 			new Symbol(0x0050, "__V80"), 
-			new Symbol(0x0051, "__VAxiom") };
+			new Symbol(0x0052, "__VAxiom") };
 		/// <summary>
 		/// The collection of virtuals matched by this parser
 		/// </summary>
@@ -202,7 +207,7 @@ namespace Lingu.Bootstrap.Hime
 		/// so that virtual indices in the automaton can be used to retrieve the virtuals in this table
 		/// </remarks>
 		private static readonly Symbol[] virtuals = {
-			new Symbol(0x004A, "range") };
+			new Symbol(0x004B, "range") };
 		/// <summary>
 		/// Initializes a new instance of the parser
 		/// </summary>
@@ -243,12 +248,13 @@ namespace Lingu.Bootstrap.Hime
 			public virtual void OnVariableTerminalCardinalilty(ASTNode node) {}
 			public virtual void OnVariableGrammarRules(ASTNode node) {}
 			public virtual void OnVariableRule(ASTNode node) {}
-			public virtual void OnVariablePromoteAll(ASTNode node) {}
 			public virtual void OnVariableRuleExpression(ASTNode node) {}
 			public virtual void OnVariableRuleAlternative(ASTNode node) {}
 			public virtual void OnVariableRuleSequence(ASTNode node) {}
 			public virtual void OnVariableRuleRepetition(ASTNode node) {}
 			public virtual void OnVariableRuleDropAction(ASTNode node) {}
+			public virtual void OnVariablePromote(ASTNode node) {}
+			public virtual void OnVariableDrop(ASTNode node) {}
 			public virtual void OnVariableRuleElement(ASTNode node) {}
 			public virtual void OnVariableRuleSub(ASTNode node) {}
 			public virtual void OnVariableRuleAtom(ASTNode node) {}
@@ -302,17 +308,18 @@ namespace Lingu.Bootstrap.Hime
 				case 0x0026: visitor.OnVariableTerminalCardinalilty(node); break;
 				case 0x0027: visitor.OnVariableGrammarRules(node); break;
 				case 0x0028: visitor.OnVariableRule(node); break;
-				case 0x0029: visitor.OnVariablePromoteAll(node); break;
-				case 0x002A: visitor.OnVariableRuleExpression(node); break;
-				case 0x002B: visitor.OnVariableRuleAlternative(node); break;
-				case 0x002C: visitor.OnVariableRuleSequence(node); break;
-				case 0x002D: visitor.OnVariableRuleRepetition(node); break;
-				case 0x002E: visitor.OnVariableRuleDropAction(node); break;
-				case 0x002F: visitor.OnVariableRuleElement(node); break;
-				case 0x0030: visitor.OnVariableRuleSub(node); break;
-				case 0x0031: visitor.OnVariableRuleAtom(node); break;
-				case 0x0032: visitor.OnVariableReference(node); break;
-				case 0x004A: visitor.OnVirtualRange(node); break;
+				case 0x0029: visitor.OnVariableRuleExpression(node); break;
+				case 0x002A: visitor.OnVariableRuleAlternative(node); break;
+				case 0x002B: visitor.OnVariableRuleSequence(node); break;
+				case 0x002C: visitor.OnVariableRuleRepetition(node); break;
+				case 0x002D: visitor.OnVariableRuleDropAction(node); break;
+				case 0x002E: visitor.OnVariablePromote(node); break;
+				case 0x002F: visitor.OnVariableDrop(node); break;
+				case 0x0030: visitor.OnVariableRuleElement(node); break;
+				case 0x0031: visitor.OnVariableRuleSub(node); break;
+				case 0x0032: visitor.OnVariableRuleAtom(node); break;
+				case 0x0033: visitor.OnVariableReference(node); break;
+				case 0x004B: visitor.OnVirtualRange(node); break;
 			}
 		}
 	}

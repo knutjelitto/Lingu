@@ -7,6 +7,5 @@ namespace Lingu.Runtime.Structures
     public interface INonterminal : ISymbol
     {
         RepeatKind Repeat { get; }
-        LiftKind Lift { get; }
     }
 }

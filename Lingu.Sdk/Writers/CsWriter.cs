@@ -25,5 +25,16 @@ namespace Lingu.Writers
             }
             AddLine("};");
         }
+
+        public void Class(string head, Action body)
+        {
+            AddLine(head);
+            AddLine("{");
+            using (Indent())
+            {
+                body();
+            }
+            AddLine("}");
+        }
     }
 }

@@ -27,19 +27,19 @@ namespace Lingu.Runtime.Parsing
             IConlex? context = Lexer.First(stack.StateId);
             while (context != null)
             {
-                var (action, number) = Decode(context.Token.Terminal.Id);
+                var action = Decode(context.Token.Terminal.Id);
 
-                switch (action)
+                switch (action.Action)
                 {
                     case TableItem.Error:
                         HandleError(context.Token);
                         context = null;
                         break;
                     case TableItem.Shift:
-                        Shift(number);
+                        Shift(action.Number);
                         break;
                     case TableItem.Reduce:
-                        Reduce(number);
+                        Reduce(action.Number);
                         break;
                     case TableItem.Accept:
                         Debug.Assert(Lexer.IsEnd());
@@ -148,7 +148,7 @@ namespace Lingu.Runtime.Parsing
                         }
                         break;
                     case RepeatKind.None:
-                        if (nonterminal.Lift ==  LiftKind.Lift)
+                        if (production.IsPromote)
                         {
                             if (rhs.Length != 1)
                             {
@@ -165,25 +165,20 @@ namespace Lingu.Runtime.Parsing
                         throw new InternalException();
                 }
 
-                var (action, number) = Decode(nonterminal.Id);
+                var action = Decode(nonterminal.Id);
 
-                if (action != TableItem.Shift)
+                if (action.Action != TableItem.Shift)
                 {
                     throw new ParserException();
                 }
 
-                stack.Push(new StackItem(token, number));
+                stack.Push(new StackItem(token, action.Number));
             }
         }
 
-        private (TableItem action, int number) Decode(int symNo)
+        private IStateItem Decode(int symNo)
         {
-            IStateItem rawaction = Context.Table[stack.StateId, symNo];
-
-            var action = rawaction.Action;
-            var number = rawaction.Number;
-
-            return (action, number);
+            return Context.Table[stack.StateId, symNo];
         }
     }
 }

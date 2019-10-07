@@ -158,12 +158,7 @@
                 ;
 
             rule                        
-                -> NAME promoteAll (':'|'->')! rule_expression ';'!
-                ;
-
-            promoteAll
-                -> '^'?
-                | // epsilon
+                -> NAME (':'|'->')! rule_expression ';'!
                 ;
 
             rule_expression
@@ -184,8 +179,14 @@
                 ;
 
             rule_drop_action
-                -> ','? rule_element
+                -> drop rule_element
+                |  promote rule_element
+                |  rule_element
                 ;
+
+            promote -> '^' ;
+
+            drop -> ',' ;
 
             rule_element
                 -> rule_sub^

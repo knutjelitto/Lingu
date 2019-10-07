@@ -33,6 +33,25 @@ namespace Lingu.Grammars
                 var symbols = syms.ToList();
                 var thisSymbols = SymbolList.From(symbols.Select(p => p.Symbol));
                 var thisDrops = new Bools(symbols.Select(p => p.IsDrop));
+                var thisPromotes = new Bools(symbols.Select(p => p.IsPromote));
+
+                var promotesCount = thisPromotes.Count(p => p);
+                var dropsCount = thisDrops.Count(d => d);
+                if (promotesCount > 1)
+                {
+                    throw new GrammarException($"nonterminal: rule `{Name}´ defines more than on promote");
+                }
+                if (promotesCount == 1)
+                {
+                    if (dropsCount != symbols.Count - 1)
+                    {
+                        throw new GrammarException($"nonterminal: rule `{Name}´ can only promote a single symbol");
+                    }
+                }
+                if (symbols.Count > 0 && dropsCount == symbols.Count)
+                {
+                    throw new GrammarException($"nonterminal: rule `{Name}´ didn't want to drop anything in a row'");
+                }
 
                 foreach (var production in productions)
                 {
@@ -43,7 +62,9 @@ namespace Lingu.Grammars
                     }
                 }
 
-                productions.Add(new Production(this, thisSymbols, thisDrops));
+                var isPromote = promotesCount == 1;
+
+                productions.Add(new Production(this, thisSymbols, thisDrops, isPromote));
             }
         }
     }

@@ -6,6 +6,7 @@ namespace Lingu.Runtime.Structures
     {
         int Length { get; }
         INonterminal Nonterminal { get; }
+        bool IsPromote { get; }
 
         /// <summary>
         /// Filter out ``drop´´ symbols
