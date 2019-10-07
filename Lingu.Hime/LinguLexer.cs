@@ -34,31 +34,31 @@ namespace Lingu.Bootstrap.Hime
 			/// <summary>
 			/// The unique identifier for terminal NAME
 			/// </summary>
-			public const int TerminalName = 0x000A;
+			public const int TerminalName = 0x000D;
 			/// <summary>
 			/// The unique identifier for terminal INTEGER
 			/// </summary>
-			public const int TerminalInteger = 0x000B;
+			public const int TerminalInteger = 0x000E;
 			/// <summary>
 			/// The unique identifier for terminal LITERAL_ANY
 			/// </summary>
-			public const int TerminalLiteralAny = 0x000D;
+			public const int TerminalLiteralAny = 0x0010;
 			/// <summary>
 			/// The unique identifier for terminal LITERAL_TEXT
 			/// </summary>
-			public const int TerminalLiteralText = 0x000E;
+			public const int TerminalLiteralText = 0x0011;
 			/// <summary>
 			/// The unique identifier for terminal UNICODE_BLOCK
 			/// </summary>
-			public const int TerminalUnicodeBlock = 0x000F;
+			public const int TerminalUnicodeBlock = 0x0012;
 			/// <summary>
 			/// The unique identifier for terminal UNICODE_CATEGORY
 			/// </summary>
-			public const int TerminalUnicodeCategory = 0x0010;
+			public const int TerminalUnicodeCategory = 0x0013;
 			/// <summary>
 			/// The unique identifier for terminal UNICODE_CODEPOINT
 			/// </summary>
-			public const int TerminalUnicodeCodepoint = 0x0011;
+			public const int TerminalUnicodeCodepoint = 0x0014;
 		}
 		/// <summary>
 		/// Contains the constant IDs for the contexts for this lexer
@@ -82,34 +82,34 @@ namespace Lingu.Bootstrap.Hime
 			new Symbol(0x0002, "$"),
 			new Symbol(0x0007, "BLOCK_COMMENT"),
 			new Symbol(0x0008, "SEPARATOR"),
-			new Symbol(0x000A, "NAME"),
-			new Symbol(0x000B, "INTEGER"),
-			new Symbol(0x000D, "LITERAL_ANY"),
-			new Symbol(0x000E, "LITERAL_TEXT"),
-			new Symbol(0x000F, "UNICODE_BLOCK"),
-			new Symbol(0x0010, "UNICODE_CATEGORY"),
-			new Symbol(0x0011, "UNICODE_CODEPOINT"),
-			new Symbol(0x0030, "grammar"),
-			new Symbol(0x0031, "{"),
-			new Symbol(0x0033, "}"),
-			new Symbol(0x0034, "options"),
-			new Symbol(0x0036, "="),
-			new Symbol(0x0037, ";"),
-			new Symbol(0x0038, "terminals"),
-			new Symbol(0x003A, ":"),
-			new Symbol(0x003B, "->"),
-			new Symbol(0x003C, "|"),
-			new Symbol(0x003E, "-"),
-			new Symbol(0x0040, "("),
-			new Symbol(0x0041, ")"),
-			new Symbol(0x0042, "~"),
-			new Symbol(0x0043, ".."),
-			new Symbol(0x0044, "?"),
-			new Symbol(0x0045, "*"),
-			new Symbol(0x0046, "+"),
-			new Symbol(0x0048, ","),
-			new Symbol(0x0049, "rules"),
-			new Symbol(0x004B, "^") };
+			new Symbol(0x000D, "NAME"),
+			new Symbol(0x000E, "INTEGER"),
+			new Symbol(0x0010, "LITERAL_ANY"),
+			new Symbol(0x0011, "LITERAL_TEXT"),
+			new Symbol(0x0012, "UNICODE_BLOCK"),
+			new Symbol(0x0013, "UNICODE_CATEGORY"),
+			new Symbol(0x0014, "UNICODE_CODEPOINT"),
+			new Symbol(0x0033, "grammar"),
+			new Symbol(0x0034, "{"),
+			new Symbol(0x0036, "}"),
+			new Symbol(0x0037, "options"),
+			new Symbol(0x0039, "="),
+			new Symbol(0x003A, ";"),
+			new Symbol(0x003B, "terminals"),
+			new Symbol(0x003D, ":"),
+			new Symbol(0x003E, "->"),
+			new Symbol(0x003F, "|"),
+			new Symbol(0x0041, "-"),
+			new Symbol(0x0043, "("),
+			new Symbol(0x0044, ")"),
+			new Symbol(0x0045, "~"),
+			new Symbol(0x0046, ".."),
+			new Symbol(0x0047, "?"),
+			new Symbol(0x0048, "*"),
+			new Symbol(0x0049, "+"),
+			new Symbol(0x004B, ","),
+			new Symbol(0x004C, "rules"),
+			new Symbol(0x004E, "^") };
 		/// <summary>
 		/// Initializes a new instance of the lexer
 		/// </summary>

@@ -34,7 +34,10 @@
         SEPARATOR               -> (NEW_LINE | WHITE_SPACE | COMMENT_LINE | BLOCK_COMMENT)+;
 
         fragment NAME_FIRST     -> [_a-zA-Z];
-        NAME                    -> NAME_FIRST (NAME_FIRST | [0-9])* ;
+        fragment LETTER         -> [a-zA-Z];
+        fragment DIGIT          -> [0-9];
+        fragment UNDERSCORE     -> [_];
+        NAME                    -> UNDERSCORE? LETTER (LETTER | DIGIT | UNDERSCORE)* ;
 
         INTEGER                 -> '0' | [1-9] [0-9]*;
         fragment ESCAPEES       -> '\\\\'                       // Backslash
