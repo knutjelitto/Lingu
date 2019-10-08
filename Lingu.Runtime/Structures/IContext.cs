@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Lingu.Runtime.Lexing;
-using Lingu.Runtime.Parsing;
 
 namespace Lingu.Runtime.Structures
 {

@@ -24,16 +24,17 @@ namespace Lingu.Runtime.Parsing
 
         public INonterminalToken Parse()
         {
-            IConlex? context = Lexer.First(stack.StateId);
-            while (context != null)
+            ITerminalToken? token = Lexer.First(stack.StateId);
+
+            while (token != null)
             {
-                var action = Decode(context.Token.Terminal.Id);
+                var action = Decode(token.Terminal.Id);
 
                 switch (action.Action)
                 {
                     case TableItem.Error:
-                        HandleError(context.Token);
-                        context = null;
+                        HandleError(token);
+                        token = null;
                         break;
                     case TableItem.Shift:
                         Shift(action.Number);
@@ -43,7 +44,7 @@ namespace Lingu.Runtime.Parsing
                         break;
                     case TableItem.Accept:
                         Debug.Assert(Lexer.IsEnd());
-                        context = null;
+                        token = null;
                         break;
                 }
             }
@@ -58,10 +59,10 @@ namespace Lingu.Runtime.Parsing
 
             void Shift(int stateId)
             {
-                Debug.Assert(context != null);
-                stack.Push(new StackItem(context.Token, stateId));
+                Debug.Assert(token != null);
+                stack.Push(new StackItem(token, stateId));
 
-                context = Lexer.Next(context, stack.StateId);
+                token = Lexer.Next(stack.StateId);
             }
 
             void Reduce(int productionId)

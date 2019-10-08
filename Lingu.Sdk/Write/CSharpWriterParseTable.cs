@@ -6,16 +6,16 @@ using Lingu.Writers;
 
 #nullable enable
 
-namespace Lingu.Build
+namespace Lingu.Write
 {
     public class CSharpWriterParseTable : CSharpWriterTools
     {
         private readonly CsWriter writer;
 
-        public CSharpWriterParseTable(Grammar grammar, CsWriter writer)
-            : base(grammar)
+        public CSharpWriterParseTable(CSharpContext ctx)
+            : base(ctx)
         {
-            this.writer = writer;
+            this.writer = ctx.Writer;
         }
 
         public void Write()

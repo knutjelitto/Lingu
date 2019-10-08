@@ -10,14 +10,16 @@ namespace Lingu.Runtime.Parsing
 {
     public class U16ParseTable : ParseTable
     {
-        private U16ParseTable(IReadOnlyList<IState> table, int numberOfStates, int numberOfSymbols, int numberOfTerminals)
-            : base(numberOfStates, numberOfSymbols, numberOfTerminals)
+        private U16ParseTable(IReadOnlyList<IState> table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
+            : base(numberOfStates, numberOfTerminals, numberOfSymbols)
         {
             Table = table;
         }
 
         public static U16ParseTable From(ushort[] table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
         {
+            var num = numberOfStates * numberOfSymbols;
+
             Debug.Assert(numberOfStates * numberOfSymbols == table.Length);
 
             var states = new List<IState>();

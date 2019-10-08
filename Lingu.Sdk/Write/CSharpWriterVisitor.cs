@@ -5,16 +5,16 @@ using Lingu.Writers;
 
 #nullable enable
 
-namespace Lingu.Build
+namespace Lingu.Write
 {
     public class CSharpWriterVisitor : CSharpWriterTools
     {
         private readonly CsWriter writer;
 
-        public CSharpWriterVisitor(Grammar grammar, CsWriter writer)
-            : base(grammar)
+        public CSharpWriterVisitor(CSharpContext ctx)
+            : base(ctx)
         {
-            this.writer = writer;
+            this.writer = ctx.Writer;
         }
 
         public void Write()
@@ -31,8 +31,9 @@ namespace Lingu.Build
                     }
 
                     var name = Namer.ToUpperCamelCase(symbol.Name);
+                    var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
 
-                    writer.WriteLine($"public abstract W On{name}<W>(IToken token) where W : T;");
+                    writer.WriteLine($"public abstract W On{name}<W>({type} token) where W : T;");
 
                 }
 
@@ -40,7 +41,7 @@ namespace Lingu.Build
 
                 writer.Block("protected W Visit<W>(IToken token) where W : T", () =>
                 {
-                    this.writer.Block("switch (token.Symbol.Id)", () =>
+                    this.writer.Data("return token.Symbol.Id switch", () =>
                     {
                         foreach (var symbol in Grammar.Symbols)
                         {
@@ -50,12 +51,12 @@ namespace Lingu.Build
                             }
 
                             var name = Namer.ToUpperCamelCase(symbol.Name);
-                            writer.WriteLine($"case Id.{name}: return On{name}<W>(token);");
+                            var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
+                            writer.WriteLine($"Id.{name} => On{name}<W>(({type})token),");
                         }
+                        writer.WriteLine();
+                        writer.WriteLine("_ => throw new NotImplementedException(),");
                     });
-
-                    writer.WriteLine();
-                    writer.WriteLine("throw new System.NotImplementedException();");
                 });
 
                 this.writer.WriteLine();
@@ -75,7 +76,8 @@ namespace Lingu.Build
                     }
 
                     var name = Namer.ToUpperCamelCase(symbol.Name);
-                    writer.WriteLine($"public override W On{name}<W>(IToken token) {{ return Default<W>(token); }}");
+                    var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
+                    writer.WriteLine($"public override W On{name}<W>({type} token) {{ return Default<W>(token); }}");
                 }
             });
 

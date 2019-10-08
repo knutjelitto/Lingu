@@ -8,6 +8,7 @@ using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Sources;
+using Lingu.Write;
 
 namespace Lingu.Bootstrap
 {
@@ -58,8 +59,8 @@ namespace Lingu.Bootstrap
 
                 var ccOut = ProjectDir.Dir("..").Dir("Lingu.CC").Dir("Gen");
 
-                var csharp = new CSharpWriter(grammar);
-                csharp.Build(ccOut);
+                var csharp = new CSharpWriter(grammar, ccOut);
+                csharp.Write();
 
                 Debug.Assert(grammar.Eof != null);
                 Debug.Assert(grammar.SpacingDfa != null);

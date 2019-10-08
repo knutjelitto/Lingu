@@ -4,8 +4,6 @@
     {
         Start = file;
         Spacing = spacing;
-        Keyword = identifier;
-        Newline = newline;
     }
 
     rules
@@ -30,7 +28,8 @@
             ;
 
         option
-            : identifier ,'=' identifier ,';'
+            : 'Start' ,'=' identifier ,';'
+            | 'Spacing' ,'=' identifier ,';'
             ;
 
         grammar_rules
@@ -276,25 +275,20 @@
             | '\\u{' hexDigit{1,6} '}'      // Unicode code point
             ;
 
-        any
-            : '.'
-            ;
+        any : '.';
 
         text
             : '\'' ( (. - ('\'' | '\\')) | escapes )+ '\''
             ;
 
         ucNameStart
-            : 'a' .. 'z' | 'A' .. 'Z'
-            ;
+            : 'a' .. 'z' | 'A' .. 'Z';
 
         ucNameInner
-            : ucNameStart | '0' .. '9'  | '_' | '-' | ' '
-            ;
+            : ucNameStart | '0' .. '9'  | '_' | '-' | ' ';
 
         ucNameEnd
-            : ucNameStart | '0' .. '9'
-            ;
+            : ucNameStart | '0' .. '9';
 
         ucName
             : ucNameStart ucNameEnd*
@@ -302,12 +296,10 @@
             ;
 
         ucBlock
-            : '\\ub' '{' ucName '}'
-            ;
+            : '\\ub' '{' ucName '}';
 
         ucCategory
-            : '\\uc' '{' ucName '}'
-            ;
+            : '\\uc' '{' ucName '}';
 
         ucCodepoint
             : '\\u{' hexDigit{1,6} '}'

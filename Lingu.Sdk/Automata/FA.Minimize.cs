@@ -10,10 +10,10 @@ namespace Lingu.Automata
         {
             public static FA Minimize(FA dfa)
             {
-                return new Minimizer2().Minimize(dfa);
+                return new Minimizer().Minimize(dfa);
             }
 
-            private class Minimizer2
+            private class Minimizer
             {
                 public FA Minimize(FA dfa)
                 {
@@ -176,11 +176,10 @@ namespace Lingu.Automata
 
                     return dfa;
                 }
-
-
             }
 
-            private class Minimizer
+#if false
+            private class Minimizer2
             {
                 public FA Minimize(FA dfa)
                 {
@@ -385,6 +384,7 @@ namespace Lingu.Automata
                     return result;
                 }
             }
+#endif
         }
     }
 }

@@ -10,16 +10,16 @@ using Lingu.Writers;
 
 #nullable enable
 
-namespace Lingu.Build
+namespace Lingu.Write
 {
     public class CSharpWriterDfaSet : CSharpWriterTools
     {
         private readonly CsWriter writer;
 
-        public CSharpWriterDfaSet(Grammar grammar, CsWriter writer)
-            : base(grammar)
+        public CSharpWriterDfaSet(CSharpContext ctx)
+            : base(ctx)
         {
-            this.writer = writer;
+            this.writer = ctx.Writer;
         }
 
         public void Write()

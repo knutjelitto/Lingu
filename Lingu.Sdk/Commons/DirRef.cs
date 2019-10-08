@@ -17,14 +17,14 @@ namespace Lingu.Commons
         public string FileName => IOPath.GetFileName(Path);
         public string Directory => IOPath.GetDirectoryName(Path);
 
-        public FileRef WithFile(string fileName)
+        public FileRef File(string fileName)
         {
             return FileRef.From(IOPath.Combine(Path, fileName).Replace("\\", "/"));
         }
 
         public DirRef Dir(string dirName)
         {
-            return DirRef.From(IOPath.Combine(Path, dirName).Replace("\\", "/"));
+            return From(IOPath.Combine(Path, dirName).Replace("\\", "/"));
         }
 
 

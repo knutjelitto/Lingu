@@ -285,7 +285,7 @@ namespace Lingu.Build
                     FA dfa;
                     if (terminalSet.Cardinality == 1)
                     {
-                        dfa = terminalDfas[terminalSet.Single()].Clone();
+                        dfa = terminalDfas[terminalSet.Single()].RemoveDead().Clone();
                     }
                     else
                     {

@@ -21,14 +21,14 @@ namespace Lingu.Runtime.Lexing
 
         int index = 0;
 
-        public IConlex First(int stateId)
+        public ITerminalToken First(int stateId)
         {
             index = 0;
 
             return Action(stateId);
         }
 
-        public IConlex Next(IConlex context, int stateId)
+        public ITerminalToken Next(int stateId)
         {
             return Action(stateId);
         }
@@ -38,7 +38,7 @@ namespace Lingu.Runtime.Lexing
             return Source.IsEnd(index);
         }
 
-        public IConlex Action(int stateId)
+        public ITerminalToken Action(int stateId)
         {
             SkipWhitespace();
 
@@ -46,7 +46,7 @@ namespace Lingu.Runtime.Lexing
 
             Debug.Assert(token != null);
 
-            return new Conlex(token);
+            return token;
         }
 
         private ITerminalToken? LexCommon(Dfa dfa)

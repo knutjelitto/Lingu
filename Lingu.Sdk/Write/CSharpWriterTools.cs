@@ -5,18 +5,19 @@ using Lingu.Writers;
 
 #nullable enable
 
-namespace Lingu.Build
+namespace Lingu.Write
 {
     public class CSharpWriterTools
     {
         protected const int extendWidth = 120;
 
-        public CSharpWriterTools(Grammar grammar)
+        public CSharpWriterTools(CSharpContext ctx)
         {
-            Grammar = grammar;
+            Ctx = ctx;
         }
 
-        protected Grammar Grammar { get; }
+        public CSharpContext Ctx { get; }
+        protected Grammar Grammar => Ctx.Grammar;
 
         protected string Bool(bool b) => b ? "true" : "false";
 

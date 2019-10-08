@@ -8,16 +8,16 @@ using Lingu.Writers;
 
 #nullable enable
 
-namespace Lingu.Build
+namespace Lingu.Write
 {
     public class CSharpWriterProductions : CSharpWriterTools
     {
         private readonly CsWriter writer;
 
-        public CSharpWriterProductions(Grammar grammar, CsWriter writer)
-            : base(grammar)
+        public CSharpWriterProductions(CSharpContext ctx)
+            : base(ctx)
         {
-            this.writer = writer;
+            this.writer = ctx.Writer;
         }
 
         public void Write()

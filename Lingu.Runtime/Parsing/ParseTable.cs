@@ -6,18 +6,18 @@ namespace Lingu.Runtime.Parsing
 {
     public abstract class ParseTable : ITable
     {
-        public ParseTable(int numberOfStates, int numberOfSymbols, int numberOfTerminals)
+        public ParseTable(int numberOfStates, int numberOfTerminals, int numberOfSymbols)
         {
             NumberOfStates = numberOfStates;
-            NumberOfSymbols = numberOfSymbols;
             NumberOfTerminals = numberOfTerminals;
+            NumberOfSymbols = numberOfSymbols;
         }
 
         public abstract IState this[int stateNo] { get; }
 
         public int NumberOfStates { get; }
-        public int NumberOfSymbols { get; }
         public int NumberOfTerminals { get; }
+        public int NumberOfSymbols { get; }
 
         public abstract IEnumerable<IStateItem> ReallyAll { get; }
     }
