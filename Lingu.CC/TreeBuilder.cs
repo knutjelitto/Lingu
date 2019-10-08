@@ -1,21 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Lingu.Runtime.Structures;
 using Lingu.Tree;
 
 namespace Lingu.CC
 {
-    public class TreeBuilder : LinguVisitor.Visitor<Node>
+    public class TreeBuilder : LinguVisitor.Visitor<object>
     {
         protected override W Default<W>(IToken token)
         {
             throw new NotImplementedException();
         }
 
-        public override W OnAngrammar<W>(INonterminalToken token)
+        public Node Visit(INonterminalToken root)
         {
-            return base.OnAngrammar<W>(token);
+            return Visit<Node>(root);
+        }
+
+        public override W OnFile<W>(INonterminalToken token)
+        {
+            throw new NotImplementedException();
         }
     }
 }

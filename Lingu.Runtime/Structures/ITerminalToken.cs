@@ -6,9 +6,7 @@ namespace Lingu.Runtime.Structures
 {
     public interface ITerminalToken : IToken
     {
-        ITerminal Terminal { get; }
         ILocation Location { get; }
-
         string Value { get; }
     }
 }

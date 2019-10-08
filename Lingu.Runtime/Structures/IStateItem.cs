@@ -9,5 +9,7 @@ namespace Lingu.Runtime.Structures
     {
         TableItem Action { get; }
         int Number { get; }
+
+        ushort Coded { get; }
     }
 }

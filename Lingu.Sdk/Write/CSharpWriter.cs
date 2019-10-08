@@ -51,6 +51,7 @@ namespace Lingu.Write
             ctx.Writer.Block($"namespace {ctx.Namespace}", () =>
             {
                 ctx.Writer.Using("System.Linq");
+                ctx.Writer.Using("Lingu.Runtime.Commons");
                 ctx.Writer.Using("Lingu.Runtime.Concretes");
                 ctx.Writer.Using("Lingu.Runtime.Lexing");
                 ctx.Writer.Using("Lingu.Runtime.Parsing");

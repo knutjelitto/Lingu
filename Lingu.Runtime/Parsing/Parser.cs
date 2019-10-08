@@ -28,7 +28,7 @@ namespace Lingu.Runtime.Parsing
 
             while (token != null)
             {
-                var action = Decode(token.Terminal.Id);
+                var action = Decode(token.Symbol.Id);
 
                 switch (action.Action)
                 {

@@ -11,7 +11,6 @@ namespace Lingu.Tree
         }
 
         public abstract void Dump(IndentWriter writer);
-
-        public Repeat Repeat { get; set; }
+        //public Repeat Repeat { get; set; }
     }
 }

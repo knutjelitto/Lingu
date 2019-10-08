@@ -14,9 +14,8 @@ namespace Lingu.Runtime.Concretes
             children = new List<IToken>(tokens);
         }
 
-        public INonterminal Nonterminal => (INonterminal)Symbol;
-
         public IReadOnlyList<IToken> Children => children;
+        public IToken this[int childIndex] => Children[childIndex];
 
         public void Add(IToken token)
         {

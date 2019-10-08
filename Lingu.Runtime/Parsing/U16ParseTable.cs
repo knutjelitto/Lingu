@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
-
+using System.Threading;
+using Lingu.Runtime.Commons;
 using Lingu.Runtime.Concretes;
+using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Parsing
@@ -33,6 +37,25 @@ namespace Lingu.Runtime.Parsing
             }
 
             return new U16ParseTable(states, numberOfStates, numberOfTerminals, numberOfSymbols);
+        }
+
+        public static U16ParseTable FromCompressed(byte[] bytes, int uncompressed, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
+        {
+            var memory = new MemoryStream(bytes);
+            var deflate = new DeflateStream(memory, CompressionMode.Decompress);
+            var buffer = new byte[uncompressed];
+            deflate.Read(buffer, 0, uncompressed);
+            deflate.Close();
+            memory.Close();
+            var binReader = new BinReader(buffer);
+            var n = numberOfStates * numberOfSymbols;
+            var ushorts = new ushort[n];
+            for (var i = 0; i < n; ++i)
+            {
+                ushorts[i] = (ushort) binReader.ReadInt32();
+            }
+
+            return From(ushorts, numberOfStates, numberOfTerminals, numberOfSymbols);
         }
 
         public override IState this[int stateNo] => Table[stateNo];

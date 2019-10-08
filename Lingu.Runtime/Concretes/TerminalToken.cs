@@ -14,7 +14,6 @@ namespace Lingu.Runtime.Concretes
             Location = location;
         }
 
-        public ITerminal Terminal => (ITerminal)Symbol;
         public ILocation Location { get; }
         public string Value => Location.GetText();
     }

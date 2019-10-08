@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Lingu.Runtime.Structures;
@@ -13,8 +14,13 @@ namespace Lingu.Runtime.Concretes
             Children = children.ToArray();
         }
 
-        public INonterminal Nonterminal => (INonterminal)Symbol;
-
         public IReadOnlyList<IToken> Children { get; }
+
+        public IToken this[int childIndex] => Children[childIndex];
+
+        public override String ToString()
+        {
+            return $"[{Symbol} ({string.Join(" ", Children.Select(c => c.Symbol.ToString()))})]";
+        }
     }
 }

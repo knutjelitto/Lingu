@@ -13,7 +13,7 @@ namespace Lingu.Tree
         }
 
         public virtual IEnumerable<IExpression> Children => Enumerable.Empty<IExpression>();
-        public Repeat Repeat { get; set; }
+        //public Repeat Repeat { get; set; }
 
         public abstract void Dump(IndentWriter writer);
         public abstract FA GetFA();

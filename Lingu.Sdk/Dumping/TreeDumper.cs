@@ -24,17 +24,14 @@ namespace Lingu.Dumping
         private void Dump(IWriter writer, IToken token)
         {
             writer.Write($"{token.Symbol.Name}");
-            if (token is INonleafToken nonleaf)
+            if (token is INonterminalToken nonleaf)
             {
                 writer.WriteLine();
                 writer.Indent(() =>
                 {
-                    if (token is INonleafToken nonleaf)
+                    foreach (var child in nonleaf.Children)
                     {
-                        foreach (var child in nonleaf.Children)
-                        {
-                            Dump(writer, child);
-                        }
+                        Dump(writer, child);
                     }
                 });
             }

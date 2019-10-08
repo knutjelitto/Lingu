@@ -15,5 +15,10 @@ namespace Lingu.Runtime.Concretes
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Visible { get; }
+
+        public override String ToString()
+        {
+            return Name;
+        }
     }
 }
