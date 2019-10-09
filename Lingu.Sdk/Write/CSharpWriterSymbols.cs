@@ -37,7 +37,7 @@ namespace Lingu.Write
                 else if (symbol is Nonterminal nonterminal)
                 {
                     writer.Write($"public static readonly {nonterminalType} {nonterminal.Name} = ");
-                    writer.WriteLine($"new {nonterminalType}({nonterminal.Id}, \"{nonterminal.Name}\", {Bool(nonterminal.IsPrivate)}, {nameof(RepeatKind)}.{nonterminal.Repeat}, {nameof(LiftKind)}.{nonterminal.Lift});");
+                    writer.WriteLine($"new {nonterminalType}({nonterminal.Id}, \"{nonterminal.Name}\", {Bool(nonterminal.IsPrivate)}, {nameof(RepeatKind)}.{nonterminal.Repeat});");
                 }
             }
 

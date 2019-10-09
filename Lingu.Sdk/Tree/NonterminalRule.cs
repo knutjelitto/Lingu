@@ -7,24 +7,23 @@ using Lingu.Writers;
 
 namespace Lingu.Tree
 {
-    public sealed class RawNonterminal : Nonterminal
+    public sealed class NonterminalRule : Nonterminal
     {
-        private RawNonterminal(string name, bool lift, IEnumerable<IExpression> alternates)
+        private NonterminalRule(string name, bool lift, IEnumerable<IExpression> alternates)
             : base(name)
         {
             Alternates = alternates.ToArray();
-            Lift = lift ? LiftKind.Lift : LiftKind.None;
         }
 
         public IReadOnlyList<IExpression> Alternates { get; set; }
 
-        public static RawNonterminal From(string name, bool promote, IExpression expression)
+        public static NonterminalRule From(string name, bool promote, IExpression expression)
         {
             if (expression is Alternates alternates)
             {
-                return new RawNonterminal(name, promote, alternates.Expressions);
+                return new NonterminalRule(name, promote, alternates.Expressions);
             }
-            return new RawNonterminal(name, promote, Enumerable.Repeat(expression, 1));
+            return new NonterminalRule(name, promote, Enumerable.Repeat(expression, 1));
         }
 
         public void Dump(IndentWriter output)

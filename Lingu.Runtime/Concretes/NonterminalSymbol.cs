@@ -4,14 +4,12 @@ namespace Lingu.Runtime.Concretes
 {
     public class NonterminalSymbol : Symbol, INonterminal
     {
-        public NonterminalSymbol(int id, string name, bool visible, RepeatKind repeat, LiftKind lift)
+        public NonterminalSymbol(int id, string name, bool visible, RepeatKind repeat)
             : base(id, name, visible)
         {
             Repeat = repeat;
-            Lift = lift;
         }
 
         public RepeatKind Repeat { get; }
-        public LiftKind Lift { get; }
     }
 }

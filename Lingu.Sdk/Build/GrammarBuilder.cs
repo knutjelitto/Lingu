@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 using Lingu.Errors;
@@ -9,9 +8,9 @@ using Lingu.Tree;
 
 namespace Lingu.Build
 {
-    public class Builder
+    public class GrammarBuilder
     {
-        public Builder(RawGrammar tree)
+        public GrammarBuilder(RawGrammar tree)
         {
             Raw = tree;
             Grammar = new Grammar(Raw.Name);
@@ -58,7 +57,7 @@ namespace Lingu.Build
                 {
                     return s1.Pid.CompareTo(s2.Pid);
                 }
-                else if (!s1.IsPid && !s2.IsPid)
+                if (!s1.IsPid && !s2.IsPid)
                 {
                     return s1.Id.CompareTo(s2.Id);
                 }
@@ -66,10 +65,7 @@ namespace Lingu.Build
                 {
                     return -1;
                 }
-                else
-                {
-                    return 1;
-                }
+                return 1;
             });
 
             Grammar.Symbols = symbols.Select((s, i) => { s.Id = i; return s; }).ToArray();

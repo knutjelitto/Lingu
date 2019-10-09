@@ -27,25 +27,17 @@ namespace Lingu.Write
             {
                 Debug.Assert(Grammar.ParseTable != null);
 
-                var binWriter = new BinWriter();
-                foreach (var coded in Grammar.ParseTable.ReallyAll.Select(entry => entry.Coded))
-                {
-                    binWriter.Write(coded);
-                }
-                var bytes = binWriter.ToArray();
-                var memory = new MemoryStream();
-                var deflate = new DeflateStream(memory, CompressionLevel.Optimal);
-                deflate.Write(bytes);
-                deflate.Close();
-                var compressed = memory.ToArray();
+                var bytes = Blob.ToCompressedBytes(Grammar.ParseTable.ReallyAll.Select(e => e.Coded));
+                //var bytes2 = Blob.ToBytes2(Grammar.ParseTable.ReallyAll.Select(e => e.Coded));
 
                 writer.Data("byte[] compressedTable = ",
                 () =>
                 {
-                    WriteExtend(writer, Blob.ToBytes(Grammar.ParseTable.ReallyAll.Select(e => e.Coded)).AsEnumerable().Select(b => b.ToString()));
+                    WriteExtend(writer, bytes.AsEnumerable().Select(b => b.ToString()));
                 });
 
-#if false
+#if true
+                writer.WriteLine();
                 writer.Data("ushort[] u16Table = ", () =>
                 {
                     WriteExtend(writer, Grammar.ParseTable.ReallyAll.Select(entry => (entry.ToString() ?? string.Empty)));
@@ -58,8 +50,12 @@ namespace Lingu.Write
                 var nt = Grammar.ParseTable.NumberOfTerminals;
                 var cols = Grammar.ParseTable.NumberOfSymbols;
 
+#if true
+                writer.WriteLine($"return U16ParseTable.From(u16Table, {rows}, {nt}, {cols});");
+#else
                 this.writer.WriteLine($"var ushorts = Blob.UInt16FromBytes({bytes.Length}, {rows * cols}, compressedTable);");
                 writer.WriteLine($"return U16ParseTable.From(ushorts, {rows}, {nt}, {cols});");
+#endif
             });
         }
     }

@@ -29,10 +29,7 @@ namespace Lingu.Build
         {
             foreach (var raw in Raw.Nonterminals)
             {
-                var nonterminal = new Nonterminal(raw.Name)
-                {
-                    Lift = raw.Lift
-                };
+                var nonterminal = new Nonterminal(raw.Name);
 
                 if (Grammar.Nonterminals.Contains(nonterminal))
                 {
@@ -105,6 +102,11 @@ namespace Lingu.Build
 
                     Grammar.Productions.Add(production);
                 }
+
+                if (nonterminal.Productions.All(p => p.IsPromote))
+                {
+                    nonterminal.IsLift = true;
+                }
             }
         }
 
@@ -137,7 +139,6 @@ namespace Lingu.Build
                         var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                         {
                             IsGenerated = true,
-                            Lift = LiftKind.Alternate
                         };
 
                         NewNonterminal(nonterminal, alts.Children);
@@ -164,7 +165,6 @@ namespace Lingu.Build
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
-                                        Lift = LiftKind.Optional,
                                         Repeat = repeat.Kind
                                     };
 
@@ -182,7 +182,6 @@ namespace Lingu.Build
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
-                                        Lift = LiftKind.Star,
                                         Repeat = repeat.Kind
                                     };
 
@@ -202,7 +201,6 @@ namespace Lingu.Build
                                     var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
-                                        Lift = LiftKind.Plus,
                                         Repeat = repeat.Kind
                                     };
 
@@ -219,6 +217,8 @@ namespace Lingu.Build
                         }
                     }
                     break;
+                case RepeatList list:
+                    throw new NotImplementedException();
                 case SubRule subRule:
                     {
                         var nonterminal = new Nonterminal(subRule.Name.Text)
@@ -266,7 +266,7 @@ namespace Lingu.Build
                             {
                                 IsGenerated = true,
                                 Visual = str.Value,
-                                Raw = new RawTerminal(tname, str),
+                                Raw = TerminalRule.From(tname, str),
                             };
 
                             Grammar.Terminals.Add(terminal);

@@ -16,13 +16,13 @@ namespace Lingu.Grammars
         {
             Visual = string.Empty;
             lazyDfa = new Lazy<Dfa>(() => GetDfa().Convert());
-            Raw = RawTerminal.Nope;
+            Raw = TerminalRule.Nope;
         }
 
         public Dfa Dfa => lazyDfa.Value;
         public bool IsFragment { get; set; }
         public string Visual { get; set; }
-        public RawTerminal Raw { get; set; }
+        public TerminalRule Raw { get; set; }
 
         private readonly Lazy<Dfa> lazyDfa;
 

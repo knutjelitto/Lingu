@@ -103,12 +103,12 @@ namespace Lingu.Build
 
             static void CheckTerminalRecursion(Terminal terminal)
             {
-                var path = new Stack<RawTerminal>();
+                var path = new Stack<TerminalRule>();
 
                 CheckTerminalRecursion2(terminal.Raw, path, terminal.Raw.Expression);
             }
 
-            static void CheckTerminalRecursion2(Terminal terminal, Stack<RawTerminal> path, IExpression expression)
+            static void CheckTerminalRecursion2(Terminal terminal, Stack<TerminalRule> path, IExpression expression)
             {
                 if (expression is Name name)
                 {
@@ -178,7 +178,7 @@ namespace Lingu.Build
                 IsGenerated = true,
 
             };
-            eof.Raw = new RawTerminal(eof.Name, new Eof(eof.Name));
+            eof.Raw = TerminalRule.From(eof.Name, new Eof(eof.Name));
             Grammar.Terminals.Add(eof);
             Grammar.Eof = eof;
 

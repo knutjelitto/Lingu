@@ -8,42 +8,34 @@ namespace Lingu.Tree
 {
     public class Difference : Node, IExpression
     {
-        public Difference(IEnumerable<IExpression> expressions)
+        public Difference(IExpression expression1, IExpression expression2)
         {
-            Expressions = expressions.ToArray();
+            Expression1 = expression1;
+            Expression2 = expression2;
         }
 
-        public IReadOnlyList<IExpression> Expressions { get; }
-        public IEnumerable<IExpression> Children => Expressions;
+        public IExpression Expression1 { get; }
+        public IExpression Expression2 { get; }
+
+
+        public IEnumerable<IExpression> Children => new [] {Expression1, Expression2};
 
         public FA GetFA()
         {
-            if (Expressions.Count != 2)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            var nfa1 = Expressions[0].GetFA();
-            var nfa2 = Expressions[1].GetFA();
+            var nfa1 = Expression1.GetFA();
+            var nfa2 = Expression2.GetFA();
 
             var cross = nfa1.ToDfa().Difference(nfa2.ToDfa());
 
-            return cross; ;
+            return cross;
         }
 
         public override void Dump(IndentWriter output)
         {
             output.Write("(");
-            var more = false;
-            foreach (var expression in Expressions)
-            {
-                if (more)
-                {
-                    output.Write(" - ");
-                }
-                expression.Dump(output);
-                more = true;
-            }
+            Expression1.Dump(output);
+            output.Write(" - ");
+            Expression2.Dump(output);
             output.Write(")");
         }
     }

@@ -17,12 +17,10 @@ namespace Lingu.Grammars
         {
             productions = new List<Production>();
             Repeat = RepeatKind.None;
-            Lift = LiftKind.None;
         }
 
         public RepeatKind Repeat { get; set; }
-        public LiftKind Lift { get; set; }
-        public bool IsLift => Lift != LiftKind.None;
+        public bool IsLift { get; set; }
 
         public IReadOnlyList<Production> Productions => productions;
 

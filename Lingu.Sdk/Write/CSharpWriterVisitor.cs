@@ -21,7 +21,7 @@ namespace Lingu.Write
         {
             Debug.Assert(Grammar.Symbols != null);
 
-            writer.Class("public abstract class AbstractVisitor<T>", () =>
+            writer.Class("public abstract class AbstractVisitor<T> where T : class", () =>
             {
                 foreach (var symbol in Grammar.Symbols)
                 {
@@ -33,7 +33,7 @@ namespace Lingu.Write
                     var name = Namer.ToUpperCamelCase(symbol.Name);
                     var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
 
-                    writer.WriteLine($"public abstract W On{name}<W>({type} token) where W : T;");
+                    writer.WriteLine($"public abstract T On{name}({type} token);");
 
                 }
 
@@ -52,7 +52,7 @@ namespace Lingu.Write
 
                             var name = Namer.ToUpperCamelCase(symbol.Name);
                             var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
-                            writer.WriteLine($"Id.{name} => On{name}<W>(({type})token),");
+                            writer.WriteLine($"Id.{name} => (W)On{name}(({type})token),");
                         }
                         writer.WriteLine();
                         writer.WriteLine("_ => throw new NotImplementedException(),");
@@ -61,12 +61,12 @@ namespace Lingu.Write
 
                 this.writer.WriteLine();
 
-                writer.WriteLine("protected abstract W Default<W>(IToken token) where W : T;");
+                writer.WriteLine("protected abstract T Default(IToken token);");
             });
 
             writer.WriteLine();
 
-            writer.Class("public abstract class Visitor<T> : AbstractVisitor<T>", () =>
+            writer.Class("public abstract class Visitor<T> : AbstractVisitor<T> where T : class", () =>
             {
                 foreach (var symbol in Grammar.Symbols)
                 {
@@ -77,7 +77,7 @@ namespace Lingu.Write
 
                     var name = Namer.ToUpperCamelCase(symbol.Name);
                     var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
-                    writer.WriteLine($"public override W On{name}<W>({type} token) {{ return Default<W>(token); }}");
+                    writer.WriteLine($"public override T On{name}({type} token) {{ return Default(token); }}");
                 }
             });
 

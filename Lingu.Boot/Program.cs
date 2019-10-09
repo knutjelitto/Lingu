@@ -17,6 +17,9 @@ namespace Lingu.Bootstrap
         {
             var program = new Program();
 
+#if true
+            program.BuildCC0();
+#else
             //program.BuildTree("S1", "1+2");
             //program.BuildTree("S2", "grammar s2 { }");
             //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
@@ -30,11 +33,36 @@ namespace Lingu.Bootstrap
             //program.BuildTree("Wiki");
             //program.BuildTree("Expression", "(1+2)*3");
             //program.BuildTree("Expr", "(1+2)*3");
+#endif
 
 #if true
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
 #endif
+        }
+
+
+        private void BuildCC0()
+        {
+            var projectDir = DirRef.ProjectDir();
+            var cc0 = projectDir.Dir("..").Dir("LinguCC0");
+            var genDir = cc0.Dir("Gen");
+
+            Environment.CurrentDirectory = genDir;
+
+            var grammarSource = FileRef.From($"./Lingu.Grammar");
+
+            var outs = FileRef.From("./Lingu").Add(".Out");
+
+            var raw = Parser.Parse(grammarSource);
+
+            var builder = new Build.GrammarBuilder(raw);
+
+            var grammar = builder.Build();
+            new Dumper(grammar).Dump(outs);
+
+            var csharp = new CSharpWriter(grammar, genDir);
+            csharp.Write();
         }
 
         private void BuildTree(string stem, string content)
@@ -49,7 +77,7 @@ namespace Lingu.Bootstrap
 
             if (raw != null)
             {
-                var builder = new Build.Builder(raw);
+                var builder = new Build.GrammarBuilder(raw);
 
                 var grammar = builder.Build();
                 new Dumper(grammar).Dump(dests);

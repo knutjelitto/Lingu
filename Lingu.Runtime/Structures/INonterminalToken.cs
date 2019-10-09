@@ -8,5 +8,14 @@ namespace Lingu.Runtime.Structures
     {
         IReadOnlyList<IToken> Children { get; }
         IToken this[int childIndex] { get; }
+        int Count => Children.Count;
+        ITerminalToken Terminal(int childIndex)
+        {
+            return (ITerminalToken)this[childIndex];
+        }
+        INonterminalToken Nonterminal(int childIndex)
+        {
+            return (INonterminalToken)this[childIndex];
+        }
     }
 }

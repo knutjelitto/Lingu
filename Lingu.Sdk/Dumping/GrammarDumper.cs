@@ -105,9 +105,8 @@ namespace Lingu.Dumping
         private static void PpNonterminal(IndentWriter writer, Nonterminal nonterminal)
         {
             var p = nonterminal.IsPrivate ? "private " : "";
-            var l = Lifta();
 
-            writer.Indend($"{nonterminal.Name} // {p}{l}({nonterminal.Id})", () =>
+            writer.Indend($"{nonterminal.Name} // {p}({nonterminal.Id})", () =>
             {
                 bool more = false;
                 foreach (var production in nonterminal.Productions)
@@ -126,20 +125,6 @@ namespace Lingu.Dumping
                 }
                 writer.WriteLine(";");
             });
-
-            string Lifta()
-            {
-                return nonterminal.Lift switch
-                {
-                    LiftKind.Lift => "(^^) ",
-                    LiftKind.Optional => "(^?) ",
-                    LiftKind.Star => "(^*) ",
-                    LiftKind.Plus => "(^+) ",
-                    LiftKind.Alternate => "(^|) ",
-                    LiftKind.None => string.Empty,
-                    _ => throw new NotImplementedException(),
-                };
-            }
         }
 
         private static void PpProduction(IndentWriter writer, Production production)

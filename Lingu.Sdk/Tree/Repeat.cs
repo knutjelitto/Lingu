@@ -26,6 +26,21 @@ namespace Lingu.Tree
         public RepeatKind Kind { get; }
         public IEnumerable<IExpression> Children => Enumerable.Repeat(Expression, 1);
 
+        public static IExpression Star(IExpression expression)
+        {
+            return new Repeat(expression, RepeatKind.Star, 0);
+        }
+
+        public static IExpression Plus(IExpression expression)
+        {
+            return new Repeat(expression, RepeatKind.Plus, 1);
+        }
+
+        public static IExpression Optional(IExpression expression)
+        {
+            return new Repeat(expression, RepeatKind.Optional, 0, 1);
+        }
+
         public static IExpression From(IExpression expression, int? min = null, int? max = null)
         {
             if (min == 1 && max == 1)

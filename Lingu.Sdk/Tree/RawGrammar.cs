@@ -14,7 +14,7 @@ namespace Lingu.Tree
         public string Name { get; }
 
         public List<Option> Options = new List<Option>();
-        public List<RawTerminal> Terminals = new List<RawTerminal>();
-        public List<RawNonterminal> Nonterminals = new List<RawNonterminal>();
+        public List<TerminalRule> Terminals = new List<TerminalRule>();
+        public List<NonterminalRule> Nonterminals = new List<NonterminalRule>();
     }
 }

@@ -57,12 +57,12 @@ namespace Lingu.Bootstrap
 
                 if (subNode.Symbol.ID == LinguParser.ID.VariableGrammarTerminals)
                 {
-                    grammar.Terminals.AddRange(VisitChildren<RawTerminal>(subNode));
+                    grammar.Terminals.AddRange(VisitChildren<TerminalRule>(subNode));
                 }
 
                 if (subNode.Symbol.ID == LinguParser.ID.VariableGrammarRules)
                 {
-                    grammar.Nonterminals.AddRange(VisitChildren<RawNonterminal>(subNode));
+                    grammar.Nonterminals.AddRange(VisitChildren<NonterminalRule>(subNode));
                 }
             }
 
@@ -76,7 +76,7 @@ namespace Lingu.Bootstrap
 
         protected override object OnVariableTerminalRule(ASTNode node)
         {
-            return new RawTerminal(VisitChild<Name>(node, 0).Text, VisitChild<IExpression>(node, 1));
+            return TerminalRule.From(VisitChild<Name>(node, 0).Text, VisitChild<IExpression>(node, 1));
         }
 
         protected override object OnVariableTerminalExpression(ASTNode node)
@@ -96,7 +96,7 @@ namespace Lingu.Bootstrap
                 return VisitChild<IExpression>(node, 0);
 
             }
-            return new Difference(VisitChildren<IExpression>(node));
+            return new Difference(VisitChild<IExpression>(node, 0), VisitChild<IExpression>(node, 1));
         }
 
         protected override object OnVariableTerminalSequence(ASTNode node)
@@ -230,7 +230,7 @@ namespace Lingu.Bootstrap
             var name = VisitChild<Name>(node, 0);
             var expression = VisitChild<IExpression>(node, 1);
 
-            return RawNonterminal.From(name.Text, false, expression);
+            return NonterminalRule.From(name.Text, false, expression);
         }
 
         protected override object OnVariableRuleExpression(ASTNode node)

@@ -25,7 +25,7 @@ namespace Lingu.Write
         {
             return symbol.Name.StartsWith("__") ||
                    symbol is Terminal terminal && terminal.IsFragment ||
-                   symbol is Nonterminal nonterminal && nonterminal.IsPrivate;
+                   symbol is Nonterminal nonterminal && (nonterminal.IsPrivate || nonterminal.IsLift);
         }
 
         protected void WriteExtend(IndentWriter writer, IEnumerable<string> values)

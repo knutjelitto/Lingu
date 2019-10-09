@@ -9,10 +9,10 @@
     rules
     {
         file
-            : angrammar
+            : grammar
             ;
 
-        angrammar
+        grammar
             : ,'grammar' identifier ,'{' grammar_item* ,'}'
             ;
 
@@ -41,7 +41,7 @@
             ;
 
         rule_expression
-            : rule_alternative (,'|' rule_alternative)*
+            : rule_alternative *: '|'
             ;
 
         rule_alternative
@@ -101,7 +101,7 @@
             ;
 
         reference
-            -> identifier
+            -> ^identifier
             ;
 
         grammar_terminals

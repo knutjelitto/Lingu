@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Lingu.Runtime.Commons
 {
     public static class Blob
     {
-        public static byte[] ToBytes(IEnumerable<ushort> ushorts)
+        public static byte[] ToCompressedBytes(IEnumerable<ushort> ushorts)
         {
             var binWriter = new BinWriter();
             foreach (var coded in ushorts)
@@ -25,7 +28,7 @@ namespace Lingu.Runtime.Commons
             return compressed;
         }
 
-        public static ushort[] UInt16FromBytes(int uncompressed, int n, byte[] bytes)
+        public static ushort[] UInt16FromCompressedBytes(int uncompressed, int n, byte[] bytes)
         {
             var memory = new MemoryStream(bytes);
             var deflate = new DeflateStream(memory, CompressionMode.Decompress);
@@ -42,5 +45,21 @@ namespace Lingu.Runtime.Commons
 
             return ushorts;
         }
+
+        public static byte[] ToBytes2(IEnumerable<ushort> ushorts)
+        {
+
+            IFormatter formatter = new BinaryFormatter();
+            byte[] bytes;
+            using (var stream = new MemoryStream())
+            {
+                formatter.Serialize(stream, ushorts.ToArray());
+                stream.Close();
+                bytes = stream.ToArray();
+            }
+
+            return bytes;
+        }
+
     }
 }

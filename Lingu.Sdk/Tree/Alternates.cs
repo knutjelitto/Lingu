@@ -13,8 +13,13 @@ namespace Lingu.Tree
             Expressions = expressions.ToArray();
         }
 
+        public Alternates(IReadOnlyList<IExpression> expressions)
+        {
+            Expressions = expressions;
+        }
+
         public Alternates(params IExpression[] expressions)
-            : this(expressions.AsEnumerable())
+            : this((IReadOnlyList<IExpression>)expressions)
         {
         }
 
