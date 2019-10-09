@@ -1,6 +1,8 @@
-using System.Diagnostics;
+using System;
+using System.Linq;
 
 using IOPath = System.IO.Path;
+using IODirectory = System.IO.Directory;
 
 namespace Lingu.Commons
 {
@@ -48,8 +50,24 @@ namespace Lingu.Commons
             var dirPath = Path;
             if (!string.IsNullOrEmpty(dirPath) && !System.IO.Directory.Exists(dirPath))
             {
-                System.IO.Directory.CreateDirectory(dirPath);
+                IODirectory.CreateDirectory(dirPath);
             }
         }
+
+
+        public static DirRef ProjectDir()
+        {
+            var cwd = Environment.CurrentDirectory;
+
+            while (IODirectory.Exists(cwd) && !IODirectory.EnumerateFiles(cwd, "*.csproj").Any())
+            {
+                cwd = IOPath.GetDirectoryName(cwd);
+            }
+
+            var projectDir = From(cwd.Replace("\\", "/"));
+
+            return projectDir;
+        }
+
     }
 }

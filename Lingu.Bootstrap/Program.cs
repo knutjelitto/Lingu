@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Lingu.Build;
 using Lingu.Commons;
 using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
@@ -14,8 +13,6 @@ namespace Lingu.Bootstrap
 {
     public class Program
     {
-        private static DirRef projectDir;
-
         static void Main(string[] args)
         {
             var program = new Program();
@@ -42,7 +39,7 @@ namespace Lingu.Bootstrap
 
         private void BuildTree(string stem, string content)
         {
-            Environment.CurrentDirectory = ProjectDir.Dir("Grammar");
+            Environment.CurrentDirectory = DirRef.ProjectDir().Dir("Grammar");
 
             var grammarSource = FileRef.From($"./{stem}.Grammar");
 
@@ -57,7 +54,7 @@ namespace Lingu.Bootstrap
                 var grammar = builder.Build();
                 new Dumper(grammar).Dump(dests);
 
-                var ccOut = ProjectDir.Dir("..").Dir("Lingu.CC").Dir("Gen");
+                var ccOut = DirRef.ProjectDir().Dir("..").Dir("Lingu.CC").Dir("Gen");
 
                 var csharp = new CSharpWriter(grammar, ccOut);
                 csharp.Write();
@@ -89,25 +86,6 @@ namespace Lingu.Bootstrap
                 var tree = context.Try(source);
 
                 new TreeDumper(dests.Add(".Tree")).Dump(tree);
-            }
-        }
-
-        private DirRef ProjectDir
-        {
-            get
-            {
-                if (projectDir == null)
-                {
-                    var cwd = Environment.CurrentDirectory;
-
-                    while (Directory.Exists(cwd) && !Directory.EnumerateFiles(cwd, "*.csproj").Any())
-                    {
-                        cwd = Path.GetDirectoryName(cwd);
-                    }
-
-                    projectDir = DirRef.From(cwd.Replace("\\", "/"));
-                }
-                return projectDir;
             }
         }
     }

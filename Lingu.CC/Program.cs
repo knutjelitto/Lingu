@@ -13,9 +13,11 @@ namespace Lingu.CC
     {
         static void Main(string[] args)
         {
+            var bootStrap = DirRef.ProjectDir().Dir("..").Dir("Lingu.Bootstrap");
+
             var context = Timer.Time("context", () => LinguContext.CreateContext());
 
-            var file = FileRef.From(@"D:\Knut\Projects\Lingu\Lingu.Bootstrap\Grammar\Lingu.Grammar");
+            var file = bootStrap.Dir("Grammar").File("Lingu.Grammar");
 
             var source = Timer.Time("source", () => Source.FromFile(file));
 
@@ -25,7 +27,8 @@ namespace Lingu.CC
 
             var parseTree = Timer.Time("parse", () => parser.Parse());
 
-            var dumper = new TreeDumper(FileRef.From(@"D:\Knut\Projects\Lingu\Lingu.Bootstrap\Grammar\Out\Lingu.Out.Out.Tree"));
+            var dumpFile = bootStrap.Dir("Grammar").Dir("Out").File("Lingu.Out.NewTree");
+            var dumper = new TreeDumper(dumpFile);
             dumper.Dump(parseTree);
 
             //var treeBuilder = new TreeBuilder();
