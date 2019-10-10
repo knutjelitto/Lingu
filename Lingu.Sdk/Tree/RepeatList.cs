@@ -26,12 +26,12 @@ namespace Lingu.Tree
 
         public static IExpression Star(IExpression expression, IExpression separator)
         {
-            return new RepeatList(expression, separator, RepeatKind.Star);
+            return new RepeatList(expression, separator, RepeatKind.StarList);
         }
 
         public static IExpression Plus(IExpression expression, IExpression separator)
         {
-            return new RepeatList(expression, separator, RepeatKind.Plus);
+            return new RepeatList(expression, separator, RepeatKind.PlusList);
         }
 
         public FA GetFA()

@@ -33,9 +33,9 @@ namespace Lingu.CC
             public abstract T OnTerminalExpression(INonterminalToken token);
             public abstract T OnTerminalDiff(INonterminalToken token);
             public abstract T OnTerminalSequence(INonterminalToken token);
-            public abstract T OnTerminalOptional(INonterminalToken token);
-            public abstract T OnTerminalStarClosure(INonterminalToken token);
-            public abstract T OnTerminalPlusClosure(INonterminalToken token);
+            public abstract T OnTerminalOption(INonterminalToken token);
+            public abstract T OnTerminalStar(INonterminalToken token);
+            public abstract T OnTerminalPlus(INonterminalToken token);
             public abstract T OnTerminalRangeLoop(INonterminalToken token);
             public abstract T OnRange(INonterminalToken token);
             public abstract T OnTerminalNot(INonterminalToken token);
@@ -71,9 +71,9 @@ namespace Lingu.CC
                     Id.TerminalExpression => (W)OnTerminalExpression((INonterminalToken)token),
                     Id.TerminalDiff => (W)OnTerminalDiff((INonterminalToken)token),
                     Id.TerminalSequence => (W)OnTerminalSequence((INonterminalToken)token),
-                    Id.TerminalOptional => (W)OnTerminalOptional((INonterminalToken)token),
-                    Id.TerminalStarClosure => (W)OnTerminalStarClosure((INonterminalToken)token),
-                    Id.TerminalPlusClosure => (W)OnTerminalPlusClosure((INonterminalToken)token),
+                    Id.TerminalOption => (W)OnTerminalOption((INonterminalToken)token),
+                    Id.TerminalStar => (W)OnTerminalStar((INonterminalToken)token),
+                    Id.TerminalPlus => (W)OnTerminalPlus((INonterminalToken)token),
                     Id.TerminalRangeLoop => (W)OnTerminalRangeLoop((INonterminalToken)token),
                     Id.Range => (W)OnRange((INonterminalToken)token),
                     Id.TerminalNot => (W)OnTerminalNot((INonterminalToken)token),
@@ -114,9 +114,9 @@ namespace Lingu.CC
             public override T OnTerminalExpression(INonterminalToken token) { return Default(token); }
             public override T OnTerminalDiff(INonterminalToken token) { return Default(token); }
             public override T OnTerminalSequence(INonterminalToken token) { return Default(token); }
-            public override T OnTerminalOptional(INonterminalToken token) { return Default(token); }
-            public override T OnTerminalStarClosure(INonterminalToken token) { return Default(token); }
-            public override T OnTerminalPlusClosure(INonterminalToken token) { return Default(token); }
+            public override T OnTerminalOption(INonterminalToken token) { return Default(token); }
+            public override T OnTerminalStar(INonterminalToken token) { return Default(token); }
+            public override T OnTerminalPlus(INonterminalToken token) { return Default(token); }
             public override T OnTerminalRangeLoop(INonterminalToken token) { return Default(token); }
             public override T OnRange(INonterminalToken token) { return Default(token); }
             public override T OnTerminalNot(INonterminalToken token) { return Default(token); }
@@ -151,9 +151,9 @@ namespace Lingu.CC
             public const int TerminalExpression = 56;
             public const int TerminalDiff = 58;
             public const int TerminalSequence = 59;
-            public const int TerminalOptional = 61;
-            public const int TerminalStarClosure = 62;
-            public const int TerminalPlusClosure = 63;
+            public const int TerminalOption = 61;
+            public const int TerminalStar = 62;
+            public const int TerminalPlus = 63;
             public const int TerminalRangeLoop = 64;
             public const int Range = 65;
             public const int TerminalNot = 67;

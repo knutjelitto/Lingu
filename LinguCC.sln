@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Sdk", "Lingu.Sdk\Ling
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Runtime", "Lingu.Runtime\Lingu.Runtime.csproj", "{1CF4EE71-14FD-4356-9E9D-011A4086B141}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC", "LinguCC0\LinguCC.csproj", "{F47ADC14-E523-4498-8159-69546964236C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC", "LinguCC\LinguCC.csproj", "{F47ADC14-E523-4498-8159-69546964236C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

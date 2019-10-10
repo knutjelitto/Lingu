@@ -1,5 +1,6 @@
 namespace Lingu.CC
 {
+    using System;
     using System.Linq;
     using Lingu.Runtime.Commons;
     using Lingu.Runtime.Concretes;
@@ -103,11 +104,11 @@ namespace Lingu.CC
                 states0[4].Transitions = new DfaTrans[1] {new DfaTrans(states0[5], sets[3])};
                 states0[5].Transitions = new DfaTrans[1] {new DfaTrans(states0[6], sets[2])};
                 states0[6].Transitions = new DfaTrans[1] {new DfaTrans(states0[7], sets[1])};
-                states0[7].Transitions = new DfaTrans[0] {};
+                states0[7].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  1 -- '$eof$' -- */
                 var states1 = new DfaState[1] {new DfaState(0,true,32)};
-                states1[0].Transitions = new DfaTrans[0] {};
+                states1[0].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  2 -- ˈidentifierˈ -- */
                 var states2 = new DfaState[2] {new DfaState(0,false,-1), new DfaState(1,true,0)};
@@ -117,7 +118,7 @@ namespace Lingu.CC
                 /* dfa  3 -- '{' -- */
                 var states3 = new DfaState[2] {new DfaState(0,false,-1), new DfaState(1,true,8)};
                 states3[0].Transitions = new DfaTrans[1] {new DfaTrans(states3[1], sets[6])};
-                states3[1].Transitions = new DfaTrans[0] {};
+                states3[1].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  4 -- 'options' | 'rules' | 'terminals' | '}' -- */
                 var states4 = new DfaState[23] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,false,-1), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,true,10), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,true,15), new DfaState(13,false,-1), new DfaState(14,false,-1), new DfaState(15,false,-1), new DfaState(16,false,-1), new DfaState(17,false,-1), new DfaState(18,false,-1), new DfaState(19,false,-1), new DfaState(20,false,-1), new DfaState(21,true,26), new DfaState(22,true,9)};
@@ -128,12 +129,12 @@ namespace Lingu.CC
                 states4[4].Transitions = new DfaTrans[1] {new DfaTrans(states4[5], sets[7])};
                 states4[5].Transitions = new DfaTrans[1] {new DfaTrans(states4[6], sets[12])};
                 states4[6].Transitions = new DfaTrans[1] {new DfaTrans(states4[7], sets[13])};
-                states4[7].Transitions = new DfaTrans[0] {};
+                states4[7].Transitions = Array.Empty<DfaTrans>();
                 states4[8].Transitions = new DfaTrans[1] {new DfaTrans(states4[9], sets[14])};
                 states4[9].Transitions = new DfaTrans[1] {new DfaTrans(states4[10], sets[15])};
                 states4[10].Transitions = new DfaTrans[1] {new DfaTrans(states4[11], sets[16])};
                 states4[11].Transitions = new DfaTrans[1] {new DfaTrans(states4[12], sets[13])};
-                states4[12].Transitions = new DfaTrans[0] {};
+                states4[12].Transitions = Array.Empty<DfaTrans>();
                 states4[13].Transitions = new DfaTrans[1] {new DfaTrans(states4[14], sets[16])};
                 states4[14].Transitions = new DfaTrans[1] {new DfaTrans(states4[15], sets[1])};
                 states4[15].Transitions = new DfaTrans[1] {new DfaTrans(states4[16], sets[3])};
@@ -142,8 +143,8 @@ namespace Lingu.CC
                 states4[18].Transitions = new DfaTrans[1] {new DfaTrans(states4[19], sets[2])};
                 states4[19].Transitions = new DfaTrans[1] {new DfaTrans(states4[20], sets[15])};
                 states4[20].Transitions = new DfaTrans[1] {new DfaTrans(states4[21], sets[13])};
-                states4[21].Transitions = new DfaTrans[0] {};
-                states4[22].Transitions = new DfaTrans[0] {};
+                states4[21].Transitions = Array.Empty<DfaTrans>();
+                states4[22].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  5 -- 'Spacing' | 'Start' | '}' -- */
                 var states5 = new DfaState[13] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,false,-1), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,true,14), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,true,11), new DfaState(12,true,9)};
@@ -154,37 +155,37 @@ namespace Lingu.CC
                 states5[4].Transitions = new DfaTrans[1] {new DfaTrans(states5[5], sets[11])};
                 states5[5].Transitions = new DfaTrans[1] {new DfaTrans(states5[6], sets[12])};
                 states5[6].Transitions = new DfaTrans[1] {new DfaTrans(states5[7], sets[0])};
-                states5[7].Transitions = new DfaTrans[0] {};
+                states5[7].Transitions = Array.Empty<DfaTrans>();
                 states5[8].Transitions = new DfaTrans[1] {new DfaTrans(states5[9], sets[2])};
                 states5[9].Transitions = new DfaTrans[1] {new DfaTrans(states5[10], sets[1])};
                 states5[10].Transitions = new DfaTrans[1] {new DfaTrans(states5[11], sets[8])};
-                states5[11].Transitions = new DfaTrans[0] {};
-                states5[12].Transitions = new DfaTrans[0] {};
+                states5[11].Transitions = Array.Empty<DfaTrans>();
+                states5[12].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  6 -- ˈidentifierˈ | '}' -- */
                 var states6 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,true,0), new DfaState(2,true,9)};
                 states6[0].Transitions = new DfaTrans[2] {new DfaTrans(states6[1], sets[4]), new DfaTrans(states6[2], sets[9])};
                 states6[1].Transitions = new DfaTrans[1] {new DfaTrans(states6[1], sets[5])};
-                states6[2].Transitions = new DfaTrans[0] {};
+                states6[2].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  7 -- '=' -- */
                 var states7 = new DfaState[2] {new DfaState(0,false,-1), new DfaState(1,true,12)};
                 states7[0].Transitions = new DfaTrans[1] {new DfaTrans(states7[1], sets[19])};
-                states7[1].Transitions = new DfaTrans[0] {};
+                states7[1].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  8 -- '->' | ':' -- */
                 var states8 = new DfaState[4] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,true,31), new DfaState(3,true,30)};
                 states8[0].Transitions = new DfaTrans[2] {new DfaTrans(states8[1], sets[20]), new DfaTrans(states8[3], sets[21])};
                 states8[1].Transitions = new DfaTrans[1] {new DfaTrans(states8[2], sets[22])};
-                states8[2].Transitions = new DfaTrans[0] {};
-                states8[3].Transitions = new DfaTrans[0] {};
+                states8[2].Transitions = Array.Empty<DfaTrans>();
+                states8[3].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa  9 -- ˈtextˈ | '(' | ',' | ';' | ˈidentifierˈ | '^' | '{' | '|' -- */
                 var states9 = new DfaState[20] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,22), new DfaState(15,true,13), new DfaState(16,true,0), new DfaState(17,true,23), new DfaState(18,true,8), new DfaState(19,true,16)};
                 states9[0].Transitions = new DfaTrans[8] {new DfaTrans(states9[1], sets[23]), new DfaTrans(states9[13], sets[24]), new DfaTrans(states9[14], sets[25]), new DfaTrans(states9[15], sets[26]), new DfaTrans(states9[16], sets[4]), new DfaTrans(states9[17], sets[27]), new DfaTrans(states9[18], sets[6]), new DfaTrans(states9[19], sets[28])};
                 states9[1].Transitions = new DfaTrans[2] {new DfaTrans(states9[2], sets[29]), new DfaTrans(states9[4], sets[30])};
                 states9[2].Transitions = new DfaTrans[3] {new DfaTrans(states9[2], sets[29]), new DfaTrans(states9[3], sets[23]), new DfaTrans(states9[4], sets[30])};
-                states9[3].Transitions = new DfaTrans[0] {};
+                states9[3].Transitions = Array.Empty<DfaTrans>();
                 states9[4].Transitions = new DfaTrans[2] {new DfaTrans(states9[2], sets[31]), new DfaTrans(states9[5], sets[14])};
                 states9[5].Transitions = new DfaTrans[1] {new DfaTrans(states9[6], sets[6])};
                 states9[6].Transitions = new DfaTrans[1] {new DfaTrans(states9[7], sets[32])};
@@ -194,20 +195,20 @@ namespace Lingu.CC
                 states9[10].Transitions = new DfaTrans[2] {new DfaTrans(states9[11], sets[32]), new DfaTrans(states9[2], sets[9])};
                 states9[11].Transitions = new DfaTrans[2] {new DfaTrans(states9[12], sets[32]), new DfaTrans(states9[2], sets[9])};
                 states9[12].Transitions = new DfaTrans[1] {new DfaTrans(states9[2], sets[9])};
-                states9[13].Transitions = new DfaTrans[0] {};
-                states9[14].Transitions = new DfaTrans[0] {};
-                states9[15].Transitions = new DfaTrans[0] {};
+                states9[13].Transitions = Array.Empty<DfaTrans>();
+                states9[14].Transitions = Array.Empty<DfaTrans>();
+                states9[15].Transitions = Array.Empty<DfaTrans>();
                 states9[16].Transitions = new DfaTrans[1] {new DfaTrans(states9[16], sets[5])};
-                states9[17].Transitions = new DfaTrans[0] {};
-                states9[18].Transitions = new DfaTrans[0] {};
-                states9[19].Transitions = new DfaTrans[0] {};
+                states9[17].Transitions = Array.Empty<DfaTrans>();
+                states9[18].Transitions = Array.Empty<DfaTrans>();
+                states9[19].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 10 -- ˈtextˈ | '(' | '-' | ˈanyˈ | ';' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '|' | '~' -- */
                 var states10 = new DfaState[47] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,27), new DfaState(15,true,2), new DfaState(16,true,13), new DfaState(17,true,0), new DfaState(18,true,0), new DfaState(19,false,-1), new DfaState(20,true,6), new DfaState(21,true,6), new DfaState(22,true,6), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,false,-1), new DfaState(27,false,-1), new DfaState(28,false,-1), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,true,4), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,false,-1), new DfaState(36,false,-1), new DfaState(37,true,5), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,true,16), new DfaState(46,true,28)};
                 states10[0].Transitions = new DfaTrans[10] {new DfaTrans(states10[1], sets[23]), new DfaTrans(states10[13], sets[24]), new DfaTrans(states10[14], sets[20]), new DfaTrans(states10[15], sets[33]), new DfaTrans(states10[16], sets[26]), new DfaTrans(states10[17], sets[34]), new DfaTrans(states10[18], sets[35]), new DfaTrans(states10[26], sets[30]), new DfaTrans(states10[45], sets[28]), new DfaTrans(states10[46], sets[36])};
                 states10[1].Transitions = new DfaTrans[2] {new DfaTrans(states10[2], sets[29]), new DfaTrans(states10[4], sets[30])};
                 states10[2].Transitions = new DfaTrans[3] {new DfaTrans(states10[2], sets[29]), new DfaTrans(states10[3], sets[23]), new DfaTrans(states10[4], sets[30])};
-                states10[3].Transitions = new DfaTrans[0] {};
+                states10[3].Transitions = Array.Empty<DfaTrans>();
                 states10[4].Transitions = new DfaTrans[2] {new DfaTrans(states10[2], sets[31]), new DfaTrans(states10[5], sets[14])};
                 states10[5].Transitions = new DfaTrans[1] {new DfaTrans(states10[6], sets[6])};
                 states10[6].Transitions = new DfaTrans[1] {new DfaTrans(states10[7], sets[32])};
@@ -217,10 +218,10 @@ namespace Lingu.CC
                 states10[10].Transitions = new DfaTrans[2] {new DfaTrans(states10[11], sets[32]), new DfaTrans(states10[2], sets[9])};
                 states10[11].Transitions = new DfaTrans[2] {new DfaTrans(states10[12], sets[32]), new DfaTrans(states10[2], sets[9])};
                 states10[12].Transitions = new DfaTrans[1] {new DfaTrans(states10[2], sets[9])};
-                states10[13].Transitions = new DfaTrans[0] {};
-                states10[14].Transitions = new DfaTrans[0] {};
-                states10[15].Transitions = new DfaTrans[0] {};
-                states10[16].Transitions = new DfaTrans[0] {};
+                states10[13].Transitions = Array.Empty<DfaTrans>();
+                states10[14].Transitions = Array.Empty<DfaTrans>();
+                states10[15].Transitions = Array.Empty<DfaTrans>();
+                states10[16].Transitions = Array.Empty<DfaTrans>();
                 states10[17].Transitions = new DfaTrans[1] {new DfaTrans(states10[17], sets[5])};
                 states10[18].Transitions = new DfaTrans[2] {new DfaTrans(states10[19], sets[37]), new DfaTrans(states10[17], sets[5])};
                 states10[19].Transitions = new DfaTrans[1] {new DfaTrans(states10[20], sets[32])};
@@ -229,19 +230,19 @@ namespace Lingu.CC
                 states10[22].Transitions = new DfaTrans[1] {new DfaTrans(states10[23], sets[32])};
                 states10[23].Transitions = new DfaTrans[1] {new DfaTrans(states10[24], sets[32])};
                 states10[24].Transitions = new DfaTrans[1] {new DfaTrans(states10[25], sets[32])};
-                states10[25].Transitions = new DfaTrans[0] {};
+                states10[25].Transitions = Array.Empty<DfaTrans>();
                 states10[26].Transitions = new DfaTrans[1] {new DfaTrans(states10[27], sets[14])};
                 states10[27].Transitions = new DfaTrans[3] {new DfaTrans(states10[28], sets[38]), new DfaTrans(states10[33], sets[18]), new DfaTrans(states10[38], sets[6])};
                 states10[28].Transitions = new DfaTrans[1] {new DfaTrans(states10[29], sets[6])};
                 states10[29].Transitions = new DfaTrans[1] {new DfaTrans(states10[30], sets[39])};
                 states10[30].Transitions = new DfaTrans[3] {new DfaTrans(states10[31], sets[40]), new DfaTrans(states10[30], sets[41]), new DfaTrans(states10[32], sets[9])};
                 states10[31].Transitions = new DfaTrans[2] {new DfaTrans(states10[31], sets[40]), new DfaTrans(states10[30], sets[41])};
-                states10[32].Transitions = new DfaTrans[0] {};
+                states10[32].Transitions = Array.Empty<DfaTrans>();
                 states10[33].Transitions = new DfaTrans[1] {new DfaTrans(states10[34], sets[6])};
                 states10[34].Transitions = new DfaTrans[1] {new DfaTrans(states10[35], sets[39])};
                 states10[35].Transitions = new DfaTrans[3] {new DfaTrans(states10[36], sets[40]), new DfaTrans(states10[35], sets[41]), new DfaTrans(states10[37], sets[9])};
                 states10[36].Transitions = new DfaTrans[2] {new DfaTrans(states10[36], sets[40]), new DfaTrans(states10[35], sets[41])};
-                states10[37].Transitions = new DfaTrans[0] {};
+                states10[37].Transitions = Array.Empty<DfaTrans>();
                 states10[38].Transitions = new DfaTrans[1] {new DfaTrans(states10[39], sets[32])};
                 states10[39].Transitions = new DfaTrans[2] {new DfaTrans(states10[40], sets[32]), new DfaTrans(states10[25], sets[9])};
                 states10[40].Transitions = new DfaTrans[2] {new DfaTrans(states10[41], sets[32]), new DfaTrans(states10[25], sets[9])};
@@ -249,26 +250,26 @@ namespace Lingu.CC
                 states10[42].Transitions = new DfaTrans[2] {new DfaTrans(states10[43], sets[32]), new DfaTrans(states10[25], sets[9])};
                 states10[43].Transitions = new DfaTrans[2] {new DfaTrans(states10[44], sets[32]), new DfaTrans(states10[25], sets[9])};
                 states10[44].Transitions = new DfaTrans[1] {new DfaTrans(states10[25], sets[9])};
-                states10[45].Transitions = new DfaTrans[0] {};
-                states10[46].Transitions = new DfaTrans[0] {};
+                states10[45].Transitions = Array.Empty<DfaTrans>();
+                states10[46].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 11 -- ';' -- */
                 var states11 = new DfaState[2] {new DfaState(0,false,-1), new DfaState(1,true,13)};
                 states11[0].Transitions = new DfaTrans[1] {new DfaTrans(states11[1], sets[26])};
-                states11[1].Transitions = new DfaTrans[0] {};
+                states11[1].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 12 -- ';' | '|' -- */
                 var states12 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,true,13), new DfaState(2,true,16)};
                 states12[0].Transitions = new DfaTrans[2] {new DfaTrans(states12[1], sets[26]), new DfaTrans(states12[2], sets[28])};
-                states12[1].Transitions = new DfaTrans[0] {};
-                states12[2].Transitions = new DfaTrans[0] {};
+                states12[1].Transitions = Array.Empty<DfaTrans>();
+                states12[2].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 13 -- ˈtextˈ | '(' | '*' | '*:' | '+' | '+:' | ',' | ';' | '?' | ˈidentifierˈ | '^' | '{' | '|' -- */
                 var states13 = new DfaState[25] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,18), new DfaState(15,true,19), new DfaState(16,true,20), new DfaState(17,true,21), new DfaState(18,true,22), new DfaState(19,true,13), new DfaState(20,true,17), new DfaState(21,true,0), new DfaState(22,true,23), new DfaState(23,true,8), new DfaState(24,true,16)};
                 states13[0].Transitions = new DfaTrans[11] {new DfaTrans(states13[1], sets[23]), new DfaTrans(states13[13], sets[24]), new DfaTrans(states13[14], sets[42]), new DfaTrans(states13[16], sets[37]), new DfaTrans(states13[18], sets[25]), new DfaTrans(states13[19], sets[26]), new DfaTrans(states13[20], sets[43]), new DfaTrans(states13[21], sets[4]), new DfaTrans(states13[22], sets[27]), new DfaTrans(states13[23], sets[6]), new DfaTrans(states13[24], sets[28])};
                 states13[1].Transitions = new DfaTrans[2] {new DfaTrans(states13[2], sets[29]), new DfaTrans(states13[4], sets[30])};
                 states13[2].Transitions = new DfaTrans[3] {new DfaTrans(states13[2], sets[29]), new DfaTrans(states13[3], sets[23]), new DfaTrans(states13[4], sets[30])};
-                states13[3].Transitions = new DfaTrans[0] {};
+                states13[3].Transitions = Array.Empty<DfaTrans>();
                 states13[4].Transitions = new DfaTrans[2] {new DfaTrans(states13[2], sets[31]), new DfaTrans(states13[5], sets[14])};
                 states13[5].Transitions = new DfaTrans[1] {new DfaTrans(states13[6], sets[6])};
                 states13[6].Transitions = new DfaTrans[1] {new DfaTrans(states13[7], sets[32])};
@@ -278,25 +279,25 @@ namespace Lingu.CC
                 states13[10].Transitions = new DfaTrans[2] {new DfaTrans(states13[11], sets[32]), new DfaTrans(states13[2], sets[9])};
                 states13[11].Transitions = new DfaTrans[2] {new DfaTrans(states13[12], sets[32]), new DfaTrans(states13[2], sets[9])};
                 states13[12].Transitions = new DfaTrans[1] {new DfaTrans(states13[2], sets[9])};
-                states13[13].Transitions = new DfaTrans[0] {};
+                states13[13].Transitions = Array.Empty<DfaTrans>();
                 states13[14].Transitions = new DfaTrans[1] {new DfaTrans(states13[15], sets[21])};
-                states13[15].Transitions = new DfaTrans[0] {};
+                states13[15].Transitions = Array.Empty<DfaTrans>();
                 states13[16].Transitions = new DfaTrans[1] {new DfaTrans(states13[17], sets[21])};
-                states13[17].Transitions = new DfaTrans[0] {};
-                states13[18].Transitions = new DfaTrans[0] {};
-                states13[19].Transitions = new DfaTrans[0] {};
-                states13[20].Transitions = new DfaTrans[0] {};
+                states13[17].Transitions = Array.Empty<DfaTrans>();
+                states13[18].Transitions = Array.Empty<DfaTrans>();
+                states13[19].Transitions = Array.Empty<DfaTrans>();
+                states13[20].Transitions = Array.Empty<DfaTrans>();
                 states13[21].Transitions = new DfaTrans[1] {new DfaTrans(states13[21], sets[5])};
-                states13[22].Transitions = new DfaTrans[0] {};
-                states13[23].Transitions = new DfaTrans[0] {};
-                states13[24].Transitions = new DfaTrans[0] {};
+                states13[22].Transitions = Array.Empty<DfaTrans>();
+                states13[23].Transitions = Array.Empty<DfaTrans>();
+                states13[24].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 14 -- ˈtextˈ | '(' | ˈidentifierˈ | '{' -- */
                 var states14 = new DfaState[16] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,0), new DfaState(15,true,8)};
                 states14[0].Transitions = new DfaTrans[4] {new DfaTrans(states14[1], sets[23]), new DfaTrans(states14[13], sets[24]), new DfaTrans(states14[14], sets[4]), new DfaTrans(states14[15], sets[6])};
                 states14[1].Transitions = new DfaTrans[2] {new DfaTrans(states14[2], sets[29]), new DfaTrans(states14[4], sets[30])};
                 states14[2].Transitions = new DfaTrans[3] {new DfaTrans(states14[2], sets[29]), new DfaTrans(states14[3], sets[23]), new DfaTrans(states14[4], sets[30])};
-                states14[3].Transitions = new DfaTrans[0] {};
+                states14[3].Transitions = Array.Empty<DfaTrans>();
                 states14[4].Transitions = new DfaTrans[2] {new DfaTrans(states14[2], sets[31]), new DfaTrans(states14[5], sets[14])};
                 states14[5].Transitions = new DfaTrans[1] {new DfaTrans(states14[6], sets[6])};
                 states14[6].Transitions = new DfaTrans[1] {new DfaTrans(states14[7], sets[32])};
@@ -306,16 +307,16 @@ namespace Lingu.CC
                 states14[10].Transitions = new DfaTrans[2] {new DfaTrans(states14[11], sets[32]), new DfaTrans(states14[2], sets[9])};
                 states14[11].Transitions = new DfaTrans[2] {new DfaTrans(states14[12], sets[32]), new DfaTrans(states14[2], sets[9])};
                 states14[12].Transitions = new DfaTrans[1] {new DfaTrans(states14[2], sets[9])};
-                states14[13].Transitions = new DfaTrans[0] {};
+                states14[13].Transitions = Array.Empty<DfaTrans>();
                 states14[14].Transitions = new DfaTrans[1] {new DfaTrans(states14[14], sets[5])};
-                states14[15].Transitions = new DfaTrans[0] {};
+                states14[15].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 15 -- ˈtextˈ | '(' | ')' | ',' | ˈidentifierˈ | '^' | '{' | '|' -- */
                 var states15 = new DfaState[20] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,22), new DfaState(16,true,0), new DfaState(17,true,23), new DfaState(18,true,8), new DfaState(19,true,16)};
                 states15[0].Transitions = new DfaTrans[8] {new DfaTrans(states15[1], sets[23]), new DfaTrans(states15[13], sets[24]), new DfaTrans(states15[14], sets[44]), new DfaTrans(states15[15], sets[25]), new DfaTrans(states15[16], sets[4]), new DfaTrans(states15[17], sets[27]), new DfaTrans(states15[18], sets[6]), new DfaTrans(states15[19], sets[28])};
                 states15[1].Transitions = new DfaTrans[2] {new DfaTrans(states15[2], sets[29]), new DfaTrans(states15[4], sets[30])};
                 states15[2].Transitions = new DfaTrans[3] {new DfaTrans(states15[2], sets[29]), new DfaTrans(states15[3], sets[23]), new DfaTrans(states15[4], sets[30])};
-                states15[3].Transitions = new DfaTrans[0] {};
+                states15[3].Transitions = Array.Empty<DfaTrans>();
                 states15[4].Transitions = new DfaTrans[2] {new DfaTrans(states15[2], sets[31]), new DfaTrans(states15[5], sets[14])};
                 states15[5].Transitions = new DfaTrans[1] {new DfaTrans(states15[6], sets[6])};
                 states15[6].Transitions = new DfaTrans[1] {new DfaTrans(states15[7], sets[32])};
@@ -325,20 +326,20 @@ namespace Lingu.CC
                 states15[10].Transitions = new DfaTrans[2] {new DfaTrans(states15[11], sets[32]), new DfaTrans(states15[2], sets[9])};
                 states15[11].Transitions = new DfaTrans[2] {new DfaTrans(states15[12], sets[32]), new DfaTrans(states15[2], sets[9])};
                 states15[12].Transitions = new DfaTrans[1] {new DfaTrans(states15[2], sets[9])};
-                states15[13].Transitions = new DfaTrans[0] {};
-                states15[14].Transitions = new DfaTrans[0] {};
-                states15[15].Transitions = new DfaTrans[0] {};
+                states15[13].Transitions = Array.Empty<DfaTrans>();
+                states15[14].Transitions = Array.Empty<DfaTrans>();
+                states15[15].Transitions = Array.Empty<DfaTrans>();
                 states15[16].Transitions = new DfaTrans[1] {new DfaTrans(states15[16], sets[5])};
-                states15[17].Transitions = new DfaTrans[0] {};
-                states15[18].Transitions = new DfaTrans[0] {};
-                states15[19].Transitions = new DfaTrans[0] {};
+                states15[17].Transitions = Array.Empty<DfaTrans>();
+                states15[18].Transitions = Array.Empty<DfaTrans>();
+                states15[19].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 16 -- ˈtextˈ | '(' | '*' | '+' | '-' | ˈanyˈ | ';' | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states16 = new DfaState[51] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,18), new DfaState(15,true,20), new DfaState(16,true,27), new DfaState(17,true,2), new DfaState(18,true,13), new DfaState(19,true,17), new DfaState(20,true,0), new DfaState(21,true,0), new DfaState(22,false,-1), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,true,6), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,true,4), new DfaState(36,false,-1), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,true,5), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,false,-1), new DfaState(48,true,8), new DfaState(49,true,16), new DfaState(50,true,28)};
                 states16[0].Transitions = new DfaTrans[14] {new DfaTrans(states16[1], sets[23]), new DfaTrans(states16[13], sets[24]), new DfaTrans(states16[14], sets[42]), new DfaTrans(states16[15], sets[37]), new DfaTrans(states16[16], sets[20]), new DfaTrans(states16[17], sets[33]), new DfaTrans(states16[18], sets[26]), new DfaTrans(states16[19], sets[43]), new DfaTrans(states16[20], sets[34]), new DfaTrans(states16[21], sets[35]), new DfaTrans(states16[29], sets[30]), new DfaTrans(states16[48], sets[6]), new DfaTrans(states16[49], sets[28]), new DfaTrans(states16[50], sets[36])};
                 states16[1].Transitions = new DfaTrans[2] {new DfaTrans(states16[2], sets[29]), new DfaTrans(states16[4], sets[30])};
                 states16[2].Transitions = new DfaTrans[3] {new DfaTrans(states16[2], sets[29]), new DfaTrans(states16[3], sets[23]), new DfaTrans(states16[4], sets[30])};
-                states16[3].Transitions = new DfaTrans[0] {};
+                states16[3].Transitions = Array.Empty<DfaTrans>();
                 states16[4].Transitions = new DfaTrans[2] {new DfaTrans(states16[2], sets[31]), new DfaTrans(states16[5], sets[14])};
                 states16[5].Transitions = new DfaTrans[1] {new DfaTrans(states16[6], sets[6])};
                 states16[6].Transitions = new DfaTrans[1] {new DfaTrans(states16[7], sets[32])};
@@ -348,13 +349,13 @@ namespace Lingu.CC
                 states16[10].Transitions = new DfaTrans[2] {new DfaTrans(states16[11], sets[32]), new DfaTrans(states16[2], sets[9])};
                 states16[11].Transitions = new DfaTrans[2] {new DfaTrans(states16[12], sets[32]), new DfaTrans(states16[2], sets[9])};
                 states16[12].Transitions = new DfaTrans[1] {new DfaTrans(states16[2], sets[9])};
-                states16[13].Transitions = new DfaTrans[0] {};
-                states16[14].Transitions = new DfaTrans[0] {};
-                states16[15].Transitions = new DfaTrans[0] {};
-                states16[16].Transitions = new DfaTrans[0] {};
-                states16[17].Transitions = new DfaTrans[0] {};
-                states16[18].Transitions = new DfaTrans[0] {};
-                states16[19].Transitions = new DfaTrans[0] {};
+                states16[13].Transitions = Array.Empty<DfaTrans>();
+                states16[14].Transitions = Array.Empty<DfaTrans>();
+                states16[15].Transitions = Array.Empty<DfaTrans>();
+                states16[16].Transitions = Array.Empty<DfaTrans>();
+                states16[17].Transitions = Array.Empty<DfaTrans>();
+                states16[18].Transitions = Array.Empty<DfaTrans>();
+                states16[19].Transitions = Array.Empty<DfaTrans>();
                 states16[20].Transitions = new DfaTrans[1] {new DfaTrans(states16[20], sets[5])};
                 states16[21].Transitions = new DfaTrans[2] {new DfaTrans(states16[22], sets[37]), new DfaTrans(states16[20], sets[5])};
                 states16[22].Transitions = new DfaTrans[1] {new DfaTrans(states16[23], sets[32])};
@@ -363,19 +364,19 @@ namespace Lingu.CC
                 states16[25].Transitions = new DfaTrans[1] {new DfaTrans(states16[26], sets[32])};
                 states16[26].Transitions = new DfaTrans[1] {new DfaTrans(states16[27], sets[32])};
                 states16[27].Transitions = new DfaTrans[1] {new DfaTrans(states16[28], sets[32])};
-                states16[28].Transitions = new DfaTrans[0] {};
+                states16[28].Transitions = Array.Empty<DfaTrans>();
                 states16[29].Transitions = new DfaTrans[1] {new DfaTrans(states16[30], sets[14])};
                 states16[30].Transitions = new DfaTrans[3] {new DfaTrans(states16[31], sets[38]), new DfaTrans(states16[36], sets[18]), new DfaTrans(states16[41], sets[6])};
                 states16[31].Transitions = new DfaTrans[1] {new DfaTrans(states16[32], sets[6])};
                 states16[32].Transitions = new DfaTrans[1] {new DfaTrans(states16[33], sets[39])};
                 states16[33].Transitions = new DfaTrans[3] {new DfaTrans(states16[34], sets[40]), new DfaTrans(states16[33], sets[41]), new DfaTrans(states16[35], sets[9])};
                 states16[34].Transitions = new DfaTrans[2] {new DfaTrans(states16[34], sets[40]), new DfaTrans(states16[33], sets[41])};
-                states16[35].Transitions = new DfaTrans[0] {};
+                states16[35].Transitions = Array.Empty<DfaTrans>();
                 states16[36].Transitions = new DfaTrans[1] {new DfaTrans(states16[37], sets[6])};
                 states16[37].Transitions = new DfaTrans[1] {new DfaTrans(states16[38], sets[39])};
                 states16[38].Transitions = new DfaTrans[3] {new DfaTrans(states16[39], sets[40]), new DfaTrans(states16[38], sets[41]), new DfaTrans(states16[40], sets[9])};
                 states16[39].Transitions = new DfaTrans[2] {new DfaTrans(states16[39], sets[40]), new DfaTrans(states16[38], sets[41])};
-                states16[40].Transitions = new DfaTrans[0] {};
+                states16[40].Transitions = Array.Empty<DfaTrans>();
                 states16[41].Transitions = new DfaTrans[1] {new DfaTrans(states16[42], sets[32])};
                 states16[42].Transitions = new DfaTrans[2] {new DfaTrans(states16[43], sets[32]), new DfaTrans(states16[28], sets[9])};
                 states16[43].Transitions = new DfaTrans[2] {new DfaTrans(states16[44], sets[32]), new DfaTrans(states16[28], sets[9])};
@@ -383,29 +384,29 @@ namespace Lingu.CC
                 states16[45].Transitions = new DfaTrans[2] {new DfaTrans(states16[46], sets[32]), new DfaTrans(states16[28], sets[9])};
                 states16[46].Transitions = new DfaTrans[2] {new DfaTrans(states16[47], sets[32]), new DfaTrans(states16[28], sets[9])};
                 states16[47].Transitions = new DfaTrans[1] {new DfaTrans(states16[28], sets[9])};
-                states16[48].Transitions = new DfaTrans[0] {};
-                states16[49].Transitions = new DfaTrans[0] {};
-                states16[50].Transitions = new DfaTrans[0] {};
+                states16[48].Transitions = Array.Empty<DfaTrans>();
+                states16[49].Transitions = Array.Empty<DfaTrans>();
+                states16[50].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 17 -- '-' | ';' | '|' -- */
                 var states17 = new DfaState[4] {new DfaState(0,false,-1), new DfaState(1,true,27), new DfaState(2,true,13), new DfaState(3,true,16)};
                 states17[0].Transitions = new DfaTrans[3] {new DfaTrans(states17[1], sets[20]), new DfaTrans(states17[2], sets[26]), new DfaTrans(states17[3], sets[28])};
-                states17[1].Transitions = new DfaTrans[0] {};
-                states17[2].Transitions = new DfaTrans[0] {};
-                states17[3].Transitions = new DfaTrans[0] {};
+                states17[1].Transitions = Array.Empty<DfaTrans>();
+                states17[2].Transitions = Array.Empty<DfaTrans>();
+                states17[3].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 18 -- '..' -- */
                 var states18 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,true,29)};
                 states18[0].Transitions = new DfaTrans[1] {new DfaTrans(states18[1], sets[33])};
                 states18[1].Transitions = new DfaTrans[1] {new DfaTrans(states18[2], sets[33])};
-                states18[2].Transitions = new DfaTrans[0] {};
+                states18[2].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 19 -- ˈtextˈ | '(' | '*' | '+' | '-' | ˈanyˈ | '..' | ';' | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states19 = new DfaState[52] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,18), new DfaState(15,true,20), new DfaState(16,true,27), new DfaState(17,true,2), new DfaState(18,true,29), new DfaState(19,true,13), new DfaState(20,true,17), new DfaState(21,true,0), new DfaState(22,true,0), new DfaState(23,false,-1), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,true,6), new DfaState(29,true,6), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,false,-1), new DfaState(36,true,4), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,true,5), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,false,-1), new DfaState(48,false,-1), new DfaState(49,true,8), new DfaState(50,true,16), new DfaState(51,true,28)};
                 states19[0].Transitions = new DfaTrans[14] {new DfaTrans(states19[1], sets[23]), new DfaTrans(states19[13], sets[24]), new DfaTrans(states19[14], sets[42]), new DfaTrans(states19[15], sets[37]), new DfaTrans(states19[16], sets[20]), new DfaTrans(states19[17], sets[33]), new DfaTrans(states19[19], sets[26]), new DfaTrans(states19[20], sets[43]), new DfaTrans(states19[21], sets[34]), new DfaTrans(states19[22], sets[35]), new DfaTrans(states19[30], sets[30]), new DfaTrans(states19[49], sets[6]), new DfaTrans(states19[50], sets[28]), new DfaTrans(states19[51], sets[36])};
                 states19[1].Transitions = new DfaTrans[2] {new DfaTrans(states19[2], sets[29]), new DfaTrans(states19[4], sets[30])};
                 states19[2].Transitions = new DfaTrans[3] {new DfaTrans(states19[2], sets[29]), new DfaTrans(states19[3], sets[23]), new DfaTrans(states19[4], sets[30])};
-                states19[3].Transitions = new DfaTrans[0] {};
+                states19[3].Transitions = Array.Empty<DfaTrans>();
                 states19[4].Transitions = new DfaTrans[2] {new DfaTrans(states19[2], sets[31]), new DfaTrans(states19[5], sets[14])};
                 states19[5].Transitions = new DfaTrans[1] {new DfaTrans(states19[6], sets[6])};
                 states19[6].Transitions = new DfaTrans[1] {new DfaTrans(states19[7], sets[32])};
@@ -415,14 +416,14 @@ namespace Lingu.CC
                 states19[10].Transitions = new DfaTrans[2] {new DfaTrans(states19[11], sets[32]), new DfaTrans(states19[2], sets[9])};
                 states19[11].Transitions = new DfaTrans[2] {new DfaTrans(states19[12], sets[32]), new DfaTrans(states19[2], sets[9])};
                 states19[12].Transitions = new DfaTrans[1] {new DfaTrans(states19[2], sets[9])};
-                states19[13].Transitions = new DfaTrans[0] {};
-                states19[14].Transitions = new DfaTrans[0] {};
-                states19[15].Transitions = new DfaTrans[0] {};
-                states19[16].Transitions = new DfaTrans[0] {};
+                states19[13].Transitions = Array.Empty<DfaTrans>();
+                states19[14].Transitions = Array.Empty<DfaTrans>();
+                states19[15].Transitions = Array.Empty<DfaTrans>();
+                states19[16].Transitions = Array.Empty<DfaTrans>();
                 states19[17].Transitions = new DfaTrans[1] {new DfaTrans(states19[18], sets[33])};
-                states19[18].Transitions = new DfaTrans[0] {};
-                states19[19].Transitions = new DfaTrans[0] {};
-                states19[20].Transitions = new DfaTrans[0] {};
+                states19[18].Transitions = Array.Empty<DfaTrans>();
+                states19[19].Transitions = Array.Empty<DfaTrans>();
+                states19[20].Transitions = Array.Empty<DfaTrans>();
                 states19[21].Transitions = new DfaTrans[1] {new DfaTrans(states19[21], sets[5])};
                 states19[22].Transitions = new DfaTrans[2] {new DfaTrans(states19[23], sets[37]), new DfaTrans(states19[21], sets[5])};
                 states19[23].Transitions = new DfaTrans[1] {new DfaTrans(states19[24], sets[32])};
@@ -431,19 +432,19 @@ namespace Lingu.CC
                 states19[26].Transitions = new DfaTrans[1] {new DfaTrans(states19[27], sets[32])};
                 states19[27].Transitions = new DfaTrans[1] {new DfaTrans(states19[28], sets[32])};
                 states19[28].Transitions = new DfaTrans[1] {new DfaTrans(states19[29], sets[32])};
-                states19[29].Transitions = new DfaTrans[0] {};
+                states19[29].Transitions = Array.Empty<DfaTrans>();
                 states19[30].Transitions = new DfaTrans[1] {new DfaTrans(states19[31], sets[14])};
                 states19[31].Transitions = new DfaTrans[3] {new DfaTrans(states19[32], sets[38]), new DfaTrans(states19[37], sets[18]), new DfaTrans(states19[42], sets[6])};
                 states19[32].Transitions = new DfaTrans[1] {new DfaTrans(states19[33], sets[6])};
                 states19[33].Transitions = new DfaTrans[1] {new DfaTrans(states19[34], sets[39])};
                 states19[34].Transitions = new DfaTrans[3] {new DfaTrans(states19[35], sets[40]), new DfaTrans(states19[34], sets[41]), new DfaTrans(states19[36], sets[9])};
                 states19[35].Transitions = new DfaTrans[2] {new DfaTrans(states19[35], sets[40]), new DfaTrans(states19[34], sets[41])};
-                states19[36].Transitions = new DfaTrans[0] {};
+                states19[36].Transitions = Array.Empty<DfaTrans>();
                 states19[37].Transitions = new DfaTrans[1] {new DfaTrans(states19[38], sets[6])};
                 states19[38].Transitions = new DfaTrans[1] {new DfaTrans(states19[39], sets[39])};
                 states19[39].Transitions = new DfaTrans[3] {new DfaTrans(states19[40], sets[40]), new DfaTrans(states19[39], sets[41]), new DfaTrans(states19[41], sets[9])};
                 states19[40].Transitions = new DfaTrans[2] {new DfaTrans(states19[40], sets[40]), new DfaTrans(states19[39], sets[41])};
-                states19[41].Transitions = new DfaTrans[0] {};
+                states19[41].Transitions = Array.Empty<DfaTrans>();
                 states19[42].Transitions = new DfaTrans[1] {new DfaTrans(states19[43], sets[32])};
                 states19[43].Transitions = new DfaTrans[2] {new DfaTrans(states19[44], sets[32]), new DfaTrans(states19[29], sets[9])};
                 states19[44].Transitions = new DfaTrans[2] {new DfaTrans(states19[45], sets[32]), new DfaTrans(states19[29], sets[9])};
@@ -451,16 +452,16 @@ namespace Lingu.CC
                 states19[46].Transitions = new DfaTrans[2] {new DfaTrans(states19[47], sets[32]), new DfaTrans(states19[29], sets[9])};
                 states19[47].Transitions = new DfaTrans[2] {new DfaTrans(states19[48], sets[32]), new DfaTrans(states19[29], sets[9])};
                 states19[48].Transitions = new DfaTrans[1] {new DfaTrans(states19[29], sets[9])};
-                states19[49].Transitions = new DfaTrans[0] {};
-                states19[50].Transitions = new DfaTrans[0] {};
-                states19[51].Transitions = new DfaTrans[0] {};
+                states19[49].Transitions = Array.Empty<DfaTrans>();
+                states19[50].Transitions = Array.Empty<DfaTrans>();
+                states19[51].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 20 -- ˈtextˈ | '(' | ')' | '-' | ˈanyˈ | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '|' | '~' -- */
                 var states20 = new DfaState[47] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,27), new DfaState(16,true,2), new DfaState(17,true,0), new DfaState(18,true,0), new DfaState(19,false,-1), new DfaState(20,true,6), new DfaState(21,true,6), new DfaState(22,true,6), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,false,-1), new DfaState(27,false,-1), new DfaState(28,false,-1), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,true,4), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,false,-1), new DfaState(36,false,-1), new DfaState(37,true,5), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,true,16), new DfaState(46,true,28)};
                 states20[0].Transitions = new DfaTrans[10] {new DfaTrans(states20[1], sets[23]), new DfaTrans(states20[13], sets[24]), new DfaTrans(states20[14], sets[44]), new DfaTrans(states20[15], sets[20]), new DfaTrans(states20[16], sets[33]), new DfaTrans(states20[17], sets[34]), new DfaTrans(states20[18], sets[35]), new DfaTrans(states20[26], sets[30]), new DfaTrans(states20[45], sets[28]), new DfaTrans(states20[46], sets[36])};
                 states20[1].Transitions = new DfaTrans[2] {new DfaTrans(states20[2], sets[29]), new DfaTrans(states20[4], sets[30])};
                 states20[2].Transitions = new DfaTrans[3] {new DfaTrans(states20[2], sets[29]), new DfaTrans(states20[3], sets[23]), new DfaTrans(states20[4], sets[30])};
-                states20[3].Transitions = new DfaTrans[0] {};
+                states20[3].Transitions = Array.Empty<DfaTrans>();
                 states20[4].Transitions = new DfaTrans[2] {new DfaTrans(states20[2], sets[31]), new DfaTrans(states20[5], sets[14])};
                 states20[5].Transitions = new DfaTrans[1] {new DfaTrans(states20[6], sets[6])};
                 states20[6].Transitions = new DfaTrans[1] {new DfaTrans(states20[7], sets[32])};
@@ -470,10 +471,10 @@ namespace Lingu.CC
                 states20[10].Transitions = new DfaTrans[2] {new DfaTrans(states20[11], sets[32]), new DfaTrans(states20[2], sets[9])};
                 states20[11].Transitions = new DfaTrans[2] {new DfaTrans(states20[12], sets[32]), new DfaTrans(states20[2], sets[9])};
                 states20[12].Transitions = new DfaTrans[1] {new DfaTrans(states20[2], sets[9])};
-                states20[13].Transitions = new DfaTrans[0] {};
-                states20[14].Transitions = new DfaTrans[0] {};
-                states20[15].Transitions = new DfaTrans[0] {};
-                states20[16].Transitions = new DfaTrans[0] {};
+                states20[13].Transitions = Array.Empty<DfaTrans>();
+                states20[14].Transitions = Array.Empty<DfaTrans>();
+                states20[15].Transitions = Array.Empty<DfaTrans>();
+                states20[16].Transitions = Array.Empty<DfaTrans>();
                 states20[17].Transitions = new DfaTrans[1] {new DfaTrans(states20[17], sets[5])};
                 states20[18].Transitions = new DfaTrans[2] {new DfaTrans(states20[19], sets[37]), new DfaTrans(states20[17], sets[5])};
                 states20[19].Transitions = new DfaTrans[1] {new DfaTrans(states20[20], sets[32])};
@@ -482,19 +483,19 @@ namespace Lingu.CC
                 states20[22].Transitions = new DfaTrans[1] {new DfaTrans(states20[23], sets[32])};
                 states20[23].Transitions = new DfaTrans[1] {new DfaTrans(states20[24], sets[32])};
                 states20[24].Transitions = new DfaTrans[1] {new DfaTrans(states20[25], sets[32])};
-                states20[25].Transitions = new DfaTrans[0] {};
+                states20[25].Transitions = Array.Empty<DfaTrans>();
                 states20[26].Transitions = new DfaTrans[1] {new DfaTrans(states20[27], sets[14])};
                 states20[27].Transitions = new DfaTrans[3] {new DfaTrans(states20[28], sets[38]), new DfaTrans(states20[33], sets[18]), new DfaTrans(states20[38], sets[6])};
                 states20[28].Transitions = new DfaTrans[1] {new DfaTrans(states20[29], sets[6])};
                 states20[29].Transitions = new DfaTrans[1] {new DfaTrans(states20[30], sets[39])};
                 states20[30].Transitions = new DfaTrans[3] {new DfaTrans(states20[31], sets[40]), new DfaTrans(states20[30], sets[41]), new DfaTrans(states20[32], sets[9])};
                 states20[31].Transitions = new DfaTrans[2] {new DfaTrans(states20[31], sets[40]), new DfaTrans(states20[30], sets[41])};
-                states20[32].Transitions = new DfaTrans[0] {};
+                states20[32].Transitions = Array.Empty<DfaTrans>();
                 states20[33].Transitions = new DfaTrans[1] {new DfaTrans(states20[34], sets[6])};
                 states20[34].Transitions = new DfaTrans[1] {new DfaTrans(states20[35], sets[39])};
                 states20[35].Transitions = new DfaTrans[3] {new DfaTrans(states20[36], sets[40]), new DfaTrans(states20[35], sets[41]), new DfaTrans(states20[37], sets[9])};
                 states20[36].Transitions = new DfaTrans[2] {new DfaTrans(states20[36], sets[40]), new DfaTrans(states20[35], sets[41])};
-                states20[37].Transitions = new DfaTrans[0] {};
+                states20[37].Transitions = Array.Empty<DfaTrans>();
                 states20[38].Transitions = new DfaTrans[1] {new DfaTrans(states20[39], sets[32])};
                 states20[39].Transitions = new DfaTrans[2] {new DfaTrans(states20[40], sets[32]), new DfaTrans(states20[25], sets[9])};
                 states20[40].Transitions = new DfaTrans[2] {new DfaTrans(states20[41], sets[32]), new DfaTrans(states20[25], sets[9])};
@@ -502,15 +503,15 @@ namespace Lingu.CC
                 states20[42].Transitions = new DfaTrans[2] {new DfaTrans(states20[43], sets[32]), new DfaTrans(states20[25], sets[9])};
                 states20[43].Transitions = new DfaTrans[2] {new DfaTrans(states20[44], sets[32]), new DfaTrans(states20[25], sets[9])};
                 states20[44].Transitions = new DfaTrans[1] {new DfaTrans(states20[25], sets[9])};
-                states20[45].Transitions = new DfaTrans[0] {};
-                states20[46].Transitions = new DfaTrans[0] {};
+                states20[45].Transitions = Array.Empty<DfaTrans>();
+                states20[46].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 21 -- ˈtextˈ | ˈanyˈ | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ -- */
                 var states21 = new DfaState[42] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,2), new DfaState(14,true,0), new DfaState(15,true,0), new DfaState(16,false,-1), new DfaState(17,true,6), new DfaState(18,true,6), new DfaState(19,true,6), new DfaState(20,true,6), new DfaState(21,true,6), new DfaState(22,true,6), new DfaState(23,false,-1), new DfaState(24,false,-1), new DfaState(25,false,-1), new DfaState(26,false,-1), new DfaState(27,false,-1), new DfaState(28,false,-1), new DfaState(29,true,4), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,true,5), new DfaState(35,false,-1), new DfaState(36,false,-1), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,false,-1)};
                 states21[0].Transitions = new DfaTrans[5] {new DfaTrans(states21[1], sets[23]), new DfaTrans(states21[13], sets[33]), new DfaTrans(states21[14], sets[34]), new DfaTrans(states21[15], sets[35]), new DfaTrans(states21[23], sets[30])};
                 states21[1].Transitions = new DfaTrans[2] {new DfaTrans(states21[2], sets[29]), new DfaTrans(states21[4], sets[30])};
                 states21[2].Transitions = new DfaTrans[3] {new DfaTrans(states21[2], sets[29]), new DfaTrans(states21[3], sets[23]), new DfaTrans(states21[4], sets[30])};
-                states21[3].Transitions = new DfaTrans[0] {};
+                states21[3].Transitions = Array.Empty<DfaTrans>();
                 states21[4].Transitions = new DfaTrans[2] {new DfaTrans(states21[2], sets[31]), new DfaTrans(states21[5], sets[14])};
                 states21[5].Transitions = new DfaTrans[1] {new DfaTrans(states21[6], sets[6])};
                 states21[6].Transitions = new DfaTrans[1] {new DfaTrans(states21[7], sets[32])};
@@ -520,7 +521,7 @@ namespace Lingu.CC
                 states21[10].Transitions = new DfaTrans[2] {new DfaTrans(states21[11], sets[32]), new DfaTrans(states21[2], sets[9])};
                 states21[11].Transitions = new DfaTrans[2] {new DfaTrans(states21[12], sets[32]), new DfaTrans(states21[2], sets[9])};
                 states21[12].Transitions = new DfaTrans[1] {new DfaTrans(states21[2], sets[9])};
-                states21[13].Transitions = new DfaTrans[0] {};
+                states21[13].Transitions = Array.Empty<DfaTrans>();
                 states21[14].Transitions = new DfaTrans[1] {new DfaTrans(states21[14], sets[5])};
                 states21[15].Transitions = new DfaTrans[2] {new DfaTrans(states21[16], sets[37]), new DfaTrans(states21[14], sets[5])};
                 states21[16].Transitions = new DfaTrans[1] {new DfaTrans(states21[17], sets[32])};
@@ -529,19 +530,19 @@ namespace Lingu.CC
                 states21[19].Transitions = new DfaTrans[1] {new DfaTrans(states21[20], sets[32])};
                 states21[20].Transitions = new DfaTrans[1] {new DfaTrans(states21[21], sets[32])};
                 states21[21].Transitions = new DfaTrans[1] {new DfaTrans(states21[22], sets[32])};
-                states21[22].Transitions = new DfaTrans[0] {};
+                states21[22].Transitions = Array.Empty<DfaTrans>();
                 states21[23].Transitions = new DfaTrans[1] {new DfaTrans(states21[24], sets[14])};
                 states21[24].Transitions = new DfaTrans[3] {new DfaTrans(states21[25], sets[38]), new DfaTrans(states21[30], sets[18]), new DfaTrans(states21[35], sets[6])};
                 states21[25].Transitions = new DfaTrans[1] {new DfaTrans(states21[26], sets[6])};
                 states21[26].Transitions = new DfaTrans[1] {new DfaTrans(states21[27], sets[39])};
                 states21[27].Transitions = new DfaTrans[3] {new DfaTrans(states21[28], sets[40]), new DfaTrans(states21[27], sets[41]), new DfaTrans(states21[29], sets[9])};
                 states21[28].Transitions = new DfaTrans[2] {new DfaTrans(states21[28], sets[40]), new DfaTrans(states21[27], sets[41])};
-                states21[29].Transitions = new DfaTrans[0] {};
+                states21[29].Transitions = Array.Empty<DfaTrans>();
                 states21[30].Transitions = new DfaTrans[1] {new DfaTrans(states21[31], sets[6])};
                 states21[31].Transitions = new DfaTrans[1] {new DfaTrans(states21[32], sets[39])};
                 states21[32].Transitions = new DfaTrans[3] {new DfaTrans(states21[33], sets[40]), new DfaTrans(states21[32], sets[41]), new DfaTrans(states21[34], sets[9])};
                 states21[33].Transitions = new DfaTrans[2] {new DfaTrans(states21[33], sets[40]), new DfaTrans(states21[32], sets[41])};
-                states21[34].Transitions = new DfaTrans[0] {};
+                states21[34].Transitions = Array.Empty<DfaTrans>();
                 states21[35].Transitions = new DfaTrans[1] {new DfaTrans(states21[36], sets[32])};
                 states21[36].Transitions = new DfaTrans[2] {new DfaTrans(states21[37], sets[32]), new DfaTrans(states21[22], sets[9])};
                 states21[37].Transitions = new DfaTrans[2] {new DfaTrans(states21[38], sets[32]), new DfaTrans(states21[22], sets[9])};
@@ -555,7 +556,7 @@ namespace Lingu.CC
                 states22[0].Transitions = new DfaTrans[7] {new DfaTrans(states22[1], sets[23]), new DfaTrans(states22[13], sets[24]), new DfaTrans(states22[14], sets[33]), new DfaTrans(states22[15], sets[34]), new DfaTrans(states22[16], sets[35]), new DfaTrans(states22[24], sets[30]), new DfaTrans(states22[43], sets[36])};
                 states22[1].Transitions = new DfaTrans[2] {new DfaTrans(states22[2], sets[29]), new DfaTrans(states22[4], sets[30])};
                 states22[2].Transitions = new DfaTrans[3] {new DfaTrans(states22[2], sets[29]), new DfaTrans(states22[3], sets[23]), new DfaTrans(states22[4], sets[30])};
-                states22[3].Transitions = new DfaTrans[0] {};
+                states22[3].Transitions = Array.Empty<DfaTrans>();
                 states22[4].Transitions = new DfaTrans[2] {new DfaTrans(states22[2], sets[31]), new DfaTrans(states22[5], sets[14])};
                 states22[5].Transitions = new DfaTrans[1] {new DfaTrans(states22[6], sets[6])};
                 states22[6].Transitions = new DfaTrans[1] {new DfaTrans(states22[7], sets[32])};
@@ -565,8 +566,8 @@ namespace Lingu.CC
                 states22[10].Transitions = new DfaTrans[2] {new DfaTrans(states22[11], sets[32]), new DfaTrans(states22[2], sets[9])};
                 states22[11].Transitions = new DfaTrans[2] {new DfaTrans(states22[12], sets[32]), new DfaTrans(states22[2], sets[9])};
                 states22[12].Transitions = new DfaTrans[1] {new DfaTrans(states22[2], sets[9])};
-                states22[13].Transitions = new DfaTrans[0] {};
-                states22[14].Transitions = new DfaTrans[0] {};
+                states22[13].Transitions = Array.Empty<DfaTrans>();
+                states22[14].Transitions = Array.Empty<DfaTrans>();
                 states22[15].Transitions = new DfaTrans[1] {new DfaTrans(states22[15], sets[5])};
                 states22[16].Transitions = new DfaTrans[2] {new DfaTrans(states22[17], sets[37]), new DfaTrans(states22[15], sets[5])};
                 states22[17].Transitions = new DfaTrans[1] {new DfaTrans(states22[18], sets[32])};
@@ -575,19 +576,19 @@ namespace Lingu.CC
                 states22[20].Transitions = new DfaTrans[1] {new DfaTrans(states22[21], sets[32])};
                 states22[21].Transitions = new DfaTrans[1] {new DfaTrans(states22[22], sets[32])};
                 states22[22].Transitions = new DfaTrans[1] {new DfaTrans(states22[23], sets[32])};
-                states22[23].Transitions = new DfaTrans[0] {};
+                states22[23].Transitions = Array.Empty<DfaTrans>();
                 states22[24].Transitions = new DfaTrans[1] {new DfaTrans(states22[25], sets[14])};
                 states22[25].Transitions = new DfaTrans[3] {new DfaTrans(states22[26], sets[38]), new DfaTrans(states22[31], sets[18]), new DfaTrans(states22[36], sets[6])};
                 states22[26].Transitions = new DfaTrans[1] {new DfaTrans(states22[27], sets[6])};
                 states22[27].Transitions = new DfaTrans[1] {new DfaTrans(states22[28], sets[39])};
                 states22[28].Transitions = new DfaTrans[3] {new DfaTrans(states22[29], sets[40]), new DfaTrans(states22[28], sets[41]), new DfaTrans(states22[30], sets[9])};
                 states22[29].Transitions = new DfaTrans[2] {new DfaTrans(states22[29], sets[40]), new DfaTrans(states22[28], sets[41])};
-                states22[30].Transitions = new DfaTrans[0] {};
+                states22[30].Transitions = Array.Empty<DfaTrans>();
                 states22[31].Transitions = new DfaTrans[1] {new DfaTrans(states22[32], sets[6])};
                 states22[32].Transitions = new DfaTrans[1] {new DfaTrans(states22[33], sets[39])};
                 states22[33].Transitions = new DfaTrans[3] {new DfaTrans(states22[34], sets[40]), new DfaTrans(states22[33], sets[41]), new DfaTrans(states22[35], sets[9])};
                 states22[34].Transitions = new DfaTrans[2] {new DfaTrans(states22[34], sets[40]), new DfaTrans(states22[33], sets[41])};
-                states22[35].Transitions = new DfaTrans[0] {};
+                states22[35].Transitions = Array.Empty<DfaTrans>();
                 states22[36].Transitions = new DfaTrans[1] {new DfaTrans(states22[37], sets[32])};
                 states22[37].Transitions = new DfaTrans[2] {new DfaTrans(states22[38], sets[32]), new DfaTrans(states22[23], sets[9])};
                 states22[38].Transitions = new DfaTrans[2] {new DfaTrans(states22[39], sets[32]), new DfaTrans(states22[23], sets[9])};
@@ -595,25 +596,25 @@ namespace Lingu.CC
                 states22[40].Transitions = new DfaTrans[2] {new DfaTrans(states22[41], sets[32]), new DfaTrans(states22[23], sets[9])};
                 states22[41].Transitions = new DfaTrans[2] {new DfaTrans(states22[42], sets[32]), new DfaTrans(states22[23], sets[9])};
                 states22[42].Transitions = new DfaTrans[1] {new DfaTrans(states22[23], sets[9])};
-                states22[43].Transitions = new DfaTrans[0] {};
+                states22[43].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 23 -- ')' -- */
                 var states23 = new DfaState[2] {new DfaState(0,false,-1), new DfaState(1,true,25)};
                 states23[0].Transitions = new DfaTrans[1] {new DfaTrans(states23[1], sets[44])};
-                states23[1].Transitions = new DfaTrans[0] {};
+                states23[1].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 24 -- ')' | '|' -- */
                 var states24 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,true,25), new DfaState(2,true,16)};
                 states24[0].Transitions = new DfaTrans[2] {new DfaTrans(states24[1], sets[44]), new DfaTrans(states24[2], sets[28])};
-                states24[1].Transitions = new DfaTrans[0] {};
-                states24[2].Transitions = new DfaTrans[0] {};
+                states24[1].Transitions = Array.Empty<DfaTrans>();
+                states24[2].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 25 -- ˈtextˈ | '(' | ')' | '*' | '*:' | '+' | '+:' | ',' | '?' | ˈidentifierˈ | '^' | '{' | '|' -- */
                 var states25 = new DfaState[25] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,18), new DfaState(16,true,19), new DfaState(17,true,20), new DfaState(18,true,21), new DfaState(19,true,22), new DfaState(20,true,17), new DfaState(21,true,0), new DfaState(22,true,23), new DfaState(23,true,8), new DfaState(24,true,16)};
                 states25[0].Transitions = new DfaTrans[11] {new DfaTrans(states25[1], sets[23]), new DfaTrans(states25[13], sets[24]), new DfaTrans(states25[14], sets[44]), new DfaTrans(states25[15], sets[42]), new DfaTrans(states25[17], sets[37]), new DfaTrans(states25[19], sets[25]), new DfaTrans(states25[20], sets[43]), new DfaTrans(states25[21], sets[4]), new DfaTrans(states25[22], sets[27]), new DfaTrans(states25[23], sets[6]), new DfaTrans(states25[24], sets[28])};
                 states25[1].Transitions = new DfaTrans[2] {new DfaTrans(states25[2], sets[29]), new DfaTrans(states25[4], sets[30])};
                 states25[2].Transitions = new DfaTrans[3] {new DfaTrans(states25[2], sets[29]), new DfaTrans(states25[3], sets[23]), new DfaTrans(states25[4], sets[30])};
-                states25[3].Transitions = new DfaTrans[0] {};
+                states25[3].Transitions = Array.Empty<DfaTrans>();
                 states25[4].Transitions = new DfaTrans[2] {new DfaTrans(states25[2], sets[31]), new DfaTrans(states25[5], sets[14])};
                 states25[5].Transitions = new DfaTrans[1] {new DfaTrans(states25[6], sets[6])};
                 states25[6].Transitions = new DfaTrans[1] {new DfaTrans(states25[7], sets[32])};
@@ -623,25 +624,25 @@ namespace Lingu.CC
                 states25[10].Transitions = new DfaTrans[2] {new DfaTrans(states25[11], sets[32]), new DfaTrans(states25[2], sets[9])};
                 states25[11].Transitions = new DfaTrans[2] {new DfaTrans(states25[12], sets[32]), new DfaTrans(states25[2], sets[9])};
                 states25[12].Transitions = new DfaTrans[1] {new DfaTrans(states25[2], sets[9])};
-                states25[13].Transitions = new DfaTrans[0] {};
-                states25[14].Transitions = new DfaTrans[0] {};
+                states25[13].Transitions = Array.Empty<DfaTrans>();
+                states25[14].Transitions = Array.Empty<DfaTrans>();
                 states25[15].Transitions = new DfaTrans[1] {new DfaTrans(states25[16], sets[21])};
-                states25[16].Transitions = new DfaTrans[0] {};
+                states25[16].Transitions = Array.Empty<DfaTrans>();
                 states25[17].Transitions = new DfaTrans[1] {new DfaTrans(states25[18], sets[21])};
-                states25[18].Transitions = new DfaTrans[0] {};
-                states25[19].Transitions = new DfaTrans[0] {};
-                states25[20].Transitions = new DfaTrans[0] {};
+                states25[18].Transitions = Array.Empty<DfaTrans>();
+                states25[19].Transitions = Array.Empty<DfaTrans>();
+                states25[20].Transitions = Array.Empty<DfaTrans>();
                 states25[21].Transitions = new DfaTrans[1] {new DfaTrans(states25[21], sets[5])};
-                states25[22].Transitions = new DfaTrans[0] {};
-                states25[23].Transitions = new DfaTrans[0] {};
-                states25[24].Transitions = new DfaTrans[0] {};
+                states25[22].Transitions = Array.Empty<DfaTrans>();
+                states25[23].Transitions = Array.Empty<DfaTrans>();
+                states25[24].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 26 -- ˈtextˈ | '(' | ˈanyˈ | ';' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '|' | '~' -- */
                 var states26 = new DfaState[46] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,2), new DfaState(15,true,13), new DfaState(16,true,0), new DfaState(17,true,0), new DfaState(18,false,-1), new DfaState(19,true,6), new DfaState(20,true,6), new DfaState(21,true,6), new DfaState(22,true,6), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,false,-1), new DfaState(26,false,-1), new DfaState(27,false,-1), new DfaState(28,false,-1), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,true,4), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,false,-1), new DfaState(36,true,5), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,true,16), new DfaState(45,true,28)};
                 states26[0].Transitions = new DfaTrans[9] {new DfaTrans(states26[1], sets[23]), new DfaTrans(states26[13], sets[24]), new DfaTrans(states26[14], sets[33]), new DfaTrans(states26[15], sets[26]), new DfaTrans(states26[16], sets[34]), new DfaTrans(states26[17], sets[35]), new DfaTrans(states26[25], sets[30]), new DfaTrans(states26[44], sets[28]), new DfaTrans(states26[45], sets[36])};
                 states26[1].Transitions = new DfaTrans[2] {new DfaTrans(states26[2], sets[29]), new DfaTrans(states26[4], sets[30])};
                 states26[2].Transitions = new DfaTrans[3] {new DfaTrans(states26[2], sets[29]), new DfaTrans(states26[3], sets[23]), new DfaTrans(states26[4], sets[30])};
-                states26[3].Transitions = new DfaTrans[0] {};
+                states26[3].Transitions = Array.Empty<DfaTrans>();
                 states26[4].Transitions = new DfaTrans[2] {new DfaTrans(states26[2], sets[31]), new DfaTrans(states26[5], sets[14])};
                 states26[5].Transitions = new DfaTrans[1] {new DfaTrans(states26[6], sets[6])};
                 states26[6].Transitions = new DfaTrans[1] {new DfaTrans(states26[7], sets[32])};
@@ -651,9 +652,9 @@ namespace Lingu.CC
                 states26[10].Transitions = new DfaTrans[2] {new DfaTrans(states26[11], sets[32]), new DfaTrans(states26[2], sets[9])};
                 states26[11].Transitions = new DfaTrans[2] {new DfaTrans(states26[12], sets[32]), new DfaTrans(states26[2], sets[9])};
                 states26[12].Transitions = new DfaTrans[1] {new DfaTrans(states26[2], sets[9])};
-                states26[13].Transitions = new DfaTrans[0] {};
-                states26[14].Transitions = new DfaTrans[0] {};
-                states26[15].Transitions = new DfaTrans[0] {};
+                states26[13].Transitions = Array.Empty<DfaTrans>();
+                states26[14].Transitions = Array.Empty<DfaTrans>();
+                states26[15].Transitions = Array.Empty<DfaTrans>();
                 states26[16].Transitions = new DfaTrans[1] {new DfaTrans(states26[16], sets[5])};
                 states26[17].Transitions = new DfaTrans[2] {new DfaTrans(states26[18], sets[37]), new DfaTrans(states26[16], sets[5])};
                 states26[18].Transitions = new DfaTrans[1] {new DfaTrans(states26[19], sets[32])};
@@ -662,19 +663,19 @@ namespace Lingu.CC
                 states26[21].Transitions = new DfaTrans[1] {new DfaTrans(states26[22], sets[32])};
                 states26[22].Transitions = new DfaTrans[1] {new DfaTrans(states26[23], sets[32])};
                 states26[23].Transitions = new DfaTrans[1] {new DfaTrans(states26[24], sets[32])};
-                states26[24].Transitions = new DfaTrans[0] {};
+                states26[24].Transitions = Array.Empty<DfaTrans>();
                 states26[25].Transitions = new DfaTrans[1] {new DfaTrans(states26[26], sets[14])};
                 states26[26].Transitions = new DfaTrans[3] {new DfaTrans(states26[27], sets[38]), new DfaTrans(states26[32], sets[18]), new DfaTrans(states26[37], sets[6])};
                 states26[27].Transitions = new DfaTrans[1] {new DfaTrans(states26[28], sets[6])};
                 states26[28].Transitions = new DfaTrans[1] {new DfaTrans(states26[29], sets[39])};
                 states26[29].Transitions = new DfaTrans[3] {new DfaTrans(states26[30], sets[40]), new DfaTrans(states26[29], sets[41]), new DfaTrans(states26[31], sets[9])};
                 states26[30].Transitions = new DfaTrans[2] {new DfaTrans(states26[30], sets[40]), new DfaTrans(states26[29], sets[41])};
-                states26[31].Transitions = new DfaTrans[0] {};
+                states26[31].Transitions = Array.Empty<DfaTrans>();
                 states26[32].Transitions = new DfaTrans[1] {new DfaTrans(states26[33], sets[6])};
                 states26[33].Transitions = new DfaTrans[1] {new DfaTrans(states26[34], sets[39])};
                 states26[34].Transitions = new DfaTrans[3] {new DfaTrans(states26[35], sets[40]), new DfaTrans(states26[34], sets[41]), new DfaTrans(states26[36], sets[9])};
                 states26[35].Transitions = new DfaTrans[2] {new DfaTrans(states26[35], sets[40]), new DfaTrans(states26[34], sets[41])};
-                states26[36].Transitions = new DfaTrans[0] {};
+                states26[36].Transitions = Array.Empty<DfaTrans>();
                 states26[37].Transitions = new DfaTrans[1] {new DfaTrans(states26[38], sets[32])};
                 states26[38].Transitions = new DfaTrans[2] {new DfaTrans(states26[39], sets[32]), new DfaTrans(states26[24], sets[9])};
                 states26[39].Transitions = new DfaTrans[2] {new DfaTrans(states26[40], sets[32]), new DfaTrans(states26[24], sets[9])};
@@ -682,13 +683,13 @@ namespace Lingu.CC
                 states26[41].Transitions = new DfaTrans[2] {new DfaTrans(states26[42], sets[32]), new DfaTrans(states26[24], sets[9])};
                 states26[42].Transitions = new DfaTrans[2] {new DfaTrans(states26[43], sets[32]), new DfaTrans(states26[24], sets[9])};
                 states26[43].Transitions = new DfaTrans[1] {new DfaTrans(states26[24], sets[9])};
-                states26[44].Transitions = new DfaTrans[0] {};
-                states26[45].Transitions = new DfaTrans[0] {};
+                states26[44].Transitions = Array.Empty<DfaTrans>();
+                states26[45].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 27 -- ˈnumberˈ -- */
                 var states27 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,true,1), new DfaState(2,true,1)};
                 states27[0].Transitions = new DfaTrans[2] {new DfaTrans(states27[1], sets[45]), new DfaTrans(states27[2], sets[46])};
-                states27[1].Transitions = new DfaTrans[0] {};
+                states27[1].Transitions = Array.Empty<DfaTrans>();
                 states27[2].Transitions = new DfaTrans[1] {new DfaTrans(states27[2], sets[47])};
                 
                 /* dfa 28 -- ˈtextˈ | ˈucCodepointˈ -- */
@@ -696,7 +697,7 @@ namespace Lingu.CC
                 states28[0].Transitions = new DfaTrans[3] {new DfaTrans(states28[1], sets[23]), new DfaTrans(states28[13], sets[35]), new DfaTrans(states28[21], sets[30])};
                 states28[1].Transitions = new DfaTrans[2] {new DfaTrans(states28[2], sets[29]), new DfaTrans(states28[4], sets[30])};
                 states28[2].Transitions = new DfaTrans[3] {new DfaTrans(states28[2], sets[29]), new DfaTrans(states28[3], sets[23]), new DfaTrans(states28[4], sets[30])};
-                states28[3].Transitions = new DfaTrans[0] {};
+                states28[3].Transitions = Array.Empty<DfaTrans>();
                 states28[4].Transitions = new DfaTrans[2] {new DfaTrans(states28[2], sets[31]), new DfaTrans(states28[5], sets[14])};
                 states28[5].Transitions = new DfaTrans[1] {new DfaTrans(states28[6], sets[6])};
                 states28[6].Transitions = new DfaTrans[1] {new DfaTrans(states28[7], sets[32])};
@@ -713,7 +714,7 @@ namespace Lingu.CC
                 states28[17].Transitions = new DfaTrans[1] {new DfaTrans(states28[18], sets[32])};
                 states28[18].Transitions = new DfaTrans[1] {new DfaTrans(states28[19], sets[32])};
                 states28[19].Transitions = new DfaTrans[1] {new DfaTrans(states28[20], sets[32])};
-                states28[20].Transitions = new DfaTrans[0] {};
+                states28[20].Transitions = Array.Empty<DfaTrans>();
                 states28[21].Transitions = new DfaTrans[1] {new DfaTrans(states28[22], sets[14])};
                 states28[22].Transitions = new DfaTrans[1] {new DfaTrans(states28[23], sets[6])};
                 states28[23].Transitions = new DfaTrans[1] {new DfaTrans(states28[24], sets[32])};
@@ -729,7 +730,7 @@ namespace Lingu.CC
                 states29[0].Transitions = new DfaTrans[14] {new DfaTrans(states29[1], sets[23]), new DfaTrans(states29[13], sets[24]), new DfaTrans(states29[14], sets[44]), new DfaTrans(states29[15], sets[42]), new DfaTrans(states29[16], sets[37]), new DfaTrans(states29[17], sets[20]), new DfaTrans(states29[18], sets[33]), new DfaTrans(states29[19], sets[43]), new DfaTrans(states29[20], sets[34]), new DfaTrans(states29[21], sets[35]), new DfaTrans(states29[29], sets[30]), new DfaTrans(states29[48], sets[6]), new DfaTrans(states29[49], sets[28]), new DfaTrans(states29[50], sets[36])};
                 states29[1].Transitions = new DfaTrans[2] {new DfaTrans(states29[2], sets[29]), new DfaTrans(states29[4], sets[30])};
                 states29[2].Transitions = new DfaTrans[3] {new DfaTrans(states29[2], sets[29]), new DfaTrans(states29[3], sets[23]), new DfaTrans(states29[4], sets[30])};
-                states29[3].Transitions = new DfaTrans[0] {};
+                states29[3].Transitions = Array.Empty<DfaTrans>();
                 states29[4].Transitions = new DfaTrans[2] {new DfaTrans(states29[2], sets[31]), new DfaTrans(states29[5], sets[14])};
                 states29[5].Transitions = new DfaTrans[1] {new DfaTrans(states29[6], sets[6])};
                 states29[6].Transitions = new DfaTrans[1] {new DfaTrans(states29[7], sets[32])};
@@ -739,13 +740,13 @@ namespace Lingu.CC
                 states29[10].Transitions = new DfaTrans[2] {new DfaTrans(states29[11], sets[32]), new DfaTrans(states29[2], sets[9])};
                 states29[11].Transitions = new DfaTrans[2] {new DfaTrans(states29[12], sets[32]), new DfaTrans(states29[2], sets[9])};
                 states29[12].Transitions = new DfaTrans[1] {new DfaTrans(states29[2], sets[9])};
-                states29[13].Transitions = new DfaTrans[0] {};
-                states29[14].Transitions = new DfaTrans[0] {};
-                states29[15].Transitions = new DfaTrans[0] {};
-                states29[16].Transitions = new DfaTrans[0] {};
-                states29[17].Transitions = new DfaTrans[0] {};
-                states29[18].Transitions = new DfaTrans[0] {};
-                states29[19].Transitions = new DfaTrans[0] {};
+                states29[13].Transitions = Array.Empty<DfaTrans>();
+                states29[14].Transitions = Array.Empty<DfaTrans>();
+                states29[15].Transitions = Array.Empty<DfaTrans>();
+                states29[16].Transitions = Array.Empty<DfaTrans>();
+                states29[17].Transitions = Array.Empty<DfaTrans>();
+                states29[18].Transitions = Array.Empty<DfaTrans>();
+                states29[19].Transitions = Array.Empty<DfaTrans>();
                 states29[20].Transitions = new DfaTrans[1] {new DfaTrans(states29[20], sets[5])};
                 states29[21].Transitions = new DfaTrans[2] {new DfaTrans(states29[22], sets[37]), new DfaTrans(states29[20], sets[5])};
                 states29[22].Transitions = new DfaTrans[1] {new DfaTrans(states29[23], sets[32])};
@@ -754,19 +755,19 @@ namespace Lingu.CC
                 states29[25].Transitions = new DfaTrans[1] {new DfaTrans(states29[26], sets[32])};
                 states29[26].Transitions = new DfaTrans[1] {new DfaTrans(states29[27], sets[32])};
                 states29[27].Transitions = new DfaTrans[1] {new DfaTrans(states29[28], sets[32])};
-                states29[28].Transitions = new DfaTrans[0] {};
+                states29[28].Transitions = Array.Empty<DfaTrans>();
                 states29[29].Transitions = new DfaTrans[1] {new DfaTrans(states29[30], sets[14])};
                 states29[30].Transitions = new DfaTrans[3] {new DfaTrans(states29[31], sets[38]), new DfaTrans(states29[36], sets[18]), new DfaTrans(states29[41], sets[6])};
                 states29[31].Transitions = new DfaTrans[1] {new DfaTrans(states29[32], sets[6])};
                 states29[32].Transitions = new DfaTrans[1] {new DfaTrans(states29[33], sets[39])};
                 states29[33].Transitions = new DfaTrans[3] {new DfaTrans(states29[34], sets[40]), new DfaTrans(states29[33], sets[41]), new DfaTrans(states29[35], sets[9])};
                 states29[34].Transitions = new DfaTrans[2] {new DfaTrans(states29[34], sets[40]), new DfaTrans(states29[33], sets[41])};
-                states29[35].Transitions = new DfaTrans[0] {};
+                states29[35].Transitions = Array.Empty<DfaTrans>();
                 states29[36].Transitions = new DfaTrans[1] {new DfaTrans(states29[37], sets[6])};
                 states29[37].Transitions = new DfaTrans[1] {new DfaTrans(states29[38], sets[39])};
                 states29[38].Transitions = new DfaTrans[3] {new DfaTrans(states29[39], sets[40]), new DfaTrans(states29[38], sets[41]), new DfaTrans(states29[40], sets[9])};
                 states29[39].Transitions = new DfaTrans[2] {new DfaTrans(states29[39], sets[40]), new DfaTrans(states29[38], sets[41])};
-                states29[40].Transitions = new DfaTrans[0] {};
+                states29[40].Transitions = Array.Empty<DfaTrans>();
                 states29[41].Transitions = new DfaTrans[1] {new DfaTrans(states29[42], sets[32])};
                 states29[42].Transitions = new DfaTrans[2] {new DfaTrans(states29[43], sets[32]), new DfaTrans(states29[28], sets[9])};
                 states29[43].Transitions = new DfaTrans[2] {new DfaTrans(states29[44], sets[32]), new DfaTrans(states29[28], sets[9])};
@@ -774,23 +775,23 @@ namespace Lingu.CC
                 states29[45].Transitions = new DfaTrans[2] {new DfaTrans(states29[46], sets[32]), new DfaTrans(states29[28], sets[9])};
                 states29[46].Transitions = new DfaTrans[2] {new DfaTrans(states29[47], sets[32]), new DfaTrans(states29[28], sets[9])};
                 states29[47].Transitions = new DfaTrans[1] {new DfaTrans(states29[28], sets[9])};
-                states29[48].Transitions = new DfaTrans[0] {};
-                states29[49].Transitions = new DfaTrans[0] {};
-                states29[50].Transitions = new DfaTrans[0] {};
+                states29[48].Transitions = Array.Empty<DfaTrans>();
+                states29[49].Transitions = Array.Empty<DfaTrans>();
+                states29[50].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 30 -- ')' | '-' | '|' -- */
                 var states30 = new DfaState[4] {new DfaState(0,false,-1), new DfaState(1,true,25), new DfaState(2,true,27), new DfaState(3,true,16)};
                 states30[0].Transitions = new DfaTrans[3] {new DfaTrans(states30[1], sets[44]), new DfaTrans(states30[2], sets[20]), new DfaTrans(states30[3], sets[28])};
-                states30[1].Transitions = new DfaTrans[0] {};
-                states30[2].Transitions = new DfaTrans[0] {};
-                states30[3].Transitions = new DfaTrans[0] {};
+                states30[1].Transitions = Array.Empty<DfaTrans>();
+                states30[2].Transitions = Array.Empty<DfaTrans>();
+                states30[3].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 31 -- ˈtextˈ | '(' | ')' | '*' | '+' | '-' | ˈanyˈ | '..' | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states31 = new DfaState[52] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,18), new DfaState(16,true,20), new DfaState(17,true,27), new DfaState(18,true,2), new DfaState(19,true,29), new DfaState(20,true,17), new DfaState(21,true,0), new DfaState(22,true,0), new DfaState(23,false,-1), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,true,6), new DfaState(29,true,6), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,false,-1), new DfaState(36,true,4), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,true,5), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,false,-1), new DfaState(48,false,-1), new DfaState(49,true,8), new DfaState(50,true,16), new DfaState(51,true,28)};
                 states31[0].Transitions = new DfaTrans[14] {new DfaTrans(states31[1], sets[23]), new DfaTrans(states31[13], sets[24]), new DfaTrans(states31[14], sets[44]), new DfaTrans(states31[15], sets[42]), new DfaTrans(states31[16], sets[37]), new DfaTrans(states31[17], sets[20]), new DfaTrans(states31[18], sets[33]), new DfaTrans(states31[20], sets[43]), new DfaTrans(states31[21], sets[34]), new DfaTrans(states31[22], sets[35]), new DfaTrans(states31[30], sets[30]), new DfaTrans(states31[49], sets[6]), new DfaTrans(states31[50], sets[28]), new DfaTrans(states31[51], sets[36])};
                 states31[1].Transitions = new DfaTrans[2] {new DfaTrans(states31[2], sets[29]), new DfaTrans(states31[4], sets[30])};
                 states31[2].Transitions = new DfaTrans[3] {new DfaTrans(states31[2], sets[29]), new DfaTrans(states31[3], sets[23]), new DfaTrans(states31[4], sets[30])};
-                states31[3].Transitions = new DfaTrans[0] {};
+                states31[3].Transitions = Array.Empty<DfaTrans>();
                 states31[4].Transitions = new DfaTrans[2] {new DfaTrans(states31[2], sets[31]), new DfaTrans(states31[5], sets[14])};
                 states31[5].Transitions = new DfaTrans[1] {new DfaTrans(states31[6], sets[6])};
                 states31[6].Transitions = new DfaTrans[1] {new DfaTrans(states31[7], sets[32])};
@@ -800,14 +801,14 @@ namespace Lingu.CC
                 states31[10].Transitions = new DfaTrans[2] {new DfaTrans(states31[11], sets[32]), new DfaTrans(states31[2], sets[9])};
                 states31[11].Transitions = new DfaTrans[2] {new DfaTrans(states31[12], sets[32]), new DfaTrans(states31[2], sets[9])};
                 states31[12].Transitions = new DfaTrans[1] {new DfaTrans(states31[2], sets[9])};
-                states31[13].Transitions = new DfaTrans[0] {};
-                states31[14].Transitions = new DfaTrans[0] {};
-                states31[15].Transitions = new DfaTrans[0] {};
-                states31[16].Transitions = new DfaTrans[0] {};
-                states31[17].Transitions = new DfaTrans[0] {};
+                states31[13].Transitions = Array.Empty<DfaTrans>();
+                states31[14].Transitions = Array.Empty<DfaTrans>();
+                states31[15].Transitions = Array.Empty<DfaTrans>();
+                states31[16].Transitions = Array.Empty<DfaTrans>();
+                states31[17].Transitions = Array.Empty<DfaTrans>();
                 states31[18].Transitions = new DfaTrans[1] {new DfaTrans(states31[19], sets[33])};
-                states31[19].Transitions = new DfaTrans[0] {};
-                states31[20].Transitions = new DfaTrans[0] {};
+                states31[19].Transitions = Array.Empty<DfaTrans>();
+                states31[20].Transitions = Array.Empty<DfaTrans>();
                 states31[21].Transitions = new DfaTrans[1] {new DfaTrans(states31[21], sets[5])};
                 states31[22].Transitions = new DfaTrans[2] {new DfaTrans(states31[23], sets[37]), new DfaTrans(states31[21], sets[5])};
                 states31[23].Transitions = new DfaTrans[1] {new DfaTrans(states31[24], sets[32])};
@@ -816,19 +817,19 @@ namespace Lingu.CC
                 states31[26].Transitions = new DfaTrans[1] {new DfaTrans(states31[27], sets[32])};
                 states31[27].Transitions = new DfaTrans[1] {new DfaTrans(states31[28], sets[32])};
                 states31[28].Transitions = new DfaTrans[1] {new DfaTrans(states31[29], sets[32])};
-                states31[29].Transitions = new DfaTrans[0] {};
+                states31[29].Transitions = Array.Empty<DfaTrans>();
                 states31[30].Transitions = new DfaTrans[1] {new DfaTrans(states31[31], sets[14])};
                 states31[31].Transitions = new DfaTrans[3] {new DfaTrans(states31[32], sets[38]), new DfaTrans(states31[37], sets[18]), new DfaTrans(states31[42], sets[6])};
                 states31[32].Transitions = new DfaTrans[1] {new DfaTrans(states31[33], sets[6])};
                 states31[33].Transitions = new DfaTrans[1] {new DfaTrans(states31[34], sets[39])};
                 states31[34].Transitions = new DfaTrans[3] {new DfaTrans(states31[35], sets[40]), new DfaTrans(states31[34], sets[41]), new DfaTrans(states31[36], sets[9])};
                 states31[35].Transitions = new DfaTrans[2] {new DfaTrans(states31[35], sets[40]), new DfaTrans(states31[34], sets[41])};
-                states31[36].Transitions = new DfaTrans[0] {};
+                states31[36].Transitions = Array.Empty<DfaTrans>();
                 states31[37].Transitions = new DfaTrans[1] {new DfaTrans(states31[38], sets[6])};
                 states31[38].Transitions = new DfaTrans[1] {new DfaTrans(states31[39], sets[39])};
                 states31[39].Transitions = new DfaTrans[3] {new DfaTrans(states31[40], sets[40]), new DfaTrans(states31[39], sets[41]), new DfaTrans(states31[41], sets[9])};
                 states31[40].Transitions = new DfaTrans[2] {new DfaTrans(states31[40], sets[40]), new DfaTrans(states31[39], sets[41])};
-                states31[41].Transitions = new DfaTrans[0] {};
+                states31[41].Transitions = Array.Empty<DfaTrans>();
                 states31[42].Transitions = new DfaTrans[1] {new DfaTrans(states31[43], sets[32])};
                 states31[43].Transitions = new DfaTrans[2] {new DfaTrans(states31[44], sets[32]), new DfaTrans(states31[29], sets[9])};
                 states31[44].Transitions = new DfaTrans[2] {new DfaTrans(states31[45], sets[32]), new DfaTrans(states31[29], sets[9])};
@@ -836,16 +837,16 @@ namespace Lingu.CC
                 states31[46].Transitions = new DfaTrans[2] {new DfaTrans(states31[47], sets[32]), new DfaTrans(states31[29], sets[9])};
                 states31[47].Transitions = new DfaTrans[2] {new DfaTrans(states31[48], sets[32]), new DfaTrans(states31[29], sets[9])};
                 states31[48].Transitions = new DfaTrans[1] {new DfaTrans(states31[29], sets[9])};
-                states31[49].Transitions = new DfaTrans[0] {};
-                states31[50].Transitions = new DfaTrans[0] {};
-                states31[51].Transitions = new DfaTrans[0] {};
+                states31[49].Transitions = Array.Empty<DfaTrans>();
+                states31[50].Transitions = Array.Empty<DfaTrans>();
+                states31[51].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 32 -- ˈtextˈ | '(' | ',' | '..' | ';' | ˈidentifierˈ | '^' | '{' | '|' -- */
                 var states32 = new DfaState[22] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,22), new DfaState(15,false,-1), new DfaState(16,true,29), new DfaState(17,true,13), new DfaState(18,true,0), new DfaState(19,true,23), new DfaState(20,true,8), new DfaState(21,true,16)};
                 states32[0].Transitions = new DfaTrans[9] {new DfaTrans(states32[1], sets[23]), new DfaTrans(states32[13], sets[24]), new DfaTrans(states32[14], sets[25]), new DfaTrans(states32[15], sets[33]), new DfaTrans(states32[17], sets[26]), new DfaTrans(states32[18], sets[4]), new DfaTrans(states32[19], sets[27]), new DfaTrans(states32[20], sets[6]), new DfaTrans(states32[21], sets[28])};
                 states32[1].Transitions = new DfaTrans[2] {new DfaTrans(states32[2], sets[29]), new DfaTrans(states32[4], sets[30])};
                 states32[2].Transitions = new DfaTrans[3] {new DfaTrans(states32[2], sets[29]), new DfaTrans(states32[3], sets[23]), new DfaTrans(states32[4], sets[30])};
-                states32[3].Transitions = new DfaTrans[0] {};
+                states32[3].Transitions = Array.Empty<DfaTrans>();
                 states32[4].Transitions = new DfaTrans[2] {new DfaTrans(states32[2], sets[31]), new DfaTrans(states32[5], sets[14])};
                 states32[5].Transitions = new DfaTrans[1] {new DfaTrans(states32[6], sets[6])};
                 states32[6].Transitions = new DfaTrans[1] {new DfaTrans(states32[7], sets[32])};
@@ -855,22 +856,22 @@ namespace Lingu.CC
                 states32[10].Transitions = new DfaTrans[2] {new DfaTrans(states32[11], sets[32]), new DfaTrans(states32[2], sets[9])};
                 states32[11].Transitions = new DfaTrans[2] {new DfaTrans(states32[12], sets[32]), new DfaTrans(states32[2], sets[9])};
                 states32[12].Transitions = new DfaTrans[1] {new DfaTrans(states32[2], sets[9])};
-                states32[13].Transitions = new DfaTrans[0] {};
-                states32[14].Transitions = new DfaTrans[0] {};
+                states32[13].Transitions = Array.Empty<DfaTrans>();
+                states32[14].Transitions = Array.Empty<DfaTrans>();
                 states32[15].Transitions = new DfaTrans[1] {new DfaTrans(states32[16], sets[33])};
-                states32[16].Transitions = new DfaTrans[0] {};
-                states32[17].Transitions = new DfaTrans[0] {};
+                states32[16].Transitions = Array.Empty<DfaTrans>();
+                states32[17].Transitions = Array.Empty<DfaTrans>();
                 states32[18].Transitions = new DfaTrans[1] {new DfaTrans(states32[18], sets[5])};
-                states32[19].Transitions = new DfaTrans[0] {};
-                states32[20].Transitions = new DfaTrans[0] {};
-                states32[21].Transitions = new DfaTrans[0] {};
+                states32[19].Transitions = Array.Empty<DfaTrans>();
+                states32[20].Transitions = Array.Empty<DfaTrans>();
+                states32[21].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 33 -- ˈtextˈ | '(' | ',' | ˈidentifierˈ | '^' | '{' | '|' | '}' -- */
                 var states33 = new DfaState[20] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,22), new DfaState(15,true,0), new DfaState(16,true,23), new DfaState(17,true,8), new DfaState(18,true,16), new DfaState(19,true,9)};
                 states33[0].Transitions = new DfaTrans[8] {new DfaTrans(states33[1], sets[23]), new DfaTrans(states33[13], sets[24]), new DfaTrans(states33[14], sets[25]), new DfaTrans(states33[15], sets[4]), new DfaTrans(states33[16], sets[27]), new DfaTrans(states33[17], sets[6]), new DfaTrans(states33[18], sets[28]), new DfaTrans(states33[19], sets[9])};
                 states33[1].Transitions = new DfaTrans[2] {new DfaTrans(states33[2], sets[29]), new DfaTrans(states33[4], sets[30])};
                 states33[2].Transitions = new DfaTrans[3] {new DfaTrans(states33[2], sets[29]), new DfaTrans(states33[3], sets[23]), new DfaTrans(states33[4], sets[30])};
-                states33[3].Transitions = new DfaTrans[0] {};
+                states33[3].Transitions = Array.Empty<DfaTrans>();
                 states33[4].Transitions = new DfaTrans[2] {new DfaTrans(states33[2], sets[31]), new DfaTrans(states33[5], sets[14])};
                 states33[5].Transitions = new DfaTrans[1] {new DfaTrans(states33[6], sets[6])};
                 states33[6].Transitions = new DfaTrans[1] {new DfaTrans(states33[7], sets[32])};
@@ -880,20 +881,20 @@ namespace Lingu.CC
                 states33[10].Transitions = new DfaTrans[2] {new DfaTrans(states33[11], sets[32]), new DfaTrans(states33[2], sets[9])};
                 states33[11].Transitions = new DfaTrans[2] {new DfaTrans(states33[12], sets[32]), new DfaTrans(states33[2], sets[9])};
                 states33[12].Transitions = new DfaTrans[1] {new DfaTrans(states33[2], sets[9])};
-                states33[13].Transitions = new DfaTrans[0] {};
-                states33[14].Transitions = new DfaTrans[0] {};
+                states33[13].Transitions = Array.Empty<DfaTrans>();
+                states33[14].Transitions = Array.Empty<DfaTrans>();
                 states33[15].Transitions = new DfaTrans[1] {new DfaTrans(states33[15], sets[5])};
-                states33[16].Transitions = new DfaTrans[0] {};
-                states33[17].Transitions = new DfaTrans[0] {};
-                states33[18].Transitions = new DfaTrans[0] {};
-                states33[19].Transitions = new DfaTrans[0] {};
+                states33[16].Transitions = Array.Empty<DfaTrans>();
+                states33[17].Transitions = Array.Empty<DfaTrans>();
+                states33[18].Transitions = Array.Empty<DfaTrans>();
+                states33[19].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 34 -- ˈtextˈ | '(' | '*' | '+' | ˈanyˈ | ';' | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states34 = new DfaState[50] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,18), new DfaState(15,true,20), new DfaState(16,true,2), new DfaState(17,true,13), new DfaState(18,true,17), new DfaState(19,true,0), new DfaState(20,true,0), new DfaState(21,false,-1), new DfaState(22,true,6), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,false,-1), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,true,4), new DfaState(35,false,-1), new DfaState(36,false,-1), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,true,5), new DfaState(40,false,-1), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,true,8), new DfaState(48,true,16), new DfaState(49,true,28)};
                 states34[0].Transitions = new DfaTrans[13] {new DfaTrans(states34[1], sets[23]), new DfaTrans(states34[13], sets[24]), new DfaTrans(states34[14], sets[42]), new DfaTrans(states34[15], sets[37]), new DfaTrans(states34[16], sets[33]), new DfaTrans(states34[17], sets[26]), new DfaTrans(states34[18], sets[43]), new DfaTrans(states34[19], sets[34]), new DfaTrans(states34[20], sets[35]), new DfaTrans(states34[28], sets[30]), new DfaTrans(states34[47], sets[6]), new DfaTrans(states34[48], sets[28]), new DfaTrans(states34[49], sets[36])};
                 states34[1].Transitions = new DfaTrans[2] {new DfaTrans(states34[2], sets[29]), new DfaTrans(states34[4], sets[30])};
                 states34[2].Transitions = new DfaTrans[3] {new DfaTrans(states34[2], sets[29]), new DfaTrans(states34[3], sets[23]), new DfaTrans(states34[4], sets[30])};
-                states34[3].Transitions = new DfaTrans[0] {};
+                states34[3].Transitions = Array.Empty<DfaTrans>();
                 states34[4].Transitions = new DfaTrans[2] {new DfaTrans(states34[2], sets[31]), new DfaTrans(states34[5], sets[14])};
                 states34[5].Transitions = new DfaTrans[1] {new DfaTrans(states34[6], sets[6])};
                 states34[6].Transitions = new DfaTrans[1] {new DfaTrans(states34[7], sets[32])};
@@ -903,12 +904,12 @@ namespace Lingu.CC
                 states34[10].Transitions = new DfaTrans[2] {new DfaTrans(states34[11], sets[32]), new DfaTrans(states34[2], sets[9])};
                 states34[11].Transitions = new DfaTrans[2] {new DfaTrans(states34[12], sets[32]), new DfaTrans(states34[2], sets[9])};
                 states34[12].Transitions = new DfaTrans[1] {new DfaTrans(states34[2], sets[9])};
-                states34[13].Transitions = new DfaTrans[0] {};
-                states34[14].Transitions = new DfaTrans[0] {};
-                states34[15].Transitions = new DfaTrans[0] {};
-                states34[16].Transitions = new DfaTrans[0] {};
-                states34[17].Transitions = new DfaTrans[0] {};
-                states34[18].Transitions = new DfaTrans[0] {};
+                states34[13].Transitions = Array.Empty<DfaTrans>();
+                states34[14].Transitions = Array.Empty<DfaTrans>();
+                states34[15].Transitions = Array.Empty<DfaTrans>();
+                states34[16].Transitions = Array.Empty<DfaTrans>();
+                states34[17].Transitions = Array.Empty<DfaTrans>();
+                states34[18].Transitions = Array.Empty<DfaTrans>();
                 states34[19].Transitions = new DfaTrans[1] {new DfaTrans(states34[19], sets[5])};
                 states34[20].Transitions = new DfaTrans[2] {new DfaTrans(states34[21], sets[37]), new DfaTrans(states34[19], sets[5])};
                 states34[21].Transitions = new DfaTrans[1] {new DfaTrans(states34[22], sets[32])};
@@ -917,19 +918,19 @@ namespace Lingu.CC
                 states34[24].Transitions = new DfaTrans[1] {new DfaTrans(states34[25], sets[32])};
                 states34[25].Transitions = new DfaTrans[1] {new DfaTrans(states34[26], sets[32])};
                 states34[26].Transitions = new DfaTrans[1] {new DfaTrans(states34[27], sets[32])};
-                states34[27].Transitions = new DfaTrans[0] {};
+                states34[27].Transitions = Array.Empty<DfaTrans>();
                 states34[28].Transitions = new DfaTrans[1] {new DfaTrans(states34[29], sets[14])};
                 states34[29].Transitions = new DfaTrans[3] {new DfaTrans(states34[30], sets[38]), new DfaTrans(states34[35], sets[18]), new DfaTrans(states34[40], sets[6])};
                 states34[30].Transitions = new DfaTrans[1] {new DfaTrans(states34[31], sets[6])};
                 states34[31].Transitions = new DfaTrans[1] {new DfaTrans(states34[32], sets[39])};
                 states34[32].Transitions = new DfaTrans[3] {new DfaTrans(states34[33], sets[40]), new DfaTrans(states34[32], sets[41]), new DfaTrans(states34[34], sets[9])};
                 states34[33].Transitions = new DfaTrans[2] {new DfaTrans(states34[33], sets[40]), new DfaTrans(states34[32], sets[41])};
-                states34[34].Transitions = new DfaTrans[0] {};
+                states34[34].Transitions = Array.Empty<DfaTrans>();
                 states34[35].Transitions = new DfaTrans[1] {new DfaTrans(states34[36], sets[6])};
                 states34[36].Transitions = new DfaTrans[1] {new DfaTrans(states34[37], sets[39])};
                 states34[37].Transitions = new DfaTrans[3] {new DfaTrans(states34[38], sets[40]), new DfaTrans(states34[37], sets[41]), new DfaTrans(states34[39], sets[9])};
                 states34[38].Transitions = new DfaTrans[2] {new DfaTrans(states34[38], sets[40]), new DfaTrans(states34[37], sets[41])};
-                states34[39].Transitions = new DfaTrans[0] {};
+                states34[39].Transitions = Array.Empty<DfaTrans>();
                 states34[40].Transitions = new DfaTrans[1] {new DfaTrans(states34[41], sets[32])};
                 states34[41].Transitions = new DfaTrans[2] {new DfaTrans(states34[42], sets[32]), new DfaTrans(states34[27], sets[9])};
                 states34[42].Transitions = new DfaTrans[2] {new DfaTrans(states34[43], sets[32]), new DfaTrans(states34[27], sets[9])};
@@ -937,16 +938,16 @@ namespace Lingu.CC
                 states34[44].Transitions = new DfaTrans[2] {new DfaTrans(states34[45], sets[32]), new DfaTrans(states34[27], sets[9])};
                 states34[45].Transitions = new DfaTrans[2] {new DfaTrans(states34[46], sets[32]), new DfaTrans(states34[27], sets[9])};
                 states34[46].Transitions = new DfaTrans[1] {new DfaTrans(states34[27], sets[9])};
-                states34[47].Transitions = new DfaTrans[0] {};
-                states34[48].Transitions = new DfaTrans[0] {};
-                states34[49].Transitions = new DfaTrans[0] {};
+                states34[47].Transitions = Array.Empty<DfaTrans>();
+                states34[48].Transitions = Array.Empty<DfaTrans>();
+                states34[49].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 35 -- ˈtextˈ | '(' | '*' | '+' | ˈanyˈ | '..' | ';' | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states35 = new DfaState[51] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,18), new DfaState(15,true,20), new DfaState(16,true,2), new DfaState(17,true,29), new DfaState(18,true,13), new DfaState(19,true,17), new DfaState(20,true,0), new DfaState(21,true,0), new DfaState(22,false,-1), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,true,6), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,true,4), new DfaState(36,false,-1), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,true,5), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,false,-1), new DfaState(48,true,8), new DfaState(49,true,16), new DfaState(50,true,28)};
                 states35[0].Transitions = new DfaTrans[13] {new DfaTrans(states35[1], sets[23]), new DfaTrans(states35[13], sets[24]), new DfaTrans(states35[14], sets[42]), new DfaTrans(states35[15], sets[37]), new DfaTrans(states35[16], sets[33]), new DfaTrans(states35[18], sets[26]), new DfaTrans(states35[19], sets[43]), new DfaTrans(states35[20], sets[34]), new DfaTrans(states35[21], sets[35]), new DfaTrans(states35[29], sets[30]), new DfaTrans(states35[48], sets[6]), new DfaTrans(states35[49], sets[28]), new DfaTrans(states35[50], sets[36])};
                 states35[1].Transitions = new DfaTrans[2] {new DfaTrans(states35[2], sets[29]), new DfaTrans(states35[4], sets[30])};
                 states35[2].Transitions = new DfaTrans[3] {new DfaTrans(states35[2], sets[29]), new DfaTrans(states35[3], sets[23]), new DfaTrans(states35[4], sets[30])};
-                states35[3].Transitions = new DfaTrans[0] {};
+                states35[3].Transitions = Array.Empty<DfaTrans>();
                 states35[4].Transitions = new DfaTrans[2] {new DfaTrans(states35[2], sets[31]), new DfaTrans(states35[5], sets[14])};
                 states35[5].Transitions = new DfaTrans[1] {new DfaTrans(states35[6], sets[6])};
                 states35[6].Transitions = new DfaTrans[1] {new DfaTrans(states35[7], sets[32])};
@@ -956,13 +957,13 @@ namespace Lingu.CC
                 states35[10].Transitions = new DfaTrans[2] {new DfaTrans(states35[11], sets[32]), new DfaTrans(states35[2], sets[9])};
                 states35[11].Transitions = new DfaTrans[2] {new DfaTrans(states35[12], sets[32]), new DfaTrans(states35[2], sets[9])};
                 states35[12].Transitions = new DfaTrans[1] {new DfaTrans(states35[2], sets[9])};
-                states35[13].Transitions = new DfaTrans[0] {};
-                states35[14].Transitions = new DfaTrans[0] {};
-                states35[15].Transitions = new DfaTrans[0] {};
+                states35[13].Transitions = Array.Empty<DfaTrans>();
+                states35[14].Transitions = Array.Empty<DfaTrans>();
+                states35[15].Transitions = Array.Empty<DfaTrans>();
                 states35[16].Transitions = new DfaTrans[1] {new DfaTrans(states35[17], sets[33])};
-                states35[17].Transitions = new DfaTrans[0] {};
-                states35[18].Transitions = new DfaTrans[0] {};
-                states35[19].Transitions = new DfaTrans[0] {};
+                states35[17].Transitions = Array.Empty<DfaTrans>();
+                states35[18].Transitions = Array.Empty<DfaTrans>();
+                states35[19].Transitions = Array.Empty<DfaTrans>();
                 states35[20].Transitions = new DfaTrans[1] {new DfaTrans(states35[20], sets[5])};
                 states35[21].Transitions = new DfaTrans[2] {new DfaTrans(states35[22], sets[37]), new DfaTrans(states35[20], sets[5])};
                 states35[22].Transitions = new DfaTrans[1] {new DfaTrans(states35[23], sets[32])};
@@ -971,19 +972,19 @@ namespace Lingu.CC
                 states35[25].Transitions = new DfaTrans[1] {new DfaTrans(states35[26], sets[32])};
                 states35[26].Transitions = new DfaTrans[1] {new DfaTrans(states35[27], sets[32])};
                 states35[27].Transitions = new DfaTrans[1] {new DfaTrans(states35[28], sets[32])};
-                states35[28].Transitions = new DfaTrans[0] {};
+                states35[28].Transitions = Array.Empty<DfaTrans>();
                 states35[29].Transitions = new DfaTrans[1] {new DfaTrans(states35[30], sets[14])};
                 states35[30].Transitions = new DfaTrans[3] {new DfaTrans(states35[31], sets[38]), new DfaTrans(states35[36], sets[18]), new DfaTrans(states35[41], sets[6])};
                 states35[31].Transitions = new DfaTrans[1] {new DfaTrans(states35[32], sets[6])};
                 states35[32].Transitions = new DfaTrans[1] {new DfaTrans(states35[33], sets[39])};
                 states35[33].Transitions = new DfaTrans[3] {new DfaTrans(states35[34], sets[40]), new DfaTrans(states35[33], sets[41]), new DfaTrans(states35[35], sets[9])};
                 states35[34].Transitions = new DfaTrans[2] {new DfaTrans(states35[34], sets[40]), new DfaTrans(states35[33], sets[41])};
-                states35[35].Transitions = new DfaTrans[0] {};
+                states35[35].Transitions = Array.Empty<DfaTrans>();
                 states35[36].Transitions = new DfaTrans[1] {new DfaTrans(states35[37], sets[6])};
                 states35[37].Transitions = new DfaTrans[1] {new DfaTrans(states35[38], sets[39])};
                 states35[38].Transitions = new DfaTrans[3] {new DfaTrans(states35[39], sets[40]), new DfaTrans(states35[38], sets[41]), new DfaTrans(states35[40], sets[9])};
                 states35[39].Transitions = new DfaTrans[2] {new DfaTrans(states35[39], sets[40]), new DfaTrans(states35[38], sets[41])};
-                states35[40].Transitions = new DfaTrans[0] {};
+                states35[40].Transitions = Array.Empty<DfaTrans>();
                 states35[41].Transitions = new DfaTrans[1] {new DfaTrans(states35[42], sets[32])};
                 states35[42].Transitions = new DfaTrans[2] {new DfaTrans(states35[43], sets[32]), new DfaTrans(states35[28], sets[9])};
                 states35[43].Transitions = new DfaTrans[2] {new DfaTrans(states35[44], sets[32]), new DfaTrans(states35[28], sets[9])};
@@ -991,22 +992,22 @@ namespace Lingu.CC
                 states35[45].Transitions = new DfaTrans[2] {new DfaTrans(states35[46], sets[32]), new DfaTrans(states35[28], sets[9])};
                 states35[46].Transitions = new DfaTrans[2] {new DfaTrans(states35[47], sets[32]), new DfaTrans(states35[28], sets[9])};
                 states35[47].Transitions = new DfaTrans[1] {new DfaTrans(states35[28], sets[9])};
-                states35[48].Transitions = new DfaTrans[0] {};
-                states35[49].Transitions = new DfaTrans[0] {};
-                states35[50].Transitions = new DfaTrans[0] {};
+                states35[48].Transitions = Array.Empty<DfaTrans>();
+                states35[49].Transitions = Array.Empty<DfaTrans>();
+                states35[50].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 36 -- ',' | '}' -- */
                 var states36 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,true,22), new DfaState(2,true,9)};
                 states36[0].Transitions = new DfaTrans[2] {new DfaTrans(states36[1], sets[25]), new DfaTrans(states36[2], sets[9])};
-                states36[1].Transitions = new DfaTrans[0] {};
-                states36[2].Transitions = new DfaTrans[0] {};
+                states36[1].Transitions = Array.Empty<DfaTrans>();
+                states36[2].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 37 -- ˈtextˈ | '(' | ')' | ˈanyˈ | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '|' | '~' -- */
                 var states37 = new DfaState[46] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,2), new DfaState(16,true,0), new DfaState(17,true,0), new DfaState(18,false,-1), new DfaState(19,true,6), new DfaState(20,true,6), new DfaState(21,true,6), new DfaState(22,true,6), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,false,-1), new DfaState(26,false,-1), new DfaState(27,false,-1), new DfaState(28,false,-1), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,true,4), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,false,-1), new DfaState(36,true,5), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,false,-1), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,true,16), new DfaState(45,true,28)};
                 states37[0].Transitions = new DfaTrans[9] {new DfaTrans(states37[1], sets[23]), new DfaTrans(states37[13], sets[24]), new DfaTrans(states37[14], sets[44]), new DfaTrans(states37[15], sets[33]), new DfaTrans(states37[16], sets[34]), new DfaTrans(states37[17], sets[35]), new DfaTrans(states37[25], sets[30]), new DfaTrans(states37[44], sets[28]), new DfaTrans(states37[45], sets[36])};
                 states37[1].Transitions = new DfaTrans[2] {new DfaTrans(states37[2], sets[29]), new DfaTrans(states37[4], sets[30])};
                 states37[2].Transitions = new DfaTrans[3] {new DfaTrans(states37[2], sets[29]), new DfaTrans(states37[3], sets[23]), new DfaTrans(states37[4], sets[30])};
-                states37[3].Transitions = new DfaTrans[0] {};
+                states37[3].Transitions = Array.Empty<DfaTrans>();
                 states37[4].Transitions = new DfaTrans[2] {new DfaTrans(states37[2], sets[31]), new DfaTrans(states37[5], sets[14])};
                 states37[5].Transitions = new DfaTrans[1] {new DfaTrans(states37[6], sets[6])};
                 states37[6].Transitions = new DfaTrans[1] {new DfaTrans(states37[7], sets[32])};
@@ -1016,9 +1017,9 @@ namespace Lingu.CC
                 states37[10].Transitions = new DfaTrans[2] {new DfaTrans(states37[11], sets[32]), new DfaTrans(states37[2], sets[9])};
                 states37[11].Transitions = new DfaTrans[2] {new DfaTrans(states37[12], sets[32]), new DfaTrans(states37[2], sets[9])};
                 states37[12].Transitions = new DfaTrans[1] {new DfaTrans(states37[2], sets[9])};
-                states37[13].Transitions = new DfaTrans[0] {};
-                states37[14].Transitions = new DfaTrans[0] {};
-                states37[15].Transitions = new DfaTrans[0] {};
+                states37[13].Transitions = Array.Empty<DfaTrans>();
+                states37[14].Transitions = Array.Empty<DfaTrans>();
+                states37[15].Transitions = Array.Empty<DfaTrans>();
                 states37[16].Transitions = new DfaTrans[1] {new DfaTrans(states37[16], sets[5])};
                 states37[17].Transitions = new DfaTrans[2] {new DfaTrans(states37[18], sets[37]), new DfaTrans(states37[16], sets[5])};
                 states37[18].Transitions = new DfaTrans[1] {new DfaTrans(states37[19], sets[32])};
@@ -1027,19 +1028,19 @@ namespace Lingu.CC
                 states37[21].Transitions = new DfaTrans[1] {new DfaTrans(states37[22], sets[32])};
                 states37[22].Transitions = new DfaTrans[1] {new DfaTrans(states37[23], sets[32])};
                 states37[23].Transitions = new DfaTrans[1] {new DfaTrans(states37[24], sets[32])};
-                states37[24].Transitions = new DfaTrans[0] {};
+                states37[24].Transitions = Array.Empty<DfaTrans>();
                 states37[25].Transitions = new DfaTrans[1] {new DfaTrans(states37[26], sets[14])};
                 states37[26].Transitions = new DfaTrans[3] {new DfaTrans(states37[27], sets[38]), new DfaTrans(states37[32], sets[18]), new DfaTrans(states37[37], sets[6])};
                 states37[27].Transitions = new DfaTrans[1] {new DfaTrans(states37[28], sets[6])};
                 states37[28].Transitions = new DfaTrans[1] {new DfaTrans(states37[29], sets[39])};
                 states37[29].Transitions = new DfaTrans[3] {new DfaTrans(states37[30], sets[40]), new DfaTrans(states37[29], sets[41]), new DfaTrans(states37[31], sets[9])};
                 states37[30].Transitions = new DfaTrans[2] {new DfaTrans(states37[30], sets[40]), new DfaTrans(states37[29], sets[41])};
-                states37[31].Transitions = new DfaTrans[0] {};
+                states37[31].Transitions = Array.Empty<DfaTrans>();
                 states37[32].Transitions = new DfaTrans[1] {new DfaTrans(states37[33], sets[6])};
                 states37[33].Transitions = new DfaTrans[1] {new DfaTrans(states37[34], sets[39])};
                 states37[34].Transitions = new DfaTrans[3] {new DfaTrans(states37[35], sets[40]), new DfaTrans(states37[34], sets[41]), new DfaTrans(states37[36], sets[9])};
                 states37[35].Transitions = new DfaTrans[2] {new DfaTrans(states37[35], sets[40]), new DfaTrans(states37[34], sets[41])};
-                states37[36].Transitions = new DfaTrans[0] {};
+                states37[36].Transitions = Array.Empty<DfaTrans>();
                 states37[37].Transitions = new DfaTrans[1] {new DfaTrans(states37[38], sets[32])};
                 states37[38].Transitions = new DfaTrans[2] {new DfaTrans(states37[39], sets[32]), new DfaTrans(states37[24], sets[9])};
                 states37[39].Transitions = new DfaTrans[2] {new DfaTrans(states37[40], sets[32]), new DfaTrans(states37[24], sets[9])};
@@ -1047,26 +1048,26 @@ namespace Lingu.CC
                 states37[41].Transitions = new DfaTrans[2] {new DfaTrans(states37[42], sets[32]), new DfaTrans(states37[24], sets[9])};
                 states37[42].Transitions = new DfaTrans[2] {new DfaTrans(states37[43], sets[32]), new DfaTrans(states37[24], sets[9])};
                 states37[43].Transitions = new DfaTrans[1] {new DfaTrans(states37[24], sets[9])};
-                states37[44].Transitions = new DfaTrans[0] {};
-                states37[45].Transitions = new DfaTrans[0] {};
+                states37[44].Transitions = Array.Empty<DfaTrans>();
+                states37[45].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 38 -- '}' -- */
                 var states38 = new DfaState[2] {new DfaState(0,false,-1), new DfaState(1,true,9)};
                 states38[0].Transitions = new DfaTrans[1] {new DfaTrans(states38[1], sets[9])};
-                states38[1].Transitions = new DfaTrans[0] {};
+                states38[1].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 39 -- '|' | '}' -- */
                 var states39 = new DfaState[3] {new DfaState(0,false,-1), new DfaState(1,true,16), new DfaState(2,true,9)};
                 states39[0].Transitions = new DfaTrans[2] {new DfaTrans(states39[1], sets[28]), new DfaTrans(states39[2], sets[9])};
-                states39[1].Transitions = new DfaTrans[0] {};
-                states39[2].Transitions = new DfaTrans[0] {};
+                states39[1].Transitions = Array.Empty<DfaTrans>();
+                states39[2].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 40 -- ˈtextˈ | '(' | '*' | '*:' | '+' | '+:' | ',' | '?' | ˈidentifierˈ | '^' | '{' | '|' | '}' -- */
                 var states40 = new DfaState[25] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,18), new DfaState(15,true,19), new DfaState(16,true,20), new DfaState(17,true,21), new DfaState(18,true,22), new DfaState(19,true,17), new DfaState(20,true,0), new DfaState(21,true,23), new DfaState(22,true,8), new DfaState(23,true,16), new DfaState(24,true,9)};
                 states40[0].Transitions = new DfaTrans[11] {new DfaTrans(states40[1], sets[23]), new DfaTrans(states40[13], sets[24]), new DfaTrans(states40[14], sets[42]), new DfaTrans(states40[16], sets[37]), new DfaTrans(states40[18], sets[25]), new DfaTrans(states40[19], sets[43]), new DfaTrans(states40[20], sets[4]), new DfaTrans(states40[21], sets[27]), new DfaTrans(states40[22], sets[6]), new DfaTrans(states40[23], sets[28]), new DfaTrans(states40[24], sets[9])};
                 states40[1].Transitions = new DfaTrans[2] {new DfaTrans(states40[2], sets[29]), new DfaTrans(states40[4], sets[30])};
                 states40[2].Transitions = new DfaTrans[3] {new DfaTrans(states40[2], sets[29]), new DfaTrans(states40[3], sets[23]), new DfaTrans(states40[4], sets[30])};
-                states40[3].Transitions = new DfaTrans[0] {};
+                states40[3].Transitions = Array.Empty<DfaTrans>();
                 states40[4].Transitions = new DfaTrans[2] {new DfaTrans(states40[2], sets[31]), new DfaTrans(states40[5], sets[14])};
                 states40[5].Transitions = new DfaTrans[1] {new DfaTrans(states40[6], sets[6])};
                 states40[6].Transitions = new DfaTrans[1] {new DfaTrans(states40[7], sets[32])};
@@ -1076,25 +1077,25 @@ namespace Lingu.CC
                 states40[10].Transitions = new DfaTrans[2] {new DfaTrans(states40[11], sets[32]), new DfaTrans(states40[2], sets[9])};
                 states40[11].Transitions = new DfaTrans[2] {new DfaTrans(states40[12], sets[32]), new DfaTrans(states40[2], sets[9])};
                 states40[12].Transitions = new DfaTrans[1] {new DfaTrans(states40[2], sets[9])};
-                states40[13].Transitions = new DfaTrans[0] {};
+                states40[13].Transitions = Array.Empty<DfaTrans>();
                 states40[14].Transitions = new DfaTrans[1] {new DfaTrans(states40[15], sets[21])};
-                states40[15].Transitions = new DfaTrans[0] {};
+                states40[15].Transitions = Array.Empty<DfaTrans>();
                 states40[16].Transitions = new DfaTrans[1] {new DfaTrans(states40[17], sets[21])};
-                states40[17].Transitions = new DfaTrans[0] {};
-                states40[18].Transitions = new DfaTrans[0] {};
-                states40[19].Transitions = new DfaTrans[0] {};
+                states40[17].Transitions = Array.Empty<DfaTrans>();
+                states40[18].Transitions = Array.Empty<DfaTrans>();
+                states40[19].Transitions = Array.Empty<DfaTrans>();
                 states40[20].Transitions = new DfaTrans[1] {new DfaTrans(states40[20], sets[5])};
-                states40[21].Transitions = new DfaTrans[0] {};
-                states40[22].Transitions = new DfaTrans[0] {};
-                states40[23].Transitions = new DfaTrans[0] {};
-                states40[24].Transitions = new DfaTrans[0] {};
+                states40[21].Transitions = Array.Empty<DfaTrans>();
+                states40[22].Transitions = Array.Empty<DfaTrans>();
+                states40[23].Transitions = Array.Empty<DfaTrans>();
+                states40[24].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 41 -- ˈtextˈ | '(' | ')' | ',' | '..' | ˈidentifierˈ | '^' | '{' | '|' -- */
                 var states41 = new DfaState[22] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,22), new DfaState(16,false,-1), new DfaState(17,true,29), new DfaState(18,true,0), new DfaState(19,true,23), new DfaState(20,true,8), new DfaState(21,true,16)};
                 states41[0].Transitions = new DfaTrans[9] {new DfaTrans(states41[1], sets[23]), new DfaTrans(states41[13], sets[24]), new DfaTrans(states41[14], sets[44]), new DfaTrans(states41[15], sets[25]), new DfaTrans(states41[16], sets[33]), new DfaTrans(states41[18], sets[4]), new DfaTrans(states41[19], sets[27]), new DfaTrans(states41[20], sets[6]), new DfaTrans(states41[21], sets[28])};
                 states41[1].Transitions = new DfaTrans[2] {new DfaTrans(states41[2], sets[29]), new DfaTrans(states41[4], sets[30])};
                 states41[2].Transitions = new DfaTrans[3] {new DfaTrans(states41[2], sets[29]), new DfaTrans(states41[3], sets[23]), new DfaTrans(states41[4], sets[30])};
-                states41[3].Transitions = new DfaTrans[0] {};
+                states41[3].Transitions = Array.Empty<DfaTrans>();
                 states41[4].Transitions = new DfaTrans[2] {new DfaTrans(states41[2], sets[31]), new DfaTrans(states41[5], sets[14])};
                 states41[5].Transitions = new DfaTrans[1] {new DfaTrans(states41[6], sets[6])};
                 states41[6].Transitions = new DfaTrans[1] {new DfaTrans(states41[7], sets[32])};
@@ -1104,22 +1105,22 @@ namespace Lingu.CC
                 states41[10].Transitions = new DfaTrans[2] {new DfaTrans(states41[11], sets[32]), new DfaTrans(states41[2], sets[9])};
                 states41[11].Transitions = new DfaTrans[2] {new DfaTrans(states41[12], sets[32]), new DfaTrans(states41[2], sets[9])};
                 states41[12].Transitions = new DfaTrans[1] {new DfaTrans(states41[2], sets[9])};
-                states41[13].Transitions = new DfaTrans[0] {};
-                states41[14].Transitions = new DfaTrans[0] {};
-                states41[15].Transitions = new DfaTrans[0] {};
+                states41[13].Transitions = Array.Empty<DfaTrans>();
+                states41[14].Transitions = Array.Empty<DfaTrans>();
+                states41[15].Transitions = Array.Empty<DfaTrans>();
                 states41[16].Transitions = new DfaTrans[1] {new DfaTrans(states41[17], sets[33])};
-                states41[17].Transitions = new DfaTrans[0] {};
+                states41[17].Transitions = Array.Empty<DfaTrans>();
                 states41[18].Transitions = new DfaTrans[1] {new DfaTrans(states41[18], sets[5])};
-                states41[19].Transitions = new DfaTrans[0] {};
-                states41[20].Transitions = new DfaTrans[0] {};
-                states41[21].Transitions = new DfaTrans[0] {};
+                states41[19].Transitions = Array.Empty<DfaTrans>();
+                states41[20].Transitions = Array.Empty<DfaTrans>();
+                states41[21].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 42 -- ˈtextˈ | '(' | ')' | '*' | '+' | ˈanyˈ | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states42 = new DfaState[50] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,18), new DfaState(16,true,20), new DfaState(17,true,2), new DfaState(18,true,17), new DfaState(19,true,0), new DfaState(20,true,0), new DfaState(21,false,-1), new DfaState(22,true,6), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,false,-1), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,true,4), new DfaState(35,false,-1), new DfaState(36,false,-1), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,true,5), new DfaState(40,false,-1), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,true,8), new DfaState(48,true,16), new DfaState(49,true,28)};
                 states42[0].Transitions = new DfaTrans[13] {new DfaTrans(states42[1], sets[23]), new DfaTrans(states42[13], sets[24]), new DfaTrans(states42[14], sets[44]), new DfaTrans(states42[15], sets[42]), new DfaTrans(states42[16], sets[37]), new DfaTrans(states42[17], sets[33]), new DfaTrans(states42[18], sets[43]), new DfaTrans(states42[19], sets[34]), new DfaTrans(states42[20], sets[35]), new DfaTrans(states42[28], sets[30]), new DfaTrans(states42[47], sets[6]), new DfaTrans(states42[48], sets[28]), new DfaTrans(states42[49], sets[36])};
                 states42[1].Transitions = new DfaTrans[2] {new DfaTrans(states42[2], sets[29]), new DfaTrans(states42[4], sets[30])};
                 states42[2].Transitions = new DfaTrans[3] {new DfaTrans(states42[2], sets[29]), new DfaTrans(states42[3], sets[23]), new DfaTrans(states42[4], sets[30])};
-                states42[3].Transitions = new DfaTrans[0] {};
+                states42[3].Transitions = Array.Empty<DfaTrans>();
                 states42[4].Transitions = new DfaTrans[2] {new DfaTrans(states42[2], sets[31]), new DfaTrans(states42[5], sets[14])};
                 states42[5].Transitions = new DfaTrans[1] {new DfaTrans(states42[6], sets[6])};
                 states42[6].Transitions = new DfaTrans[1] {new DfaTrans(states42[7], sets[32])};
@@ -1129,12 +1130,12 @@ namespace Lingu.CC
                 states42[10].Transitions = new DfaTrans[2] {new DfaTrans(states42[11], sets[32]), new DfaTrans(states42[2], sets[9])};
                 states42[11].Transitions = new DfaTrans[2] {new DfaTrans(states42[12], sets[32]), new DfaTrans(states42[2], sets[9])};
                 states42[12].Transitions = new DfaTrans[1] {new DfaTrans(states42[2], sets[9])};
-                states42[13].Transitions = new DfaTrans[0] {};
-                states42[14].Transitions = new DfaTrans[0] {};
-                states42[15].Transitions = new DfaTrans[0] {};
-                states42[16].Transitions = new DfaTrans[0] {};
-                states42[17].Transitions = new DfaTrans[0] {};
-                states42[18].Transitions = new DfaTrans[0] {};
+                states42[13].Transitions = Array.Empty<DfaTrans>();
+                states42[14].Transitions = Array.Empty<DfaTrans>();
+                states42[15].Transitions = Array.Empty<DfaTrans>();
+                states42[16].Transitions = Array.Empty<DfaTrans>();
+                states42[17].Transitions = Array.Empty<DfaTrans>();
+                states42[18].Transitions = Array.Empty<DfaTrans>();
                 states42[19].Transitions = new DfaTrans[1] {new DfaTrans(states42[19], sets[5])};
                 states42[20].Transitions = new DfaTrans[2] {new DfaTrans(states42[21], sets[37]), new DfaTrans(states42[19], sets[5])};
                 states42[21].Transitions = new DfaTrans[1] {new DfaTrans(states42[22], sets[32])};
@@ -1143,19 +1144,19 @@ namespace Lingu.CC
                 states42[24].Transitions = new DfaTrans[1] {new DfaTrans(states42[25], sets[32])};
                 states42[25].Transitions = new DfaTrans[1] {new DfaTrans(states42[26], sets[32])};
                 states42[26].Transitions = new DfaTrans[1] {new DfaTrans(states42[27], sets[32])};
-                states42[27].Transitions = new DfaTrans[0] {};
+                states42[27].Transitions = Array.Empty<DfaTrans>();
                 states42[28].Transitions = new DfaTrans[1] {new DfaTrans(states42[29], sets[14])};
                 states42[29].Transitions = new DfaTrans[3] {new DfaTrans(states42[30], sets[38]), new DfaTrans(states42[35], sets[18]), new DfaTrans(states42[40], sets[6])};
                 states42[30].Transitions = new DfaTrans[1] {new DfaTrans(states42[31], sets[6])};
                 states42[31].Transitions = new DfaTrans[1] {new DfaTrans(states42[32], sets[39])};
                 states42[32].Transitions = new DfaTrans[3] {new DfaTrans(states42[33], sets[40]), new DfaTrans(states42[32], sets[41]), new DfaTrans(states42[34], sets[9])};
                 states42[33].Transitions = new DfaTrans[2] {new DfaTrans(states42[33], sets[40]), new DfaTrans(states42[32], sets[41])};
-                states42[34].Transitions = new DfaTrans[0] {};
+                states42[34].Transitions = Array.Empty<DfaTrans>();
                 states42[35].Transitions = new DfaTrans[1] {new DfaTrans(states42[36], sets[6])};
                 states42[36].Transitions = new DfaTrans[1] {new DfaTrans(states42[37], sets[39])};
                 states42[37].Transitions = new DfaTrans[3] {new DfaTrans(states42[38], sets[40]), new DfaTrans(states42[37], sets[41]), new DfaTrans(states42[39], sets[9])};
                 states42[38].Transitions = new DfaTrans[2] {new DfaTrans(states42[38], sets[40]), new DfaTrans(states42[37], sets[41])};
-                states42[39].Transitions = new DfaTrans[0] {};
+                states42[39].Transitions = Array.Empty<DfaTrans>();
                 states42[40].Transitions = new DfaTrans[1] {new DfaTrans(states42[41], sets[32])};
                 states42[41].Transitions = new DfaTrans[2] {new DfaTrans(states42[42], sets[32]), new DfaTrans(states42[27], sets[9])};
                 states42[42].Transitions = new DfaTrans[2] {new DfaTrans(states42[43], sets[32]), new DfaTrans(states42[27], sets[9])};
@@ -1163,16 +1164,16 @@ namespace Lingu.CC
                 states42[44].Transitions = new DfaTrans[2] {new DfaTrans(states42[45], sets[32]), new DfaTrans(states42[27], sets[9])};
                 states42[45].Transitions = new DfaTrans[2] {new DfaTrans(states42[46], sets[32]), new DfaTrans(states42[27], sets[9])};
                 states42[46].Transitions = new DfaTrans[1] {new DfaTrans(states42[27], sets[9])};
-                states42[47].Transitions = new DfaTrans[0] {};
-                states42[48].Transitions = new DfaTrans[0] {};
-                states42[49].Transitions = new DfaTrans[0] {};
+                states42[47].Transitions = Array.Empty<DfaTrans>();
+                states42[48].Transitions = Array.Empty<DfaTrans>();
+                states42[49].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 43 -- ˈtextˈ | '(' | ')' | '*' | '+' | ˈanyˈ | '..' | '?' | ˈidentifierˈ | ˈucCodepointˈ | ˈucBlockˈ | ˈucCategoryˈ | '{' | '|' | '~' -- */
                 var states43 = new DfaState[51] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,25), new DfaState(15,true,18), new DfaState(16,true,20), new DfaState(17,true,2), new DfaState(18,true,29), new DfaState(19,true,17), new DfaState(20,true,0), new DfaState(21,true,0), new DfaState(22,false,-1), new DfaState(23,true,6), new DfaState(24,true,6), new DfaState(25,true,6), new DfaState(26,true,6), new DfaState(27,true,6), new DfaState(28,true,6), new DfaState(29,false,-1), new DfaState(30,false,-1), new DfaState(31,false,-1), new DfaState(32,false,-1), new DfaState(33,false,-1), new DfaState(34,false,-1), new DfaState(35,true,4), new DfaState(36,false,-1), new DfaState(37,false,-1), new DfaState(38,false,-1), new DfaState(39,false,-1), new DfaState(40,true,5), new DfaState(41,false,-1), new DfaState(42,false,-1), new DfaState(43,false,-1), new DfaState(44,false,-1), new DfaState(45,false,-1), new DfaState(46,false,-1), new DfaState(47,false,-1), new DfaState(48,true,8), new DfaState(49,true,16), new DfaState(50,true,28)};
                 states43[0].Transitions = new DfaTrans[13] {new DfaTrans(states43[1], sets[23]), new DfaTrans(states43[13], sets[24]), new DfaTrans(states43[14], sets[44]), new DfaTrans(states43[15], sets[42]), new DfaTrans(states43[16], sets[37]), new DfaTrans(states43[17], sets[33]), new DfaTrans(states43[19], sets[43]), new DfaTrans(states43[20], sets[34]), new DfaTrans(states43[21], sets[35]), new DfaTrans(states43[29], sets[30]), new DfaTrans(states43[48], sets[6]), new DfaTrans(states43[49], sets[28]), new DfaTrans(states43[50], sets[36])};
                 states43[1].Transitions = new DfaTrans[2] {new DfaTrans(states43[2], sets[29]), new DfaTrans(states43[4], sets[30])};
                 states43[2].Transitions = new DfaTrans[3] {new DfaTrans(states43[2], sets[29]), new DfaTrans(states43[3], sets[23]), new DfaTrans(states43[4], sets[30])};
-                states43[3].Transitions = new DfaTrans[0] {};
+                states43[3].Transitions = Array.Empty<DfaTrans>();
                 states43[4].Transitions = new DfaTrans[2] {new DfaTrans(states43[2], sets[31]), new DfaTrans(states43[5], sets[14])};
                 states43[5].Transitions = new DfaTrans[1] {new DfaTrans(states43[6], sets[6])};
                 states43[6].Transitions = new DfaTrans[1] {new DfaTrans(states43[7], sets[32])};
@@ -1182,13 +1183,13 @@ namespace Lingu.CC
                 states43[10].Transitions = new DfaTrans[2] {new DfaTrans(states43[11], sets[32]), new DfaTrans(states43[2], sets[9])};
                 states43[11].Transitions = new DfaTrans[2] {new DfaTrans(states43[12], sets[32]), new DfaTrans(states43[2], sets[9])};
                 states43[12].Transitions = new DfaTrans[1] {new DfaTrans(states43[2], sets[9])};
-                states43[13].Transitions = new DfaTrans[0] {};
-                states43[14].Transitions = new DfaTrans[0] {};
-                states43[15].Transitions = new DfaTrans[0] {};
-                states43[16].Transitions = new DfaTrans[0] {};
+                states43[13].Transitions = Array.Empty<DfaTrans>();
+                states43[14].Transitions = Array.Empty<DfaTrans>();
+                states43[15].Transitions = Array.Empty<DfaTrans>();
+                states43[16].Transitions = Array.Empty<DfaTrans>();
                 states43[17].Transitions = new DfaTrans[1] {new DfaTrans(states43[18], sets[33])};
-                states43[18].Transitions = new DfaTrans[0] {};
-                states43[19].Transitions = new DfaTrans[0] {};
+                states43[18].Transitions = Array.Empty<DfaTrans>();
+                states43[19].Transitions = Array.Empty<DfaTrans>();
                 states43[20].Transitions = new DfaTrans[1] {new DfaTrans(states43[20], sets[5])};
                 states43[21].Transitions = new DfaTrans[2] {new DfaTrans(states43[22], sets[37]), new DfaTrans(states43[20], sets[5])};
                 states43[22].Transitions = new DfaTrans[1] {new DfaTrans(states43[23], sets[32])};
@@ -1197,19 +1198,19 @@ namespace Lingu.CC
                 states43[25].Transitions = new DfaTrans[1] {new DfaTrans(states43[26], sets[32])};
                 states43[26].Transitions = new DfaTrans[1] {new DfaTrans(states43[27], sets[32])};
                 states43[27].Transitions = new DfaTrans[1] {new DfaTrans(states43[28], sets[32])};
-                states43[28].Transitions = new DfaTrans[0] {};
+                states43[28].Transitions = Array.Empty<DfaTrans>();
                 states43[29].Transitions = new DfaTrans[1] {new DfaTrans(states43[30], sets[14])};
                 states43[30].Transitions = new DfaTrans[3] {new DfaTrans(states43[31], sets[38]), new DfaTrans(states43[36], sets[18]), new DfaTrans(states43[41], sets[6])};
                 states43[31].Transitions = new DfaTrans[1] {new DfaTrans(states43[32], sets[6])};
                 states43[32].Transitions = new DfaTrans[1] {new DfaTrans(states43[33], sets[39])};
                 states43[33].Transitions = new DfaTrans[3] {new DfaTrans(states43[34], sets[40]), new DfaTrans(states43[33], sets[41]), new DfaTrans(states43[35], sets[9])};
                 states43[34].Transitions = new DfaTrans[2] {new DfaTrans(states43[34], sets[40]), new DfaTrans(states43[33], sets[41])};
-                states43[35].Transitions = new DfaTrans[0] {};
+                states43[35].Transitions = Array.Empty<DfaTrans>();
                 states43[36].Transitions = new DfaTrans[1] {new DfaTrans(states43[37], sets[6])};
                 states43[37].Transitions = new DfaTrans[1] {new DfaTrans(states43[38], sets[39])};
                 states43[38].Transitions = new DfaTrans[3] {new DfaTrans(states43[39], sets[40]), new DfaTrans(states43[38], sets[41]), new DfaTrans(states43[40], sets[9])};
                 states43[39].Transitions = new DfaTrans[2] {new DfaTrans(states43[39], sets[40]), new DfaTrans(states43[38], sets[41])};
-                states43[40].Transitions = new DfaTrans[0] {};
+                states43[40].Transitions = Array.Empty<DfaTrans>();
                 states43[41].Transitions = new DfaTrans[1] {new DfaTrans(states43[42], sets[32])};
                 states43[42].Transitions = new DfaTrans[2] {new DfaTrans(states43[43], sets[32]), new DfaTrans(states43[28], sets[9])};
                 states43[43].Transitions = new DfaTrans[2] {new DfaTrans(states43[44], sets[32]), new DfaTrans(states43[28], sets[9])};
@@ -1217,16 +1218,16 @@ namespace Lingu.CC
                 states43[45].Transitions = new DfaTrans[2] {new DfaTrans(states43[46], sets[32]), new DfaTrans(states43[28], sets[9])};
                 states43[46].Transitions = new DfaTrans[2] {new DfaTrans(states43[47], sets[32]), new DfaTrans(states43[28], sets[9])};
                 states43[47].Transitions = new DfaTrans[1] {new DfaTrans(states43[28], sets[9])};
-                states43[48].Transitions = new DfaTrans[0] {};
-                states43[49].Transitions = new DfaTrans[0] {};
-                states43[50].Transitions = new DfaTrans[0] {};
+                states43[48].Transitions = Array.Empty<DfaTrans>();
+                states43[49].Transitions = Array.Empty<DfaTrans>();
+                states43[50].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 44 -- ˈtextˈ | '(' | ',' | '..' | ˈidentifierˈ | '^' | '{' | '|' | '}' -- */
                 var states44 = new DfaState[22] {new DfaState(0,false,-1), new DfaState(1,false,-1), new DfaState(2,false,-1), new DfaState(3,true,3), new DfaState(4,false,-1), new DfaState(5,false,-1), new DfaState(6,false,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,false,-1), new DfaState(12,false,-1), new DfaState(13,true,24), new DfaState(14,true,22), new DfaState(15,false,-1), new DfaState(16,true,29), new DfaState(17,true,0), new DfaState(18,true,23), new DfaState(19,true,8), new DfaState(20,true,16), new DfaState(21,true,9)};
                 states44[0].Transitions = new DfaTrans[9] {new DfaTrans(states44[1], sets[23]), new DfaTrans(states44[13], sets[24]), new DfaTrans(states44[14], sets[25]), new DfaTrans(states44[15], sets[33]), new DfaTrans(states44[17], sets[4]), new DfaTrans(states44[18], sets[27]), new DfaTrans(states44[19], sets[6]), new DfaTrans(states44[20], sets[28]), new DfaTrans(states44[21], sets[9])};
                 states44[1].Transitions = new DfaTrans[2] {new DfaTrans(states44[2], sets[29]), new DfaTrans(states44[4], sets[30])};
                 states44[2].Transitions = new DfaTrans[3] {new DfaTrans(states44[2], sets[29]), new DfaTrans(states44[3], sets[23]), new DfaTrans(states44[4], sets[30])};
-                states44[3].Transitions = new DfaTrans[0] {};
+                states44[3].Transitions = Array.Empty<DfaTrans>();
                 states44[4].Transitions = new DfaTrans[2] {new DfaTrans(states44[2], sets[31]), new DfaTrans(states44[5], sets[14])};
                 states44[5].Transitions = new DfaTrans[1] {new DfaTrans(states44[6], sets[6])};
                 states44[6].Transitions = new DfaTrans[1] {new DfaTrans(states44[7], sets[32])};
@@ -1236,15 +1237,15 @@ namespace Lingu.CC
                 states44[10].Transitions = new DfaTrans[2] {new DfaTrans(states44[11], sets[32]), new DfaTrans(states44[2], sets[9])};
                 states44[11].Transitions = new DfaTrans[2] {new DfaTrans(states44[12], sets[32]), new DfaTrans(states44[2], sets[9])};
                 states44[12].Transitions = new DfaTrans[1] {new DfaTrans(states44[2], sets[9])};
-                states44[13].Transitions = new DfaTrans[0] {};
-                states44[14].Transitions = new DfaTrans[0] {};
+                states44[13].Transitions = Array.Empty<DfaTrans>();
+                states44[14].Transitions = Array.Empty<DfaTrans>();
                 states44[15].Transitions = new DfaTrans[1] {new DfaTrans(states44[16], sets[33])};
-                states44[16].Transitions = new DfaTrans[0] {};
+                states44[16].Transitions = Array.Empty<DfaTrans>();
                 states44[17].Transitions = new DfaTrans[1] {new DfaTrans(states44[17], sets[5])};
-                states44[18].Transitions = new DfaTrans[0] {};
-                states44[19].Transitions = new DfaTrans[0] {};
-                states44[20].Transitions = new DfaTrans[0] {};
-                states44[21].Transitions = new DfaTrans[0] {};
+                states44[18].Transitions = Array.Empty<DfaTrans>();
+                states44[19].Transitions = Array.Empty<DfaTrans>();
+                states44[20].Transitions = Array.Empty<DfaTrans>();
+                states44[21].Transitions = Array.Empty<DfaTrans>();
                 
                 /* dfa 45 --  -- */
                 var states45 = new DfaState[12] {new DfaState(0,true,-1), new DfaState(1,false,-1), new DfaState(2,true,-1), new DfaState(3,true,-1), new DfaState(4,true,-1), new DfaState(5,true,-1), new DfaState(6,true,-1), new DfaState(7,false,-1), new DfaState(8,false,-1), new DfaState(9,false,-1), new DfaState(10,false,-1), new DfaState(11,true,-1)};
@@ -2558,7 +2559,7 @@ namespace Lingu.CC
             public static readonly NonterminalSymbol rule_tree_action = new NonterminalSymbol(47, "rule_tree_action", false, RepeatKind.None);
             public static readonly NonterminalSymbol rule_drop = new NonterminalSymbol(48, "rule_drop", false, RepeatKind.None);
             public static readonly NonterminalSymbol rule_promote = new NonterminalSymbol(49, "rule_promote", false, RepeatKind.None);
-            public static readonly NonterminalSymbol rule_element = new NonterminalSymbol(50, "rule_element", false, RepeatKind.None);
+            public static readonly NonterminalSymbol rule_primary = new NonterminalSymbol(50, "rule_primary", false, RepeatKind.None);
             public static readonly NonterminalSymbol sub_rule = new NonterminalSymbol(51, "sub_rule", false, RepeatKind.None);
             public static readonly NonterminalSymbol rule_atom = new NonterminalSymbol(52, "rule_atom", false, RepeatKind.None);
             public static readonly NonterminalSymbol reference = new NonterminalSymbol(53, "reference", false, RepeatKind.None);
@@ -2569,9 +2570,9 @@ namespace Lingu.CC
             public static readonly NonterminalSymbol terminal_diff = new NonterminalSymbol(58, "terminal_diff", false, RepeatKind.None);
             public static readonly NonterminalSymbol terminal_sequence = new NonterminalSymbol(59, "terminal_sequence", false, RepeatKind.None);
             public static readonly NonterminalSymbol terminal_repetition = new NonterminalSymbol(60, "terminal_repetition", false, RepeatKind.None);
-            public static readonly NonterminalSymbol terminal_optional = new NonterminalSymbol(61, "terminal_optional", false, RepeatKind.None);
-            public static readonly NonterminalSymbol terminal_star_closure = new NonterminalSymbol(62, "terminal_star_closure", false, RepeatKind.None);
-            public static readonly NonterminalSymbol terminal_plus_closure = new NonterminalSymbol(63, "terminal_plus_closure", false, RepeatKind.None);
+            public static readonly NonterminalSymbol terminal_option = new NonterminalSymbol(61, "terminal_option", false, RepeatKind.None);
+            public static readonly NonterminalSymbol terminal_star = new NonterminalSymbol(62, "terminal_star", false, RepeatKind.None);
+            public static readonly NonterminalSymbol terminal_plus = new NonterminalSymbol(63, "terminal_plus", false, RepeatKind.None);
             public static readonly NonterminalSymbol terminal_range_loop = new NonterminalSymbol(64, "terminal_range_loop", false, RepeatKind.None);
             public static readonly NonterminalSymbol range = new NonterminalSymbol(65, "range", false, RepeatKind.None);
             public static readonly NonterminalSymbol terminal_element = new NonterminalSymbol(66, "terminal_element", false, RepeatKind.None);
@@ -2616,9 +2617,9 @@ namespace Lingu.CC
                 __T8, __T9, __T10, __T11, __T12, __T13, __T14, __T15, __T16, __T17, __T18, __T19, __T20, __T21, __T22, __T23,
                 __T24, __T25, __eof, file, angrammar, grammar_item, grammar_options, option, grammar_rules, rule, rule_expression,
                 rule_alternative, rule_sequence, rule_repetition, rule_option, rule_star, rule_plus, rule_tree_action, rule_drop,
-                rule_promote, rule_element, sub_rule, rule_atom, reference, grammar_terminals, terminal_rule, terminal_expression,
-                terminal_alternative, terminal_diff, terminal_sequence, terminal_repetition, terminal_optional, terminal_star_closure,
-                terminal_plus_closure, terminal_range_loop, range, terminal_element, terminal_not, terminal_atom, characterRange,
+                rule_promote, rule_primary, sub_rule, rule_atom, reference, grammar_terminals, terminal_rule, terminal_expression,
+                terminal_alternative, terminal_diff, terminal_sequence, terminal_repetition, terminal_option, terminal_star,
+                terminal_plus, terminal_range_loop, range, terminal_element, terminal_not, terminal_atom, characterRange,
                 character, __N1, __N2, __N3, __N4, __N5, __N6, __N7, __N8, __N9, __N10, __N11, __N12, newline, newlineChar,
                 whitespace, lineComment, blockComment, spacing, identifierStart, identifierContinue, digit, nonzeroDigit,
                 zero, hexDigit, escapes, ucNameStart, ucNameInner, ucNameEnd, ucName, __acc,
@@ -2651,12 +2652,12 @@ namespace Lingu.CC
                 new Production(rule_plus, false, "rule_plus -> ^rule_tree_action ,'+:' ^terminal_element", false, true, false),
                 new Production(rule_tree_action, true, "rule_tree_action -> ^rule_drop", false),
                 new Production(rule_tree_action, true, "rule_tree_action -> ^rule_promote", false),
-                new Production(rule_tree_action, true, "rule_tree_action -> ^rule_element", false),
-                new Production(rule_drop, false, "rule_drop -> ,',' ^rule_element", true, false),
-                new Production(rule_promote, false, "rule_promote -> ,'^' ^rule_element", true, false),
-                new Production(rule_element, true, "rule_element -> ^sub_rule", false),
-                new Production(rule_element, true, "rule_element -> ,'(' ^rule_expression ,')'", true, false, true),
-                new Production(rule_element, true, "rule_element -> ^rule_atom", false),
+                new Production(rule_tree_action, true, "rule_tree_action -> ^rule_primary", false),
+                new Production(rule_drop, false, "rule_drop -> ,',' ^rule_primary", true, false),
+                new Production(rule_promote, false, "rule_promote -> ,'^' ^rule_primary", true, false),
+                new Production(rule_primary, true, "rule_primary -> ^sub_rule", false),
+                new Production(rule_primary, true, "rule_primary -> ,'(' ^rule_expression ,')'", true, false, true),
+                new Production(rule_primary, true, "rule_primary -> ^rule_atom", false),
                 new Production(sub_rule, false, "sub_rule -> ,'{' ^ˈidentifierˈ ,__N7 ^rule_expression ,'}'", true, false, true, false, true),
                 new Production(rule_atom, true, "rule_atom -> ^reference", false),
                 new Production(rule_atom, true, "rule_atom -> ^ˈtextˈ", false),
@@ -2668,14 +2669,14 @@ namespace Lingu.CC
                 new Production(terminal_alternative, true, "terminal_alternative -> ^terminal_diff", false),
                 new Production(terminal_diff, false, "terminal_diff -> ^terminal_sequence ,'-' ^terminal_sequence", false, true, false),
                 new Production(terminal_sequence, false, "terminal_sequence -> ^__N11", false),
-                new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_optional", false),
-                new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_star_closure", false),
-                new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_plus_closure", false),
+                new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_option", false),
+                new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_star", false),
+                new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_plus", false),
                 new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_range_loop", false),
                 new Production(terminal_repetition, true, "terminal_repetition -> ^terminal_element", false),
-                new Production(terminal_optional, false, "terminal_optional -> ^terminal_element ^'?'", false, false),
-                new Production(terminal_star_closure, false, "terminal_star_closure -> ^terminal_element ^'*'", false, false),
-                new Production(terminal_plus_closure, false, "terminal_plus_closure -> ^terminal_element ^'+'", false, false),
+                new Production(terminal_option, false, "terminal_option -> ^terminal_element ^'?'", false, false),
+                new Production(terminal_star, false, "terminal_star -> ^terminal_element ^'*'", false, false),
+                new Production(terminal_plus, false, "terminal_plus -> ^terminal_element ^'+'", false, false),
                 new Production(terminal_range_loop, false, "terminal_range_loop -> ^terminal_element ^range", false, false),
                 new Production(range, false, "range -> ,'{' ^ˈnumberˈ ^__N12 ,'}'", true, false, false, true),
                 new Production(terminal_element, true, "terminal_element -> ^terminal_atom", false),

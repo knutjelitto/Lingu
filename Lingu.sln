@@ -50,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC0", "LinguCC0\LinguC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC", "LinguCC\LinguCC.csproj", "{0C936D33-FBCC-4414-9DDD-33AFA36FC3B5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lingu.Hime", "Lingu.Hime\Lingu.Hime.csproj", "{185A2A08-282D-4EE6-AE26-13E90BD121D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,10 @@ Global
 		{0C936D33-FBCC-4414-9DDD-33AFA36FC3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C936D33-FBCC-4414-9DDD-33AFA36FC3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C936D33-FBCC-4414-9DDD-33AFA36FC3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{185A2A08-282D-4EE6-AE26-13E90BD121D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{185A2A08-282D-4EE6-AE26-13E90BD121D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{185A2A08-282D-4EE6-AE26-13E90BD121D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{185A2A08-282D-4EE6-AE26-13E90BD121D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

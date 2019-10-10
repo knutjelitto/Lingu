@@ -76,18 +76,18 @@
         rule_tree_action
             : ^rule_drop
             | ^rule_promote
-            | ^rule_element
+            | ^rule_primary
             ;
 
         rule_drop
-            : ,',' rule_element
+            : ,',' rule_primary
             ;
 
         rule_promote
-            : ,'^' rule_element
+            : ,'^' rule_primary
             ;
 
-        rule_element
+        rule_primary
             : ^sub_rule
             | ,'(' ^rule_expression ,')'
             | ^rule_atom
@@ -132,22 +132,22 @@
             ;
 
         terminal_repetition     
-            : ^terminal_optional
-            | ^terminal_star_closure
-            | ^terminal_plus_closure
+            : ^terminal_option
+            | ^terminal_star
+            | ^terminal_plus
             | ^terminal_range_loop
             | ^terminal_element
             ;
 
-        terminal_optional
+        terminal_option
             : terminal_element '?'
             ;
 
-        terminal_star_closure
+        terminal_star
             : terminal_element '*'
             ;
 
-        terminal_plus_closure
+        terminal_plus
             : terminal_element '+'
             ;
 

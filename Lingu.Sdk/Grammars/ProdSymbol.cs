@@ -16,6 +16,11 @@ namespace Lingu.Grammars
             IsPromote = isPromote;
         }
 
+        public ProdSymbol(Symbol symbol)
+            : this(symbol, false, false)
+        {
+        }
+
         public Symbol Symbol { get; }
         public bool IsDrop { get; }
         public bool IsPromote { get; }

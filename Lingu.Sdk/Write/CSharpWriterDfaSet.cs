@@ -53,8 +53,16 @@ namespace Lingu.Write
                     {
                         var state = dfa.States[s];
 
-                        var transitions = string.Join(", ", state.Transitions.Select(t => $"new DfaTrans(states{d}[{t.TargetId}], sets[{t.SetId}])"));
-                        transitions = $"new DfaTrans[{state.Transitions.Count}] {{{transitions}}}";
+                        string transitions;
+                        if (state.Transitions.Count == 0)
+                        {
+                            transitions = $"Array.Empty<DfaTrans>()";
+                        }
+                        else
+                        {
+                            transitions = string.Join(", ", state.Transitions.Select(t => $"new DfaTrans(states{d}[{t.TargetId}], sets[{t.SetId}])"));
+                            transitions = $"new DfaTrans[{state.Transitions.Count}] {{{transitions}}}";
+                        }
                         writer.WriteLine($"states{d}[{s}].Transitions = {transitions};");
                     }
                     

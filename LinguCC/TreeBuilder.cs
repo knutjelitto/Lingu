@@ -110,18 +110,27 @@ namespace Lingu.CC
             return new Tree.String(token.Value);
         }
 
-        public override object OnRuleStarClosure(INonterminalToken token)
+        public override object OnRuleStar(INonterminalToken token)
         {
+            if (token.Count == 2)
+            {
+                return RepeatList.Star(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
+            }
             return Repeat.Star(Visit<IExpression>(token[0]));
         }
 
-        public override object OnRulePlusClosure(INonterminalToken token)
+        public override object OnRulePlus(INonterminalToken token)
         {
+            if (token.Count == 2)
+            {
+                return RepeatList.Plus(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
+            }
             return Repeat.Plus(Visit<IExpression>(token[0]));
         }
 
-        public override object OnRuleOptional(INonterminalToken token)
+        public override object OnRuleOption(INonterminalToken token)
         {
+            Debug.Assert(token.Count == 1);
             return Repeat.Optional(Visit<IExpression>(token[0]));
         }
 
@@ -167,6 +176,7 @@ namespace Lingu.CC
         {
             return new UcCodepoint(token.Value);
         }
+
         public override object OnUcBlock(ITerminalToken token)
         {
             return new UcBlock(token.Value);
@@ -177,17 +187,17 @@ namespace Lingu.CC
             return new UcCategory(token.Value);
         }
 
-        public override object OnTerminalStarClosure(INonterminalToken token)
+        public override object OnTerminalStar(INonterminalToken token)
         {
             return Repeat.Star(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalPlusClosure(INonterminalToken token)
+        public override object OnTerminalPlus(INonterminalToken token)
         {
             return Repeat.Plus(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalOptional(INonterminalToken token)
+        public override object OnTerminalOption(INonterminalToken token)
         {
             return Repeat.Optional(Visit<IExpression>(token[0]));
         }

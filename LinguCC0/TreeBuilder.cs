@@ -189,17 +189,17 @@ namespace Lingu.CC
             return new UcCategory(token.Value);
         }
 
-        public override object OnTerminalStarClosure(INonterminalToken token)
+        public override object OnTerminalStar(INonterminalToken token)
         {
             return Repeat.Star(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalPlusClosure(INonterminalToken token)
+        public override object OnTerminalPlus(INonterminalToken token)
         {
             return Repeat.Plus(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalOptional(INonterminalToken token)
+        public override object OnTerminalOption(INonterminalToken token)
         {
             return Repeat.Optional(Visit<IExpression>(token[0]));
         }

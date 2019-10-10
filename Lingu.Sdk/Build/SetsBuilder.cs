@@ -317,6 +317,5 @@ namespace Lingu.Build
             Grammar.Dfas = dfas;
             Grammar.StateToDfa = stateDfas;
         }
-
     }
 }

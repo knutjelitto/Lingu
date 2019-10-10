@@ -22,9 +22,9 @@ namespace Lingu.CC
             public abstract T OnRule(INonterminalToken token);
             public abstract T OnRuleExpression(INonterminalToken token);
             public abstract T OnRuleSequence(INonterminalToken token);
-            public abstract T OnRuleOptional(INonterminalToken token);
-            public abstract T OnRuleStarClosure(INonterminalToken token);
-            public abstract T OnRulePlusClosure(INonterminalToken token);
+            public abstract T OnRuleOption(INonterminalToken token);
+            public abstract T OnRuleStar(INonterminalToken token);
+            public abstract T OnRulePlus(INonterminalToken token);
             public abstract T OnRuleDropElement(INonterminalToken token);
             public abstract T OnRulePromoteElement(INonterminalToken token);
             public abstract T OnSubRule(INonterminalToken token);
@@ -33,9 +33,9 @@ namespace Lingu.CC
             public abstract T OnTerminalExpression(INonterminalToken token);
             public abstract T OnTerminalDiff(INonterminalToken token);
             public abstract T OnTerminalSequence(INonterminalToken token);
-            public abstract T OnTerminalOptional(INonterminalToken token);
-            public abstract T OnTerminalStarClosure(INonterminalToken token);
-            public abstract T OnTerminalPlusClosure(INonterminalToken token);
+            public abstract T OnTerminalOption(INonterminalToken token);
+            public abstract T OnTerminalStar(INonterminalToken token);
+            public abstract T OnTerminalPlus(INonterminalToken token);
             public abstract T OnTerminalRangeLoop(INonterminalToken token);
             public abstract T OnRange(INonterminalToken token);
             public abstract T OnTerminalNot(INonterminalToken token);
@@ -60,9 +60,9 @@ namespace Lingu.CC
                     Id.Rule => (W)OnRule((INonterminalToken)token),
                     Id.RuleExpression => (W)OnRuleExpression((INonterminalToken)token),
                     Id.RuleSequence => (W)OnRuleSequence((INonterminalToken)token),
-                    Id.RuleOptional => (W)OnRuleOptional((INonterminalToken)token),
-                    Id.RuleStarClosure => (W)OnRuleStarClosure((INonterminalToken)token),
-                    Id.RulePlusClosure => (W)OnRulePlusClosure((INonterminalToken)token),
+                    Id.RuleOption => (W)OnRuleOption((INonterminalToken)token),
+                    Id.RuleStar => (W)OnRuleStar((INonterminalToken)token),
+                    Id.RulePlus => (W)OnRulePlus((INonterminalToken)token),
                     Id.RuleDropElement => (W)OnRuleDropElement((INonterminalToken)token),
                     Id.RulePromoteElement => (W)OnRulePromoteElement((INonterminalToken)token),
                     Id.SubRule => (W)OnSubRule((INonterminalToken)token),
@@ -71,9 +71,9 @@ namespace Lingu.CC
                     Id.TerminalExpression => (W)OnTerminalExpression((INonterminalToken)token),
                     Id.TerminalDiff => (W)OnTerminalDiff((INonterminalToken)token),
                     Id.TerminalSequence => (W)OnTerminalSequence((INonterminalToken)token),
-                    Id.TerminalOptional => (W)OnTerminalOptional((INonterminalToken)token),
-                    Id.TerminalStarClosure => (W)OnTerminalStarClosure((INonterminalToken)token),
-                    Id.TerminalPlusClosure => (W)OnTerminalPlusClosure((INonterminalToken)token),
+                    Id.TerminalOption => (W)OnTerminalOption((INonterminalToken)token),
+                    Id.TerminalStar => (W)OnTerminalStar((INonterminalToken)token),
+                    Id.TerminalPlus => (W)OnTerminalPlus((INonterminalToken)token),
                     Id.TerminalRangeLoop => (W)OnTerminalRangeLoop((INonterminalToken)token),
                     Id.Range => (W)OnRange((INonterminalToken)token),
                     Id.TerminalNot => (W)OnTerminalNot((INonterminalToken)token),
@@ -103,9 +103,9 @@ namespace Lingu.CC
             public override T OnRule(INonterminalToken token) { return Default(token); }
             public override T OnRuleExpression(INonterminalToken token) { return Default(token); }
             public override T OnRuleSequence(INonterminalToken token) { return Default(token); }
-            public override T OnRuleOptional(INonterminalToken token) { return Default(token); }
-            public override T OnRuleStarClosure(INonterminalToken token) { return Default(token); }
-            public override T OnRulePlusClosure(INonterminalToken token) { return Default(token); }
+            public override T OnRuleOption(INonterminalToken token) { return Default(token); }
+            public override T OnRuleStar(INonterminalToken token) { return Default(token); }
+            public override T OnRulePlus(INonterminalToken token) { return Default(token); }
             public override T OnRuleDropElement(INonterminalToken token) { return Default(token); }
             public override T OnRulePromoteElement(INonterminalToken token) { return Default(token); }
             public override T OnSubRule(INonterminalToken token) { return Default(token); }
@@ -114,9 +114,9 @@ namespace Lingu.CC
             public override T OnTerminalExpression(INonterminalToken token) { return Default(token); }
             public override T OnTerminalDiff(INonterminalToken token) { return Default(token); }
             public override T OnTerminalSequence(INonterminalToken token) { return Default(token); }
-            public override T OnTerminalOptional(INonterminalToken token) { return Default(token); }
-            public override T OnTerminalStarClosure(INonterminalToken token) { return Default(token); }
-            public override T OnTerminalPlusClosure(INonterminalToken token) { return Default(token); }
+            public override T OnTerminalOption(INonterminalToken token) { return Default(token); }
+            public override T OnTerminalStar(INonterminalToken token) { return Default(token); }
+            public override T OnTerminalPlus(INonterminalToken token) { return Default(token); }
             public override T OnTerminalRangeLoop(INonterminalToken token) { return Default(token); }
             public override T OnRange(INonterminalToken token) { return Default(token); }
             public override T OnTerminalNot(INonterminalToken token) { return Default(token); }
@@ -140,9 +140,9 @@ namespace Lingu.CC
             public const int Rule = 37;
             public const int RuleExpression = 38;
             public const int RuleSequence = 40;
-            public const int RuleOptional = 42;
-            public const int RuleStarClosure = 43;
-            public const int RulePlusClosure = 44;
+            public const int RuleOption = 42;
+            public const int RuleStar = 43;
+            public const int RulePlus = 44;
             public const int RuleDropElement = 46;
             public const int RulePromoteElement = 47;
             public const int SubRule = 49;
@@ -151,9 +151,9 @@ namespace Lingu.CC
             public const int TerminalExpression = 54;
             public const int TerminalDiff = 56;
             public const int TerminalSequence = 57;
-            public const int TerminalOptional = 59;
-            public const int TerminalStarClosure = 60;
-            public const int TerminalPlusClosure = 61;
+            public const int TerminalOption = 59;
+            public const int TerminalStar = 60;
+            public const int TerminalPlus = 61;
             public const int TerminalRangeLoop = 62;
             public const int Range = 63;
             public const int TerminalNot = 65;

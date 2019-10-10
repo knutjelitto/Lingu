@@ -53,21 +53,21 @@
             ;
 
         rule_repetition
-            : ^rule_optional
-            | ^rule_star_closure
-            | ^rule_plus_closure
+            : ^rule_option
+            | ^rule_star
+            | ^rule_plus
             | ^rule_tree_action
             ;
 
-        rule_optional
+        rule_option
             : rule_tree_action ,'?'
             ;
 
-        rule_star_closure
+        rule_star
             : rule_tree_action ,'*'
             ;
 
-        rule_plus_closure
+        rule_plus
             : rule_tree_action ,'+'
             ;
 
@@ -130,22 +130,22 @@
             ;
 
         terminal_repetition     
-            : ^terminal_optional
-            | ^terminal_star_closure
-            | ^terminal_plus_closure
+            : ^terminal_option
+            | ^terminal_star
+            | ^terminal_plus
             | ^terminal_range_loop
             | ^terminal_element
             ;
 
-        terminal_optional
+        terminal_option
             : terminal_element '?'
             ;
 
-        terminal_star_closure
+        terminal_star
             : terminal_element '*'
             ;
 
-        terminal_plus_closure
+        terminal_plus
             : terminal_element '+'
             ;
 
