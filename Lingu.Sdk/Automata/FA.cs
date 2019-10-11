@@ -131,10 +131,7 @@ namespace Lingu.Automata
 
             State Map(State state)
             {
-                if (state == null)
-                {
-                    return null;
-                }
+                Debug.Assert(state != null);
 
                 if (!map.TryGetValue(state, out var mapped))
                 {

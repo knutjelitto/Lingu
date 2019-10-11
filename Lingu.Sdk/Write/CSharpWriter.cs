@@ -1,5 +1,5 @@
 using System.Diagnostics;
-
+using System.Xml.Xsl;
 using Lingu.Commons;
 using Lingu.Grammars;
 using Lingu.Writers;
@@ -17,9 +17,17 @@ namespace Lingu.Write
 
         public void Write()
         {
-            WriteContext(Ctx.WithWriter());
-            WriteData(Ctx.WithWriter());
-            WriteVisitor(Ctx.WithWriter());
+            var ctx = Ctx.WithWriter();
+            WriteContext(ctx);
+            ctx.Writer.Persist(Ctx.ContextClassFile);
+
+            ctx = Ctx.WithWriter();
+            WriteData(ctx);
+            ctx.Writer.Persist(Ctx.DataSubClassFile);
+
+            ctx = Ctx.WithWriter();
+            WriteVisitor(ctx);
+            ctx.Writer.Persist(Ctx.VisitorClassFile);
         }
 
         private void WriteContext(CSharpContext ctx)
@@ -29,7 +37,7 @@ namespace Lingu.Write
                 ctx.Writer.Using("Lingu.Runtime.Structures");
                 ctx.Space();
 
-                ctx.Writer.Block($"public partial class {ctx.ContextClass}", () =>
+                ctx.Writer.Block($"public static partial class {ctx.ContextClass}", () =>
                 {
                     Debug.Assert(ctx.Grammar.Symbols != null);
 
@@ -43,7 +51,6 @@ namespace Lingu.Write
                     });
                 });
             });
-            ctx.Writer.Persist(ctx.Output.File($"{ctx.ContextClass}.cs"));
         }
 
         private void WriteData(CSharpContext ctx)
@@ -59,9 +66,9 @@ namespace Lingu.Write
                 ctx.Writer.Using("Lingu.Runtime.Structures");
                 ctx.Space();
 
-                ctx.Writer.Block($"public partial class {ctx.ContextClass}", () =>
+                ctx.Writer.Block($"public static partial class {ctx.ContextClass}", () =>
                 {
-                    ctx.Writer.Block($"public static class {ctx.DataSubClass}", () =>
+                    ctx.Writer.Block($"internal static class {ctx.DataSubClass}", () =>
                     {
                         new CSharpWriterDfaSet(ctx).Write();
                         ctx.Space();
@@ -73,24 +80,13 @@ namespace Lingu.Write
                     });
                 });
             });
-            ctx.Writer.Persist(ctx.Output.File($"{ctx.ContextClass}.{ctx.DataSubClass}.cs"));
         }
 
         private void WriteVisitor(CSharpContext ctx)
         {
-            ctx.Writer.Block($"namespace {ctx.Namespace}", () =>
-            {
-                ctx.Writer.Using("System");
-                ctx.Writer.Using("Lingu.Runtime.Structures");
-                ctx.Space();
+            new CSharpWriterVisitor(ctx).Write();
 
-                ctx.Writer.Block($"public class {ctx.VisitorClass}", () =>
-                {
-                    new CSharpWriterVisitor(ctx).Write();
-                });
-            });
-
-            ctx.Writer.Persist(ctx.Output.File($"{ctx.VisitorClass}.cs"));
+            ctx.Writer.Persist(ctx.VisitorClassFile);
         }
     }
 }

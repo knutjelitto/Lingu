@@ -19,82 +19,95 @@ namespace Lingu.Write
 
         public void Write()
         {
-            Debug.Assert(Grammar.Symbols != null);
-
-            writer.Class("public abstract class AbstractVisitor<T> where T : class", () =>
+            writer.Block($"namespace {Ctx.Namespace}", () =>
             {
-                foreach (var symbol in Grammar.Symbols)
+                writer.Using("System");
+                writer.Using("System.Diagnostics");
+                writer.Using("Lingu.Runtime.Structures");
+                Ctx.Space();
+
+                Debug.Assert(Grammar.Symbols != null);
+
+                writer.Class($"public abstract class Abstract{Ctx.VisitorClass}<T> where T : class", () =>
                 {
-                    if (VisitorIgnore(symbol))
+                    foreach (var symbol in Grammar.Symbols)
                     {
-                        continue;
+                        if (VisitorIgnore(symbol))
+                        {
+                            continue;
+                        }
+
+                        var name = Namer.ToUpperCamelCase(symbol.Name);
+                        var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
+
+                        writer.WriteLine($"protected abstract T On{name}({type} token);");
+
                     }
 
-                    var name = Namer.ToUpperCamelCase(symbol.Name);
-                    var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
+                    this.writer.WriteLine();
 
-                    writer.WriteLine($"public abstract T On{name}({type} token);");
-
-                }
-
-                this.writer.WriteLine();
-
-                writer.Block("protected W Visit<W>(IToken token) where W : T", () =>
-                {
-                    this.writer.Data("return token.Symbol.Id switch", () =>
+                    writer.Block("protected W Visit<W>(IToken token) where W : T", () =>
                     {
-                        foreach (var symbol in Grammar.Symbols)
+                        this.writer.WriteLine("Debug.Assert(token != null);");
+                        this.writer.Data("return token.Symbol.Id switch", () =>
                         {
-                            if (VisitorIgnore(symbol))
+                            foreach (var symbol in Grammar.Symbols)
                             {
-                                continue;
-                            }
+                                if (VisitorIgnore(symbol))
+                                {
+                                    continue;
+                                }
 
-                            var name = Namer.ToUpperCamelCase(symbol.Name);
-                            var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
-                            writer.WriteLine($"Id.{name} => (W)On{name}(({type})token),");
-                        }
-                        writer.WriteLine();
-                        writer.WriteLine("_ => throw new NotImplementedException(),");
+                                var name = Namer.ToUpperCamelCase(symbol.Name);
+                                var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
+                                writer.WriteLine($"{Ctx.IdClass}.{name} => (W)On{name}(({type})token),");
+                            }
+                            writer.WriteLine();
+                            writer.WriteLine("_ => throw new NotImplementedException(),");
+                        });
                     });
+
+                    this.writer.WriteLine();
+
+                    writer.WriteLine("protected abstract T DefaultOn(IToken token);");
                 });
 
-                this.writer.WriteLine();
+                writer.WriteLine();
 
-                writer.WriteLine("protected abstract T Default(IToken token);");
-            });
-
-            writer.WriteLine();
-
-            writer.Class("public abstract class Visitor<T> : AbstractVisitor<T> where T : class", () =>
-            {
-                foreach (var symbol in Grammar.Symbols)
+                writer.Class($"public abstract class {Ctx.VisitorClass}<T> : Abstract{Ctx.VisitorClass}<T> where T : class", () =>
                 {
-                    if (VisitorIgnore(symbol))
+                    foreach (var symbol in Grammar.Symbols)
                     {
-                        continue;
+                        if (VisitorIgnore(symbol))
+                        {
+                            continue;
+                        }
+
+                        var name = Namer.ToUpperCamelCase(symbol.Name);
+                        var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
+                        writer.Block($"protected override T On{name}({type} token)", () =>
+                        {
+                            this.writer.WriteLine("Debug.Assert(token != null);");
+                            this.writer.WriteLine("return DefaultOn(token);");
+                        });
                     }
+                });
 
-                    var name = Namer.ToUpperCamelCase(symbol.Name);
-                    var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
-                    writer.WriteLine($"public override T On{name}({type} token) {{ return Default(token); }}");
-                }
-            });
+                writer.WriteLine();
 
-            writer.WriteLine();
-
-            writer.Class("public class Id", () =>
-            {
-                foreach (var symbol in Grammar.Symbols)
+                writer.Class($"public static class {Ctx.IdClass}", () =>
                 {
-                    if (VisitorIgnore(symbol))
+                    foreach (var symbol in Grammar.Symbols)
                     {
-                        continue;
-                    }
+                        if (VisitorIgnore(symbol))
+                        {
+                            continue;
+                        }
 
-                    var name = Namer.ToUpperCamelCase(symbol.Name);
-                    writer.WriteLine($"public const int {name} = {symbol.Id};");
-                }
+                        var name = Namer.ToUpperCamelCase(symbol.Name);
+                        writer.WriteLine($"public const int {name} = {symbol.Id};");
+                    }
+                });
             });
         }
     }

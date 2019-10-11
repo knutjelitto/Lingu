@@ -1,5 +1,7 @@
 using System.Linq;
 
+#nullable enable
+
 namespace Lingu.Automata
 {
     public partial class FA
@@ -94,7 +96,7 @@ namespace Lingu.Automata
             {
                 var start = new State();
                 var current = start;
-                var next = (State) null;
+                var next = (State?) null;
 
                 foreach (var ch in sequence)
                 {

@@ -15,33 +15,7 @@ namespace Lingu.CC
     {
         static void Main(string[] args)
         {
-#if true
             BuildCC();
-#else
-            var bootStrap = DirRef.ProjectDir().Dir("..").Dir("Lingu.Bootstrap");
-
-            var context = Timer.Time("context", LinguContext.CreateContext);
-
-            var file = bootStrap.Dir("Grammar").File("Lingu.Grammar");
-
-            var source = Timer.Time("source", () => Source.FromFile(file));
-
-            var lexer = Timer.Time("lexer", () => new Lexer(context, source));
-
-            var parser = Timer.Time("parser", () => new Parser(context, lexer));
-
-            var parseTree = Timer.Time("parse", () => parser.Parse());
-
-            var dumpFile = bootStrap.Dir("Grammar").Dir("Out").File("Lingu.Out.NewTree");
-            var dumper = new TreeDumper(dumpFile);
-            dumper.Dump(parseTree);
-
-            var rawGrammar = Timer.Time("ast", () => new TreeBuilder().Visit(parseTree));
-
-            var builder = new Builder(rawGrammar);
-
-            var grammar = Timer.Time("build", builder.Build);
-#endif
 #if false
             Console.Write("press (almost) any key ... ");
             Console.ReadKey(true);
@@ -52,7 +26,7 @@ namespace Lingu.CC
         private static void BuildCC()
         {
             var projectDir = DirRef.ProjectDir();
-            var linguCC = projectDir.Dir("..").Dir("LinguCC");
+            var linguCC = projectDir.Up.Dir("LinguCC");
             var genDir = linguCC.Dir("Gen");
 
             Environment.CurrentDirectory = genDir;

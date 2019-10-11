@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Lingu.Commons
 {
-    public class UniqueList<T> : UniqueList<T, T>
+    public class UniqueList<T> : UniqueList<T, T> where T: notnull
     {
         public UniqueList()
             : base(item => item)
@@ -18,7 +18,7 @@ namespace Lingu.Commons
         }
     }
 
-    public class UniqueList<TKey, TValue> : IReadOnlyList<TValue>
+    public class UniqueList<TKey, TValue> : IReadOnlyList<TValue> where TKey: notnull
     {
         public UniqueList(Func<TValue, TKey> getKey)
             : this(getKey, new Dictionary<TKey, int>())

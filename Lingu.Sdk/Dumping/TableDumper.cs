@@ -1,15 +1,18 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Grammars;
 using Lingu.LR;
+using Lingu.Runtime.Parsing;
 using Lingu.Writers;
 
 namespace Lingu.Dumping
 {
     public class TableDumper
     {
-        const int shortLength = 6;
+        const int shortLength = 10;
         public TableDumper(Grammar grammar)
         {
             Grammar = grammar;
@@ -23,10 +26,10 @@ namespace Lingu.Dumping
             writer.WriteLine();
             DumpProductions(writer);
             writer.WriteLine();
-            DumpTable(writer);
+            DumpTableX(writer, new RawTabler(this));
         }
 
-        public void DumpTable(IWriter writer)
+        private static void DumpTableX(IWriter writer, Tabler tabler)
         {
             const string topLeft = "┌";
             const string topRight = "┐";
@@ -47,26 +50,26 @@ namespace Lingu.Dumping
             const string vbar = "│";
             const string vbar2 = "║";
 
-            var tCount = Grammar.PSymbols.Where(s => s is Terminal).Count();
-            var nCount = Grammar.PSymbols.Where(s => s is Nonterminal).Count();
+            var stateCount = tabler.NumberOfStates;
+            var terminalCount = tabler.NumberOfTerminals;
+            var nonterminalCount = tabler.NumberOfNonterminals;
+            var symbolCount = tabler.NumberOfSymbols;
 
             var line = new string(hBar[0], shortLength);
 
             var tLine = Short(string.Empty) +
                         topLeft +
-                        string.Join(topMid, Enumerable.Repeat(line, tCount)) +
+                        string.Join(topMid, Enumerable.Repeat(line, terminalCount)) +
                         topMid2 +
-                        string.Join(topMid, Enumerable.Repeat(line, nCount)) +
+                        string.Join(topMid, Enumerable.Repeat(line, nonterminalCount)) +
                         topRight;
             writer.WriteLine(tLine);
 
-            var lenght = (Grammar.PSymbols.Count) * (shortLength + 1) + 1;
-
             writer.Write(Short(string.Empty));
 
-            foreach (var symbol in Grammar.PSymbols)
+            foreach (var symbol in tabler.Grammar.PSymbols)
             {
-                if (symbol.Pid == tCount)
+                if (symbol.Pid == terminalCount)
                 {
                     writer.Write(vbar2);
                 }
@@ -81,22 +84,19 @@ namespace Lingu.Dumping
 
             tLine = Short(string.Empty) +
                     midLeft +
-                    string.Join(midMid, Enumerable.Repeat(line, tCount)) +
+                    string.Join(midMid, Enumerable.Repeat(line, terminalCount)) +
                     midMid2 +
-                    string.Join(midMid, Enumerable.Repeat(line, nCount)) +
+                    string.Join(midMid, Enumerable.Repeat(line, nonterminalCount)) +
                     midRight;
             writer.WriteLine(tLine);
 
-            Debug.Assert(Grammar.Table != null);
-            var table = Grammar.Table;
-
-            for (var stateNo = 0; stateNo < Grammar.LR1Sets.Count; ++stateNo)
+            for (var stateNo = 0; stateNo < stateCount; ++stateNo)
             {
                 writer.Write(Short(stateNo.ToString()));
 
-                for (var symNo = 0; symNo < Grammar.PSymbols.Count; ++ symNo)
+                for (var symNo = 0; symNo < symbolCount; ++symNo)
                 {
-                    if (symNo == tCount)
+                    if (symNo == terminalCount)
                     {
                         writer.Write(vbar2);
                     }
@@ -105,7 +105,7 @@ namespace Lingu.Dumping
                         writer.Write(vbar);
                     }
 
-                    writer.Write(Short(table[stateNo, symNo].LastOrDefault()));
+                    writer.Write(tabler.Display(stateNo, symNo));
                 }
                 writer.Write(vbar);
 
@@ -114,14 +114,59 @@ namespace Lingu.Dumping
 
             tLine = Short(string.Empty) +
                     botLeft +
-                    string.Join(botMid, Enumerable.Repeat(line, tCount)) +
+                    string.Join(botMid, Enumerable.Repeat(line, terminalCount)) +
                     botMid2 +
-                    string.Join(botMid, Enumerable.Repeat(line, nCount)) +
+                    string.Join(botMid, Enumerable.Repeat(line, nonterminalCount)) +
                     botRight;
             writer.WriteLine(tLine);
+
+            writer.WriteLine();
+            writer.WriteLine("=====================================================================================================");
+            writer.WriteLine($"table-size: {stateCount} x {symbolCount} x 2 bytes = {stateCount * symbolCount * 2} bytes");
+            writer.WriteLine("=====================================================================================================");
+
+            var u16 = tabler.Grammar.ParseTable as U16ParseTable;
+            Debug.Assert(u16 != null);
+
+            var compact = new CompactTable(u16);
         }
 
-        private string Short(string sym)
+        private abstract class Tabler
+        {
+            public Tabler(TableDumper dumper)
+            {
+                Dumper = dumper;
+            }
+            public TableDumper Dumper { get; }
+            public Grammar Grammar => Dumper.Grammar;
+
+            public abstract int NumberOfStates { get; }
+            public abstract int NumberOfTerminals { get; }
+            public abstract int NumberOfNonterminals { get; }
+            public int NumberOfSymbols => NumberOfTerminals + NumberOfNonterminals;
+            public abstract string Display(int stateNo, int symNo);
+        }
+
+        private class RawTabler : Tabler
+        {
+            public RawTabler(TableDumper dumper)
+                : base(dumper)
+            {
+                NumberOfStates = dumper.Grammar.LR1Sets.Count;
+                NumberOfTerminals = dumper.Grammar.PSymbols.Where(s => s is Terminal).Count();
+                NumberOfNonterminals = dumper.Grammar.PSymbols.Where(s => s is Nonterminal).Count();
+            }
+
+            public override int NumberOfStates { get; }
+            public override int NumberOfTerminals { get; }
+            public override int NumberOfNonterminals { get; }
+            public override string Display(int stateNo, int symNo)
+            {
+                return Short(Grammar.Table[stateNo, symNo]);
+            }
+        }
+
+        private static string Short(string sym)
         {
             if (sym.Length >= shortLength)
             {
@@ -130,25 +175,29 @@ namespace Lingu.Dumping
             return sym.PadRight(shortLength);
         }
 
-        private string Short(Symbol symbol)
+        private static string Short(Symbol symbol)
         {
             return Short(symbol.ToShort());
         }
 
-        private string Short(TableAction cell)
+        private static string Short(TableCell actions)
         {
             string s = string.Empty;
-            if (cell is Reduce reduce)
+
+            foreach (var action in actions.Distinct())
             {
-                s = $"«{reduce.Production}»";
-            }
-            else if (cell is Shift shift)
-            {
-                s = $"s{shift.State}";
-            }
-            else if (cell is Accept)
-            {
-                s = "acc";
+                if (action is Reduce reduce)
+                {
+                    s = $"{s}«{reduce.Production}»";
+                }
+                else if (action is Shift shift)
+                {
+                    s = $"{s}s{shift.State}";
+                }
+                else if (action is Accept)
+                {
+                    s = $"{s}acc";
+                }
             }
 
             return Short(s);

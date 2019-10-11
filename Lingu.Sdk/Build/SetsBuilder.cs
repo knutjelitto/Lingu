@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Lingu.Automata;
 using Lingu.Grammars;
 using Lingu.LR;
@@ -30,6 +32,8 @@ namespace Lingu.Build
             BuildLR1Sets();
             BuildLR1Table();
             BuildSimpleParseTable();
+
+            BuildDfaSets();
         }
 
         private void BuildFirstSets()
@@ -200,12 +204,9 @@ namespace Lingu.Build
             Debug.Assert(fullTable.GetLength(1) == numberOfSymbols);
 
             var table = new TableItem[numberOfStates, numberOfSymbols];
-            var terminalSets = new List<Integers>();
 
             for (var stateNo = 0; stateNo < numberOfStates; ++stateNo)
             {
-                var terminalSet = new Integers();
-
                 for (var symNo = 0; symNo < numberOfSymbols; ++symNo)
                 {
                     TableItem entry;
@@ -213,24 +214,12 @@ namespace Lingu.Build
                     {
                         case Accept _:
                             entry = TableItem.Accept;
-                            if (symNo < numberOfTerminals)
-                            {
-                                terminalSet.Add(symNo);
-                            }
                             break;
                         case Shift shift:
-                            entry = (TableItem)(shift.State << 2) | TableItem.Shift;
-                            if (symNo < numberOfTerminals)
-                            {
-                                terminalSet.Add(symNo);
-                            }
+                            entry = (TableItem) (shift.State << 2) | TableItem.Shift;
                             break;
                         case Reduce reduce:
-                            entry = (TableItem)(reduce.Production << 2) | TableItem.Reduce;
-                            if (symNo < numberOfTerminals)
-                            {
-                                terminalSet.Add(symNo);
-                            }
+                            entry = (TableItem) (reduce.Production << 2) | TableItem.Reduce;
                             break;
                         default:
                             entry = TableItem.Error;
@@ -238,69 +227,101 @@ namespace Lingu.Build
                     }
                     table[stateNo, symNo] = entry;
                 }
+            }
+
+            Grammar.ParseTable = U16ParseTable.From(table, numberOfTerminals);
+        }
+
+        private void BuildDfaSets()
+        {
+            Debug.Assert(Grammar.ParseTable != null);
+
+            var terminalSets = new List<Integers>();
+
+            for (var stateNo = 0; stateNo < Grammar.ParseTable.NumberOfStates; ++stateNo)
+            {
+                var terminalSet = new Integers();
+
+                for (var symNo = 0; symNo < Grammar.ParseTable.NumberOfTerminals; ++symNo)
+                {
+                    switch (Grammar.ParseTable[stateNo][symNo].Action)
+                    {
+                        case TableItem.Accept:
+                        case TableItem.Shift:
+                        case TableItem.Reduce:
+                            terminalSet.Add(symNo);
+                            break;
+                    }
+                }
 
                 Debug.Assert(!terminalSet.IsEmpty);
                 terminalSets.Add(terminalSet);
             }
 
-            Grammar.ParseTable = U16ParseTable.From(table, numberOfTerminals);
-
-            BuildDfaSets(terminalSets);
-        }
-
-        private void BuildDfaSets(IEnumerable<Integers> terminalSets)
-        {
+            var ts = new List<(Terminal terminal, int index)>(Grammar.Terminals.Where(t => t.IsPid).Select((t, i) => (t, i)));
             var terminals = Grammar.Terminals.Where(t => t.IsPid).ToList();
-            var terminalDfas = new List<FA>();
-            for (var i = 0; i < terminals.Count; ++i)
+            var tDfas = Enumerable.Repeat((FA?) null, terminals.Count).ToArray();
+
+            var result = Parallel.ForEach(ts, x =>
             {
-                var terminal = terminals[i];
+                var terminal = x.terminal;
+                var index = x.index;
                 var fa = terminal.Raw.Expression.GetFA();
                 fa = fa.ToDfa();
                 fa = fa.Minimize();
                 fa = fa.RemoveDead();
-
+  
                 foreach (var state in fa.Finals)
                 {
                     state.SetPayload(terminal.Id);
                 }
+                tDfas[index] = fa;
+            });
 
-                terminalDfas.Add(fa);
-            }
+            Debug.Assert(result.IsCompleted);
 
+            var terminalDfas = new List<FA>(tDfas.Select(x => x ?? throw new InvalidOperationException()));
             var already = new Dictionary<Integers, int>();
-            var dfas = new List<FA>();
             var stateDfas = new List<int>();
 
             foreach (var terminalSet in terminalSets)
             {
                 Debug.Assert(!terminalSet.IsEmpty);
-                
+
                 if (!already.TryGetValue(terminalSet, out var index))
                 {
-                    index = dfas.Count;
+                    index = already.Count;
 
-                    already.Add(terminalSet, dfas.Count);
+                    already.Add(terminalSet, already.Count);
 
-                    FA dfa;
-                    if (terminalSet.Cardinality == 1)
-                    {
-                        dfa = terminalDfas[terminalSet.Single()].RemoveDead().Clone();
-                    }
-                    else
-                    {
-                        dfa = Combine(terminalSet.Select(i => terminalDfas[i]));
-                    }
-
-                    var finals = dfa.Finals.Select(s => s.Payload).Distinct().OrderBy(p => p).ToList();
-                    var numbers = terminalSet.Distinct().OrderBy(p => p).ToList();
-                    Debug.Assert(finals.SequenceEqual(numbers));
-                    
-                    dfas.Add(dfa);
                 }
 
                 stateDfas.Add(index);
             }
+
+            var dfas = Enumerable.Repeat((FA?) null, already.Count).ToArray();
+
+            var loop = Parallel.ForEach(already, kv =>
+            {
+                var terminalSet = kv.Key;
+                var index = kv.Value;
+
+                FA dfa;
+                if (terminalSet.Cardinality == 1)
+                {
+                    dfa = terminalDfas[terminalSet.Single()].Clone().RemoveDead();
+                }
+                else
+                {
+                    dfa = Combine(terminalSet.Select(i => terminalDfas[i]));
+                }
+
+                var finals = dfa.Finals.Select(s => s.Payload).Distinct().OrderBy(p => p).ToList();
+                var numbers = terminalSet.Distinct().OrderBy(p => p).ToList();
+                Debug.Assert(finals.SequenceEqual(numbers));
+
+                dfas[index] = dfa;
+            });
 
             FA Combine(IEnumerable<FA> fas)
             {
@@ -312,9 +333,10 @@ namespace Lingu.Build
                 return combined;
             }
 
+            Debug.Assert(loop.IsCompleted);
             Debug.Assert(Grammar.Table != null);
             Debug.Assert(stateDfas.Count == Grammar.Table.GetLength(0));
-            Grammar.Dfas = dfas;
+            Grammar.Dfas = dfas.Select(dfa => dfa ?? throw new InvalidOperationException()).ToArray();
             Grammar.StateToDfa = stateDfas;
         }
     }

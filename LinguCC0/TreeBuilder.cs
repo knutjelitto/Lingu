@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 using Lingu.Grammars;
 using Lingu.Runtime.Structures;
 using Lingu.Tree;
 
+#nullable enable
+
 namespace Lingu.CC
 {
-    public class TreeBuilder : LinguVisitor.Visitor<object>
+    public class TreeBuilder : LinguVisitor<object>
     {
-        protected override object Default(IToken token)
+        protected override object DefaultOn(IToken token)
         {
             throw new NotImplementedException();
 
@@ -22,13 +25,17 @@ namespace Lingu.CC
             return Visit<RawGrammar>(root);
         }
 
-        public override object OnFile(INonterminalToken token)
+        protected override object OnFile(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return Visit<RawGrammar>(token[0]);
         }
 
-        public override object OnAngrammar(INonterminalToken token)
+        protected override object OnAngrammar(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             Debug.Assert(token[0].Symbol == LinguContext.Data.identifier);
             var grammar = new RawGrammar(token.Terminal(0).Value);
 
@@ -43,28 +50,38 @@ namespace Lingu.CC
             return grammar;
         }
 
-        public override object OnGrammarOptions(INonterminalToken token)
+        protected override object OnGrammarOptions(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return token.Nonterminal(0).Children.Select(Visit<Option>).ToArray();
         }
 
-        public override object OnOption(INonterminalToken token)
+        protected override object OnOption(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Option(token.Terminal(0).Value, token.Terminal(1).Value);
         }
 
-        public override object OnGrammarRules(INonterminalToken token)
+        protected override object OnGrammarRules(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return token.Nonterminal(0).Children.Select(Visit<NonterminalRule>).ToArray();
         }
 
-        public override object OnRule(INonterminalToken token)
+        protected override object OnRule(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return NonterminalRule.From(token.Terminal(0).Value, false, Visit<IExpression>(token[1]));
         }
 
-        public override object OnRuleExpression(INonterminalToken token)
+        protected override object OnRuleExpression(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             var expression = Visit<IExpression>(token[0]);
 
             var children = token.Nonterminal(1).Children;
@@ -82,8 +99,10 @@ namespace Lingu.CC
             return expression;
         }
 
-        public override object OnRuleSequence(INonterminalToken token)
+        protected override object OnRuleSequence(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             var children = token.Nonterminal(0).Children;
             var expressions = children.Select(Visit<IExpression>).ToArray();
             if (expressions.Length > 1)
@@ -94,28 +113,38 @@ namespace Lingu.CC
             return expressions[0];
         }
 
-        public override object OnIdentifier(ITerminalToken token)
+        protected override object OnIdentifier(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Name(token.Value);
         }
 
-        public override object OnRuleDrop(INonterminalToken token)
+        protected override object OnRuleDrop(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Drop(Visit<IExpression>(token[0]));
         }
 
-        public override object OnRulePromote(INonterminalToken token)
+        protected override object OnRulePromote(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Promote(Visit<IExpression>(token[0]));
         }
 
-        public override object OnText(ITerminalToken token)
+        protected override object OnText(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Tree.String(token.Value);
         }
 
-        public override object OnRuleStar(INonterminalToken token)
+        protected override object OnRuleStar(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             if (token.Count == 2)
             {
                 return RepeatList.Star(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
@@ -123,8 +152,10 @@ namespace Lingu.CC
             return Repeat.Star(Visit<IExpression>(token[0]));
         }
 
-        public override object OnRulePlus(INonterminalToken token)
+        protected override object OnRulePlus(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             if (token.Count == 2)
             {
                 return RepeatList.Plus(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
@@ -132,23 +163,31 @@ namespace Lingu.CC
             return Repeat.Plus(Visit<IExpression>(token[0]));
         }
 
-        public override object OnRuleOption(INonterminalToken token)
+        protected override object OnRuleOption(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return Repeat.Optional(Visit<IExpression>(token[0]));
         }
 
-        public override object OnGrammarTerminals(INonterminalToken token)
+        protected override object OnGrammarTerminals(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return token.Nonterminal(0).Children.Select(Visit<TerminalRule>).ToArray();
         }
 
-        public override object OnTerminalRule(INonterminalToken token)
+        protected override object OnTerminalRule(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return TerminalRule.From(token.Terminal(0).Value, Visit<IExpression>(token[1]));
         }
 
-        public override object OnTerminalExpression(INonterminalToken token)
+        protected override object OnTerminalExpression(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             var expressions = new List<IExpression>() { Visit<IExpression>(token[0]) };
 
             var children = token.Nonterminal(1).Children;
@@ -163,8 +202,10 @@ namespace Lingu.CC
             return expressions[0];
         }
 
-        public override object OnTerminalSequence(INonterminalToken token)
+        protected override object OnTerminalSequence(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             var children = token.Nonterminal(0).Children;
             var expressions = children.Select(Visit<IExpression>).ToArray();
             if (expressions.Length > 1)
@@ -175,52 +216,73 @@ namespace Lingu.CC
             return expressions[0];
         }
 
-        public override object OnUcCodepoint(ITerminalToken token)
+        protected override object OnUcCodepoint(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new UcCodepoint(token.Value);
         }
-        public override object OnUcBlock(ITerminalToken token)
+
+        protected override object OnUcBlock(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new UcBlock(token.Value);
         }
 
-        public override object OnUcCategory(ITerminalToken token)
+        protected override object OnUcCategory(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new UcCategory(token.Value);
         }
 
-        public override object OnTerminalStar(INonterminalToken token)
+        protected override object OnTerminalStar(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return Repeat.Star(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalPlus(INonterminalToken token)
+        protected override object OnTerminalPlus(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return Repeat.Plus(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalOption(INonterminalToken token)
+        protected override object OnTerminalOption(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return Repeat.Optional(Visit<IExpression>(token[0]));
         }
 
-        public override object OnTerminalDiff(INonterminalToken token)
+        protected override object OnTerminalDiff(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Difference(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
         }
 
-        public override object OnAny(ITerminalToken token)
+        protected override object OnAny(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Any();
         }
 
-        public override object OnCharacterRange(INonterminalToken token)
+        protected override object OnCharacterRange(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Tree.Range(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
         }
 
-        public override object OnTerminalRangeLoop(INonterminalToken token)
+        protected override object OnTerminalRangeLoop(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             var expression = Visit<IExpression>(token[0]);
 
             var range = token.Nonterminal(1).Children;
@@ -239,23 +301,30 @@ namespace Lingu.CC
             return Repeat.From(expression, x1.Value, x2.Value);
         }
 
-        public override object OnNumber(ITerminalToken token)
+        protected override object OnNumber(ITerminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Integer(token.Value);
         }
 
-        public override object OnSubRule(INonterminalToken token)
+        protected override object OnSubRule(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new SubRule(Visit<Name>(token[0]), Visit<IExpression>(token[1]));
         }
 
-        public override object OnTerminalNot(INonterminalToken token)
+        protected override object OnTerminalNot(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+
             return new Not(Visit<IExpression>(token[0]));
         }
 
-        public override object OnRange(INonterminalToken token)
+        protected override object OnRange(INonterminalToken token)
         {
+            if (token == null) throw new ArgumentNullException(nameof(token));
             throw new NotSupportedException();
         }
 

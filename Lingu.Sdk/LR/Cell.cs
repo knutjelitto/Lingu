@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -31,10 +32,22 @@ namespace Lingu.LR
 
     public class Accept : TableAction
     {
+        public override bool Equals(object? obj)
+        {
+            return obj is Accept;
+        }
+
+        public override int GetHashCode() => 2;
     }
 
     public class Error : TableAction
     {
+        public override bool Equals(object? obj)
+        {
+            return obj is Error;
+        }
+
+        public override int GetHashCode() => 1;
     }
 
     public class Shift : TableAction 
@@ -45,6 +58,16 @@ namespace Lingu.LR
         }
 
         public int State { get; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Shift other && State == other.State;
+        }
+
+        public override int GetHashCode()
+        {
+            return State.GetHashCode();
+        }
     }
 
     public class Reduce : TableAction
@@ -55,5 +78,15 @@ namespace Lingu.LR
         }
 
         public int Production { get; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Reduce other && Production == other.Production;
+        }
+
+        public override int GetHashCode()
+        {
+            return Production.GetHashCode();
+        }
     }
 }

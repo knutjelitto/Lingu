@@ -23,8 +23,12 @@ namespace Lingu.Write
         public CsWriter Writer { get; }
 
         public string ContextClass => $"{Grammar.Name}Context";
+        public FileRef ContextClassFile => Output.File(ContextClass).Add(".cs");
         public string VisitorClass => $"{Grammar.Name}Visitor";
+        public FileRef VisitorClassFile => Output.File(VisitorClass).Add(".cs");
+        public string IdClass => $"{Grammar.Name}Id";
         public string DataSubClass => "Data";
+        public FileRef DataSubClassFile => Output.File($"{ContextClass}.{DataSubClass}").Add(".cs");
 
         public CSharpContext With(CsWriter writer)
         {
@@ -33,7 +37,7 @@ namespace Lingu.Write
 
         public CSharpContext WithWriter()
         {
-            return new CSharpContext(Grammar, Namespace, Output, new CsWriter());
+            return With(new CsWriter());
         }
 
         public void Space()

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Lingu.Commons
 {
-    public class UniqueQueue<T>
+    public class UniqueQueue<T> where T : notnull
     {
         private readonly Dictionary<T, T> set;
         private readonly Queue<T> queue;

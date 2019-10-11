@@ -5,9 +5,9 @@ namespace Lingu.Runtime.Parsing
     public enum TableItem : ushort
     {
         Error = 0,
-        Shift = 1,
-        Reduce = 2,
-        Accept = 3,
+        Accept = 1,
+        Shift = 2,
+        Reduce = 3,
         ActionBits = 3,
     }
 }

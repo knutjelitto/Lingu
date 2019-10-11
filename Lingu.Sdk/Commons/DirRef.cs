@@ -29,6 +29,7 @@ namespace Lingu.Commons
             return From(IOPath.Combine(Path, dirName).Replace("\\", "/"));
         }
 
+        public DirRef Up => From(Directory);
 
         public static DirRef From(string name)
         {
