@@ -1,8 +1,5 @@
 using Lingu.Grammars;
-using Lingu.Writers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Lingu.Output;
 
 namespace Lingu.Dumping
 {

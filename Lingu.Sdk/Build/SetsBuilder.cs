@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Lingu.Automata;
 using Lingu.Grammars;
 using Lingu.LR;
@@ -31,8 +32,8 @@ namespace Lingu.Build
 
             BuildLR1Sets();
             BuildLR1Table();
-            BuildSimpleParseTable();
 
+            BuildSimpleParseTable();
             BuildDfaSets();
         }
 
@@ -248,7 +249,7 @@ namespace Lingu.Build
 
             var ts = new List<(Terminal terminal, int index)>(Grammar.Terminals.Where(t => t.IsPid).Select((t, i) => (t, i)));
             var terminals = Grammar.Terminals.Where(t => t.IsPid).ToList();
-            var tDfas = Enumerable.Repeat((FA?) null, terminals.Count).ToArray();
+            var tDfas = Enumerable.Repeat(FA.None(), terminals.Count).ToArray();
 
             var result = Parallel.ForEach(ts, x =>
             {
@@ -268,7 +269,7 @@ namespace Lingu.Build
 
             Debug.Assert(result.IsCompleted);
 
-            var terminalDfas = new List<FA>(tDfas.Select(x => x ?? throw new InvalidOperationException()));
+            var terminalDfas = tDfas.ToList();
             var already = new Dictionary<Integers, int>();
             var stateDfas = new List<int>();
 
@@ -287,9 +288,9 @@ namespace Lingu.Build
                 stateDfas.Add(index);
             }
 
-            var dfas = Enumerable.Repeat((FA?) null, already.Count).ToArray();
+            var dfas = Enumerable.Repeat(FA.None(), already.Count).ToArray();
 
-            var loop = Parallel.ForEach(already, kv =>
+            result = Parallel.ForEach(already, kv =>
             {
                 var terminalSet = kv.Key;
                 var index = kv.Value;
@@ -321,10 +322,11 @@ namespace Lingu.Build
                 return combined;
             }
 
-            Debug.Assert(loop.IsCompleted);
+            Debug.Assert(result.IsCompleted);
             Debug.Assert(Grammar.Table != null);
             Debug.Assert(stateDfas.Count == Grammar.Table.GetLength(0));
-            Grammar.Dfas = dfas.Select(dfa => dfa ?? throw new InvalidOperationException()).ToArray();
+
+            Grammar.Dfas = dfas.ToArray();
             Grammar.StateToDfa = stateDfas;
         }
     }

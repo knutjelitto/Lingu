@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 
 using Lingu.Grammars;
-using Lingu.Runtime.Structures;
 using Lingu.Tree;
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 

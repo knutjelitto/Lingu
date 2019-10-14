@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
+using Lingu.Runtime.Lexing;
 
-namespace Lingu.Runtime.Lexing
+namespace Lingu.Runtime.Commons
 {
     public class DfaReader : ByteReader
     {

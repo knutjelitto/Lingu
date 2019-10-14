@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Lingu.Commons;
 using Lingu.Grammars;
-using Lingu.Writers;
+using Lingu.Output;
+using Lingu.Runtime.Structures;
 
-namespace Lingu.Write
+namespace Lingu.CSharpWrite
 {
     public class CSharpContext
     {
@@ -29,6 +27,9 @@ namespace Lingu.Write
         public string IdClass => $"{Grammar.Name}Id";
         public string DataSubClass => "Data";
         public FileRef DataSubClassFile => Output.File($"{ContextClass}.{DataSubClass}").Add(".cs");
+
+        public string ParseTableType => nameof(IParseTable);
+        public string DfaSetType => nameof(IDfaSet);
 
         public CSharpContext With(CsWriter writer)
         {

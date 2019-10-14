@@ -1,10 +1,11 @@
-using Lingu.Commons;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace Lingu.Writers
+using Lingu.Commons;
+
+namespace Lingu.Output
 {
     public class IndentWriter : IWriter
     {

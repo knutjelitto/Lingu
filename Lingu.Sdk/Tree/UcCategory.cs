@@ -1,7 +1,7 @@
 using System;
 
 using Lingu.Automata;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Tree
 {

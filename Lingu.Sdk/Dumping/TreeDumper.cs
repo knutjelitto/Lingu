@@ -1,6 +1,6 @@
 using Lingu.Commons;
+using Lingu.Output;
 using Lingu.Runtime.Structures;
-using Lingu.Writers;
 
 namespace Lingu.Dumping
 {

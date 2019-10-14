@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
 using Lingu.Commons;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Hime
 {

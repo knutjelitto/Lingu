@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-using Lingu.Grammars;
-
 #nullable enable
 
 namespace Lingu.Grammars

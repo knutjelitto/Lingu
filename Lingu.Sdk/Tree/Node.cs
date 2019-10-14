@@ -1,5 +1,5 @@
 using Lingu.Grammars;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Tree
 {

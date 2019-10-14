@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 using Lingu.Grammars;
@@ -145,10 +144,6 @@ namespace Lingu.CC
         {
             if (token == null) throw new ArgumentNullException(nameof(token));
 
-            if (token.Count == 2)
-            {
-                return RepeatList.Star(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
-            }
             return Repeat.Star(Visit<IExpression>(token[0]));
         }
 
@@ -156,10 +151,6 @@ namespace Lingu.CC
         {
             if (token == null) throw new ArgumentNullException(nameof(token));
 
-            if (token.Count == 2)
-            {
-                return RepeatList.Plus(Visit<IExpression>(token[0]), Visit<IExpression>(token[1]));
-            }
             return Repeat.Plus(Visit<IExpression>(token[0]));
         }
 

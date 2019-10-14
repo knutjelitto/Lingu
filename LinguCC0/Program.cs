@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using Lingu.Build;
 using Lingu.Commons;
 using Lingu.Dumping;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
 using Lingu.Runtime.Sources;
-using Lingu.Tree;
 using Lingu.Write;
 
 namespace Lingu.CC

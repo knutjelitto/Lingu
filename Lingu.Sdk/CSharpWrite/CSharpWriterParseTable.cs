@@ -1,16 +1,14 @@
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
+
 using Lingu.Grammars;
-using Lingu.Runtime.Commons;
 using Lingu.Runtime.Structures;
-using Lingu.Writers;
-using BinWriter = Lingu.Commons.BinWriter;
+using Lingu.Output;
 
 #nullable enable
 
-namespace Lingu.Write
+namespace Lingu.CSharpWrite
 {
     public class CSharpWriterParseTable : CSharpWriterTools
     {
@@ -24,14 +22,25 @@ namespace Lingu.Write
 
         public void Write()
         {
-            writer.Block($"public static ITable CreateParseTable()", () =>
+            writer.Block($"public static {Ctx.ParseTableType} CreateParseTable()", () =>
             {
                 Debug.Assert(Grammar.ParseTable != null);
 
                 writer.WriteLine();
                 writer.Data("ushort[] u16Table = ", () =>
                 {
-                    WriteExtend(writer, (Grammar.ParseTable as IParseTable).ReallyAll.Select(entry => (entry.ToString() ?? string.Empty)));
+                    WriteExtend(writer, EnumAll(Grammar.ParseTable as IParseTable));
+
+                    IEnumerable<string> EnumAll(IParseTable table)
+                    {
+                        for (var stateNo = 0; stateNo < table.NumberOfStates; ++stateNo)
+                        {
+                            for (var symNo = 0; symNo < table.NumberOfSymbols; ++symNo)
+                            {
+                                yield return table[stateNo, symNo].ToString() ?? string.Empty;
+                            }
+                        }
+                    }
                 });
 
                 writer.WriteLine();

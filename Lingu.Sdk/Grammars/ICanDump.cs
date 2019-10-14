@@ -1,4 +1,4 @@
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 

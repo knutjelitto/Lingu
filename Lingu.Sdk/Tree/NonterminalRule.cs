@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Lingu.Grammars;
-using Lingu.Runtime.Structures;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Tree
 {

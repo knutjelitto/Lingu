@@ -1,4 +1,5 @@
-﻿using System.IO;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Lingu.Commons
 {
@@ -19,6 +20,13 @@ namespace Lingu.Commons
         public void Write(int value)
         {
             Write7BitEncodedInt(value);
+        }
+        public void Write(IEnumerable<int> intse)
+        {
+            foreach (var i in intse)
+            {
+                Write(i);
+            }
         }
 
         public void Write(bool value)

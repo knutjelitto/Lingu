@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Lingu.Automata;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Tree
 {

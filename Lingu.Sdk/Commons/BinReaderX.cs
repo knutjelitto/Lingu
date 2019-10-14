@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Lingu.Commons
 {
-    public class BinReader
+    public class BinReaderX
     {
         private readonly byte[] bytes;
         private int offset;
 
-        public BinReader(byte[] bytes)
+        public BinReaderX(byte[] bytes)
         {
             this.bytes = bytes;
             offset = 0;

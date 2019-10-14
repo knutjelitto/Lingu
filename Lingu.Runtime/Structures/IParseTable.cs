@@ -7,24 +7,11 @@ namespace Lingu.Runtime.Structures
     {
         IState this[int stateNo] { get; }
 
-        IStateItem this[int stateNo, int symNo] => this[stateNo][symNo];
+        IStateItem this[int stateNo, int symNo] { get; }
 
         int NumberOfStates { get; }
         int NumberOfTerminals { get; }
         int NumberOfSymbols { get; }
-
-        IEnumerable<IStateItem> ReallyAll
-        {
-            get
-            {
-                for (var stateNo = 0; stateNo < NumberOfStates; ++stateNo)
-                {
-                    for (var symNo = 0; symNo < NumberOfSymbols; ++symNo)
-                    {
-                        yield return this[stateNo, symNo];
-                    }
-                }
-            }
-        }
+        int NumberOfNonterminals => NumberOfSymbols - NumberOfTerminals;
     }
 }

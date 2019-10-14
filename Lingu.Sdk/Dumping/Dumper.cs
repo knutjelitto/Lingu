@@ -2,7 +2,7 @@ using System.IO;
 
 using Lingu.Commons;
 using Lingu.Grammars;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Dumping
 {

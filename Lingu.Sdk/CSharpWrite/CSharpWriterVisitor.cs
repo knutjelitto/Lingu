@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using Lingu.Commons;
 using Lingu.Grammars;
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 
-namespace Lingu.Write
+namespace Lingu.CSharpWrite
 {
     public class CSharpWriterVisitor : CSharpWriterTools
     {

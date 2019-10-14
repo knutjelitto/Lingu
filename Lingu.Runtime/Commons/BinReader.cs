@@ -27,6 +27,18 @@ namespace Lingu.Runtime.Commons
             return Read7BitEncodedInt();
         }
 
+        public int[] ReadInt32Array()
+        {
+            var count = ReadInt32();
+            var intes = new int[count];
+            for (var i = 0; i < count; ++i)
+            {
+                intes[i] = ReadInt32();
+            }
+
+            return intes;
+        }
+
         public byte ReadByte()
         {
             return bytes[offset++];

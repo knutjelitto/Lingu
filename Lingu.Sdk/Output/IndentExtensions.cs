@@ -1,6 +1,8 @@
 using System;
 
-namespace Lingu.Writers
+#nullable enable
+
+namespace Lingu.Output
 {
     public static class IndentExtensions
     {

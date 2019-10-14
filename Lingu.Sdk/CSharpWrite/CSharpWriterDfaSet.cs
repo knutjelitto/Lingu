@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Automata;
+using Lingu.Build;
 using Lingu.Commons;
 using Lingu.Grammars;
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 
-namespace Lingu.Write
+namespace Lingu.CSharpWrite
 {
     public class CSharpWriterDfaSet : CSharpWriterTools
     {
@@ -24,14 +25,31 @@ namespace Lingu.Write
 
         public void Write()
         {
+            writer.Block($"public static {Ctx.DfaSetType} CreateDfaSet()", () =>
+            {
+                var compact = new CompactDfaWriter(Grammar);
+
+                var bytes = compact.Write();
+
+                writer.Data("var bytes = new byte[]", () =>
+                {
+                    WriteExtend(writer, bytes.Select(b => b.ToString()));
+                });
+
+                writer.WriteLine();
+                
+                writer.WriteLine($"return new CompactDfaReader(new BinReader(bytes)).Read();");
+            });
+
+#if false
             var (dfas, sets) = Prepare();
 
-            writer.Block($"public static IDfaSet CreateDfaSet()", () =>
+            writer.Block($"public static {Ctx.DfaSetType} CreateDfaSet()", () =>
             {
                 WriteMap("int[] map = ");
                 writer.WriteLine();
 
-                WriteSets("Set[] sets = ", dfas, sets);
+                WriteSets("Set[] sets = ", sets);
                 writer.WriteLine();
 
                 var numWidth = (int)Math.Log10(sets.Count) + 2;
@@ -44,7 +62,7 @@ namespace Lingu.Write
                     var terminals = PPTerminalsInDfa(dfa);
 
                     writer.WriteLine($"/* dfa{d.ToString().PadLeft(numWidth)} -- {terminals} -- */");
-                    
+
                     var states = string.Join(", ", dfa.States.Select(s => $"new DfaState({s.Id},{Bool(s.Final)},{s.Payload})"));
                     states = $"new DfaState[{dfa.States.Count}] {{{states}}}";
                     writer.WriteLine($"var states{d} = {states};");
@@ -65,7 +83,7 @@ namespace Lingu.Write
                         }
                         writer.WriteLine($"states{d}[{s}].Transitions = {transitions};");
                     }
-                    
+
                     writer.WriteLine();
                 }
 
@@ -77,8 +95,10 @@ namespace Lingu.Write
                 writer.WriteLine();
                 writer.WriteLine($"return new DfaSet(dfas, map, dfas.Last());");
             });
+#endif
         }
 
+#if false
         private string PPTerminalsInDfa(FA dfa)
         {
             Debug.Assert(Grammar.Symbols != null);
@@ -86,7 +106,9 @@ namespace Lingu.Write
 
             return string.Join(" | ", terminals);
         }
+#endif
 
+#if false
         private (List<FA> dfas, UniqueList<Integers> sets) Prepare()
         {
             Debug.Assert(Grammar.Dfas != null);
@@ -110,7 +132,9 @@ namespace Lingu.Write
 
             return (dfas, sets);
         }
+#endif
 
+#if false
         private void WriteMap(string head)
         {
             Debug.Assert(Grammar.StateToDfa != null);
@@ -119,10 +143,11 @@ namespace Lingu.Write
                 WriteExtend(writer, Grammar.StateToDfa.Select(i => i.ToString()));
             });
         }
+#endif
 
-        private void WriteSets(string head, IReadOnlyList<FA> dfas, UniqueList<Integers> sets)
+#if false
+        private void WriteSets(string head, UniqueList<Integers> sets)
         {
-
             writer.Data(head, () =>
             {
                 var numWidth = (int)Math.Log10(sets.Count) + 2;
@@ -135,5 +160,6 @@ namespace Lingu.Write
                 }
             });
         }
+#endif
     }
 }

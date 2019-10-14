@@ -222,52 +222,6 @@ namespace Lingu.Build
                         }
                     }
                     break;
-                case RepeatList list:
-                    {
-                        switch (list.Kind)
-                        {
-                            case RepeatKind.StarList:
-                                {
-                                    var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
-                                    {
-                                        IsGenerated = true,
-                                        Repeat = list.Kind
-                                    };
-
-                                    var symbols = BuildSymbols(list.Expression).ToList();
-                                    var separators = BuildSymbols(list.Separator).ToList();
-                                    nonterminal.AddProductions(
-                                        Single(new ProdSymbol(nonterminal)).Concat(separators).Concat(symbols),
-                                        symbols,
-                                        Enumerable.Empty<ProdSymbol>()
-                                    );
-
-                                    NewNonterminal(nonterminal);
-                                    yield return new ProdSymbol(nonterminal);
-                                }
-                                break;
-                            case RepeatKind.PlusList:
-                                {
-                                    var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
-                                    {
-                                        IsGenerated = true,
-                                        Repeat = list.Kind
-                                    };
-
-                                    var symbols = BuildSymbols(list.Expression).ToList();
-                                    var separators = BuildSymbols(list.Separator).ToList();
-                                    nonterminal.AddProductions(
-                                        Single(new ProdSymbol(nonterminal)).Concat(separators).Concat(symbols),
-                                        symbols
-                                    );
-
-                                    NewNonterminal(nonterminal);
-                                    yield return new ProdSymbol(nonterminal);
-                                }
-                                break;
-                        }
-                    }
-                    break;
                 case SubRule subRule:
                     {
                         var nonterminal = new Nonterminal(subRule.Name.Text)

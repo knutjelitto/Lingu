@@ -2,7 +2,7 @@ using System.Globalization;
 
 using Lingu.Automata;
 using Lingu.Errors;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Tree
 {

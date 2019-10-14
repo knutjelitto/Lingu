@@ -1,9 +1,8 @@
 using System.Linq;
 
 using Lingu.Automata;
-using Lingu.Commons;
 using Lingu.Runtime.Commons;
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 

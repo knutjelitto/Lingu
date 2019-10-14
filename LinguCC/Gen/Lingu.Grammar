@@ -41,7 +41,7 @@
             ;
 
         rule_expression
-            : rule_alternative *: '|'
+            : rule_alternative ('|' rule_alternative)*
             ;
 
         rule_alternative

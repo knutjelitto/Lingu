@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
-using Lingu.Automata;
 using Lingu.Errors;
 using Lingu.Grammars;
 using Lingu.Tree;

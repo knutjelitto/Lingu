@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Lingu.Writers
+#nullable enable
+
+namespace Lingu.Output
 {
     public class CsWriter : IndentWriter
     {

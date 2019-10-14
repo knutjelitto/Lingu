@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using Lingu.Automata;
-using Lingu.Grammars;
 using Lingu.Runtime.Structures;
-using Lingu.Writers;
+using Lingu.Output;
 
 namespace Lingu.Tree
 {

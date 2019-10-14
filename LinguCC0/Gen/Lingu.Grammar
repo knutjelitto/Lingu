@@ -65,12 +65,10 @@
 
         rule_star
             : rule_tree_action ,'*'
-            | rule_tree_action ,'*:' terminal_element
             ;
 
         rule_plus
             : rule_tree_action ,'+'
-            | rule_tree_action ,'+:' terminal_element
             ;
 
         rule_tree_action

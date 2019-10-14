@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
 using Lingu.Grammars;
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 
-namespace Lingu.Write
+namespace Lingu.CSharpWrite
 {
     public class CSharpWriterTools
     {

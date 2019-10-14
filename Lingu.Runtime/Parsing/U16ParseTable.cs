@@ -33,6 +33,8 @@ namespace Lingu.Runtime.Parsing
 
         public override IState this[int stateNo] => Table[stateNo];
 
+        public override IStateItem this[int stateNo, int symNo] => this[stateNo][symNo];
+
         public static U16ParseTable From(TableItem[,] table, int numberOfTerminals)
         {
             var ushorts = new ushort[table.GetLength(0) * table.GetLength(1)];

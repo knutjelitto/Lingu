@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Lingu.Writers
+namespace Lingu.Output
 {
     public class TextIWriter : IWriter
     {

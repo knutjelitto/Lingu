@@ -5,9 +5,7 @@ namespace Lingu.Runtime.Structures
         None,
         Optional,
         Star,
-        StarList,
         Plus,
-        PlusList,
         Special,
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using Lingu.Grammars;
 using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Structures;
-using Lingu.Writers;
+using Lingu.Output;
 
 #nullable enable
 
-namespace Lingu.Write
+namespace Lingu.CSharpWrite
 {
     public class CSharpWriterSymbols : CSharpWriterTools
     {

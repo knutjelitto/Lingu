@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Lingu.Runtime.Lexing
+namespace Lingu.Runtime.Commons
 {
     public abstract class ByteReader
     {

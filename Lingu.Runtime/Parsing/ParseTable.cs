@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Lingu.Runtime.Concretes;
-using Lingu.Runtime.Structures;
+﻿using Lingu.Runtime.Structures;
+
+#nullable enable
 
 namespace Lingu.Runtime.Parsing
 {
@@ -14,6 +14,7 @@ namespace Lingu.Runtime.Parsing
         }
 
         public abstract IState this[int stateNo] { get; }
+        public abstract IStateItem this[int stateNo, int symNo] { get; }
 
         public int NumberOfStates { get; }
         public int NumberOfTerminals { get; }

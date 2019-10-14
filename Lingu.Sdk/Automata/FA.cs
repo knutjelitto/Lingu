@@ -1,9 +1,11 @@
-using Lingu.Runtime.Lexing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+
+using Lingu.Runtime.Commons;
+using Lingu.Runtime.Lexing;
 
 namespace Lingu.Automata
 {
