@@ -8,7 +8,7 @@ namespace Lingu.Runtime.Parsing
 {
     public class U16ParseTable : ParseTable
     {
-        private U16ParseTable(IReadOnlyList<IState> table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
+        private U16ParseTable(IReadOnlyList<SimpleState> table, int numberOfStates, int numberOfTerminals, int numberOfSymbols)
             : base(numberOfStates, numberOfTerminals, numberOfSymbols)
         {
             Table = table;
@@ -18,7 +18,7 @@ namespace Lingu.Runtime.Parsing
         {
             var num = numberOfStates * numberOfSymbols;
 
-            var states = new List<IState>();
+            var states = new List<SimpleState>();
 
             for (var offset = 0; offset < table.Length; offset += numberOfSymbols)
             {
@@ -48,20 +48,6 @@ namespace Lingu.Runtime.Parsing
             return From(ushorts, table.GetLength(0), numberOfTerminals, table.GetLength(1));
         }
 
-        private IReadOnlyList<IState> Table { get; }
-
-        public override IEnumerable<IStateItem> ReallyAll
-        {
-            get
-            {
-                foreach (var state in Table)
-                {
-                    foreach (var item in state.All)
-                    {
-                        yield return item;
-                    }
-                }
-            }
-        }
+        private IReadOnlyList<SimpleState> Table { get; }
     }
 }

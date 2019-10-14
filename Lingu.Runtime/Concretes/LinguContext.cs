@@ -10,7 +10,7 @@ namespace Lingu.Runtime.Concretes
 {
     public class LinguContext : IContext
     {
-        public LinguContext(IEnumerable<ISymbol> symbols, IEnumerable<IProduction> productions, ITable table, IDfaSet dfas)
+        public LinguContext(IEnumerable<ISymbol> symbols, IEnumerable<IProduction> productions, IParseTable table, IDfaSet dfas)
         {
             Symbols = symbols.ToArray();
             Productions = productions.ToArray();
@@ -21,7 +21,7 @@ namespace Lingu.Runtime.Concretes
 
         public IReadOnlyList<ISymbol> Symbols { get; }
         public IReadOnlyList<IProduction> Productions { get; }
-        public ITable Table { get; }
+        public IParseTable Table { get; }
         public IDfaSet Dfas { get; }
         public IErrorHandler Errors { get; }
 

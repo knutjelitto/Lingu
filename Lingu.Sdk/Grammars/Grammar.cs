@@ -50,7 +50,7 @@ namespace Lingu.Grammars
         public LR1SetSet LR1Sets { get; }
         public CoreFactory CoreFactory { get; }
         public TableCell[,]? Table { get; set; }
-        public ParseTable? ParseTable { get; set; }
+        public U16ParseTable? ParseTable { get; set; }
 
         public string NextTerminalName()
         {

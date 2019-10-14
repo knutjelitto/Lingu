@@ -1,5 +1,6 @@
 ﻿using Lingu.Runtime.Parsing;
 using Lingu.Runtime.Structures;
+using System.Globalization;
 
 namespace Lingu.Runtime.Concretes
 {
@@ -21,7 +22,7 @@ namespace Lingu.Runtime.Concretes
 
         public override string ToString()
         {
-            return Coded.ToString();
+            return Coded.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

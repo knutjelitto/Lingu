@@ -116,18 +116,6 @@ namespace Lingu.Build
             }
         }
 
-        private void BuildLR0Sets()
-        {
-            Debug.Assert(Grammar.Accept != null);
-
-            var start = new LR0(CoreFactory.Get(Grammar.Accept.Productions[0]), true);
-            var startSet = new LR0Set(start);
-
-            var goner = new LR0Set.Closer2(Grammar.LR0Sets, startSet);
-
-            goner.Go();
-        }
-
         private void BuildLR1Sets()
         {
             Debug.Assert(Grammar.Accept != null);

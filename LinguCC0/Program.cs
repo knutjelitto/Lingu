@@ -16,7 +16,7 @@ namespace Lingu.CC
         static void Main(string[] args)
         {
             BuildCC();
-#if false
+#if true
             Console.Write("press (almost) any key ... ");
             Console.ReadKey(true);
 #endif

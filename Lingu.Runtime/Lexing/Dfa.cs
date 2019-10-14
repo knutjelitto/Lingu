@@ -9,14 +9,14 @@ namespace Lingu.Runtime.Lexing
     public class Dfa
     {
         public static readonly Dfa Nope = new Dfa();
-        public readonly DfaState[] States;
 
         public Dfa(params DfaState[] states)
         {
             Debug.Assert(states.Length > 0);
-
             States = states;
         }
+
+        public DfaState[] States { get; }
 
         public IEnumerable<int> GetPayloads()
         {

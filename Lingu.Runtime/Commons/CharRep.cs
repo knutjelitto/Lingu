@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Lingu.Runtime.Commons
@@ -20,7 +21,7 @@ namespace Lingu.Runtime.Commons
         {
             var result = Convert(value);
 
-            if (!result.StartsWith("U+"))
+            if (!result.StartsWith("U+", StringComparison.InvariantCulture))
             {
                 return $"'{result}'";
             }
@@ -63,13 +64,13 @@ namespace Lingu.Runtime.Commons
                         }
                         else if (value >= 0 && value <= 244)
                         {
-                            return "\\x" + value.ToString("X2");
+                            return "\\x" + value.ToString("X2", CultureInfo.InvariantCulture);
                         }
                         break;
                 }
             }
 
-            return "U+" + value.ToString("X4");
+            return "U+" + value.ToString("X4", CultureInfo.InvariantCulture);
         }
     }
 }

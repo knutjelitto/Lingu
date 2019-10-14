@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-
+using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Parsing
 {
-    public abstract class ParseTable : ITable
+    public abstract class ParseTable : IParseTable
     {
         public ParseTable(int numberOfStates, int numberOfTerminals, int numberOfSymbols)
         {
@@ -18,7 +18,5 @@ namespace Lingu.Runtime.Parsing
         public int NumberOfStates { get; }
         public int NumberOfTerminals { get; }
         public int NumberOfSymbols { get; }
-
-        public abstract IEnumerable<IStateItem> ReallyAll { get; }
     }
 }

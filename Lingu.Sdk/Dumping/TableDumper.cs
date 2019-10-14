@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using Lingu.Build;
 using Lingu.Grammars;
 using Lingu.LR;
 using Lingu.Runtime.Parsing;
@@ -26,10 +26,10 @@ namespace Lingu.Dumping
             writer.WriteLine();
             DumpProductions(writer);
             writer.WriteLine();
-            DumpTableX(writer, new RawTabler(this));
+            DumpTable(writer, new RawTabler(this));
         }
 
-        private static void DumpTableX(IWriter writer, Tabler tabler)
+        private static void DumpTable(IWriter writer, Tabler tabler)
         {
             const string topLeft = "┌";
             const string topRight = "┐";
@@ -125,10 +125,12 @@ namespace Lingu.Dumping
             writer.WriteLine($"table-size: {stateCount} x {symbolCount} x 2 bytes = {stateCount * symbolCount * 2} bytes");
             writer.WriteLine("=====================================================================================================");
 
-            var u16 = tabler.Grammar.ParseTable as U16ParseTable;
+            var u16 = tabler.Grammar.ParseTable;
             Debug.Assert(u16 != null);
 
-            var compact = new CompactTable(u16);
+            var compact = new CompactTableWriter(u16);
+            compact.Dump(writer);
+            writer.WriteLine("=====================================================================================================");
         }
 
         private abstract class Tabler

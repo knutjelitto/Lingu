@@ -17,9 +17,9 @@ namespace Lingu.Runtime.Errors
 
         public IContext Context { get; }
 
-        public string GetLocation(ISource source, int offset)
+        public static string GetLocation(ISource source, int offset)
         {
-            var (lineNo, colNo) = source.GetLineCol(offset);
+            (int lineNo, int colNo) = source.GetLineCol(offset);
 
             return $"{source.Name}:{lineNo}:{colNo}";
         }

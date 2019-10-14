@@ -6,7 +6,7 @@ namespace Lingu.Runtime.Structures
     {
         IReadOnlyList<ISymbol> Symbols { get; }
         IReadOnlyList<IProduction> Productions { get; }
-        ITable Table { get; }
+        IParseTable Table { get; }
         IDfaSet Dfas { get; }
         IErrorHandler Errors { get; }
     }
