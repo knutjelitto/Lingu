@@ -32,10 +32,6 @@ namespace Lingu.CSharpWrite
         {
             foreach (var value in values)
             {
-                if (writer.Extend() > 0)
-                {
-                    writer.Write(" ");
-                }
                 writer.Write($"{value},");
                 if (writer.Extend() >= extendWidth)
                 {

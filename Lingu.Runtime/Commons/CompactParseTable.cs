@@ -7,18 +7,21 @@ namespace Lingu.Runtime.Commons
 {
     public class CompactParseTable : IParseTable
     {
-        public IState this[int stateNo]
+        private readonly CompactState[] states;
+
+        public CompactParseTable(CompactState[] states, int numberOfTerminals, int numberOfSymbols)
         {
-            get { throw new NotImplementedException(); }
+            this.states = states;
+            NumberOfTerminals = numberOfTerminals;
+            NumberOfSymbols = numberOfSymbols;
         }
 
-        public IStateItem this[int stateNo, int symNo]
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public IState this[int stateNo] => states[stateNo];
 
-        public Int32 NumberOfStates { get; set; }
-        public Int32 NumberOfTerminals { get; set; }
-        public Int32 NumberOfSymbols { get; set; }
+        public IStateItem this[int stateNo, int symNo] => this[stateNo][symNo];
+
+        public int NumberOfStates => states.Length;
+        public int NumberOfTerminals { get; }
+        public int NumberOfSymbols { get; }
     }
 }

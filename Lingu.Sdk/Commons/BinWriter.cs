@@ -34,7 +34,7 @@ namespace Lingu.Commons
             WriteByte((byte)(value ? 1 : 0));
         }
 
-        protected void WriteByte(byte value)
+        public void WriteByte(byte value)
         {
             stream.WriteByte(value);
         }

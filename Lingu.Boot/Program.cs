@@ -10,6 +10,7 @@ using Lingu.Runtime.Commons;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Sources;
 using Lingu.CSharpWrite;
+using Lingu.Build;
 
 namespace Lingu.Bootstrap
 {
@@ -43,6 +44,38 @@ namespace Lingu.Bootstrap
 #endif
         }
 
+        private void BuildCC0X()
+        {
+            var projectDir = DirRef.ProjectDir();
+            var cc0 = projectDir.Dir("..").Dir("LinguCC0");
+            var genDir = cc0.Dir("Gen");
+
+            Environment.CurrentDirectory = genDir;
+
+            var file = FileRef.From("./Lingu.Grammar");
+            var outs = FileRef.From("./Lingu").Add(".Out");
+
+            var context = Timer.Time("context", LinguContext.CreateContext);
+
+            var source = Timer.Time("source", () => Source.FromFile(file));
+
+            var lexer = Timer.Time("lexer", () => new Lexer(context, source));
+
+            var parser = Timer.Time("parser", () => new Parser(context, lexer));
+
+            var parseTree = Timer.Time("parse", () => parser.Parse());
+
+            Timer.Time("tree-dump", () => new TreeDumper(outs.Add(".Tree")).Dump(parseTree));
+
+            var ast = Timer.Time("ast", () => new TreeBuilder().Visit(parseTree));
+
+            var grammar = Timer.Time("build", () => new GrammarBuilder(ast).Build());
+
+            Timer.Time("dump", () => new Dumper(grammar).Dump(outs));
+
+            Timer.Time("write", () => new CSharpWriter(grammar, genDir).Write());
+        }
+
         private void BuildCC0()
         {
             var projectDir = DirRef.ProjectDir();
@@ -52,7 +85,6 @@ namespace Lingu.Bootstrap
             Environment.CurrentDirectory = genDir;
 
             var grammarSource = FileRef.From($"./Lingu.Grammar");
-
             var outs = FileRef.From("./Lingu").Add(".Out");
 
             var raw = Parser.Parse(grammarSource);

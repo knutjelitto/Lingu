@@ -1,11 +1,11 @@
 ﻿using System;
 using Lingu.Build;
 using Lingu.Commons;
+using Lingu.CSharpWrite;
 using Lingu.Dumping;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
 using Lingu.Runtime.Sources;
-using Lingu.Write;
 
 namespace Lingu.CC
 {
@@ -13,7 +13,7 @@ namespace Lingu.CC
     {
         static void Main(string[] args)
         {
-            BuildCC();
+            Timer.Time("ALL",  BuildCC);
 #if true
             Console.Write("press (almost) any key ... ");
             Console.ReadKey(true);
@@ -42,13 +42,13 @@ namespace Lingu.CC
 
             var parseTree = Timer.Time("parse", () => parser.Parse());
 
-            new TreeDumper(outs.Add(".Tree")).Dump(parseTree);
+            Timer.Time("tree-dump", () => new TreeDumper(outs.Add(".Tree")).Dump(parseTree));
             
             var ast = Timer.Time("ast", () => new TreeBuilder().Visit(parseTree));
 
             var grammar = Timer.Time("build", () => new GrammarBuilder(ast).Build());
 
-            new Dumper(grammar).Dump(outs);
+            Timer.Time("dump", () => new Dumper(grammar).Dump(outs));
 
             Timer.Time("write", () => new CSharpWriter(grammar, genDir).Write());
         }

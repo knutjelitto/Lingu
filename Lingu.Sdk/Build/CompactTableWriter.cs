@@ -4,6 +4,7 @@ using System.Linq;
 
 using Lingu.Commons;
 using Lingu.Output;
+using Lingu.Runtime.Commons;
 using Lingu.Runtime.Structures;
 
 #nullable enable
@@ -13,16 +14,17 @@ namespace Lingu.Build
     public class CompactTableWriter
     {
         private readonly IParseTable table;
+        private readonly BinWriter writer;
 
         public CompactTableWriter(IParseTable table)
         {
             this.table = table;
-
+            this.writer = new BinWriter();
         }
 
-        public void Dump(IWriter writer)
+        public byte[] Write()
         {
-            var states = new StateEntry[table.NumberOfStates];
+            var states = new StateEntry[this.table.NumberOfStates];
 
             var compactTerminal = new List<int[]>();
 
@@ -36,39 +38,41 @@ namespace Lingu.Build
                 (stateNo, min, index) => { states[stateNo].nonterminalMin = min; states[stateNo].nonterminalIndex = index; },
                 stateNo => this.table[stateNo].Nonterminals);
 
-            writer.WriteLine($"table-size: {table.NumberOfStates} x 4 x 2 bytes");
-            writer.WriteLine($"          + {compactTerminal.Count} x {compactTerminal[0].Length} x 2 bytes");
-            writer.WriteLine($"          + {compactNonterminal.Count} x {compactNonterminal[0].Length} x 2 bytes");
-            writer.WriteLine($"          = {2* (table.NumberOfStates * 4 + compactTerminal.Count * compactTerminal[0].Length + compactNonterminal.Count * compactNonterminal[0].Length)} bytes");
+            var writer = new BinWriter();
 
-            var bin = new BinWriter();
+            writer.Write(this.table.NumberOfStates);
+            writer.Write(this.table.NumberOfTerminals);
+            writer.Write(this.table.NumberOfSymbols);
 
-            bin.Write(this.table.NumberOfStates);
-            bin.Write(this.table.NumberOfTerminals);
-            bin.Write(this.table.NumberOfSymbols);
-
-            bin.Write(compactTerminal.Count);
+            writer.Write(compactTerminal.Count);
             foreach (var intse in compactTerminal)
             {
-                bin.Write(intse);
+                writer.Write(intse);
             }
 
-            bin.Write(compactNonterminal.Count);
+            writer.Write(compactNonterminal.Count);
             foreach (var intse in compactNonterminal)
             {
-                bin.Write(intse);
+                writer.Write(intse);
             }
 
             foreach (var state in states)
             {
-                bin.Write(state.terminalMin);
-                bin.Write(state.terminalIndex);
-                bin.Write(state.nonterminalMin);
-                bin.Write(state.nonterminalIndex);
+                writer.Write(state.terminalMin);
+                writer.Write(state.terminalIndex);
+                writer.Write(state.nonterminalMin);
+                writer.Write(state.nonterminalIndex);
             }
             
-            var bytes = bin.ToArray();
-            writer.WriteLine($"          = {bytes.Length} bytes compressed");
+            var bytes = writer.ToArray();
+
+            var reader = new BinReader(bytes);
+
+            var decoder = new CompactTableReader(reader);
+
+            var table = decoder.Read();
+
+            return bytes;
         }
 
         private struct StateEntry

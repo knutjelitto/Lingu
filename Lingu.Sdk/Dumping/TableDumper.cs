@@ -119,18 +119,6 @@ namespace Lingu.Dumping
                     string.Join(botMid, Enumerable.Repeat(line, nonterminalCount)) +
                     botRight;
             writer.WriteLine(tLine);
-
-            writer.WriteLine();
-            writer.WriteLine("=====================================================================================================");
-            writer.WriteLine($"table-size: {stateCount} x {symbolCount} x 2 bytes = {stateCount * symbolCount * 2} bytes");
-            writer.WriteLine("=====================================================================================================");
-
-            var u16 = tabler.Grammar.ParseTable;
-            Debug.Assert(u16 != null);
-
-            var compact = new CompactTableWriter(u16);
-            compact.Dump(writer);
-            writer.WriteLine("=====================================================================================================");
         }
 
         private abstract class Tabler

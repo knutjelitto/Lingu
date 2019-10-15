@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Lingu.Runtime.Structures;
+﻿using Lingu.Runtime.Structures;
+
+#nullable enable
 
 namespace Lingu.Runtime.Commons
 {
@@ -45,6 +44,22 @@ namespace Lingu.Runtime.Commons
                 compactNonterminals[i] = compacts;
             }
 
+            var states = new CompactState[numberOfStates];
+            for (var i = 0; i < states.Length; ++i)
+            {
+                var terminalMin = reader.ReadInt32();
+                var terminalIndex = reader.ReadInt32();
+                var nonterminalMin = reader.ReadInt32();
+                var nonterminalIndex = reader.ReadInt32();
+
+                var state = new CompactState(
+                    terminalMin, compactTerminals[terminalIndex],
+                    nonterminalMin, compactNonterminals[nonterminalIndex]);
+
+                states[i] = state;
+            }
+
+            return new CompactParseTable(states, numberOfTerminals, numberOfSymbols);
         }
     }
 }

@@ -4,15 +4,17 @@ namespace Lingu.Commons
 {
     public class CompressWriter
     {
-        public byte[] Compress(IEnumerable<int> values)
+        public byte[] Compress(byte[] bytes)
         {
             var writer = new BinWriter();
 
+            writer.Write(bytes.Length);
+
             var zero = true;
             var zeroCount = 0;
-            var nonZero= new List<int>();
+            var nonZero= new List<byte>();
 
-            foreach (var value in values)
+            foreach (var value in bytes)
             {
                 if (zero)
                 {
@@ -39,7 +41,7 @@ namespace Lingu.Commons
                         writer.Write(nonZero.Count);
                         foreach (var nz in nonZero)
                         {
-                            writer.Write(nz);
+                            writer.WriteByte(nz);
                         }
                         nonZero.Clear();
                         zero = true;

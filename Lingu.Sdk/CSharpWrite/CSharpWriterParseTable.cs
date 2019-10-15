@@ -5,6 +5,9 @@ using System.Linq;
 using Lingu.Grammars;
 using Lingu.Runtime.Structures;
 using Lingu.Output;
+using Lingu.Build;
+using Lingu.Commons;
+using Lingu.Runtime.Commons;
 
 #nullable enable
 
@@ -26,30 +29,25 @@ namespace Lingu.CSharpWrite
             {
                 Debug.Assert(Grammar.ParseTable != null);
 
-                writer.WriteLine();
-                writer.Data("ushort[] u16Table = ", () =>
-                {
-                    WriteExtend(writer, EnumAll(Grammar.ParseTable as IParseTable));
+                var compact = new CompactTableWriter(Grammar.ParseTable);
 
-                    IEnumerable<string> EnumAll(IParseTable table)
-                    {
-                        for (var stateNo = 0; stateNo < table.NumberOfStates; ++stateNo)
-                        {
-                            for (var symNo = 0; symNo < table.NumberOfSymbols; ++symNo)
-                            {
-                                yield return table[stateNo, symNo].ToString() ?? string.Empty;
-                            }
-                        }
-                    }
+                var bytes = compact.Write();
+
+                writer.WriteLine($"// {bytes.Length} bytes");
+                var compress = new CompressWriter().Compress(bytes);
+                writer.WriteLine($"// compressed {compress.Length} bytes");
+                var uncompress = new CompressReader().Uncompress(compress);
+                writer.WriteLine($"// uncompress {uncompress.Length} bytes");
+                Debug.Assert(bytes.SequenceEqual(uncompress));
+
+                writer.Data("byte[] bytes = ", () =>
+                {
+                    WriteExtend(writer, compress.Select(b => b.ToString()));
                 });
 
                 writer.WriteLine();
 
-                var rows = Grammar.ParseTable.NumberOfStates;
-                var nt = Grammar.ParseTable.NumberOfTerminals;
-                var cols = Grammar.ParseTable.NumberOfSymbols;
-
-                writer.WriteLine($"return U16ParseTable.From(u16Table, {rows}, {nt}, {cols});");
+                writer.WriteLine($"return new CompactTableReader(new BinReader(new CompressReader().Uncompress(bytes))).Read();");
             });
         }
     }
