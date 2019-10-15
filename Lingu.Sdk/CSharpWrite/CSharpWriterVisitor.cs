@@ -46,7 +46,7 @@ namespace Lingu.CSharpWrite
 
                     this.writer.WriteLine();
 
-                    writer.Block("protected W Visit<W>(IToken token) where W : T", () =>
+                    writer.Block("protected TAst Visit<TAst>(IToken token) where TAst : T", () =>
                     {
                         this.writer.WriteLine("Debug.Assert(token != null);");
                         this.writer.Data("return token.Symbol.Id switch", () =>
@@ -60,7 +60,7 @@ namespace Lingu.CSharpWrite
 
                                 var name = Namer.ToUpperCamelCase(symbol.Name);
                                 var type = symbol is Terminal ? "ITerminalToken" : "INonterminalToken";
-                                writer.WriteLine($"{Ctx.IdClass}.{name} => (W)On{name}(({type})token),");
+                                writer.WriteLine($"{Ctx.IdClass}.{name} => (TAst)On{name}(({type})token),");
                             }
                             writer.WriteLine();
                             writer.WriteLine("_ => throw new NotImplementedException(),");

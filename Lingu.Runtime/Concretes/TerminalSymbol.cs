@@ -1,4 +1,5 @@
-﻿using Lingu.Runtime.Structures;
+﻿using System;
+using Lingu.Runtime.Structures;
 
 namespace Lingu.Runtime.Concretes
 {
@@ -11,5 +12,10 @@ namespace Lingu.Runtime.Concretes
         }
 
         public string Visual { get; }
+
+        public override string ToString()
+        {
+            return string.IsNullOrWhiteSpace(Visual) ? Name : $"'{Visual}'";
+        }
     }
 }

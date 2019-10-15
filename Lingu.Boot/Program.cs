@@ -6,7 +6,6 @@ using System.Linq;
 using Lingu.Commons;
 using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
-using Lingu.Runtime.Commons;
 using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Sources;
 using Lingu.CSharpWrite;
@@ -30,7 +29,7 @@ namespace Lingu.Bootstrap
             //program.BuildTree("S5", @"aaa");
             //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("Lingu", FileRef.Source($"./S4.Grammar"));
-            program.BuildTree("Lingu", FileRef.From($"./Lingu.Grammar"));
+            //program.BuildTree("Lingu", FileRef.From($"./Lingu.Grammar"));
             //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
@@ -42,38 +41,6 @@ namespace Lingu.Bootstrap
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
 #endif
-        }
-
-        private void BuildCC0X()
-        {
-            var projectDir = DirRef.ProjectDir();
-            var cc0 = projectDir.Dir("..").Dir("LinguCC0");
-            var genDir = cc0.Dir("Gen");
-
-            Environment.CurrentDirectory = genDir;
-
-            var file = FileRef.From("./Lingu.Grammar");
-            var outs = FileRef.From("./Lingu").Add(".Out");
-
-            var context = Timer.Time("context", LinguContext.CreateContext);
-
-            var source = Timer.Time("source", () => Source.FromFile(file));
-
-            var lexer = Timer.Time("lexer", () => new Lexer(context, source));
-
-            var parser = Timer.Time("parser", () => new Parser(context, lexer));
-
-            var parseTree = Timer.Time("parse", () => parser.Parse());
-
-            Timer.Time("tree-dump", () => new TreeDumper(outs.Add(".Tree")).Dump(parseTree));
-
-            var ast = Timer.Time("ast", () => new TreeBuilder().Visit(parseTree));
-
-            var grammar = Timer.Time("build", () => new GrammarBuilder(ast).Build());
-
-            Timer.Time("dump", () => new Dumper(grammar).Dump(outs));
-
-            Timer.Time("write", () => new CSharpWriter(grammar, genDir).Write());
         }
 
         private void BuildCC0()
@@ -89,13 +56,16 @@ namespace Lingu.Bootstrap
 
             var raw = Parser.Parse(grammarSource);
 
-            var builder = new Build.GrammarBuilder(raw);
+            if (raw != null)
+            {
+                var builder = new GrammarBuilder(raw);
 
-            var grammar = builder.Build();
-            new Dumper(grammar).Dump(outs);
+                var grammar = builder.Build();
+                new Dumper(grammar).Dump(outs);
 
-            var csharp = new CSharpWriter(grammar, genDir);
-            csharp.Write();
+                var csharp = new CSharpWriter(grammar, grammarSource, genDir);
+                csharp.Write();
+            }
         }
 
         private void BuildTree(string stem, string content)
@@ -117,13 +87,10 @@ namespace Lingu.Bootstrap
 
                 var ccOut = DirRef.ProjectDir().Dir("..").Dir("Lingu.CC").Dir("Gen");
 
-                var csharp = new CSharpWriter(grammar, ccOut);
+                var csharp = new CSharpWriter(grammar, grammarSource, ccOut);
                 csharp.Write();
 
                 Debug.Assert(grammar.Eof != null);
-                Debug.Assert(grammar.SpacingDfa != null);
-                Debug.Assert(grammar.Dfas != null);
-                Debug.Assert(grammar.StateToDfa != null);
 
                 var dfaSet = new DfaSet(grammar.Dfas.Select(dfa => dfa.Convert()).ToArray(), grammar.StateToDfa, grammar.SpacingDfa.Convert());
 

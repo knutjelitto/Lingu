@@ -32,17 +32,17 @@ namespace Lingu.Runtime.Parsing
 
                 switch (action.Action)
                 {
-                    case TableItem.Error:
+                    case ParseAction.Error:
                         HandleError(token);
                         token = null;
                         break;
-                    case TableItem.Shift:
+                    case ParseAction.Shift:
                         Shift(action.Number);
                         break;
-                    case TableItem.Reduce:
+                    case ParseAction.Reduce:
                         Reduce(action.Number);
                         break;
-                    case TableItem.Accept:
+                    case ParseAction.Accept:
                         Debug.Assert(Lexer.IsEnd());
                         token = null;
                         break;
@@ -53,7 +53,7 @@ namespace Lingu.Runtime.Parsing
 
             void HandleError(ITerminalToken token)
             {
-                var msg = Errors.GetExpectedMessage(token.Location, Errors.GetSymbols(stack.StateId));
+                var msg = Errors.GetExpectedMessage(token.Location, Errors.GetSymbols(stack.StateId).ToArray());
                 throw new ParserException(msg);
             }
 
@@ -168,7 +168,7 @@ namespace Lingu.Runtime.Parsing
 
                 var action = Decode(nonterminal.Id);
 
-                if (action.Action != TableItem.Shift)
+                if (action.Action != ParseAction.Shift)
                 {
                     throw new ParserException();
                 }

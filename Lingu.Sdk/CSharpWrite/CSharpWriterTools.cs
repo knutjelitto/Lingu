@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Reflection.Metadata;
 using Lingu.Grammars;
 using Lingu.Output;
 
@@ -9,7 +10,7 @@ namespace Lingu.CSharpWrite
 {
     public class CSharpWriterTools
     {
-        protected const int extendWidth = 120;
+        protected const int extendWidth = 150;
 
         public CSharpWriterTools(CSharpContext ctx)
         {
@@ -18,6 +19,7 @@ namespace Lingu.CSharpWrite
 
         public CSharpContext Ctx { get; }
         protected Grammar Grammar => Ctx.Grammar;
+        protected CsWriter Writer => Ctx.Writer;
 
         protected string Bool(bool b) => b ? "true" : "false";
 
@@ -28,38 +30,47 @@ namespace Lingu.CSharpWrite
                    symbol is Nonterminal nonterminal && (nonterminal.IsPrivate || nonterminal.IsLift);
         }
 
-        protected void WriteExtend(IndentWriter writer, IEnumerable<string> values)
+        protected void WriteByteArray(string head, IEnumerable<byte> bytes)
+        {
+            Writer.Data(head, () =>
+            {
+                WriteExtend(bytes.Select(b => b.ToString()));
+            });
+
+        }
+
+        protected void WriteExtend(IEnumerable<string> values)
         {
             foreach (var value in values)
             {
-                writer.Write($"{value},");
-                if (writer.Extend() >= extendWidth)
+                Writer.Write($"{value},");
+                if (Writer.Extend() >= extendWidth)
                 {
-                    writer.WriteLine();
+                    Writer.WriteLine();
                 }
             }
-            if (writer.Extend() > 0 && writer.Extend() < extendWidth)
+            if (Writer.Extend() > 0 && Writer.Extend() < extendWidth)
             {
-                writer.WriteLine();
+                Writer.WriteLine();
             }
         }
 
-        protected void WriteMany(IndentWriter writer, int perLine, IEnumerable<string> values)
+        protected void WriteMany(int perLine, IEnumerable<string> values)
         {
             var count = 0;
             foreach (var value in values)
             {
-                writer.Write($"{value},");
+                Writer.Write($"{value},");
                 count += 1;
                 if (count == perLine)
                 {
-                    writer.WriteLine();
+                    Writer.WriteLine();
                     count = 0;
                 }
             }
             if (count > 0)
             {
-                writer.WriteLine();
+                Writer.WriteLine();
             }
         }
     }

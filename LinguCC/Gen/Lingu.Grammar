@@ -1,5 +1,6 @@
 ﻿grammar Lingu
 {
+    xxx
     options
     {
         Start = file;

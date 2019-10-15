@@ -7,15 +7,17 @@ namespace Lingu.CSharpWrite
 {
     public class CSharpContext
     {
-        public CSharpContext(Grammar grammar, string @namespace, DirRef output, CsWriter writer = null)
+        public CSharpContext(Grammar grammar, FileRef sourceFile, string @namespace, DirRef output, CsWriter writer = null)
         {
             Grammar = grammar;
+            SourceFile = sourceFile;
             Namespace = @namespace;
             Output = output;
             Writer = writer;
         }
 
         public Grammar Grammar { get; }
+        public FileRef SourceFile { get; }
         public string Namespace { get; }
         public DirRef Output { get; }
         public CsWriter Writer { get; }
@@ -33,7 +35,7 @@ namespace Lingu.CSharpWrite
 
         public CSharpContext With(CsWriter writer)
         {
-            return new CSharpContext(Grammar, Namespace, Output, writer);
+            return new CSharpContext(Grammar, SourceFile, Namespace, Output, writer);
         }
 
         public CSharpContext WithWriter()

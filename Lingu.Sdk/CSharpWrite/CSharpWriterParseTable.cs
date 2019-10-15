@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 using Lingu.Grammars;
-using Lingu.Runtime.Structures;
 using Lingu.Output;
 using Lingu.Build;
 using Lingu.Commons;
-using Lingu.Runtime.Commons;
 
 #nullable enable
 
@@ -31,19 +27,9 @@ namespace Lingu.CSharpWrite
 
                 var compact = new CompactTableWriter(Grammar.ParseTable);
 
-                var bytes = compact.Write();
+                var bytes = new CompressWriter().Compress(compact.Write());
 
-                writer.WriteLine($"// {bytes.Length} bytes");
-                var compress = new CompressWriter().Compress(bytes);
-                writer.WriteLine($"// compressed {compress.Length} bytes");
-                var uncompress = new CompressReader().Uncompress(compress);
-                writer.WriteLine($"// uncompress {uncompress.Length} bytes");
-                Debug.Assert(bytes.SequenceEqual(uncompress));
-
-                writer.Data("byte[] bytes = ", () =>
-                {
-                    WriteExtend(writer, compress.Select(b => b.ToString()));
-                });
+                WriteByteArray("byte[] bytes = ", bytes);
 
                 writer.WriteLine();
 

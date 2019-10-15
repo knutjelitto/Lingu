@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-
+using System.Linq;
 using Lingu.Runtime.Concretes;
 using Lingu.Runtime.Errors;
 using Lingu.Runtime.Structures;
@@ -64,7 +64,7 @@ namespace Lingu.Runtime.Lexing
                         return MakeResult(state.Payload, start, index);
                     }
 
-                    var msg = Errors.GetExpectedMessage(Location.From(Source, index), Errors.GetSymbols(dfa));
+                    var msg = Errors.GetExpectedMessage(Location.From(Source, index), Errors.GetSymbols(dfa).ToArray());
                     throw new ParserException(msg);
                 }
                 state = next;

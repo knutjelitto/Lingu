@@ -19,7 +19,7 @@ namespace Lingu.CSharpWrite
 
         public void Write()
         {
-            writer.Data("public static readonly Production[] Productions = ", () =>
+            writer.Data("private static readonly Production[] productions = ", () =>
             {
                 foreach (var production in Grammar.Productions)
                 {

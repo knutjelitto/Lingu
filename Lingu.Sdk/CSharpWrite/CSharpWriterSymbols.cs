@@ -43,9 +43,9 @@ namespace Lingu.CSharpWrite
 
             writer.WriteLine();
 
-            writer.Data("public static readonly Symbol[] Symbols = ", () =>
+            writer.Data("private static readonly Symbol[] symbols = ", () =>
             {
-                WriteExtend(writer, Grammar.Symbols.Select(symbol => symbol.Name));
+                WriteExtend(Grammar.Symbols.Select(symbol => symbol.Name));
             });
         }
     }

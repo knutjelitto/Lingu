@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Lingu.Commons;
-using Lingu.Output;
 using Lingu.Runtime.Commons;
 using Lingu.Runtime.Structures;
 

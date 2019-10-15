@@ -2,7 +2,7 @@
 
 namespace Lingu.Runtime.Parsing
 {
-    public enum TableItem : ushort
+    public enum ParseAction
     {
         Error = 0,
         Accept = 1,

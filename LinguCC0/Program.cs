@@ -7,11 +7,13 @@ using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
 using Lingu.Runtime.Sources;
 
+#nullable enable
+
 namespace Lingu.CC
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(/*string[] args*/)
         {
             Timer.Time("ALL",  BuildCC);
 #if true
@@ -30,9 +32,9 @@ namespace Lingu.CC
             Environment.CurrentDirectory = genDir;
 
             var file = FileRef.From("./Lingu.Grammar");
-            var outs = FileRef.From("./Lingu").Add(".Out");
+            var dumps = FileRef.From("./Lingu").Add(".Out");
 
-            var context = Timer.Time("context", LinguContext.CreateContext);
+            var context = Timer.Time("context", () => new LinguContext());
 
             var source = Timer.Time("source", () => Source.FromFile(file));
 
@@ -42,15 +44,15 @@ namespace Lingu.CC
 
             var parseTree = Timer.Time("parse", () => parser.Parse());
 
-            Timer.Time("tree-dump", () => new TreeDumper(outs.Add(".Tree")).Dump(parseTree));
+            Timer.Time("tree-dump", () => new TreeDumper(dumps.Add(".Tree")).Dump(parseTree));
             
             var ast = Timer.Time("ast", () => new TreeBuilder().Visit(parseTree));
 
             var grammar = Timer.Time("build", () => new GrammarBuilder(ast).Build());
 
-            Timer.Time("dump", () => new Dumper(grammar).Dump(outs));
+            Timer.Time("dump", () => new Dumper(grammar).Dump(dumps));
 
-            Timer.Time("write", () => new CSharpWriter(grammar, genDir).Write());
+            Timer.Time("write", () => new CSharpWriter(grammar, file, genDir).Write());
         }
 
     }

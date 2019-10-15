@@ -7,9 +7,8 @@ namespace Lingu.Runtime.Structures
 {
     public interface IStateItem
     {
-        TableItem Action { get; }
+        ParseAction Action { get; }
         int Number { get; }
-
-        ushort Coded { get; }
+        int Coded { get; }
     }
 }

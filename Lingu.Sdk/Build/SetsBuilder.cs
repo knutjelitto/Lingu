@@ -192,33 +192,33 @@ namespace Lingu.Build
             Debug.Assert(fullTable.GetLength(0) == numberOfStates);
             Debug.Assert(fullTable.GetLength(1) == numberOfSymbols);
 
-            var table = new TableItem[numberOfStates, numberOfSymbols];
+            var table = new ParseAction[numberOfStates, numberOfSymbols];
 
             for (var stateNo = 0; stateNo < numberOfStates; ++stateNo)
             {
                 for (var symNo = 0; symNo < numberOfSymbols; ++symNo)
                 {
-                    TableItem entry;
+                    ParseAction entry;
                     switch (fullTable[stateNo, symNo].LastOrDefault())
                     {
                         case Accept _:
-                            entry = TableItem.Accept;
+                            entry = ParseAction.Accept;
                             break;
                         case Shift shift:
-                            entry = (TableItem) (shift.State << 2) | TableItem.Shift;
+                            entry = (ParseAction) (shift.State << 2) | ParseAction.Shift;
                             break;
                         case Reduce reduce:
-                            entry = (TableItem) (reduce.Production << 2) | TableItem.Reduce;
+                            entry = (ParseAction) (reduce.Production << 2) | ParseAction.Reduce;
                             break;
                         default:
-                            entry = TableItem.Error;
+                            entry = ParseAction.Error;
                             break;
                     }
                     table[stateNo, symNo] = entry;
                 }
             }
 
-            Grammar.ParseTable = U16ParseTable.From(table, numberOfTerminals);
+            Grammar.ParseTable = ParseTable.From(table, numberOfTerminals);
         }
 
         private void BuildDfaSets()
@@ -235,9 +235,9 @@ namespace Lingu.Build
                 {
                     switch (Grammar.ParseTable[stateNo][symNo].Action)
                     {
-                        case TableItem.Accept:
-                        case TableItem.Shift:
-                        case TableItem.Reduce:
+                        case ParseAction.Accept:
+                        case ParseAction.Shift:
+                        case ParseAction.Reduce:
                             terminalSet.Add(symNo);
                             break;
                     }

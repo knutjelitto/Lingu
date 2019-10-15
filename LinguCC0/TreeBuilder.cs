@@ -35,7 +35,7 @@ namespace Lingu.CC
         {
             if (token == null) throw new ArgumentNullException(nameof(token));
 
-            Debug.Assert(token[0].Symbol == LinguContext.Data.identifier);
+            Debug.Assert(token[0].Symbol.Id == LinguId.Identifier);
             var grammar = new RawGrammar(token.Terminal(0).Value);
 
             foreach (var section in token.Nonterminal(1).Children)

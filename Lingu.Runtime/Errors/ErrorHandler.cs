@@ -31,7 +31,7 @@ namespace Lingu.Runtime.Errors
             return $"{location.Source.Name}:{lineNo}:{colNo}";
         }
 
-        public string GetExpectedMessage(ILocation location, IEnumerable<ISymbol> symbols)
+        public string GetExpectedMessage(ILocation location, IReadOnlyList<ISymbol> symbols)
         {
             return $"{GetLocation(location)}: expected one of {string.Join(", ", symbols)}";
         }
@@ -45,7 +45,7 @@ namespace Lingu.Runtime.Errors
         {
             foreach (var terminalItem in Context.Table[stateNo].Terminals)
             {
-                if (terminalItem.Action == TableItem.Shift)
+                if (terminalItem.Action == ParseAction.Shift)
                 {
                     yield return Context.Symbols[terminalItem.Number];
                 }

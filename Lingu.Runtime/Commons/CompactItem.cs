@@ -10,11 +10,11 @@ namespace Lingu.Runtime.Commons
     {
         public CompactItem(int value)
         {
-            Coded = (ushort) value;
+            Coded = value;
         }
 
-        public TableItem Action => (TableItem)(Coded & (ushort)TableItem.ActionBits);
+        public ParseAction Action => (ParseAction)(Coded & (int)ParseAction.ActionBits);
         public int Number => Coded >> 2;
-        public ushort Coded { get; set; }
+        public int Coded { get; }
     }
 }

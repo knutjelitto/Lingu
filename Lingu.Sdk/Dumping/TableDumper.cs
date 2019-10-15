@@ -8,6 +8,8 @@ using Lingu.Grammars;
 using Lingu.LR;
 using Lingu.Output;
 
+#nullable enable
+
 namespace Lingu.Dumping
 {
     public class TableDumper
@@ -67,6 +69,7 @@ namespace Lingu.Dumping
 
             writer.Write(Short(string.Empty));
 
+            Debug.Assert(tabler.Grammar.PSymbols != null);
             foreach (var symbol in tabler.Grammar.PSymbols)
             {
                 if (symbol.Pid == terminalCount)
@@ -152,6 +155,7 @@ namespace Lingu.Dumping
             public override int NumberOfNonterminals { get; }
             public override string Display(int stateNo, int symNo)
             {
+                Debug.Assert(Grammar.Table != null);
                 return Short(Grammar.Table[stateNo, symNo]);
             }
         }
@@ -215,6 +219,7 @@ namespace Lingu.Dumping
                 writer.WriteLine($"N {Private(s)} {Pid(s),4} {s.Id,4}  {Short(s)}  {s}");
             }
             writer.WriteLine();
+            Debug.Assert(Grammar.Symbols != null);
             foreach (var s in Grammar.Symbols)
             {
                 var tn = s is Terminal ? "T" : "N";

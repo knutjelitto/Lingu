@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using Lingu.Automata;
 using Lingu.LR;
-using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Parsing;
+using Lingu.Runtime.Structures;
 
 #nullable enable
 
@@ -28,6 +29,10 @@ namespace Lingu.Grammars
             LR0Sets = new LR0SetSet();
             LR1Sets = new LR1SetSet();
 
+            Dfas = Array.Empty<FA>();
+            StateToDfa = Array.Empty<int>();
+            SpacingDfa = FA.None();
+
             CoreFactory = new CoreFactory();
         }
 
@@ -41,16 +46,17 @@ namespace Lingu.Grammars
         public IReadOnlyList<Symbol>? PSymbols { get; set; }
 
         public Nonterminal? Accept { get; set; }
-        public FA? SpacingDfa { get; set; }
 
-        public IReadOnlyList<int>? StateToDfa { get; set; }
-        public IReadOnlyList<FA>? Dfas { get; set; }
+        public IReadOnlyList<int> StateToDfa { get; set; }
+        public IReadOnlyList<FA> Dfas { get; set; }
+        public FA SpacingDfa { get; set; }
+
         public Terminal? Eof { get; set; }
         public LR0SetSet LR0Sets { get; }
         public LR1SetSet LR1Sets { get; }
         public CoreFactory CoreFactory { get; }
         public TableCell[,]? Table { get; set; }
-        public U16ParseTable? ParseTable { get; set; }
+        public IParseTable? ParseTable { get; set; }
 
         public string NextTerminalName()
         {
