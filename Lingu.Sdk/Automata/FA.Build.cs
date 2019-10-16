@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Diagnostics;
 
 #nullable enable
 
@@ -94,6 +94,8 @@ namespace Lingu.Automata
 
             public static FA From(string sequence)
             {
+                Debug.Assert(!string.IsNullOrEmpty(sequence));
+
                 var start = new State();
                 var current = start;
                 var next = (State?) null;
@@ -105,6 +107,7 @@ namespace Lingu.Automata
                     current = next;
                 }
 
+                Debug.Assert(next != null);
                 return FA.From(start, next);
             }
 
@@ -131,6 +134,7 @@ namespace Lingu.Automata
             public static FA Optional(FA fa)
             {
                 var clone = fa.ToNfa(true);
+                Debug.Assert(clone.Final != null);
 
                 clone.Start.Add(clone.Final);
 
@@ -140,6 +144,7 @@ namespace Lingu.Automata
             public static FA Star(FA fa)
             {
                 var clone = fa.ToNfa(true);
+                Debug.Assert(clone.Final != null);
 
                 clone.Start.Add(clone.Final);
                 clone.Final.Add(clone.Start);
@@ -150,6 +155,7 @@ namespace Lingu.Automata
             public static FA Plus(FA fa)
             {
                 var clone = fa.ToNfa(true);
+                Debug.Assert(clone.Final != null);
 
                 clone.Final.Add(clone.Start);
 
@@ -159,7 +165,9 @@ namespace Lingu.Automata
             public static FA Or(FA fa, FA other)
             {
                 var first = fa.ToNfa(true);
+                Debug.Assert(first.Final != null);
                 var second = other.ToNfa(true);
+                Debug.Assert(second.Final != null);
                 var newEnd = new State();
 
                 first.Start.Add(second.Start);
@@ -174,7 +182,9 @@ namespace Lingu.Automata
             public static FA Concat(FA fa, FA other)
             {
                 var first = fa.ToNfa(true);
+                Debug.Assert(first.Final != null);
                 other = other.ToNfa(true);
+                Debug.Assert(other.Final != null);
 
                 first.Final.Add(other.Start);
 

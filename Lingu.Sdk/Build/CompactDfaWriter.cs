@@ -1,13 +1,8 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+
 using Lingu.Automata;
 using Lingu.Commons;
 using Lingu.Grammars;
-using Lingu.Runtime.Commons;
-using Lingu.Runtime.Parsing;
-using BinWriter = Lingu.Commons.BinWriter;
 
 #nullable enable
 
@@ -77,17 +72,7 @@ namespace Lingu.Build
                 }
             }
 
-            var bytes = this.writer.ToArray();
-
-#if false
-            var reader = new BinReader(bytes);
-
-            var decoder = new CompactDfaReader(reader);
-
-            var dfaSet = decoder.Read();
-#endif
-
-            return bytes;
+            return this.writer.ToArray();
         }
     }
 }

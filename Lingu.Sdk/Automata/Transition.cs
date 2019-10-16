@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace Lingu.Automata
 {
     public class Transition

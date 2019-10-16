@@ -13,8 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Grammar\Pony.g" />
-    <None Remove="Grammar\Pony.Grammar" />
     <None Remove="Grammar\S5.Grammar" />
   </ItemGroup>
 
@@ -26,8 +24,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Grammar\Expr.Grammar" />
-    <EmbeddedResource Include="Grammar\Pony.g" />
-    <EmbeddedResource Include="Grammar\Pony.Grammar" />
     <EmbeddedResource Include="Grammar\S5.Grammar" />
     <EmbeddedResource Include="Grammar\S4.Grammar" />
     <EmbeddedResource Include="Grammar\S3.Grammar" />

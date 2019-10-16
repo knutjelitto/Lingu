@@ -10,6 +10,7 @@ using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Sources;
 using Lingu.CSharpWrite;
 using Lingu.Build;
+using Lingu.Runtime.Commons;
 
 namespace Lingu.Bootstrap
 {
@@ -27,14 +28,15 @@ namespace Lingu.Bootstrap
             //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
             //program.BuildTree("S4", @"'\\'");
             //program.BuildTree("S5", @"aaa");
-            //program.BuildTree("Lingu", "grammar x {}");
+            program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("Lingu", FileRef.Source($"./S4.Grammar"));
             //program.BuildTree("Lingu", FileRef.From($"./Lingu.Grammar"));
             //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("G1");
             //program.BuildTree("Wiki");
-            //program.BuildTree("Expression", "(1+2)*3");
+            //program.BuildTree("Expression", "a<i> >> 2");
             //program.BuildTree("Expr", "(1+2)*3");
+            //program.BuildTree("Pony", "(1+2)*3");
 #endif
 
 #if true
@@ -92,7 +94,9 @@ namespace Lingu.Bootstrap
 
                 Debug.Assert(grammar.Eof != null);
 
-                var dfaSet = new DfaSet(grammar.Dfas.Select(dfa => dfa.Convert()).ToArray(), grammar.StateToDfa, grammar.SpacingDfa.Convert());
+                var dfaSet = new CompactDfaReader(new BinReader(new CompactDfaWriter(grammar).Write())).Read();
+
+                //var dfaSet = new DfaSet(grammar.Dfas.Select(dfa => dfa.Convert()).ToArray(), grammar.StateToDfa, grammar.SpacingDfa.Convert());
 
                 var context = new LinguContext(
                     grammar.Symbols,

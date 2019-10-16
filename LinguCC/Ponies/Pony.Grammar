@@ -1,0 +1,27 @@
+﻿grammar Pony
+{
+    options
+    {
+    }
+
+    rules
+    {
+module
+  : STRING? use* class_def* 
+  ;
+
+use
+  : 'use' (ID '=')? (STRING | use_ffi) ('if' infix)?
+  ;
+
+use_ffi
+  : '@' (ID | STRING) typeargs ('(' | LPAREN_NEW) params? ')' '?'?
+  ;
+
+class_def
+  : ('type' | 'interface' | 'trait' | 'primitive' | 'struct' | 'class' | 'actor') ('\\' ID (',' ID)* '\\')? '@'? cap? ID typeparams? ('is' type)? STRING? members
+  ;
+
+    }
+}
+

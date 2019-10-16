@@ -1,4 +1,6 @@
-﻿namespace Lingu.Automata
+#nullable enable
+
+namespace Lingu.Automata
 {
     public class Matcher
     {

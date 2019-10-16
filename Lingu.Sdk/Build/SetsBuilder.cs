@@ -198,8 +198,14 @@ namespace Lingu.Build
             {
                 for (var symNo = 0; symNo < numberOfSymbols; ++symNo)
                 {
+                    TableAction? action = fullTable[stateNo, symNo].OfType<Shift>().LastOrDefault();
+                    if (action == null)
+                    {
+                        action = fullTable[stateNo, symNo].LastOrDefault();
+                    }
+
                     ParseAction entry;
-                    switch (fullTable[stateNo, symNo].LastOrDefault())
+                    switch (action)
                     {
                         case Accept _:
                             entry = ParseAction.Accept;

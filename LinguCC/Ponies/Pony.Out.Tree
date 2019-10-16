@@ -1,0 +1,6 @@
+file
+  grammar
+    identifier <Pony>
+    $*$
+      grammar_options
+        $*$

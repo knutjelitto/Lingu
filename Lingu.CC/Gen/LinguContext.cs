@@ -226,9 +226,9 @@ namespace Lingu.CC
         public static readonly TerminalSymbol __T8 = new TerminalSymbol(14, "__T8", true, "Spacing");
         public static readonly TerminalSymbol __T9 = new TerminalSymbol(15, "__T9", false, "rules");
         public static readonly TerminalSymbol __T10 = new TerminalSymbol(16, "__T10", false, "|");
-        public static readonly TerminalSymbol __T11 = new TerminalSymbol(17, "__T11", true, "?");
-        public static readonly TerminalSymbol __T12 = new TerminalSymbol(18, "__T12", true, "*");
-        public static readonly TerminalSymbol __T13 = new TerminalSymbol(19, "__T13", true, "+");
+        public static readonly TerminalSymbol __T11 = new TerminalSymbol(17, "__T11", false, "?");
+        public static readonly TerminalSymbol __T12 = new TerminalSymbol(18, "__T12", false, "*");
+        public static readonly TerminalSymbol __T13 = new TerminalSymbol(19, "__T13", false, "+");
         public static readonly TerminalSymbol __T14 = new TerminalSymbol(20, "__T14", false, ",");
         public static readonly TerminalSymbol __T15 = new TerminalSymbol(21, "__T15", false, "^");
         public static readonly TerminalSymbol __T16 = new TerminalSymbol(22, "__T16", false, "(");
@@ -251,13 +251,13 @@ namespace Lingu.CC
         public static readonly NonterminalSymbol rule_alternative = new NonterminalSymbol(39, "rule_alternative", false, RepeatKind.None);
         public static readonly NonterminalSymbol rule_sequence = new NonterminalSymbol(40, "rule_sequence", false, RepeatKind.None);
         public static readonly NonterminalSymbol rule_repetition = new NonterminalSymbol(41, "rule_repetition", false, RepeatKind.None);
-        public static readonly NonterminalSymbol rule_option = new NonterminalSymbol(42, "rule_option", false, RepeatKind.None);
-        public static readonly NonterminalSymbol rule_star = new NonterminalSymbol(43, "rule_star", false, RepeatKind.None);
-        public static readonly NonterminalSymbol rule_plus = new NonterminalSymbol(44, "rule_plus", false, RepeatKind.None);
+        public static readonly NonterminalSymbol rule_optional = new NonterminalSymbol(42, "rule_optional", false, RepeatKind.None);
+        public static readonly NonterminalSymbol rule_star_closure = new NonterminalSymbol(43, "rule_star_closure", false, RepeatKind.None);
+        public static readonly NonterminalSymbol rule_plus_closure = new NonterminalSymbol(44, "rule_plus_closure", false, RepeatKind.None);
         public static readonly NonterminalSymbol rule_tree_action = new NonterminalSymbol(45, "rule_tree_action", false, RepeatKind.None);
-        public static readonly NonterminalSymbol rule_drop = new NonterminalSymbol(46, "rule_drop", false, RepeatKind.None);
-        public static readonly NonterminalSymbol rule_promote = new NonterminalSymbol(47, "rule_promote", false, RepeatKind.None);
-        public static readonly NonterminalSymbol rule_primary = new NonterminalSymbol(48, "rule_primary", false, RepeatKind.None);
+        public static readonly NonterminalSymbol rule_drop_element = new NonterminalSymbol(46, "rule_drop_element", false, RepeatKind.None);
+        public static readonly NonterminalSymbol rule_promote_element = new NonterminalSymbol(47, "rule_promote_element", false, RepeatKind.None);
+        public static readonly NonterminalSymbol rule_element = new NonterminalSymbol(48, "rule_element", false, RepeatKind.None);
         public static readonly NonterminalSymbol sub_rule = new NonterminalSymbol(49, "sub_rule", false, RepeatKind.None);
         public static readonly NonterminalSymbol rule_atom = new NonterminalSymbol(50, "rule_atom", false, RepeatKind.None);
         public static readonly NonterminalSymbol reference = new NonterminalSymbol(51, "reference", false, RepeatKind.None);
@@ -268,9 +268,9 @@ namespace Lingu.CC
         public static readonly NonterminalSymbol terminal_diff = new NonterminalSymbol(56, "terminal_diff", false, RepeatKind.None);
         public static readonly NonterminalSymbol terminal_sequence = new NonterminalSymbol(57, "terminal_sequence", false, RepeatKind.None);
         public static readonly NonterminalSymbol terminal_repetition = new NonterminalSymbol(58, "terminal_repetition", false, RepeatKind.None);
-        public static readonly NonterminalSymbol terminal_option = new NonterminalSymbol(59, "terminal_option", false, RepeatKind.None);
-        public static readonly NonterminalSymbol terminal_star = new NonterminalSymbol(60, "terminal_star", false, RepeatKind.None);
-        public static readonly NonterminalSymbol terminal_plus = new NonterminalSymbol(61, "terminal_plus", false, RepeatKind.None);
+        public static readonly NonterminalSymbol terminal_optional = new NonterminalSymbol(59, "terminal_optional", false, RepeatKind.None);
+        public static readonly NonterminalSymbol terminal_star_closure = new NonterminalSymbol(60, "terminal_star_closure", false, RepeatKind.None);
+        public static readonly NonterminalSymbol terminal_plus_closure = new NonterminalSymbol(61, "terminal_plus_closure", false, RepeatKind.None);
         public static readonly NonterminalSymbol terminal_range_loop = new NonterminalSymbol(62, "terminal_range_loop", false, RepeatKind.None);
         public static readonly NonterminalSymbol range = new NonterminalSymbol(63, "range", false, RepeatKind.None);
         public static readonly NonterminalSymbol terminal_element = new NonterminalSymbol(64, "terminal_element", false, RepeatKind.None);
@@ -313,11 +313,12 @@ namespace Lingu.CC
         {
             identifier,number,any,text,ucBlock,ucCategory,ucCodepoint,__T1,__T2,__T3,__T4,__T5,__T6,__T7,__T8,__T9,__T10,__T11,__T12,__T13,__T14,__T15,
             __T16,__T17,__T18,__T19,__T20,__T21,__T22,__T23,__eof,file,angrammar,grammar_item,grammar_options,option,grammar_rules,rule,rule_expression,
-            rule_alternative,rule_sequence,rule_repetition,rule_option,rule_star,rule_plus,rule_tree_action,rule_drop,rule_promote,rule_primary,sub_rule,
-            rule_atom,reference,grammar_terminals,terminal_rule,terminal_expression,terminal_alternative,terminal_diff,terminal_sequence,terminal_repetition,
-            terminal_option,terminal_star,terminal_plus,terminal_range_loop,range,terminal_element,terminal_not,terminal_atom,characterRange,character,
-            __N1,__N2,__N3,__N4,__N5,__N6,__N7,__N8,__N9,__N10,__N11,__N12,newline,newlineChar,whitespace,lineComment,blockComment,spacing,identifierStart,
-            identifierContinue,digit,nonzeroDigit,zero,hexDigit,escapes,ucNameStart,ucNameInner,ucNameEnd,ucName,__acc,
+            rule_alternative,rule_sequence,rule_repetition,rule_optional,rule_star_closure,rule_plus_closure,rule_tree_action,rule_drop_element,rule_promote_element,
+            rule_element,sub_rule,rule_atom,reference,grammar_terminals,terminal_rule,terminal_expression,terminal_alternative,terminal_diff,terminal_sequence,
+            terminal_repetition,terminal_optional,terminal_star_closure,terminal_plus_closure,terminal_range_loop,range,terminal_element,terminal_not,
+            terminal_atom,characterRange,character,__N1,__N2,__N3,__N4,__N5,__N6,__N7,__N8,__N9,__N10,__N11,__N12,newline,newlineChar,whitespace,lineComment,
+            blockComment,spacing,identifierStart,identifierContinue,digit,nonzeroDigit,zero,hexDigit,escapes,ucNameStart,ucNameInner,ucNameEnd,ucName,
+            __acc,
         };
         
         private static readonly Production[] productions = 
@@ -336,21 +337,21 @@ namespace Lingu.CC
             new Production(rule_expression, false, "rule_alternative __N5", false, false),
             new Production(rule_alternative, true, "^rule_sequence", false),
             new Production(rule_sequence, false, "__N6", false),
-            new Production(rule_repetition, true, "^rule_option", false),
-            new Production(rule_repetition, true, "^rule_star", false),
-            new Production(rule_repetition, true, "^rule_plus", false),
+            new Production(rule_repetition, true, "^rule_optional", false),
+            new Production(rule_repetition, true, "^rule_star_closure", false),
+            new Production(rule_repetition, true, "^rule_plus_closure", false),
             new Production(rule_repetition, true, "^rule_tree_action", false),
-            new Production(rule_option, false, "rule_tree_action ,'?'", false, true),
-            new Production(rule_star, false, "rule_tree_action ,'*'", false, true),
-            new Production(rule_plus, false, "rule_tree_action ,'+'", false, true),
-            new Production(rule_tree_action, true, "^rule_drop", false),
-            new Production(rule_tree_action, true, "^rule_promote", false),
-            new Production(rule_tree_action, true, "^rule_primary", false),
-            new Production(rule_drop, false, ",',' rule_primary", true, false),
-            new Production(rule_promote, false, ",'^' rule_primary", true, false),
-            new Production(rule_primary, true, "^sub_rule", false),
-            new Production(rule_primary, true, ",'(' ^rule_expression ,')'", true, false, true),
-            new Production(rule_primary, true, "^rule_atom", false),
+            new Production(rule_optional, false, "rule_tree_action ,'?'", false, true),
+            new Production(rule_star_closure, false, "rule_tree_action ,'*'", false, true),
+            new Production(rule_plus_closure, false, "rule_tree_action ,'+'", false, true),
+            new Production(rule_tree_action, true, "^rule_drop_element", false),
+            new Production(rule_tree_action, true, "^rule_promote_element", false),
+            new Production(rule_tree_action, true, "^rule_element", false),
+            new Production(rule_drop_element, false, ",',' rule_element", true, false),
+            new Production(rule_promote_element, false, ",'^' rule_element", true, false),
+            new Production(rule_element, true, "^sub_rule", false),
+            new Production(rule_element, true, ",'(' ^rule_expression ,')'", true, false, true),
+            new Production(rule_element, true, "^rule_atom", false),
             new Production(sub_rule, false, ",'{' ˈidentifierˈ ,__N7 rule_expression ,'}'", true, false, true, false, true),
             new Production(rule_atom, true, "^reference", false),
             new Production(rule_atom, true, "^ˈtextˈ", false),
@@ -362,14 +363,14 @@ namespace Lingu.CC
             new Production(terminal_alternative, true, "^terminal_diff", false),
             new Production(terminal_diff, false, "terminal_sequence ,'-' terminal_sequence", false, true, false),
             new Production(terminal_sequence, false, "__N11", false),
-            new Production(terminal_repetition, true, "^terminal_option", false),
-            new Production(terminal_repetition, true, "^terminal_star", false),
-            new Production(terminal_repetition, true, "^terminal_plus", false),
+            new Production(terminal_repetition, true, "^terminal_optional", false),
+            new Production(terminal_repetition, true, "^terminal_star_closure", false),
+            new Production(terminal_repetition, true, "^terminal_plus_closure", false),
             new Production(terminal_repetition, true, "^terminal_range_loop", false),
             new Production(terminal_repetition, true, "^terminal_element", false),
-            new Production(terminal_option, false, "terminal_element '?'", false, false),
-            new Production(terminal_star, false, "terminal_element '*'", false, false),
-            new Production(terminal_plus, false, "terminal_element '+'", false, false),
+            new Production(terminal_optional, false, "terminal_element ,'?'", false, true),
+            new Production(terminal_star_closure, false, "terminal_element ,'*'", false, true),
+            new Production(terminal_plus_closure, false, "terminal_element ,'+'", false, true),
             new Production(terminal_range_loop, false, "terminal_element range", false, false),
             new Production(range, false, ",'{' ˈnumberˈ __N12 ,'}'", true, false, false, true),
             new Production(terminal_element, true, "^terminal_atom", false),

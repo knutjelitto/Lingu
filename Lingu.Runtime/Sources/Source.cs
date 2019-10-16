@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Lingu.Runtime.Structures;
 
+#nullable enable
+
 namespace Lingu.Runtime.Sources
 {
     public class Source : ISource

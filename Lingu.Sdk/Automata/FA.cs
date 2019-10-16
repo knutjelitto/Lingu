@@ -7,11 +7,13 @@ using System.Linq;
 using Lingu.Runtime.Commons;
 using Lingu.Runtime.Lexing;
 
+#nullable enable
+
 namespace Lingu.Automata
 {
     public partial class FA
     {
-        private FA(State start, State final, IEnumerable<State> states)
+        private FA(State start, State? final, IEnumerable<State> states)
         {
             Start = start;
             Final = final;
@@ -35,7 +37,7 @@ namespace Lingu.Automata
         }
 
         public State Start { get; }
-        public State Final { get; private set; }
+        public State? Final { get; private set; }
         public List<State> States { get; }
         public IEnumerable<State> Finals => States.Where(state => state.Final);
         public IEnumerable<State> Nons => States.Where(state => !state.Final);
@@ -95,11 +97,6 @@ namespace Lingu.Automata
         public FA Minimize(bool cloned = false)
         {
             return Operations.Minimize(CloneIf(cloned));
-        }
-
-        public Dfa Convert()
-        {
-            return new DfaReader(DfaWriter.GetBytes(this)).Read();
         }
 
         public FA ToDfa(bool cloned = false)

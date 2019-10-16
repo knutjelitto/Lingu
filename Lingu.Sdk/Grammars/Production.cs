@@ -13,14 +13,14 @@ namespace Lingu.Grammars
 {
     public class Production : IReadOnlyList<Symbol>, IProduction
     {
-        public Production(Nonterminal nonterminal, SymbolList symbols, Bools drops, bool isPromote)
+        public Production(Nonterminal nonterminal, SymbolList symbols, Bools drops, Bools promotes)
         {
             Id = -1;
 
             Nonterminal = nonterminal;
             Symbols = symbols;
             Drops = drops;
-            IsPromote = isPromote;
+            Promotes = promotes;
 
             //Debug.Assert(!IsPromote);
         }
@@ -28,11 +28,12 @@ namespace Lingu.Grammars
         public int Id { get; set; }
 
         public Nonterminal Nonterminal { get; }
-        public bool IsPromote { get; }
         INonterminal IProduction.Nonterminal => Nonterminal;
 
         public SymbolList Symbols { get; }
         public Bools Drops { get; }
+        public Bools Promotes { get; }
+        public bool IsPromote => Promotes.Any(p => p);
 
         public CoreFactory? ItemFactory { get; set; }
 
@@ -55,31 +56,20 @@ namespace Lingu.Grammars
         public override bool Equals(object? obj) => obj is Production other && Id == other.Id;
         public override int GetHashCode() => Id;
 
-        public string ToStringSymbols()
-        {
-            return string.Join(" ", Symbols);
-        }
-
         public string ToStringArrow()
         {
-            return $"{Nonterminal} -> {ToStringSymbols()}";
+            return $"{Nonterminal} -> {ToString()}";
         }
 
         public override string ToString()
         {
-            return $"{Nonterminal} -> {string.Join(" ", Enumerate(this))}";
+            return string.Join(" ", Enumerate(this));
 
             IEnumerable<ProdSymbol> Enumerate(Production p)
             {
-                var promotes = new Bools(p.Drops.Select(d => !d));
-                if (p.IsPromote)
-                {
-                    Debug.Assert(p.Symbols.Count == 1 || promotes.Count(b => b) == 1);
-                }
-
                 for (var i = 0; i < p.Symbols.Count; ++i)
                 {
-                    yield return new ProdSymbol(p.Symbols[i], p.Drops[i], promotes[i]);
+                    yield return new ProdSymbol(p.Symbols[i], p.Drops[i], p.Promotes[i]);
                 }
             }
         }

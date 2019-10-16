@@ -1,10 +1,11 @@
-using Lingu.Commons;
-using Lingu.Runtime.Commons;
-using Lingu.Runtime.Errors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
+using Lingu.Runtime.Commons;
+
+#nullable enable
 
 namespace Lingu.Automata
 {

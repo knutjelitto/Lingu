@@ -1,5 +1,7 @@
 using Lingu.Commons;
 
+#nullable enable
+
 namespace Lingu.Automata
 {
     public partial class FA

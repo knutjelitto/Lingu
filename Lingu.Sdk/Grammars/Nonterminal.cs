@@ -60,9 +60,7 @@ namespace Lingu.Grammars
                     }
                 }
 
-                var isPromote = promotesCount == 1;
-
-                productions.Add(new Production(this, thisSymbols, thisDrops, isPromote));
+                productions.Add(new Production(this, thisSymbols, thisDrops, thisPromotes));
             }
         }
     }

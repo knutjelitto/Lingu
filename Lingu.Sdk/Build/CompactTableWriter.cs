@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Lingu.Commons;
-using Lingu.Runtime.Commons;
 using Lingu.Runtime.Structures;
 
 #nullable enable
@@ -13,12 +12,10 @@ namespace Lingu.Build
     public class CompactTableWriter
     {
         private readonly IParseTable table;
-        private readonly BinWriter writer;
 
         public CompactTableWriter(IParseTable table)
         {
             this.table = table;
-            this.writer = new BinWriter();
         }
 
         public byte[] Write()
@@ -63,15 +60,7 @@ namespace Lingu.Build
                 writer.Write(state.nonterminalIndex);
             }
             
-            var bytes = writer.ToArray();
-
-            var reader = new BinReader(bytes);
-
-            var decoder = new CompactTableReader(reader);
-
-            var table = decoder.Read();
-
-            return bytes;
+            return writer.ToArray();
         }
 
         private struct StateEntry

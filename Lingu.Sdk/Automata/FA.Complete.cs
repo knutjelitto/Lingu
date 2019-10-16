@@ -5,6 +5,8 @@ using System.Linq;
 
 using Lingu.Commons;
 
+#nullable enable
+
 namespace Lingu.Automata
 {
     public partial class FA
@@ -15,7 +17,7 @@ namespace Lingu.Automata
             {
                 EnsureDfa(dfa);
 
-                State sink = null;
+                State? sink = null;
 
                 foreach (var state in dfa.States)
                 {

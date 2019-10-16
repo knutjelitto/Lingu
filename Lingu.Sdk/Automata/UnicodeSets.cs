@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Lingu.Commons;
+
+#nullable enable
 
 namespace Lingu.Automata
 {
@@ -44,7 +46,7 @@ namespace Lingu.Automata
                 ("M", new[] {UnicodeCategory.NonSpacingMark, UnicodeCategory.SpacingCombiningMark, UnicodeCategory.EnclosingMark}),
             };
 
-            public Integers this[string category]
+            public Integers? this[string category]
             {
                 get
                 {

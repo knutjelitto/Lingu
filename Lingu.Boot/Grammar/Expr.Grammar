@@ -74,18 +74,18 @@
     }
     rules
     {
-	    expr^
-            : {add: prim ,'+' prim}
-            | {sub: prim ,'-' prim}
-            | {mul: prim ,'*' prim}
-            | {div: prim ,'/' prim}
-			| prim
+	    expr
+            : ^{add: prim ,'+' prim}
+            | ^{sub: prim ,'-' prim}
+            | ^{mul: prim ,'*' prim}
+            | ^{div: prim ,'/' prim}
+			| ^prim
             ;
 
-        prim^
-            : id
-            | num
-            | ,'(' expr ,')'
+        prim
+            : ^id
+            | ^num
+            | ,'(' ^expr ,')'
             ;
     }
 }

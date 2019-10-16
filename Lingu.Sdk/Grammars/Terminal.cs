@@ -15,16 +15,16 @@ namespace Lingu.Grammars
             : base(name)
         {
             Visual = string.Empty;
-            lazyDfa = new Lazy<Dfa>(() => GetDfa().Convert());
+            //lazyDfa = new Lazy<Dfa>(() => GetDfa().Convert());
             Raw = TerminalRule.Nope;
         }
 
-        public Dfa Dfa => lazyDfa.Value;
+        //public Dfa Dfa => lazyDfa.Value;
         public bool IsFragment { get; set; }
         public string Visual { get; set; }
         public TerminalRule Raw { get; set; }
 
-        private readonly Lazy<Dfa> lazyDfa;
+        //private readonly Lazy<Dfa> lazyDfa;
 
         public FA GetDfa()
         {

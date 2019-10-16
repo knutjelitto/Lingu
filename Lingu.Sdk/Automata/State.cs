@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+#nullable enable
+
 namespace Lingu.Automata
 {
     [DebuggerDisplay("{ToString()}")]
