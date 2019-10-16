@@ -12,19 +12,19 @@ namespace Lingu.Build
     {
         public GrammarBuilder(RawGrammar tree)
         {
-            Raw = tree;
-            Grammar = new Grammar(Raw.Name);
+            RawGrammar = tree;
+            BuildGrammar = new BuildGrammar(RawGrammar.Name);
         }
 
-        public RawGrammar Raw { get; }
-        public Grammar Grammar { get; }
+        public RawGrammar RawGrammar { get; }
+        public BuildGrammar BuildGrammar { get; }
 
         public Grammar Build()
         {
             BuildOptions();
 
-            var terminalBuilder = new TerminalBuilder(Grammar, Raw);
-            var nonterminalBuilder = new NonterminalBuilder(Grammar, Raw);
+            var terminalBuilder = new TerminalBuilder(BuildGrammar, RawGrammar);
+            var nonterminalBuilder = new NonterminalBuilder(BuildGrammar, RawGrammar);
 
             terminalBuilder.BuildPass1();
             nonterminalBuilder.BuildPass1();
@@ -32,7 +32,7 @@ namespace Lingu.Build
             nonterminalBuilder.BuildPass2();
 
             var pid = 0;
-            foreach (var t in Grammar.Terminals)
+            foreach (var t in BuildGrammar.Terminals)
             {
                 if (!t.IsPrivate)
                 {
@@ -40,16 +40,16 @@ namespace Lingu.Build
                     pid += 1;
                 }
             }
-            foreach (var n in Grammar.Nonterminals)
+            foreach (var n in BuildGrammar.Nonterminals)
             {
-                if (!ReferenceEquals(n, Grammar.Accept))
+                if (!ReferenceEquals(n, BuildGrammar.Accept))
                 {
                     n.Pid = pid;
                     pid += 1;
                 }
             }
 
-            var symbols = Grammar.Terminals.Concat<Symbol>(Grammar.Nonterminals).ToList();
+            var symbols = BuildGrammar.Terminals.Concat<Symbol>(BuildGrammar.Nonterminals).ToList();
 
             symbols.Sort((s1, s2) =>
             {
@@ -68,12 +68,12 @@ namespace Lingu.Build
                 return 1;
             });
 
-            Grammar.Symbols = symbols.Select((s, i) => { s.Id = i; return s; }).ToArray();
-            Grammar.PSymbols = Grammar.Symbols.Where(s => s.IsPid).ToArray();
+            BuildGrammar.Symbols = symbols.Select((s, i) => { s.Id = i; return s; }).ToArray();
+            BuildGrammar.PSymbols = BuildGrammar.Symbols.Where(s => s.IsPid).ToArray();
 
-            new SetsBuilder(Grammar).Build();
+            new SetsBuilder(BuildGrammar).Build();
 
-            return Grammar;
+            return BuildGrammar;
         }
 
         /// <summary>
@@ -81,14 +81,14 @@ namespace Lingu.Build
         /// </summary>
         private void BuildOptions()
         {
-            foreach (var raw in Raw.Options)
+            foreach (var raw in RawGrammar.Options)
             {
                 var option = raw;
-                if (Grammar.OptionList.Contains(option))
+                if (BuildGrammar.OptionList.Contains(option))
                 {
                     throw new GrammarException($"option: `{option.Name}´ already defined before");
                 }
-                Grammar.OptionList.Add(option);
+                BuildGrammar.OptionList.Add(option);
             }
         }
     }

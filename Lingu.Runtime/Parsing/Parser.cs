@@ -24,7 +24,7 @@ namespace Lingu.Runtime.Parsing
 
         public INonterminalToken Parse()
         {
-            ITerminalToken? token = Lexer.First(stack.StateId);
+            ITerminalToken? token = Lexer.Next(stack.StateId);
 
             while (token != null)
             {

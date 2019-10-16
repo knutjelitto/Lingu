@@ -12,21 +12,14 @@ namespace Lingu.Runtime.Lexing
         {
             Context = context;
             Source = source;
+            index = 0;
         }
 
         public IContext Context { get; }
         public ISource Source { get; }
         public IErrorHandler Errors => Context.Errors;
 
-
-        int index = 0;
-
-        public ITerminalToken First(int stateId)
-        {
-            index = 0;
-
-            return Action(stateId);
-        }
+        private int index = 0;
 
         public ITerminalToken Next(int stateId)
         {

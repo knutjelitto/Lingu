@@ -14,30 +14,29 @@ namespace Lingu.Build
 {
     public class NonterminalBuilder
     {
-        public NonterminalBuilder(Grammar grammar, RawGrammar raw)
+        public NonterminalBuilder(BuildGrammar buildGrammar, RawGrammar rawGrammar)
         {
-            Grammar = grammar;
-            Raw = raw;
+            BuildGrammar = buildGrammar;
+            RawGrammar = rawGrammar;
             ToDo = new Queue<(Nonterminal, IEnumerable<IExpression>)>();
         }
 
-        public Grammar Grammar { get; }
-        public RawGrammar Raw { get; }
+        public Grammar BuildGrammar { get; }
+        public RawGrammar RawGrammar { get; }
         private Queue<(Nonterminal, IEnumerable<IExpression>)> ToDo { get; }
 
         public void BuildPass1()
         {
-            foreach (var raw in Raw.Nonterminals)
+            foreach (var raw in RawGrammar.Nonterminals)
             {
                 var nonterminal = new Nonterminal(raw.Name);
 
-                if (Grammar.Nonterminals.Contains(nonterminal))
+                if (BuildGrammar.Nonterminals.Contains(nonterminal))
                 {
                     throw new GrammarException($"nonterminal: `{nonterminal.Name}´ already defined before");
                 }
 
                 NewNonterminal(nonterminal, raw.Alternates);
-
             }
 
             while (ToDo.Count > 0)
@@ -46,61 +45,53 @@ namespace Lingu.Build
 
                 BuildNonterminal(nonterminal, expressions);
             }
-
-            foreach (var nonterminal in Grammar.Nonterminals)
-            {
-                if (nonterminal.IsLift)
-                {
-                    nonterminal.IsPrivate = true;
-                }
-            }
         }
 
         public void BuildPass2()
         {
-            int id = Grammar.Terminals.Last().Id + 1;
+            int id = BuildGrammar.Terminals.Last().Id + 1;
 
-            var innerStart = Grammar.Options.Start;
+            var innerStart = BuildGrammar.Options.Start;
             if (innerStart == null)
             {
-                innerStart = Grammar.Nonterminals[0];
+                innerStart = BuildGrammar.Nonterminals[0];
             }
 
             var outerStart = new Nonterminal("__acc");
-            Grammar.Accept = outerStart;
+            BuildGrammar.Accept = outerStart;
             outerStart.IsPrivate = true;
             outerStart.AddProductions( Enumerable.Repeat(new ProdSymbol(innerStart), 1) );
             outerStart.Id = id;
             id += 1;
 
 
-            foreach (var nonterminal in Grammar.Nonterminals.Where(t => !t.IsPrivate))
+            foreach (var nonterminal in BuildGrammar.Nonterminals.Where(t => !t.IsPrivate))
             {
                 nonterminal.Id = id;
                 id += 1;
             }
-            foreach (var nonterminal in Grammar.Nonterminals.Where(t => t.IsPrivate))
+            foreach (var nonterminal in BuildGrammar.Nonterminals.Where(t => t.IsPrivate))
             {
                 nonterminal.Id = id;
                 id += 1;
             }
 
-            Grammar.Nonterminals.Add(outerStart);
+            BuildGrammar.Nonterminals.Add(outerStart);
 
-            Grammar.Nonterminals.Sort(nonterminal => nonterminal.Id);
+            BuildGrammar.Nonterminals.Sort(nonterminal => nonterminal.Id);
 
             //
             // Number Productions
             //
             id = 0;
-            foreach (var nonterminal in Grammar.Nonterminals)
+            foreach (var nonterminal in BuildGrammar.Nonterminals)
             {
                 foreach (var production in nonterminal.Productions)
                 {
                     production.Id = id;
                     id += 1;
 
-                    Grammar.Productions.Add(production);
+                    BuildGrammar.Productions.Add(production);
                 }
 
                 if (nonterminal.Productions.All(p => p.IsPromote))
@@ -121,13 +112,13 @@ namespace Lingu.Build
 
         private void NewNonterminal(Nonterminal nonterminal, IEnumerable<IExpression> expressions)
         {
-            Grammar.Nonterminals.Add(nonterminal);
+            BuildGrammar.Nonterminals.Add(nonterminal);
             ToDo.Enqueue((nonterminal, expressions));
         }
 
         private void NewNonterminal(Nonterminal nonterminal)
         {
-            Grammar.Nonterminals.Add(nonterminal);
+            BuildGrammar.Nonterminals.Add(nonterminal);
         }
 
         private static IEnumerable<ProdSymbol> Single(ProdSymbol symbol)
@@ -141,7 +132,7 @@ namespace Lingu.Build
             {
                 case Alternates alts:
                     {
-                        var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                        var nonterminal = new Nonterminal(BuildGrammar.NextNonterminalName())
                         {
                             IsGenerated = true,
                         };
@@ -167,7 +158,7 @@ namespace Lingu.Build
                         {
                             case RepeatKind.Optional:
                                 {
-                                    var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                                    var nonterminal = new Nonterminal(BuildGrammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
                                         Repeat = repeat.Kind
@@ -184,7 +175,7 @@ namespace Lingu.Build
                                 break;
                             case RepeatKind.Star:
                                 {
-                                    var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                                    var nonterminal = new Nonterminal(BuildGrammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
                                         Repeat = repeat.Kind
@@ -203,7 +194,7 @@ namespace Lingu.Build
                                 break;
                             case RepeatKind.Plus:
                                 {
-                                    var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                                    var nonterminal = new Nonterminal(BuildGrammar.NextNonterminalName())
                                     {
                                         IsGenerated = true,
                                         Repeat = repeat.Kind
@@ -229,7 +220,7 @@ namespace Lingu.Build
                             IsGenerated = true
                         };
 
-                        if (Grammar.Nonterminals.Contains(nonterminal))
+                        if (BuildGrammar.Nonterminals.Contains(nonterminal))
                         {
                             throw new GrammarException($"nonterminal: a rule named `{nonterminal.Name}´ is already defined before");
                         }
@@ -242,13 +233,13 @@ namespace Lingu.Build
                     {
                         var sym = (Symbol)name.Text;
 
-                        if (Grammar.Nonterminals.TryGetValue(sym, out var nonterminal))
+                        if (BuildGrammar.Nonterminals.TryGetValue(sym, out var nonterminal))
                         {
                             yield return new ProdSymbol(nonterminal);
                             break;
                         }
 
-                        if (Grammar.Terminals.TryGetValue(sym, out var terminal))
+                        if (BuildGrammar.Terminals.TryGetValue(sym, out var terminal))
                         {
                             yield return new ProdSymbol(terminal);
                             break;
@@ -258,11 +249,11 @@ namespace Lingu.Build
                     }
                 case Tree.String str:
                     {
-                        var terminal = Grammar.Terminals.Where(t => t.Visual == str.Value).FirstOrDefault();
+                        var terminal = BuildGrammar.Terminals.Where(t => t.Visual == str.Value).FirstOrDefault();
 
                         if (terminal == null)
                         {
-                            var tname = Grammar.NextTerminalName();
+                            var tname = BuildGrammar.NextTerminalName();
 
                             Debug.Assert(!str.Value.StartsWith('\''));
                             terminal = new Terminal(tname)
@@ -272,7 +263,7 @@ namespace Lingu.Build
                                 Raw = TerminalRule.From(tname, str),
                             };
 
-                            Grammar.Terminals.Add(terminal);
+                            BuildGrammar.Terminals.Add(terminal);
                         }
                         yield return new ProdSymbol(terminal);
                     }
@@ -282,7 +273,7 @@ namespace Lingu.Build
                     var symbols = BuildSymbols(drop.Expression).ToList();
                     if (symbols.Count > 1)
                     {
-                        var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                        var nonterminal = new Nonterminal(BuildGrammar.NextNonterminalName())
                         {
                             IsGenerated = true,
                         };
@@ -303,7 +294,7 @@ namespace Lingu.Build
                     var symbols = BuildSymbols(promote.Expression).ToList();
                     if (symbols.Count > 1)
                     {
-                        var nonterminal = new Nonterminal(Grammar.NextNonterminalName())
+                        var nonterminal = new Nonterminal(BuildGrammar.NextNonterminalName())
                         {
                             IsGenerated = true,
                         };

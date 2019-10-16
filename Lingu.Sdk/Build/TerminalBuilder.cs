@@ -12,14 +12,14 @@ namespace Lingu.Build
 {
     public class TerminalBuilder
     {
-        public TerminalBuilder(Grammar grammar, RawGrammar tree)
+        public TerminalBuilder(BuildGrammar buildGrammar, RawGrammar rawGrammar)
         {
-            Grammar = grammar;
-            Raw = tree;
+            BuildGrammar = buildGrammar;
+            RawGrammar = rawGrammar;
         }
 
-        public Grammar Grammar { get; }
-        public RawGrammar Raw { get; }
+        public BuildGrammar BuildGrammar { get; }
+        public RawGrammar RawGrammar { get; }
 
         public void BuildPass1()
         {
@@ -43,19 +43,19 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass1()
         {
-            foreach (var raw in Raw.Terminals)
+            foreach (var raw in RawGrammar.Terminals)
             {
                 var terminal = new Terminal(raw.Name)
                 {
                     Raw = raw
                 };
 
-                if (Grammar.Terminals.Contains(terminal))
+                if (BuildGrammar.Terminals.Contains(terminal))
                 {
                     throw new GrammarException($"terminal: `{terminal.Name}´ already defined before");
                 }
 
-                Grammar.Terminals.Add(terminal);
+                BuildGrammar.Terminals.Add(terminal);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass2()
         {
-            foreach (var terminal in Grammar.Terminals)
+            foreach (var terminal in BuildGrammar.Terminals)
             {
                 Resolve(terminal.Raw.Expression);
             }
@@ -73,7 +73,7 @@ namespace Lingu.Build
             {
                 if (expr is Name name)
                 {
-                    if (!Grammar.Terminals.TryGetValue((Symbol)name.Text, out var terminal))
+                    if (!BuildGrammar.Terminals.TryGetValue((Symbol)name.Text, out var terminal))
                     {
                         throw new GrammarException($"terminal: reference to `{name.Text}´ can't be resolved");
                     }
@@ -94,7 +94,7 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass3()
         {
-            foreach (var terminal in Grammar.Terminals)
+            foreach (var terminal in BuildGrammar.Terminals)
             {
                 CheckTerminalRecursion(terminal);
             }
@@ -137,14 +137,14 @@ namespace Lingu.Build
         /// </summary>
         private void BuildTerminalsPass4()
         {
-            foreach (var terminal in Grammar.Terminals)
+            foreach (var terminal in BuildGrammar.Terminals)
             {
                 terminal.IsFragment = true;
                 terminal.IsPrivate = true;
                 terminal.IsVisible = false;
             }
 
-            foreach (var nonterminal in Grammar.Nonterminals)
+            foreach (var nonterminal in BuildGrammar.Nonterminals)
             {
                 foreach (var production in nonterminal.Productions)
                 {
@@ -177,34 +177,34 @@ namespace Lingu.Build
 
             };
             eof.Raw = TerminalRule.From(eof.Name, new Eof(eof.Name));
-            Grammar.Terminals.Add(eof);
-            Grammar.Eof = eof;
+            BuildGrammar.Terminals.Add(eof);
+            BuildGrammar.Eof = eof;
 
-            if (Grammar.Options.Spacing == null)
+            if (BuildGrammar.Options.Spacing == null)
             {
-                Grammar.SpacingDfa = new None("__spc").GetFA().ToDfa().Minimize().RemoveDead();
+                BuildGrammar.SpacingDfa = new None("__spc").GetFA().ToDfa().Minimize().RemoveDead();
             }
             else
             {
-                var star = Repeat.From(Grammar.Options.Spacing.Raw.Expression, 0);
-                Grammar.SpacingDfa = star.GetFA().ToDfa().Minimize().RemoveDead();
+                var star = Repeat.From(BuildGrammar.Options.Spacing.Raw.Expression, 0);
+                BuildGrammar.SpacingDfa = star.GetFA().ToDfa().Minimize().RemoveDead();
             }
 
             int id = 0;
-            foreach (var terminal in Grammar.Terminals.Where(t => !t.Raw.IsPrivate))
+            foreach (var terminal in BuildGrammar.Terminals.Where(t => !t.Raw.IsPrivate))
             {
                 terminal.Id = id;
                 terminal.Raw.Id = id;
                 id += 1;
             }
-            foreach (var terminal in Grammar.Terminals.Where(t => t.Raw.IsPrivate))
+            foreach (var terminal in BuildGrammar.Terminals.Where(t => t.Raw.IsPrivate))
             {
                 terminal.Id = id;
                 terminal.Raw.Id = id;
                 id += 1;
             }
 
-            Grammar.Terminals.Sort(terminal => terminal.Id);
+            BuildGrammar.Terminals.Sort(terminal => terminal.Id);
         }
     }
 }
