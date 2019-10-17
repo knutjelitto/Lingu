@@ -4,3 +4,3231 @@ file
     $*$
       grammar_options
         $*$
+      grammar_rules
+        $*$
+          rule
+            identifier <module>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_option
+                    identifier <STRING>
+                  rule_star
+                    identifier <use>
+                  rule_star
+                    identifier <class_def>
+              $*$
+          rule
+            identifier <use>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'use'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <ID>
+                          text <'='>
+                      $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        identifier <STRING>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <use_ffi>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'if'>
+                          identifier <infix>
+                      $*$
+              $*$
+          rule
+            identifier <use_ffi>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'@'>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        identifier <ID>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <STRING>
+                  identifier <typeargs>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'('>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <LPAREN_NEW>
+                  rule_option
+                    identifier <params>
+                  text <')'>
+                  rule_option
+                    text <'?'>
+              $*$
+          rule
+            identifier <class_def>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'type'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'interface'>
+                      rule_sequence
+                        $*$
+                          text <'trait'>
+                      rule_sequence
+                        $*$
+                          text <'primitive'>
+                      rule_sequence
+                        $*$
+                          text <'struct'>
+                      rule_sequence
+                        $*$
+                          text <'class'>
+                      rule_sequence
+                        $*$
+                          text <'actor'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  rule_option
+                    text <'@'>
+                  rule_option
+                    identifier <cap>
+                  identifier <ID>
+                  rule_option
+                    identifier <typeparams>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'is'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    identifier <STRING>
+                  identifier <members>
+              $*$
+          rule
+            identifier <members>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_star
+                    identifier <field>
+                  rule_star
+                    identifier <method>
+              $*$
+          rule
+            identifier <field>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'var'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'let'>
+                      rule_sequence
+                        $*$
+                          text <'embed'>
+                  identifier <ID>
+                  text <':'>
+                  identifier <type>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <infix>
+                      $*$
+                  rule_option
+                    identifier <STRING>
+              $*$
+          rule
+            identifier <method>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'fun'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'be'>
+                      rule_sequence
+                        $*$
+                          text <'new'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <cap>
+                      $*$
+                        rule_sequence
+                          $*$
+                            text <'@'>
+                  identifier <ID>
+                  rule_option
+                    identifier <typeparams>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'('>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <LPAREN_NEW>
+                  rule_option
+                    identifier <params>
+                  text <')'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    text <'?'>
+                  rule_option
+                    identifier <STRING>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'=>'>
+                          identifier <rawseq>
+                      $*$
+              $*$
+          rule
+            identifier <annotatedrawseq>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        identifier <exprseq>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <jump>
+              $*$
+          rule
+            identifier <rawseq>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <exprseq>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <jump>
+          rule
+            identifier <exprseq>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <assignment>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <semiexpr>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <nosemi>
+              $*$
+          rule
+            identifier <nextexprseq>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <nextassignment>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <semiexpr>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <nosemi>
+              $*$
+          rule
+            identifier <nosemi>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <nextexprseq>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <jump>
+          rule
+            identifier <semiexpr>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <';'>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        identifier <exprseq>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <jump>
+              $*$
+          rule
+            identifier <jump>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'return'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'break'>
+                      rule_sequence
+                        $*$
+                          text <'continue'>
+                      rule_sequence
+                        $*$
+                          text <'error'>
+                      rule_sequence
+                        $*$
+                          text <'compile_intrinsic'>
+                      rule_sequence
+                        $*$
+                          text <'compile_error'>
+                  rule_option
+                    identifier <rawseq>
+              $*$
+          rule
+            identifier <nextassignment>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <nextinfix>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <assignment>
+                      $*$
+              $*$
+          rule
+            identifier <assignment>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <infix>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <assignment>
+                      $*$
+              $*$
+          rule
+            identifier <nextinfix>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <nextterm>
+                  rule_star
+                    identifier <antlr_0>
+              $*$
+          rule
+            identifier <infix>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <term>
+                  rule_star
+                    identifier <antlr_1>
+              $*$
+          rule
+            identifier <isop>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'is'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'isnt'>
+                  identifier <term>
+              $*$
+          rule
+            identifier <binop>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'and'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'or'>
+                      rule_sequence
+                        $*$
+                          text <'xor'>
+                      rule_sequence
+                        $*$
+                          text <'+'>
+                      rule_sequence
+                        $*$
+                          text <'-'>
+                      rule_sequence
+                        $*$
+                          text <'*'>
+                      rule_sequence
+                        $*$
+                          text <'/'>
+                      rule_sequence
+                        $*$
+                          text <'%'>
+                      rule_sequence
+                        $*$
+                          text <'%%'>
+                      rule_sequence
+                        $*$
+                          text <'+~'>
+                      rule_sequence
+                        $*$
+                          text <'-~'>
+                      rule_sequence
+                        $*$
+                          text <'*~'>
+                      rule_sequence
+                        $*$
+                          text <'/~'>
+                      rule_sequence
+                        $*$
+                          text <'%~'>
+                      rule_sequence
+                        $*$
+                          text <'%%~'>
+                      rule_sequence
+                        $*$
+                          text <'<<'>
+                      rule_sequence
+                        $*$
+                          text <'>>'>
+                      rule_sequence
+                        $*$
+                          text <'<<~'>
+                      rule_sequence
+                        $*$
+                          text <'>>~'>
+                      rule_sequence
+                        $*$
+                          text <'=='>
+                      rule_sequence
+                        $*$
+                          text <'!='>
+                      rule_sequence
+                        $*$
+                          text <'<'>
+                      rule_sequence
+                        $*$
+                          text <'<='>
+                      rule_sequence
+                        $*$
+                          text <'>='>
+                      rule_sequence
+                        $*$
+                          text <'>'>
+                      rule_sequence
+                        $*$
+                          text <'==~'>
+                      rule_sequence
+                        $*$
+                          text <'!=~'>
+                      rule_sequence
+                        $*$
+                          text <'<~'>
+                      rule_sequence
+                        $*$
+                          text <'<=~'>
+                      rule_sequence
+                        $*$
+                          text <'>=~'>
+                      rule_sequence
+                        $*$
+                          text <'>~'>
+                  rule_option
+                    text <'?'>
+                  identifier <term>
+              $*$
+          rule
+            identifier <nextterm>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'if'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  identifier <rawseq>
+                  text <'then'>
+                  identifier <rawseq>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <elseif>
+                      $*$
+                        rule_sequence
+                          $*$
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <'else'>
+                                  identifier <annotatedrawseq>
+                              $*$
+                  text <'end'>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'ifdef'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <infix>
+                    text <'then'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            identifier <elseifdef>
+                        $*$
+                          rule_sequence
+                            $*$
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <'else'>
+                                    identifier <annotatedrawseq>
+                                $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'iftype'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <iftype>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            identifier <elseiftype>
+                        $*$
+                          rule_sequence
+                            $*$
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <'else'>
+                                    identifier <annotatedrawseq>
+                                $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'match'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    rule_star
+                      identifier <caseexpr>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'while'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    text <'do'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'repeat'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    text <'until'>
+                    identifier <annotatedrawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'for'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <idseq>
+                    text <'in'>
+                    identifier <rawseq>
+                    text <'do'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'with'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <withelem>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <withelem>
+                              $*$
+                      $*$
+                    text <'do'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'try'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'then'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'recover'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    identifier <rawseq>
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'consume'>
+                    rule_option
+                      identifier <cap>
+                    identifier <term>
+                rule_sequence
+                  $*$
+                    identifier <nextpattern>
+                rule_sequence
+                  $*$
+                    text <'#'>
+                    identifier <postfix>
+          rule
+            identifier <term>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'if'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  identifier <rawseq>
+                  text <'then'>
+                  identifier <rawseq>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <elseif>
+                      $*$
+                        rule_sequence
+                          $*$
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <'else'>
+                                  identifier <annotatedrawseq>
+                              $*$
+                  text <'end'>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'ifdef'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <infix>
+                    text <'then'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            identifier <elseifdef>
+                        $*$
+                          rule_sequence
+                            $*$
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <'else'>
+                                    identifier <annotatedrawseq>
+                                $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'iftype'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <iftype>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            identifier <elseiftype>
+                        $*$
+                          rule_sequence
+                            $*$
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <'else'>
+                                    identifier <annotatedrawseq>
+                                $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'match'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    rule_star
+                      identifier <caseexpr>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'while'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    text <'do'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'repeat'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    text <'until'>
+                    identifier <annotatedrawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'for'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <idseq>
+                    text <'in'>
+                    identifier <rawseq>
+                    text <'do'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'with'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <withelem>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <withelem>
+                              $*$
+                      $*$
+                    text <'do'>
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'try'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    identifier <rawseq>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'else'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'then'>
+                            identifier <annotatedrawseq>
+                        $*$
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'recover'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    identifier <rawseq>
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'consume'>
+                    rule_option
+                      identifier <cap>
+                    identifier <term>
+                rule_sequence
+                  $*$
+                    identifier <pattern>
+                rule_sequence
+                  $*$
+                    text <'#'>
+                    identifier <postfix>
+          rule
+            identifier <withelem>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <idseq>
+                  text <'='>
+                  identifier <rawseq>
+              $*$
+          rule
+            identifier <caseexpr>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'|'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  rule_option
+                    identifier <pattern>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'if'>
+                          identifier <rawseq>
+                      $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'=>'>
+                          identifier <rawseq>
+                      $*$
+              $*$
+          rule
+            identifier <elseiftype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'elseif'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  identifier <iftype>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <elseiftype>
+                      $*$
+                        rule_sequence
+                          $*$
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <'else'>
+                                  identifier <annotatedrawseq>
+                              $*$
+              $*$
+          rule
+            identifier <iftype>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <type>
+                  text <'<:'>
+                  identifier <type>
+                  text <'then'>
+                  identifier <rawseq>
+              $*$
+          rule
+            identifier <elseifdef>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'elseif'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  identifier <infix>
+                  text <'then'>
+                  identifier <rawseq>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <elseifdef>
+                      $*$
+                        rule_sequence
+                          $*$
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <'else'>
+                                  identifier <annotatedrawseq>
+                              $*$
+              $*$
+          rule
+            identifier <elseif>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'elseif'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+                  identifier <rawseq>
+                  text <'then'>
+                  identifier <rawseq>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <elseif>
+                      $*$
+                        rule_sequence
+                          $*$
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <'else'>
+                                  identifier <annotatedrawseq>
+                              $*$
+              $*$
+          rule
+            identifier <idseq>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+              $*$
+                rule_sequence
+                  $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    identifier <idseq_in_seq>
+                    rule_star
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <','>
+                            identifier <idseq_in_seq>
+                        $*$
+                    text <')'>
+          rule
+            identifier <idseq_in_seq>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+              $*$
+                rule_sequence
+                  $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    identifier <idseq_in_seq>
+                    rule_star
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <','>
+                            identifier <idseq_in_seq>
+                        $*$
+                    text <')'>
+          rule
+            identifier <nextpattern>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'var'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'let'>
+                      rule_sequence
+                        $*$
+                          text <'embed'>
+                  identifier <ID>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <nextparampattern>
+          rule
+            identifier <pattern>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'var'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'let'>
+                      rule_sequence
+                        $*$
+                          text <'embed'>
+                  identifier <ID>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <parampattern>
+          rule
+            identifier <nextparampattern>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'not'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'addressof'>
+                      rule_sequence
+                        $*$
+                          identifier <MINUS_NEW>
+                      rule_sequence
+                        $*$
+                          identifier <MINUS_TILDE_NEW>
+                      rule_sequence
+                        $*$
+                          text <'digestof'>
+                  identifier <parampattern>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <nextpostfix>
+          rule
+            identifier <parampattern>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'not'>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'addressof'>
+                      rule_sequence
+                        $*$
+                          text <'-'>
+                      rule_sequence
+                        $*$
+                          text <'-~'>
+                      rule_sequence
+                        $*$
+                          identifier <MINUS_NEW>
+                      rule_sequence
+                        $*$
+                          identifier <MINUS_TILDE_NEW>
+                      rule_sequence
+                        $*$
+                          text <'digestof'>
+                  identifier <parampattern>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <postfix>
+          rule
+            identifier <nextpostfix>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <nextatom>
+                  rule_star
+                    identifier <antlr_2>
+              $*$
+          rule
+            identifier <postfix>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <atom>
+                  rule_star
+                    identifier <antlr_3>
+              $*$
+          rule
+            identifier <call>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'('>
+                  rule_option
+                    identifier <positional>
+                  rule_option
+                    identifier <named>
+                  text <')'>
+                  rule_option
+                    text <'?'>
+              $*$
+          rule
+            identifier <chain>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'.>'>
+                  identifier <ID>
+              $*$
+          rule
+            identifier <tilde>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'~'>
+                  identifier <ID>
+              $*$
+          rule
+            identifier <dot>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'.'>
+                  identifier <ID>
+              $*$
+          rule
+            identifier <nextatom>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'this'>
+                rule_sequence
+                  $*$
+                    identifier <literal>
+                rule_sequence
+                  $*$
+                    identifier <LPAREN_NEW>
+                    identifier <rawseq>
+                    rule_option
+                      identifier <tuple>
+                    text <')'>
+                rule_sequence
+                  $*$
+                    identifier <LSQUARE_NEW>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'as'>
+                            identifier <type>
+                            text <':'>
+                        $*$
+                    rule_option
+                      identifier <rawseq>
+                    text <']'>
+                rule_sequence
+                  $*$
+                    text <'object'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'is'>
+                            identifier <type>
+                        $*$
+                    identifier <members>
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'{'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    rule_option
+                      identifier <ID>
+                    rule_option
+                      identifier <typeparams>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    rule_option
+                      identifier <lambdaparams>
+                    text <')'>
+                    rule_option
+                      identifier <lambdacaptures>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <':'>
+                            identifier <type>
+                        $*$
+                    rule_option
+                      text <'?'>
+                    text <'=>'>
+                    identifier <rawseq>
+                    text <'}'>
+                    rule_option
+                      identifier <cap>
+                rule_sequence
+                  $*$
+                    text <'@{'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    rule_option
+                      identifier <ID>
+                    rule_option
+                      identifier <typeparams>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    rule_option
+                      identifier <lambdaparams>
+                    text <')'>
+                    rule_option
+                      identifier <lambdacaptures>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <':'>
+                            identifier <type>
+                        $*$
+                    rule_option
+                      text <'?'>
+                    text <'=>'>
+                    identifier <rawseq>
+                    text <'}'>
+                    rule_option
+                      identifier <cap>
+                rule_sequence
+                  $*$
+                    text <'@'>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <ID>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <STRING>
+                    rule_option
+                      identifier <typeargs>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    rule_option
+                      identifier <positional>
+                    rule_option
+                      identifier <named>
+                    text <')'>
+                    rule_option
+                      text <'?'>
+                rule_sequence
+                  $*$
+                    text <'__loc'>
+          rule
+            identifier <atom>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'this'>
+                rule_sequence
+                  $*$
+                    identifier <literal>
+                rule_sequence
+                  $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    identifier <rawseq>
+                    rule_option
+                      identifier <tuple>
+                    text <')'>
+                rule_sequence
+                  $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'['>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LSQUARE_NEW>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'as'>
+                            identifier <type>
+                            text <':'>
+                        $*$
+                    rule_option
+                      identifier <rawseq>
+                    text <']'>
+                rule_sequence
+                  $*$
+                    text <'object'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'is'>
+                            identifier <type>
+                        $*$
+                    identifier <members>
+                    text <'end'>
+                rule_sequence
+                  $*$
+                    text <'{'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    rule_option
+                      identifier <ID>
+                    rule_option
+                      identifier <typeparams>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    rule_option
+                      identifier <lambdaparams>
+                    text <')'>
+                    rule_option
+                      identifier <lambdacaptures>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <':'>
+                            identifier <type>
+                        $*$
+                    rule_option
+                      text <'?'>
+                    text <'=>'>
+                    identifier <rawseq>
+                    text <'}'>
+                    rule_option
+                      identifier <cap>
+                rule_sequence
+                  $*$
+                    text <'@{'>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <'\\'>
+                            identifier <ID>
+                            rule_star
+                              rule_expression
+                                rule_sequence
+                                  $*$
+                                    text <','>
+                                    identifier <ID>
+                                $*$
+                            text <'\\'>
+                        $*$
+                    rule_option
+                      identifier <cap>
+                    rule_option
+                      identifier <ID>
+                    rule_option
+                      identifier <typeparams>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    rule_option
+                      identifier <lambdaparams>
+                    text <')'>
+                    rule_option
+                      identifier <lambdacaptures>
+                    rule_option
+                      rule_expression
+                        rule_sequence
+                          $*$
+                            text <':'>
+                            identifier <type>
+                        $*$
+                    rule_option
+                      text <'?'>
+                    text <'=>'>
+                    identifier <rawseq>
+                    text <'}'>
+                    rule_option
+                      identifier <cap>
+                rule_sequence
+                  $*$
+                    text <'@'>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <ID>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <STRING>
+                    rule_option
+                      identifier <typeargs>
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    rule_option
+                      identifier <positional>
+                    rule_option
+                      identifier <named>
+                    text <')'>
+                    rule_option
+                      text <'?'>
+                rule_sequence
+                  $*$
+                    text <'__loc'>
+          rule
+            identifier <tuple>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <','>
+                  identifier <rawseq>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <rawseq>
+                      $*$
+              $*$
+          rule
+            identifier <lambdacaptures>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'('>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <LPAREN_NEW>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        identifier <lambdacapture>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'this'>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          rule_expression
+                            rule_sequence
+                              $*$
+                                identifier <lambdacapture>
+                            $*$
+                              rule_sequence
+                                $*$
+                                  text <'this'>
+                      $*$
+                  text <')'>
+              $*$
+          rule
+            identifier <lambdacapture>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <infix>
+                      $*$
+              $*$
+          rule
+            identifier <lambdaparams>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <lambdaparam>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <lambdaparam>
+                      $*$
+              $*$
+          rule
+            identifier <lambdaparam>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <infix>
+                      $*$
+              $*$
+          rule
+            identifier <positional>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <rawseq>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <rawseq>
+                      $*$
+              $*$
+          rule
+            identifier <named>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'where'>
+                  identifier <namedarg>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <namedarg>
+                      $*$
+              $*$
+          rule
+            identifier <namedarg>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+                  text <'='>
+                  identifier <rawseq>
+              $*$
+          rule
+            identifier <type>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <atomtype>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'->'>
+                          identifier <type>
+                      $*$
+              $*$
+          rule
+            identifier <atomtype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'this'>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <cap>
+                rule_sequence
+                  $*$
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'('>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <LPAREN_NEW>
+                    identifier <infixtype>
+                    rule_option
+                      identifier <tupletype>
+                    text <')'>
+                rule_sequence
+                  $*$
+                    identifier <nominal>
+                rule_sequence
+                  $*$
+                    identifier <lambdatype>
+                rule_sequence
+                  $*$
+                    identifier <barelambdatype>
+          rule
+            identifier <barelambdatype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'@{'>
+                  rule_option
+                    identifier <cap>
+                  rule_option
+                    identifier <ID>
+                  rule_option
+                    identifier <typeparams>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'('>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <LPAREN_NEW>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <type>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <type>
+                              $*$
+                      $*$
+                  text <')'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    text <'?'>
+                  text <'}'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <cap>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <gencap>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'^'>
+                      $*$
+                        rule_sequence
+                          $*$
+                            text <'!'>
+              $*$
+          rule
+            identifier <lambdatype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'{'>
+                  rule_option
+                    identifier <cap>
+                  rule_option
+                    identifier <ID>
+                  rule_option
+                    identifier <typeparams>
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'('>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <LPAREN_NEW>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <type>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <type>
+                              $*$
+                      $*$
+                  text <')'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    text <'?'>
+                  text <'}'>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <cap>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <gencap>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'^'>
+                      $*$
+                        rule_sequence
+                          $*$
+                            text <'!'>
+              $*$
+          rule
+            identifier <tupletype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <','>
+                  identifier <infixtype>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <infixtype>
+                      $*$
+              $*$
+          rule
+            identifier <infixtype>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <type>
+                  rule_star
+                    identifier <antlr_4>
+              $*$
+          rule
+            identifier <isecttype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'&'>
+                  identifier <type>
+              $*$
+          rule
+            identifier <uniontype>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'|'>
+                  identifier <type>
+              $*$
+          rule
+            identifier <nominal>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'.'>
+                          identifier <ID>
+                      $*$
+                  rule_option
+                    identifier <typeargs>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          identifier <cap>
+                      $*$
+                        rule_sequence
+                          $*$
+                            identifier <gencap>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'^'>
+                      $*$
+                        rule_sequence
+                          $*$
+                            text <'!'>
+              $*$
+          rule
+            identifier <gencap>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'#read'>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'#send'>
+                rule_sequence
+                  $*$
+                    text <'#share'>
+                rule_sequence
+                  $*$
+                    text <'#alias'>
+                rule_sequence
+                  $*$
+                    text <'#any'>
+          rule
+            identifier <cap>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'iso'>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'trn'>
+                rule_sequence
+                  $*$
+                    text <'ref'>
+                rule_sequence
+                  $*$
+                    text <'val'>
+                rule_sequence
+                  $*$
+                    text <'box'>
+                rule_sequence
+                  $*$
+                    text <'tag'>
+          rule
+            identifier <typeargs>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'['>
+                  identifier <typearg>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <typearg>
+                      $*$
+                  text <']'>
+              $*$
+          rule
+            identifier <typeparams>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        text <'['>
+                    $*$
+                      rule_sequence
+                        $*$
+                          identifier <LSQUARE_NEW>
+                  identifier <typeparam>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          identifier <typeparam>
+                      $*$
+                  text <']'>
+              $*$
+          rule
+            identifier <params>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_expression
+                    rule_sequence
+                      $*$
+                        identifier <param>
+                    $*$
+                      rule_sequence
+                        $*$
+                          text <'...'>
+                  rule_star
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <','>
+                          rule_expression
+                            rule_sequence
+                              $*$
+                                identifier <param>
+                            $*$
+                              rule_sequence
+                                $*$
+                                  text <'...'>
+                      $*$
+              $*$
+          rule
+            identifier <typeparam>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <':'>
+                          identifier <type>
+                      $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <typearg>
+                      $*$
+              $*$
+          rule
+            identifier <typearg>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <type>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <literal>
+                rule_sequence
+                  $*$
+                    text <'#'>
+                    identifier <postfix>
+          rule
+            identifier <literal>
+            rule_expression
+              rule_sequence
+                $*$
+                  text <'true'>
+              $*$
+                rule_sequence
+                  $*$
+                    text <'false'>
+                rule_sequence
+                  $*$
+                    identifier <INT>
+                rule_sequence
+                  $*$
+                    identifier <FLOAT>
+                rule_sequence
+                  $*$
+                    identifier <STRING>
+          rule
+            identifier <param>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <ID>
+                  text <':'>
+                  identifier <type>
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'='>
+                          identifier <infix>
+                      $*$
+              $*$
+          rule
+            identifier <antlr_0>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <binop>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <isop>
+                rule_sequence
+                  $*$
+                    text <'as'>
+                    identifier <type>
+          rule
+            identifier <antlr_1>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <binop>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <isop>
+                rule_sequence
+                  $*$
+                    text <'as'>
+                    identifier <type>
+          rule
+            identifier <antlr_2>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <dot>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <tilde>
+                rule_sequence
+                  $*$
+                    identifier <chain>
+                rule_sequence
+                  $*$
+                    identifier <typeargs>
+                rule_sequence
+                  $*$
+                    identifier <call>
+          rule
+            identifier <antlr_3>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <dot>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <tilde>
+                rule_sequence
+                  $*$
+                    identifier <chain>
+                rule_sequence
+                  $*$
+                    identifier <typeargs>
+                rule_sequence
+                  $*$
+                    identifier <call>
+          rule
+            identifier <antlr_4>
+            rule_expression
+              rule_sequence
+                $*$
+                  identifier <uniontype>
+              $*$
+                rule_sequence
+                  $*$
+                    identifier <isecttype>
+      grammar_terminals
+        $*$
+          terminal_rule
+            identifier <ID>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <LETTER>
+                  terminal_star
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          identifier <LETTER>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            identifier <DIGIT>
+                        terminal_sequence
+                          $*$
+                            text <'_'>
+                        terminal_sequence
+                          $*$
+                            text <'\''>
+                    __T12 <*>
+              $*$
+                terminal_sequence
+                  $*$
+                    text <'_'>
+                    terminal_star
+                      terminal_expression
+                        terminal_sequence
+                          $*$
+                            identifier <LETTER>
+                        $*$
+                          terminal_sequence
+                            $*$
+                              identifier <DIGIT>
+                          terminal_sequence
+                            $*$
+                              text <'_'>
+                          terminal_sequence
+                            $*$
+                              text <'\''>
+                      __T12 <*>
+          terminal_rule
+            identifier <INT>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <DIGIT>
+                  terminal_star
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          identifier <DIGIT>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'_'>
+                    __T12 <*>
+              $*$
+                terminal_sequence
+                  $*$
+                    text <'0'>
+                    text <'x'>
+                    terminal_plus
+                      terminal_expression
+                        terminal_sequence
+                          $*$
+                            identifier <HEX>
+                        $*$
+                          terminal_sequence
+                            $*$
+                              text <'_'>
+                      __T13 <+>
+                terminal_sequence
+                  $*$
+                    text <'0'>
+                    text <'b'>
+                    terminal_plus
+                      terminal_expression
+                        terminal_sequence
+                          $*$
+                            identifier <BINARY>
+                        $*$
+                          terminal_sequence
+                            $*$
+                              text <'_'>
+                      __T13 <+>
+                terminal_sequence
+                  $*$
+                    text <'\''>
+                    terminal_star
+                      identifier <CHAR_CHAR>
+                      __T12 <*>
+                    text <'\''>
+          terminal_rule
+            identifier <FLOAT>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <DIGIT>
+                  terminal_star
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          identifier <DIGIT>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'_'>
+                    __T12 <*>
+                  terminal_option
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          text <'.'>
+                          identifier <DIGIT>
+                          terminal_star
+                            terminal_expression
+                              terminal_sequence
+                                $*$
+                                  identifier <DIGIT>
+                              $*$
+                                terminal_sequence
+                                  $*$
+                                    text <'_'>
+                            __T12 <*>
+                      $*$
+                    __T11 <?>
+                  terminal_option
+                    identifier <EXP>
+                    __T11 <?>
+              $*$
+          terminal_rule
+            identifier <STRING>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'"'>
+                  terminal_star
+                    identifier <STRING_CHAR>
+                    __T12 <*>
+                  text <'"'>
+              $*$
+                terminal_sequence
+                  $*$
+                    text <'"""'>
+                    terminal_star
+                      terminal_expression
+                        terminal_sequence
+                          $*$
+                            terminal_option
+                              terminal_expression
+                                terminal_sequence
+                                  $*$
+                                    text <'"'>
+                                $*$
+                                  terminal_sequence
+                                    $*$
+                                      text <'""'>
+                              __T11 <?>
+                            terminal_not
+                              text <'"'>
+                        $*$
+                      __T12 <*>
+                    text <'"""'>
+                    terminal_star
+                      text <'"'>
+                      __T12 <*>
+          terminal_rule
+            identifier <LPAREN_NEW>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <NEWLINE>
+                  text <'('>
+              $*$
+          terminal_rule
+            identifier <LSQUARE_NEW>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <NEWLINE>
+                  text <'['>
+              $*$
+          terminal_rule
+            identifier <MINUS_NEW>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <NEWLINE>
+                  text <'-'>
+              $*$
+          terminal_rule
+            identifier <MINUS_TILDE_NEW>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <NEWLINE>
+                  text <'-~'>
+              $*$
+          terminal_rule
+            identifier <newline>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\n'>
+              $*$
+                terminal_sequence
+                  $*$
+                    text <'\r'>
+                    text <'\n'>
+                terminal_sequence
+                  $*$
+                    text <'\r'>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+0085>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+2028>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+2029>
+          terminal_rule
+            identifier <newlineChar>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\n'>
+              $*$
+                terminal_sequence
+                  $*$
+                    text <'\r'>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+0085>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+2028>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+2029>
+          terminal_rule
+            identifier <whitespace>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <' '>
+              $*$
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+0009>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+000B>
+                terminal_sequence
+                  $*$
+                    ucCodepoint <U+000C>
+          terminal_rule
+            identifier <lineComment>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'//'>
+                  terminal_star
+                    terminal_expression
+                      terminal_diff
+                        terminal_sequence
+                          $*$
+                            any <.>
+                        terminal_sequence
+                          $*$
+                            identifier <newlineChar>
+                      $*$
+                    __T12 <*>
+              $*$
+          terminal_rule
+            identifier <blockComment>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'/*'>
+                  terminal_star
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          terminal_expression
+                            terminal_diff
+                              terminal_sequence
+                                $*$
+                                  any <.>
+                              terminal_sequence
+                                $*$
+                                  text <'*'>
+                            $*$
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'*'>
+                            terminal_expression
+                              terminal_diff
+                                terminal_sequence
+                                  $*$
+                                    any <.>
+                                terminal_sequence
+                                  $*$
+                                    text <'/'>
+                              $*$
+                    __T12 <*>
+                  text <'*/'>
+              $*$
+          terminal_rule
+            identifier <WS>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  terminal_plus
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          text <' '>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'\t'>
+                        terminal_sequence
+                          $*$
+                            text <'\r'>
+                    __T13 <+>
+              $*$
+          terminal_rule
+            identifier <NEWLINE>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\n'>
+                  terminal_star
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          text <' '>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'\t'>
+                        terminal_sequence
+                          $*$
+                            text <'\r'>
+                    __T12 <*>
+              $*$
+          terminal_rule
+            identifier <CHAR_CHAR>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\\'>
+                  text <'\''>
+              $*$
+                terminal_sequence
+                  $*$
+                    identifier <CHAR_ESC>
+                terminal_sequence
+                  $*$
+                    terminal_not
+                      terminal_expression
+                        terminal_sequence
+                          $*$
+                            text <'\''>
+                        $*$
+                          terminal_sequence
+                            $*$
+                              text <'\\'>
+          terminal_rule
+            identifier <STRING_CHAR>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\\'>
+                  text <'"'>
+              $*$
+                terminal_sequence
+                  $*$
+                    identifier <ESC>
+                terminal_sequence
+                  $*$
+                    terminal_not
+                      terminal_expression
+                        terminal_sequence
+                          $*$
+                            text <'"'>
+                        $*$
+                          terminal_sequence
+                            $*$
+                              text <'\\'>
+          terminal_rule
+            identifier <EXP>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  terminal_expression
+                    terminal_sequence
+                      $*$
+                        text <'e'>
+                    $*$
+                      terminal_sequence
+                        $*$
+                          text <'E'>
+                  terminal_option
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          text <'+'>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'-'>
+                    __T11 <?>
+                  terminal_plus
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          identifier <DIGIT>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'_'>
+                    __T13 <+>
+              $*$
+          terminal_rule
+            identifier <LETTER>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  characterRange
+                    text <'a'>
+                    text <'z'>
+              $*$
+                terminal_sequence
+                  $*$
+                    characterRange
+                      text <'A'>
+                      text <'Z'>
+          terminal_rule
+            identifier <BINARY>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  characterRange
+                    text <'0'>
+                    text <'1'>
+              $*$
+          terminal_rule
+            identifier <DIGIT>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  characterRange
+                    text <'0'>
+                    text <'9'>
+              $*$
+          terminal_rule
+            identifier <HEX>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <DIGIT>
+              $*$
+                terminal_sequence
+                  $*$
+                    characterRange
+                      text <'a'>
+                      text <'f'>
+                terminal_sequence
+                  $*$
+                    characterRange
+                      text <'A'>
+                      text <'F'>
+          terminal_rule
+            identifier <ESC>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <CHAR_ESC>
+              $*$
+                terminal_sequence
+                  $*$
+                    identifier <UNICODE_ESC>
+                terminal_sequence
+                  $*$
+                    identifier <UNICODE2_ESC>
+          terminal_rule
+            identifier <CHAR_ESC>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\\'>
+                  terminal_expression
+                    terminal_sequence
+                      $*$
+                        text <'a'>
+                    $*$
+                      terminal_sequence
+                        $*$
+                          text <'b'>
+                      terminal_sequence
+                        $*$
+                          text <'e'>
+                      terminal_sequence
+                        $*$
+                          text <'f'>
+                      terminal_sequence
+                        $*$
+                          text <'n'>
+                      terminal_sequence
+                        $*$
+                          text <'r'>
+                      terminal_sequence
+                        $*$
+                          text <'t'>
+                      terminal_sequence
+                        $*$
+                          text <'v'>
+                      terminal_sequence
+                        $*$
+                          text <'\\'>
+                      terminal_sequence
+                        $*$
+                          text <'0'>
+              $*$
+                terminal_sequence
+                  $*$
+                    identifier <HEX_ESC>
+          terminal_rule
+            identifier <HEX_ESC>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\\'>
+                  text <'x'>
+                  identifier <HEX>
+                  identifier <HEX>
+              $*$
+          terminal_rule
+            identifier <UNICODE_ESC>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\\'>
+                  text <'u'>
+                  identifier <HEX>
+                  identifier <HEX>
+                  identifier <HEX>
+                  identifier <HEX>
+              $*$
+          terminal_rule
+            identifier <UNICODE2_ESC>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  text <'\\'>
+                  text <'U'>
+                  identifier <HEX>
+                  identifier <HEX>
+                  identifier <HEX>
+                  identifier <HEX>
+                  identifier <HEX>
+                  identifier <HEX>
+              $*$

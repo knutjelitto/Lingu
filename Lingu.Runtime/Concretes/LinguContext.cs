@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Lingu.Runtime.Errors;
 using Lingu.Runtime.Lexing;
@@ -25,14 +26,22 @@ namespace Lingu.Runtime.Concretes
         public IDfaSet Dfas { get; }
         public IErrorHandler Errors { get; }
 
-        public INonterminalToken Try(Source source)
+        public INonterminalToken? Try(Source source)
         {
-            var lexer = new Lexer(this, source);
-            var parser = new Parser(this, lexer);
+            try
+            {
+                var lexer = new Lexer(this, source);
+                var parser = new Parser(this, lexer);
 
-            var tree = parser.Parse();
+                var tree = parser.Parse();
 
-            return tree;
+                return tree;
+            }
+            catch (ParserException parserException)
+            {
+                Console.WriteLine(parserException.Message);
+                return null;
+            }
         }
     }
 }

@@ -32,12 +32,19 @@ namespace Lingu.CC.Ponies
 
             var parseTree = lingu.Try(source);
 
-            new TreeDumper(dumps.Add(".Tree")).Dump(parseTree);
+            if (parseTree != null)
+            {
+                new TreeDumper(dumps.Add(".Tree")).Dump(parseTree);
+
+                var ast = new TreeBuilder().Visit(parseTree);
+
+                if (ast != null)
+                {
+                    var grammar = new GrammarBuilder(ast).Build();
+                }
+            }
 
 #if false
-            var ast = Timer.Time("ast", () => new TreeBuilder().Visit(parseTree));
-
-            var grammar = Timer.Time("build", () => new GrammarBuilder(ast).Build());
 
             Timer.Time("dump", () => new Dumper(grammar).Dump(dumps));
 

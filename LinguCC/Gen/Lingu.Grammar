@@ -41,11 +41,7 @@
             ;
 
         rule_expression
-            : rule_alternative ('|' rule_alternative)*
-            ;
-
-        rule_alternative
-            : ^rule_sequence
+            : rule_sequence (,'|' rule_sequence)*
             ;
 
         rule_sequence
@@ -164,7 +160,7 @@
             ;
 
         terminal_not
-            : ,'~' terminal_atom
+            : ,'~' terminal_element
             ;
 
         terminal_atom

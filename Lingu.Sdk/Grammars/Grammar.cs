@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using Lingu.Automata;
 using Lingu.LR;
 using Lingu.Runtime.Parsing;
