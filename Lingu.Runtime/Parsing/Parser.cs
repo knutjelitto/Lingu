@@ -72,7 +72,9 @@ namespace Lingu.Runtime.Parsing
 
                 IToken token;
 
-                var rhs = production.DropFilter(stack.Pop(production.Length)).ToArray();
+                var popped = stack.Pop(production.Length);
+
+                var rhs = production.DropFilter(popped).ToArray();
 
                 switch (nonterminal.Repeat)
                 {

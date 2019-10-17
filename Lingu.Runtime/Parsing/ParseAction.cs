@@ -8,6 +8,5 @@ namespace Lingu.Runtime.Parsing
         Accept = 1,
         Shift = 2,
         Reduce = 3,
-        ActionBits = 3,
     }
 }

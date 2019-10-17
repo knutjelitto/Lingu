@@ -20,14 +20,10 @@
 
   <ItemGroup>
     <None Remove="Gen\Lingu.Grammar" />
-    <None Remove="Ponies\Pony.g" />
-    <None Remove="Ponies\Pony.Grammar" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Gen\Lingu.Grammar" />
-    <EmbeddedResource Include="Ponies\Pony.g" />
-    <EmbeddedResource Include="Ponies\Pony.Grammar" />
   </ItemGroup>
 
   <ItemGroup>

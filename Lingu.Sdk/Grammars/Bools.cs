@@ -19,5 +19,10 @@ namespace Lingu.Grammars
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private readonly bool[] bools;
+
+        public override string ToString()
+        {
+            return string.Join(",", bools.Select(b => b ? "true" : "false"));
+        }
     }
 }

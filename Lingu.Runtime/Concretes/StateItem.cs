@@ -11,7 +11,7 @@ namespace Lingu.Runtime.Concretes
             Coded = coded;
         }
 
-        public ParseAction Action => (ParseAction)(Coded & (int)ParseAction.ActionBits);
+        public ParseAction Action => (ParseAction)(Coded & (int)ParseAction.Reduce);
         public int Number => Coded >> 2;
         public int Coded { get; }
 
