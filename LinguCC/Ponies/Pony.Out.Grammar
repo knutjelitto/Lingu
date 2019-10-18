@@ -6,8 +6,8 @@ grammar Pony
     terminals
     {
         ID // (0)
-            : (LETTER (LETTER | decimalDigit | '_' | '\'')*)
-            | ('_' (LETTER | decimalDigit | '_' | '\'')*)
+            : (letter (letter | decimalDigit | '_' | '\'')*)
+            | ('_' (letter | decimalDigit | '_' | '\'')*)
             ;
         
         INT // (1)
@@ -42,7 +42,7 @@ grammar Pony
             : (NEWLINE '-~')
             ;
         
-        newline // private (486)
+        newline // private (489)
             : '\n'
             | ('\r' '\n')
             | '\r'
@@ -51,7 +51,7 @@ grammar Pony
             | U+2029
             ;
         
-        newlineChar // private (487)
+        newlineChar // private (490)
             : '\n'
             | '\r'
             | U+0085
@@ -59,88 +59,88 @@ grammar Pony
             | U+2029
             ;
         
-        whitespace // private (488)
+        whitespace // private (491)
             : ' '
             | U+0009
             | U+000B
             | U+000C
             ;
         
-        lineComment // private (489)
+        lineComment // private (492)
             : ('//' (. - newlineChar)*)
             ;
         
-        blockComment // private (490)
+        blockComment // private (493)
             : ('/*' ((. - '*') | ('*' (. - '/')))* '*/')
             ;
         
-        WS // private (491)
+        WS // private (494)
             : (' ' | '\t' | '\r')+
             ;
         
-        NEWLINE // private (492)
+        NEWLINE // private (495)
             : ('\n' (' ' | '\t' | '\r')*)
             ;
         
-        charChar // private (493)
+        charChar // private (496)
             : (. - ('\'' | '\\'))
             | charEscape
             ;
         
-        stringChar // private (494)
+        stringChar // private (497)
             : (. - ('\"' | '\\'))
             | stringEscape
             ;
         
-        EXP // private (495)
+        EXP // private (498)
             : (('e' | 'E') ('+' | '-')? (decimalDigit | '_')+)
             ;
         
-        LETTER // private (496)
+        letter // private (499)
             : ('a' .. 'z')
             | ('A' .. 'Z')
             ;
         
-        binaryDigit // private (497)
+        binaryDigit // private (500)
             : ('0' .. '1')
             ;
         
-        octalDigit // private (498)
+        octalDigit // private (501)
             : binaryDigit
             | ('2' .. '7')
             ;
         
-        decimalDigit // private (499)
+        decimalDigit // private (502)
             : octalDigit
             | ('8' .. '9')
             ;
         
-        hexDigit // private (500)
+        hexDigit // private (503)
             : decimalDigit
             | ('a' .. 'f')
             | ('A' .. 'F')
             ;
         
-        stringEscape // private (501)
+        stringEscape // private (504)
             : charEscape
             | UNICODE_ESC
             | UNICODE2_ESC
             ;
         
-        charEscape // private (502)
+        charEscape // private (505)
             : ('\\' ('\"' | '\'' | 'a' | 'b' | 'e' | 'f' | 'n' | 'r' | 't' | 'v' | '\\' | '0'))
             | HEX_ESC
             ;
         
-        HEX_ESC // private (503)
+        HEX_ESC // private (506)
             : ('\\' 'x' hexDigit hexDigit)
             ;
         
-        UNICODE_ESC // private (504)
+        UNICODE_ESC // private (507)
             : ('\\' 'u' hexDigit hexDigit hexDigit hexDigit)
             ;
         
-        UNICODE2_ESC // private (505)
+        UNICODE2_ESC // private (508)
             : ('\\' 'U' hexDigit hexDigit hexDigit hexDigit hexDigit hexDigit)
             ;
         
@@ -622,7 +622,7 @@ grammar Pony
     }
     rules
     {
-        __acc // private (506)
+        __acc // private (509)
             : module
             ;
         
@@ -764,160 +764,164 @@ grammar Pony
             : 'elseif' __N140 rawseq 'then' rawseq __N142
             ;
         
-        idseq // (155)
-            : ˈIDˈ
-            | __N144 idseq_in_seq __N145 ')'
+        ids // (155)
+            : __N144
             ;
         
-        idseq_in_seq // (156)
+        idseq // (156)
             : ˈIDˈ
             | __N146 idseq_in_seq __N147 ')'
             ;
         
-        nextpattern // (157)
-            : __N148 ˈIDˈ __N149
+        idseq_in_seq // (157)
+            : ˈIDˈ
+            | __N148 idseq_in_seq __N149 ')'
+            ;
+        
+        nextpattern // (158)
+            : __N150 ˈIDˈ __N151
             | nextparampattern
             ;
         
-        pattern // (158)
-            : __N150 ˈIDˈ __N151
+        pattern // (159)
+            : __N152 ˈIDˈ __N153
             | parampattern
             ;
         
-        nextparampattern // (159)
-            : __N152 parampattern
+        nextparampattern // (160)
+            : __N154 parampattern
             | nextpostfix
             ;
         
-        parampattern // (160)
-            : __N153 parampattern
+        parampattern // (161)
+            : __N155 parampattern
             | postfix
             ;
         
-        nextpostfix // (161)
-            : nextatom __N154
+        nextpostfix // (162)
+            : nextatom __N156
             ;
         
-        postfix // (162)
-            : atom __N155
+        postfix // (163)
+            : atom __N157
             ;
         
-        call // (163)
-            : '(' __N156 __N157 ')' __N158
+        call // (164)
+            : '(' __N158 __N159 ')' __N160
             ;
         
-        chain // (164)
+        chain // (165)
             : '.>' ˈIDˈ
             ;
         
-        tilde // (165)
+        tilde // (166)
             : '~' ˈIDˈ
             ;
         
-        dot // (166)
+        dot // (167)
             : '.' ˈIDˈ
             ;
         
-        nextatom // (167)
+        nextatom // (168)
             : ˈIDˈ
             | 'this'
             | literal
-            | ˈLPAREN_NEWˈ rawseq __N159 ')'
-            | ˈLSQUARE_NEWˈ __N160 __N161 ']'
-            | 'object' __N162 __N164 __N165 members 'end'
-            | '{' __N166 __N168 __N169 __N170 __N171 __N172 ')' __N173 __N174 __N175 '=>' rawseq '}' __N176
-            | '@{' __N177 __N179 __N180 __N181 __N182 __N183 ')' __N184 __N185 __N186 '=>' rawseq '}' __N187
-            | '@' __N188 __N189 __N190 __N191 __N192 ')' __N193
+            | ˈLPAREN_NEWˈ rawseq __N161 ')'
+            | ˈLSQUARE_NEWˈ __N162 __N163 ']'
+            | 'object' __N164 __N166 __N167 members 'end'
+            | '{' __N168 __N170 __N171 __N172 __N173 __N174 ')' __N175 __N176 __N177 '=>' rawseq '}' __N178
+            | '@{' __N179 __N181 __N182 __N183 __N184 __N185 ')' __N186 __N187 __N188 '=>' rawseq '}' __N189
+            | '@' __N190 __N191 __N192 __N193 __N194 ')' __N195
             | '__loc'
             ;
         
-        atom // (168)
+        atom // (169)
             : ˈIDˈ
             | 'this'
             | literal
-            | __N194 rawseq __N195 ')'
-            | __N196 __N197 __N198 ']'
-            | 'object' __N199 __N201 __N202 members 'end'
-            | '{' __N203 __N205 __N206 __N207 __N208 __N209 ')' __N210 __N211 __N212 '=>' rawseq '}' __N213
-            | '@{' __N214 __N216 __N217 __N218 __N219 __N220 ')' __N221 __N222 __N223 '=>' rawseq '}' __N224
-            | '@' __N225 __N226 __N227 __N228 __N229 ')' __N230
+            | __N196 rawseq __N197 ')'
+            | __N198 __N199 __N200 ']'
+            | 'object' __N201 __N203 __N204 members 'end'
+            | '{' __N205 __N207 __N208 __N209 __N210 __N211 ')' __N212 __N213 __N214 '=>' rawseq '}' __N215
+            | '@{' __N216 __N218 __N219 __N220 __N221 __N222 ')' __N223 __N224 __N225 '=>' rawseq '}' __N226
+            | '@' __N227 __N228 __N229 __N230 __N231 ')' __N232
             | '__loc'
             ;
         
-        tuple // (169)
-            : ',' rawseq __N231
+        tuple // (170)
+            : ',' rawseq __N233
             ;
         
-        lambdacaptures // (170)
-            : __N232 __N233 __N234 ')'
+        lambdacaptures // (171)
+            : __N234 __N235 __N236 ')'
             ;
         
-        lambdacapture // (171)
-            : ˈIDˈ __N236 __N237
+        lambdacapture // (172)
+            : ˈIDˈ __N238 __N239
             ;
         
-        lambdaparams // (172)
-            : lambdaparam __N238
+        lambdaparams // (173)
+            : lambdaparam __N240
             ;
         
-        lambdaparam // (173)
-            : ˈIDˈ __N239 __N240
+        lambdaparam // (174)
+            : ˈIDˈ __N241 __N242
             ;
         
-        positional // (174)
-            : rawseq __N241
+        positional // (175)
+            : rawseq __N243
             ;
         
-        named // (175)
-            : 'where' namedarg __N242
+        named // (176)
+            : 'where' namedarg __N244
             ;
         
-        namedarg // (176)
+        namedarg // (177)
             : ˈIDˈ '=' rawseq
             ;
         
-        type // (177)
-            : atomtype __N243
+        type // (178)
+            : atomtype __N245
             ;
         
-        atomtype // (178)
+        atomtype // (179)
             : 'this'
             | cap
-            | __N244 infixtype __N245 ')'
+            | __N246 infixtype __N247 ')'
             | nominal
             | lambdatype
             | barelambdatype
             ;
         
-        barelambdatype // (179)
-            : '@{' __N246 __N247 __N248 __N249 __N250 ')' __N252 __N253 '}' __N254 __N256
+        barelambdatype // (180)
+            : '@{' __N248 __N249 __N250 __N251 __N252 ')' __N254 __N255 '}' __N256 __N258
             ;
         
-        lambdatype // (180)
-            : '{' __N258 __N259 __N260 __N261 __N262 ')' __N264 __N265 '}' __N266 __N268
+        lambdatype // (181)
+            : '{' __N260 __N261 __N262 __N263 __N264 ')' __N266 __N267 '}' __N268 __N270
             ;
         
-        tupletype // (181)
-            : ',' infixtype __N270
+        tupletype // (182)
+            : ',' infixtype __N272
             ;
         
-        infixtype // (182)
-            : type __N271
+        infixtype // (183)
+            : type __N273
             ;
         
-        isecttype // (183)
+        isecttype // (184)
             : '&' type
             ;
         
-        uniontype // (184)
+        uniontype // (185)
             : '|' type
             ;
         
-        nominal // (185)
-            : ˈIDˈ __N272 __N273 __N274 __N276
+        nominal // (186)
+            : ˈIDˈ __N274 __N275 __N276 __N278
             ;
         
-        gencap // (186)
+        gencap // (187)
             : '#read'
             | '#send'
             | '#share'
@@ -925,7 +929,7 @@ grammar Pony
             | '#any'
             ;
         
-        cap // (187)
+        cap // (188)
             : 'iso'
             | 'trn'
             | 'ref'
@@ -934,29 +938,29 @@ grammar Pony
             | 'tag'
             ;
         
-        typeargs // (188)
-            : '[' typearg __N278 ']'
+        typeargs // (189)
+            : '[' typearg __N280 ']'
             ;
         
-        typeparams // (189)
-            : __N279 typeparam __N280 ']'
+        typeparams // (190)
+            : __N281 typeparam __N282 ']'
             ;
         
-        params // (190)
-            : __N281 __N282
+        params // (191)
+            : __N283 __N284
             ;
         
-        typeparam // (191)
-            : ˈIDˈ __N284 __N285
+        typeparam // (192)
+            : ˈIDˈ __N286 __N287
             ;
         
-        typearg // (192)
+        typearg // (193)
             : type
             | literal
             | '#' postfix
             ;
         
-        literal // (193)
+        literal // (194)
             : 'true'
             | 'false'
             | ˈINTˈ
@@ -964,23 +968,23 @@ grammar Pony
             | ˈSTRINGˈ
             ;
         
-        param // (194)
-            : ˈIDˈ ':' type __N286
+        param // (195)
+            : ˈIDˈ ':' type __N288
             ;
         
-        antlr_0 // (195)
+        antlr_0 // (196)
             : binop
             | isop
             | 'as' type
             ;
         
-        antlr_1 // (196)
+        antlr_1 // (197)
             : binop
             | isop
             | 'as' type
             ;
         
-        antlr_2 // (197)
+        antlr_2 // (198)
             : dot
             | tilde
             | chain
@@ -988,7 +992,7 @@ grammar Pony
             | call
             ;
         
-        antlr_3 // (198)
+        antlr_3 // (199)
             : dot
             | tilde
             | chain
@@ -996,64 +1000,64 @@ grammar Pony
             | call
             ;
         
-        antlr_4 // (199)
+        antlr_4 // (200)
             : uniontype
             | isecttype
             ;
         
-        __N1 // (200)
+        __N1 // (201)
             : ˈSTRINGˈ
             | 
             ;
         
-        __N2 // (201)
+        __N2 // (202)
             : __N2 use
             | use
             | 
             ;
         
-        __N3 // (202)
+        __N3 // (203)
             : __N3 class_def
             | class_def
             | 
             ;
         
-        __N4 // (203)
+        __N4 // (204)
             : ˈIDˈ '='
             | 
             ;
         
-        __N5 // (204)
+        __N5 // (205)
             : ˈSTRINGˈ
             | use_ffi
             ;
         
-        __N6 // (205)
+        __N6 // (206)
             : 'if' infix
             | 
             ;
         
-        __N7 // (206)
+        __N7 // (207)
             : ˈIDˈ
             | ˈSTRINGˈ
             ;
         
-        __N8 // (207)
+        __N8 // (208)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N9 // (208)
+        __N9 // (209)
             : params
             | 
             ;
         
-        __N10 // (209)
+        __N10 // (210)
             : '?'
             | 
             ;
         
-        __N11 // (210)
+        __N11 // (211)
             : 'type'
             | 'interface'
             | 'trait'
@@ -1063,174 +1067,174 @@ grammar Pony
             | 'actor'
             ;
         
-        __N13 // (211)
+        __N13 // (212)
             : __N13 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N12 // (212)
+        __N12 // (213)
             : '\' ˈIDˈ __N13 '\'
             | 
             ;
         
-        __N14 // (213)
+        __N14 // (214)
             : '@'
             | 
             ;
         
-        __N15 // (214)
+        __N15 // (215)
             : cap
             | 
             ;
         
-        __N16 // (215)
+        __N16 // (216)
             : typeparams
             | 
             ;
         
-        __N17 // (216)
+        __N17 // (217)
             : 'is' type
             | 
             ;
         
-        __N18 // (217)
+        __N18 // (218)
             : ˈSTRINGˈ
             | 
             ;
         
-        __N19 // (218)
+        __N19 // (219)
             : __N19 field
             | field
             | 
             ;
         
-        __N20 // (219)
+        __N20 // (220)
             : __N20 method
             | method
             | 
             ;
         
-        __N21 // (220)
+        __N21 // (221)
             : 'var'
             | 'let'
             | 'embed'
             ;
         
-        __N22 // (221)
+        __N22 // (222)
             : '=' infix
             | 
             ;
         
-        __N23 // (222)
+        __N23 // (223)
             : ˈSTRINGˈ
             | 
             ;
         
-        __N24 // (223)
+        __N24 // (224)
             : 'fun'
             | 'be'
             | 'new'
             ;
         
-        __N26 // (224)
+        __N26 // (225)
             : __N26 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N25 // (225)
+        __N25 // (226)
             : '\' ˈIDˈ __N26 '\'
             | 
             ;
         
-        __N28 // (226)
+        __N28 // (227)
             : cap
             | '@'
             ;
         
-        __N27 // (227)
+        __N27 // (228)
             : __N28
             | 
             ;
         
-        __N29 // (228)
+        __N29 // (229)
             : typeparams
             | 
             ;
         
-        __N30 // (229)
+        __N30 // (230)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N31 // (230)
+        __N31 // (231)
             : params
             | 
             ;
         
-        __N32 // (231)
+        __N32 // (232)
             : ':' type
             | 
             ;
         
-        __N33 // (232)
+        __N33 // (233)
             : '?'
             | 
             ;
         
-        __N34 // (233)
+        __N34 // (234)
             : ˈSTRINGˈ
             | 
             ;
         
-        __N35 // (234)
+        __N35 // (235)
             : '=>' rawseq
             | 
             ;
         
-        __N37 // (235)
+        __N37 // (236)
             : __N37 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N36 // (236)
+        __N36 // (237)
             : '\' ˈIDˈ __N37 '\'
             | 
             ;
         
-        __N38 // (237)
+        __N38 // (238)
             : exprseq
             | jump
             ;
         
-        __N40 // (238)
+        __N40 // (239)
             : semiexpr
             | nosemi
             ;
         
-        __N39 // (239)
+        __N39 // (240)
             : __N40
             | 
             ;
         
-        __N42 // (240)
+        __N42 // (241)
             : semiexpr
             | nosemi
             ;
         
-        __N41 // (241)
+        __N41 // (242)
             : __N42
             | 
             ;
         
-        __N43 // (242)
+        __N43 // (243)
             : exprseq
             | jump
             ;
         
-        __N44 // (243)
+        __N44 // (244)
             : 'return'
             | 'break'
             | 'continue'
@@ -1239,39 +1243,39 @@ grammar Pony
             | 'compile_error'
             ;
         
-        __N45 // (244)
+        __N45 // (245)
             : rawseq
             | 
             ;
         
-        __N46 // (245)
+        __N46 // (246)
             : '=' assignment
             | 
             ;
         
-        __N47 // (246)
+        __N47 // (247)
             : '=' assignment
             | 
             ;
         
-        __N48 // (247)
+        __N48 // (248)
             : __N48 antlr_0
             | antlr_0
             | 
             ;
         
-        __N49 // (248)
+        __N49 // (249)
             : __N49 antlr_1
             | antlr_1
             | 
             ;
         
-        __N50 // (249)
+        __N50 // (250)
             : 'is'
             | 'isnt'
             ;
         
-        __N51 // (250)
+        __N51 // (251)
             : 'and'
             | 'or'
             | 'xor'
@@ -1305,539 +1309,550 @@ grammar Pony
             | '>~'
             ;
         
-        __N52 // (251)
+        __N52 // (252)
             : '?'
             | 
             ;
         
-        __N54 // (252)
+        __N54 // (253)
             : __N54 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N53 // (253)
+        __N53 // (254)
             : '\' ˈIDˈ __N54 '\'
             | 
             ;
         
-        __N56 // (254)
+        __N56 // (255)
             : elseif
             | 'else' annotatedrawseq
             ;
         
-        __N55 // (255)
+        __N55 // (256)
             : __N56
             | 
             ;
         
-        __N58 // (256)
+        __N58 // (257)
             : __N58 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N57 // (257)
+        __N57 // (258)
             : '\' ˈIDˈ __N58 '\'
             | 
             ;
         
-        __N60 // (258)
+        __N60 // (259)
             : elseifdef
             | 'else' annotatedrawseq
             ;
         
-        __N59 // (259)
+        __N59 // (260)
             : __N60
             | 
             ;
         
-        __N62 // (260)
+        __N62 // (261)
             : __N62 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N61 // (261)
+        __N61 // (262)
             : '\' ˈIDˈ __N62 '\'
             | 
             ;
         
-        __N64 // (262)
+        __N64 // (263)
             : elseiftype
             | 'else' annotatedrawseq
             ;
         
-        __N63 // (263)
+        __N63 // (264)
             : __N64
             | 
             ;
         
-        __N66 // (264)
+        __N66 // (265)
             : __N66 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N65 // (265)
+        __N65 // (266)
             : '\' ˈIDˈ __N66 '\'
             | 
             ;
         
-        __N67 // (266)
+        __N67 // (267)
             : __N67 caseexpr
             | caseexpr
             | 
             ;
         
-        __N68 // (267)
+        __N68 // (268)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N70 // (268)
+        __N70 // (269)
             : __N70 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N69 // (269)
+        __N69 // (270)
             : '\' ˈIDˈ __N70 '\'
             | 
             ;
         
-        __N71 // (270)
+        __N71 // (271)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N73 // (271)
+        __N73 // (272)
             : __N73 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N72 // (272)
+        __N72 // (273)
             : '\' ˈIDˈ __N73 '\'
             | 
             ;
         
-        __N74 // (273)
+        __N74 // (274)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N76 // (274)
+        __N76 // (275)
             : __N76 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N75 // (275)
+        __N75 // (276)
             : '\' ˈIDˈ __N76 '\'
             | 
             ;
         
-        __N77 // (276)
+        __N77 // (277)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N79 // (277)
+        __N79 // (278)
             : __N79 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N78 // (278)
+        __N78 // (279)
             : '\' ˈIDˈ __N79 '\'
             | 
             ;
         
-        __N80 // (279)
+        __N80 // (280)
             : __N80 ',' withelem
             | ',' withelem
             | 
             ;
         
-        __N81 // (280)
+        __N81 // (281)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N83 // (281)
+        __N83 // (282)
             : __N83 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N82 // (282)
+        __N82 // (283)
             : '\' ˈIDˈ __N83 '\'
             | 
             ;
         
-        __N84 // (283)
+        __N84 // (284)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N85 // (284)
+        __N85 // (285)
             : 'then' annotatedrawseq
             | 
             ;
         
-        __N87 // (285)
+        __N87 // (286)
             : __N87 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N86 // (286)
+        __N86 // (287)
             : '\' ˈIDˈ __N87 '\'
             | 
             ;
         
-        __N88 // (287)
+        __N88 // (288)
             : cap
             | 
             ;
         
-        __N89 // (288)
+        __N89 // (289)
             : cap
             | 
             ;
         
-        __N91 // (289)
+        __N91 // (290)
             : __N91 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N90 // (290)
+        __N90 // (291)
             : '\' ˈIDˈ __N91 '\'
             | 
             ;
         
-        __N93 // (291)
+        __N93 // (292)
             : elseif
             | 'else' annotatedrawseq
             ;
         
-        __N92 // (292)
+        __N92 // (293)
             : __N93
             | 
             ;
         
-        __N95 // (293)
+        __N95 // (294)
             : __N95 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N94 // (294)
+        __N94 // (295)
             : '\' ˈIDˈ __N95 '\'
             | 
             ;
         
-        __N97 // (295)
+        __N97 // (296)
             : elseifdef
             | 'else' annotatedrawseq
             ;
         
-        __N96 // (296)
+        __N96 // (297)
             : __N97
             | 
             ;
         
-        __N99 // (297)
+        __N99 // (298)
             : __N99 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N98 // (298)
+        __N98 // (299)
             : '\' ˈIDˈ __N99 '\'
             | 
             ;
         
-        __N101 // (299)
+        __N101 // (300)
             : elseiftype
             | 'else' annotatedrawseq
             ;
         
-        __N100 // (300)
+        __N100 // (301)
             : __N101
             | 
             ;
         
-        __N103 // (301)
+        __N103 // (302)
             : __N103 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N102 // (302)
+        __N102 // (303)
             : '\' ˈIDˈ __N103 '\'
             | 
             ;
         
-        __N104 // (303)
+        __N104 // (304)
             : __N104 caseexpr
             | caseexpr
             | 
             ;
         
-        __N105 // (304)
+        __N105 // (305)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N107 // (305)
+        __N107 // (306)
             : __N107 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N106 // (306)
+        __N106 // (307)
             : '\' ˈIDˈ __N107 '\'
             | 
             ;
         
-        __N108 // (307)
+        __N108 // (308)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N110 // (308)
+        __N110 // (309)
             : __N110 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N109 // (309)
+        __N109 // (310)
             : '\' ˈIDˈ __N110 '\'
             | 
             ;
         
-        __N111 // (310)
+        __N111 // (311)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N113 // (311)
+        __N113 // (312)
             : __N113 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N112 // (312)
+        __N112 // (313)
             : '\' ˈIDˈ __N113 '\'
             | 
             ;
         
-        __N114 // (313)
+        __N114 // (314)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N116 // (314)
+        __N116 // (315)
             : __N116 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N115 // (315)
+        __N115 // (316)
             : '\' ˈIDˈ __N116 '\'
             | 
             ;
         
-        __N117 // (316)
+        __N117 // (317)
             : __N117 ',' withelem
             | ',' withelem
             | 
             ;
         
-        __N118 // (317)
+        __N118 // (318)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N120 // (318)
+        __N120 // (319)
             : __N120 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N119 // (319)
+        __N119 // (320)
             : '\' ˈIDˈ __N120 '\'
             | 
             ;
         
-        __N121 // (320)
+        __N121 // (321)
             : 'else' annotatedrawseq
             | 
             ;
         
-        __N122 // (321)
+        __N122 // (322)
             : 'then' annotatedrawseq
             | 
             ;
         
-        __N124 // (322)
+        __N124 // (323)
             : __N124 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N123 // (323)
+        __N123 // (324)
             : '\' ˈIDˈ __N124 '\'
             | 
             ;
         
-        __N125 // (324)
+        __N125 // (325)
             : cap
             | 
             ;
         
-        __N126 // (325)
+        __N126 // (326)
             : cap
             | 
             ;
         
-        __N128 // (326)
+        __N128 // (327)
             : __N128 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N127 // (327)
+        __N127 // (328)
             : '\' ˈIDˈ __N128 '\'
             | 
             ;
         
-        __N129 // (328)
+        __N129 // (329)
             : pattern
             | 
             ;
         
-        __N130 // (329)
+        __N130 // (330)
             : 'if' rawseq
             | 
             ;
         
-        __N131 // (330)
+        __N131 // (331)
             : '=>' rawseq
             | 
             ;
         
-        __N133 // (331)
+        __N133 // (332)
             : __N133 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N132 // (332)
+        __N132 // (333)
             : '\' ˈIDˈ __N133 '\'
             | 
             ;
         
-        __N135 // (333)
+        __N135 // (334)
             : elseiftype
             | 'else' annotatedrawseq
             ;
         
-        __N134 // (334)
+        __N134 // (335)
             : __N135
             | 
             ;
         
-        __N137 // (335)
+        __N137 // (336)
             : __N137 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N136 // (336)
+        __N136 // (337)
             : '\' ˈIDˈ __N137 '\'
             | 
             ;
         
-        __N139 // (337)
+        __N139 // (338)
             : elseifdef
             | 'else' annotatedrawseq
             ;
         
-        __N138 // (338)
+        __N138 // (339)
             : __N139
             | 
             ;
         
-        __N141 // (339)
+        __N141 // (340)
             : __N141 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N140 // (340)
+        __N140 // (341)
             : '\' ˈIDˈ __N141 '\'
             | 
             ;
         
-        __N143 // (341)
+        __N143 // (342)
             : elseif
             | 'else' annotatedrawseq
             ;
         
-        __N142 // (342)
+        __N142 // (343)
             : __N143
             | 
             ;
         
-        __N144 // (343)
-            : '('
-            | ˈLPAREN_NEWˈ
-            ;
-        
         __N145 // (344)
-            : __N145 ',' idseq_in_seq
-            | ',' idseq_in_seq
+            : __N145 ',' ˈIDˈ
+            | ',' ˈIDˈ
             | 
             ;
         
-        __N146 // (345)
+        __N144 // (345)
+            : '\' ˈIDˈ __N145 '\'
+            | 
+            ;
+        
+        __N146 // (346)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N147 // (346)
+        __N147 // (347)
             : __N147 ',' idseq_in_seq
             | ',' idseq_in_seq
             | 
             ;
         
-        __N148 // (347)
+        __N148 // (348)
+            : '('
+            | ˈLPAREN_NEWˈ
+            ;
+        
+        __N149 // (349)
+            : __N149 ',' idseq_in_seq
+            | ',' idseq_in_seq
+            | 
+            ;
+        
+        __N150 // (350)
             : 'var'
             | 'let'
             | 'embed'
             ;
         
-        __N149 // (348)
+        __N151 // (351)
             : ':' type
             | 
             ;
         
-        __N150 // (349)
+        __N152 // (352)
             : 'var'
             | 'let'
             | 'embed'
             ;
         
-        __N151 // (350)
+        __N153 // (353)
             : ':' type
             | 
             ;
         
-        __N152 // (351)
+        __N154 // (354)
             : 'not'
             | 'addressof'
             | ˈMINUS_NEWˈ
@@ -1845,7 +1860,7 @@ grammar Pony
             | 'digestof'
             ;
         
-        __N153 // (352)
+        __N155 // (355)
             : 'not'
             | 'addressof'
             | '-'
@@ -1855,687 +1870,687 @@ grammar Pony
             | 'digestof'
             ;
         
-        __N154 // (353)
-            : __N154 antlr_2
+        __N156 // (356)
+            : __N156 antlr_2
             | antlr_2
             | 
             ;
         
-        __N155 // (354)
-            : __N155 antlr_3
+        __N157 // (357)
+            : __N157 antlr_3
             | antlr_3
             | 
             ;
         
-        __N156 // (355)
+        __N158 // (358)
             : positional
             | 
             ;
         
-        __N157 // (356)
+        __N159 // (359)
             : named
             | 
             ;
         
-        __N158 // (357)
+        __N160 // (360)
             : '?'
             | 
             ;
         
-        __N159 // (358)
+        __N161 // (361)
             : tuple
             | 
             ;
         
-        __N160 // (359)
+        __N162 // (362)
             : 'as' type ':'
             | 
             ;
         
-        __N161 // (360)
+        __N163 // (363)
             : rawseq
             | 
             ;
         
-        __N163 // (361)
-            : __N163 ',' ˈIDˈ
-            | ',' ˈIDˈ
-            | 
-            ;
-        
-        __N162 // (362)
-            : '\' ˈIDˈ __N163 '\'
-            | 
-            ;
-        
-        __N164 // (363)
-            : cap
-            | 
-            ;
-        
         __N165 // (364)
-            : 'is' type
+            : __N165 ',' ˈIDˈ
+            | ',' ˈIDˈ
             | 
             ;
         
-        __N167 // (365)
-            : __N167 ',' ˈIDˈ
-            | ',' ˈIDˈ
+        __N164 // (365)
+            : '\' ˈIDˈ __N165 '\'
             | 
             ;
         
         __N166 // (366)
-            : '\' ˈIDˈ __N167 '\'
+            : cap
             | 
             ;
         
-        __N168 // (367)
-            : cap
+        __N167 // (367)
+            : 'is' type
             | 
             ;
         
         __N169 // (368)
-            : ˈIDˈ
-            | 
-            ;
-        
-        __N170 // (369)
-            : typeparams
-            | 
-            ;
-        
-        __N171 // (370)
-            : '('
-            | ˈLPAREN_NEWˈ
-            ;
-        
-        __N172 // (371)
-            : lambdaparams
-            | 
-            ;
-        
-        __N173 // (372)
-            : lambdacaptures
-            | 
-            ;
-        
-        __N174 // (373)
-            : ':' type
-            | 
-            ;
-        
-        __N175 // (374)
-            : '?'
-            | 
-            ;
-        
-        __N176 // (375)
-            : cap
-            | 
-            ;
-        
-        __N178 // (376)
-            : __N178 ',' ˈIDˈ
+            : __N169 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N177 // (377)
-            : '\' ˈIDˈ __N178 '\'
+        __N168 // (369)
+            : '\' ˈIDˈ __N169 '\'
             | 
             ;
         
-        __N179 // (378)
+        __N170 // (370)
+            : cap
+            | 
+            ;
+        
+        __N171 // (371)
+            : ˈIDˈ
+            | 
+            ;
+        
+        __N172 // (372)
+            : typeparams
+            | 
+            ;
+        
+        __N173 // (373)
+            : '('
+            | ˈLPAREN_NEWˈ
+            ;
+        
+        __N174 // (374)
+            : lambdaparams
+            | 
+            ;
+        
+        __N175 // (375)
+            : lambdacaptures
+            | 
+            ;
+        
+        __N176 // (376)
+            : ':' type
+            | 
+            ;
+        
+        __N177 // (377)
+            : '?'
+            | 
+            ;
+        
+        __N178 // (378)
             : cap
             | 
             ;
         
         __N180 // (379)
-            : ˈIDˈ
+            : __N180 ',' ˈIDˈ
+            | ',' ˈIDˈ
             | 
             ;
         
-        __N181 // (380)
-            : typeparams
+        __N179 // (380)
+            : '\' ˈIDˈ __N180 '\'
             | 
             ;
         
-        __N182 // (381)
-            : '('
-            | ˈLPAREN_NEWˈ
-            ;
-        
-        __N183 // (382)
-            : lambdaparams
-            | 
-            ;
-        
-        __N184 // (383)
-            : lambdacaptures
-            | 
-            ;
-        
-        __N185 // (384)
-            : ':' type
-            | 
-            ;
-        
-        __N186 // (385)
-            : '?'
-            | 
-            ;
-        
-        __N187 // (386)
+        __N181 // (381)
             : cap
             | 
             ;
         
-        __N188 // (387)
+        __N182 // (382)
+            : ˈIDˈ
+            | 
+            ;
+        
+        __N183 // (383)
+            : typeparams
+            | 
+            ;
+        
+        __N184 // (384)
+            : '('
+            | ˈLPAREN_NEWˈ
+            ;
+        
+        __N185 // (385)
+            : lambdaparams
+            | 
+            ;
+        
+        __N186 // (386)
+            : lambdacaptures
+            | 
+            ;
+        
+        __N187 // (387)
+            : ':' type
+            | 
+            ;
+        
+        __N188 // (388)
+            : '?'
+            | 
+            ;
+        
+        __N189 // (389)
+            : cap
+            | 
+            ;
+        
+        __N190 // (390)
             : ˈIDˈ
             | ˈSTRINGˈ
             ;
         
-        __N189 // (388)
+        __N191 // (391)
             : typeargs
             | 
             ;
         
-        __N190 // (389)
+        __N192 // (392)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N191 // (390)
+        __N193 // (393)
             : positional
             | 
             ;
         
-        __N192 // (391)
+        __N194 // (394)
             : named
             | 
             ;
         
-        __N193 // (392)
+        __N195 // (395)
             : '?'
             | 
             ;
         
-        __N194 // (393)
+        __N196 // (396)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N195 // (394)
+        __N197 // (397)
             : tuple
             | 
             ;
         
-        __N196 // (395)
+        __N198 // (398)
             : '['
             | ˈLSQUARE_NEWˈ
             ;
         
-        __N197 // (396)
+        __N199 // (399)
             : 'as' type ':'
             | 
             ;
         
-        __N198 // (397)
+        __N200 // (400)
             : rawseq
             | 
             ;
         
-        __N200 // (398)
-            : __N200 ',' ˈIDˈ
-            | ',' ˈIDˈ
-            | 
-            ;
-        
-        __N199 // (399)
-            : '\' ˈIDˈ __N200 '\'
-            | 
-            ;
-        
-        __N201 // (400)
-            : cap
-            | 
-            ;
-        
         __N202 // (401)
-            : 'is' type
+            : __N202 ',' ˈIDˈ
+            | ',' ˈIDˈ
             | 
             ;
         
-        __N204 // (402)
-            : __N204 ',' ˈIDˈ
-            | ',' ˈIDˈ
+        __N201 // (402)
+            : '\' ˈIDˈ __N202 '\'
             | 
             ;
         
         __N203 // (403)
-            : '\' ˈIDˈ __N204 '\'
+            : cap
             | 
             ;
         
-        __N205 // (404)
-            : cap
+        __N204 // (404)
+            : 'is' type
             | 
             ;
         
         __N206 // (405)
-            : ˈIDˈ
-            | 
-            ;
-        
-        __N207 // (406)
-            : typeparams
-            | 
-            ;
-        
-        __N208 // (407)
-            : '('
-            | ˈLPAREN_NEWˈ
-            ;
-        
-        __N209 // (408)
-            : lambdaparams
-            | 
-            ;
-        
-        __N210 // (409)
-            : lambdacaptures
-            | 
-            ;
-        
-        __N211 // (410)
-            : ':' type
-            | 
-            ;
-        
-        __N212 // (411)
-            : '?'
-            | 
-            ;
-        
-        __N213 // (412)
-            : cap
-            | 
-            ;
-        
-        __N215 // (413)
-            : __N215 ',' ˈIDˈ
+            : __N206 ',' ˈIDˈ
             | ',' ˈIDˈ
             | 
             ;
         
-        __N214 // (414)
-            : '\' ˈIDˈ __N215 '\'
+        __N205 // (406)
+            : '\' ˈIDˈ __N206 '\'
             | 
             ;
         
-        __N216 // (415)
+        __N207 // (407)
+            : cap
+            | 
+            ;
+        
+        __N208 // (408)
+            : ˈIDˈ
+            | 
+            ;
+        
+        __N209 // (409)
+            : typeparams
+            | 
+            ;
+        
+        __N210 // (410)
+            : '('
+            | ˈLPAREN_NEWˈ
+            ;
+        
+        __N211 // (411)
+            : lambdaparams
+            | 
+            ;
+        
+        __N212 // (412)
+            : lambdacaptures
+            | 
+            ;
+        
+        __N213 // (413)
+            : ':' type
+            | 
+            ;
+        
+        __N214 // (414)
+            : '?'
+            | 
+            ;
+        
+        __N215 // (415)
             : cap
             | 
             ;
         
         __N217 // (416)
+            : __N217 ',' ˈIDˈ
+            | ',' ˈIDˈ
+            | 
+            ;
+        
+        __N216 // (417)
+            : '\' ˈIDˈ __N217 '\'
+            | 
+            ;
+        
+        __N218 // (418)
+            : cap
+            | 
+            ;
+        
+        __N219 // (419)
             : ˈIDˈ
             | 
             ;
         
-        __N218 // (417)
+        __N220 // (420)
             : typeparams
             | 
             ;
         
-        __N219 // (418)
+        __N221 // (421)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N220 // (419)
+        __N222 // (422)
             : lambdaparams
             | 
             ;
         
-        __N221 // (420)
+        __N223 // (423)
             : lambdacaptures
             | 
             ;
         
-        __N222 // (421)
+        __N224 // (424)
             : ':' type
             | 
             ;
         
-        __N223 // (422)
+        __N225 // (425)
             : '?'
             | 
             ;
         
-        __N224 // (423)
+        __N226 // (426)
             : cap
             | 
             ;
         
-        __N225 // (424)
+        __N227 // (427)
             : ˈIDˈ
             | ˈSTRINGˈ
             ;
         
-        __N226 // (425)
+        __N228 // (428)
             : typeargs
             | 
             ;
         
-        __N227 // (426)
+        __N229 // (429)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N228 // (427)
+        __N230 // (430)
             : positional
             | 
             ;
         
-        __N229 // (428)
+        __N231 // (431)
             : named
             | 
             ;
         
-        __N230 // (429)
+        __N232 // (432)
             : '?'
             | 
             ;
         
-        __N231 // (430)
-            : __N231 ',' rawseq
+        __N233 // (433)
+            : __N233 ',' rawseq
             | ',' rawseq
             | 
             ;
         
-        __N232 // (431)
+        __N234 // (434)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N233 // (432)
+        __N235 // (435)
             : lambdacapture
             | 'this'
             ;
         
-        __N235 // (433)
+        __N237 // (436)
             : lambdacapture
             | 'this'
             ;
         
-        __N234 // (434)
-            : __N234 ',' __N235
-            | ',' __N235
+        __N236 // (437)
+            : __N236 ',' __N237
+            | ',' __N237
             | 
             ;
         
-        __N236 // (435)
+        __N238 // (438)
             : ':' type
             | 
             ;
         
-        __N237 // (436)
+        __N239 // (439)
             : '=' infix
             | 
             ;
         
-        __N238 // (437)
-            : __N238 ',' lambdaparam
+        __N240 // (440)
+            : __N240 ',' lambdaparam
             | ',' lambdaparam
             | 
             ;
         
-        __N239 // (438)
+        __N241 // (441)
             : ':' type
             | 
             ;
         
-        __N240 // (439)
+        __N242 // (442)
             : '=' infix
             | 
             ;
         
-        __N241 // (440)
-            : __N241 ',' rawseq
+        __N243 // (443)
+            : __N243 ',' rawseq
             | ',' rawseq
             | 
             ;
         
-        __N242 // (441)
-            : __N242 ',' namedarg
+        __N244 // (444)
+            : __N244 ',' namedarg
             | ',' namedarg
             | 
             ;
         
-        __N243 // (442)
+        __N245 // (445)
             : '->' type
             | 
             ;
         
-        __N244 // (443)
+        __N246 // (446)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N245 // (444)
+        __N247 // (447)
             : tupletype
             | 
             ;
         
-        __N246 // (445)
+        __N248 // (448)
             : cap
             | 
             ;
         
-        __N247 // (446)
+        __N249 // (449)
             : ˈIDˈ
-            | 
-            ;
-        
-        __N248 // (447)
-            : typeparams
-            | 
-            ;
-        
-        __N249 // (448)
-            : '('
-            | ˈLPAREN_NEWˈ
-            ;
-        
-        __N251 // (449)
-            : __N251 ',' type
-            | ',' type
             | 
             ;
         
         __N250 // (450)
-            : type __N251
-            | 
-            ;
-        
-        __N252 // (451)
-            : ':' type
-            | 
-            ;
-        
-        __N253 // (452)
-            : '?'
-            | 
-            ;
-        
-        __N255 // (453)
-            : cap
-            | gencap
-            ;
-        
-        __N254 // (454)
-            : __N255
-            | 
-            ;
-        
-        __N257 // (455)
-            : '^'
-            | '!'
-            ;
-        
-        __N256 // (456)
-            : __N257
-            | 
-            ;
-        
-        __N258 // (457)
-            : cap
-            | 
-            ;
-        
-        __N259 // (458)
-            : ˈIDˈ
-            | 
-            ;
-        
-        __N260 // (459)
             : typeparams
             | 
             ;
         
-        __N261 // (460)
+        __N251 // (451)
             : '('
             | ˈLPAREN_NEWˈ
             ;
         
-        __N263 // (461)
-            : __N263 ',' type
+        __N253 // (452)
+            : __N253 ',' type
             | ',' type
             | 
             ;
         
-        __N262 // (462)
-            : type __N263
+        __N252 // (453)
+            : type __N253
             | 
             ;
         
-        __N264 // (463)
+        __N254 // (454)
             : ':' type
             | 
             ;
         
-        __N265 // (464)
+        __N255 // (455)
             : '?'
             | 
             ;
         
-        __N267 // (465)
+        __N257 // (456)
             : cap
             | gencap
+            ;
+        
+        __N256 // (457)
+            : __N257
+            | 
+            ;
+        
+        __N259 // (458)
+            : '^'
+            | '!'
+            ;
+        
+        __N258 // (459)
+            : __N259
+            | 
+            ;
+        
+        __N260 // (460)
+            : cap
+            | 
+            ;
+        
+        __N261 // (461)
+            : ˈIDˈ
+            | 
+            ;
+        
+        __N262 // (462)
+            : typeparams
+            | 
+            ;
+        
+        __N263 // (463)
+            : '('
+            | ˈLPAREN_NEWˈ
+            ;
+        
+        __N265 // (464)
+            : __N265 ',' type
+            | ',' type
+            | 
+            ;
+        
+        __N264 // (465)
+            : type __N265
+            | 
             ;
         
         __N266 // (466)
-            : __N267
-            | 
-            ;
-        
-        __N269 // (467)
-            : '^'
-            | '!'
-            ;
-        
-        __N268 // (468)
-            : __N269
-            | 
-            ;
-        
-        __N270 // (469)
-            : __N270 ',' infixtype
-            | ',' infixtype
-            | 
-            ;
-        
-        __N271 // (470)
-            : __N271 antlr_4
-            | antlr_4
-            | 
-            ;
-        
-        __N272 // (471)
-            : '.' ˈIDˈ
-            | 
-            ;
-        
-        __N273 // (472)
-            : typeargs
-            | 
-            ;
-        
-        __N275 // (473)
-            : cap
-            | gencap
-            ;
-        
-        __N274 // (474)
-            : __N275
-            | 
-            ;
-        
-        __N277 // (475)
-            : '^'
-            | '!'
-            ;
-        
-        __N276 // (476)
-            : __N277
-            | 
-            ;
-        
-        __N278 // (477)
-            : __N278 ',' typearg
-            | ',' typearg
-            | 
-            ;
-        
-        __N279 // (478)
-            : '['
-            | ˈLSQUARE_NEWˈ
-            ;
-        
-        __N280 // (479)
-            : __N280 ',' typeparam
-            | ',' typeparam
-            | 
-            ;
-        
-        __N281 // (480)
-            : param
-            | '...'
-            ;
-        
-        __N283 // (481)
-            : param
-            | '...'
-            ;
-        
-        __N282 // (482)
-            : __N282 ',' __N283
-            | ',' __N283
-            | 
-            ;
-        
-        __N284 // (483)
             : ':' type
             | 
             ;
         
+        __N267 // (467)
+            : '?'
+            | 
+            ;
+        
+        __N269 // (468)
+            : cap
+            | gencap
+            ;
+        
+        __N268 // (469)
+            : __N269
+            | 
+            ;
+        
+        __N271 // (470)
+            : '^'
+            | '!'
+            ;
+        
+        __N270 // (471)
+            : __N271
+            | 
+            ;
+        
+        __N272 // (472)
+            : __N272 ',' infixtype
+            | ',' infixtype
+            | 
+            ;
+        
+        __N273 // (473)
+            : __N273 antlr_4
+            | antlr_4
+            | 
+            ;
+        
+        __N274 // (474)
+            : '.' ˈIDˈ
+            | 
+            ;
+        
+        __N275 // (475)
+            : typeargs
+            | 
+            ;
+        
+        __N277 // (476)
+            : cap
+            | gencap
+            ;
+        
+        __N276 // (477)
+            : __N277
+            | 
+            ;
+        
+        __N279 // (478)
+            : '^'
+            | '!'
+            ;
+        
+        __N278 // (479)
+            : __N279
+            | 
+            ;
+        
+        __N280 // (480)
+            : __N280 ',' typearg
+            | ',' typearg
+            | 
+            ;
+        
+        __N281 // (481)
+            : '['
+            | ˈLSQUARE_NEWˈ
+            ;
+        
+        __N282 // (482)
+            : __N282 ',' typeparam
+            | ',' typeparam
+            | 
+            ;
+        
+        __N283 // (483)
+            : param
+            | '...'
+            ;
+        
         __N285 // (484)
+            : param
+            | '...'
+            ;
+        
+        __N284 // (485)
+            : __N284 ',' __N285
+            | ',' __N285
+            | 
+            ;
+        
+        __N286 // (486)
+            : ':' type
+            | 
+            ;
+        
+        __N287 // (487)
             : '=' typearg
             | 
             ;
         
-        __N286 // (485)
+        __N288 // (488)
             : '=' infix
             | 
             ;

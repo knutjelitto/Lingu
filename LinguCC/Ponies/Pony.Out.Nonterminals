@@ -1,0 +1,363 @@
+__acc  {ˈSTRINGˈ, 'use', 'type', 'interface', 'trait', 'primitive', 'struct', 'class', 'actor', ε}
+module  {ˈSTRINGˈ, 'use', 'type', 'interface', 'trait', 'primitive', 'struct', 'class', 'actor', ε}
+use  {'use'}
+use_ffi  {'@'}
+class_def  {'type', 'interface', 'trait', 'primitive', 'struct', 'class', 'actor'}
+members  {'var', 'let', 'embed', 'fun', 'be', 'new', ε}
+field  {'var', 'let', 'embed'}
+method  {'fun', 'be', 'new'}
+annotatedrawseq  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', '\', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof'}
+rawseq  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof'}
+exprseq  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', '-', '-~', 'not', 'addressof', 'digestof'}
+nextexprseq  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'not', 'addressof', 'digestof'}
+nosemi  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', 'not', 'addressof', 'digestof'}
+semiexpr  {';'}
+jump  {'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error'}
+nextassignment  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'not', 'addressof', 'digestof'}
+assignment  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', '-', '-~', 'not', 'addressof', 'digestof'}
+nextinfix  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'not', 'addressof', 'digestof'}
+infix  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', '-', '-~', 'not', 'addressof', 'digestof'}
+isop  {'is', 'isnt'}
+binop  {'and', 'or', 'xor', '+', '-', '*', '/', '%', '%%', '+~', '-~', '*~', '/~', '%~', '%%~', '<<', '>>', '<<~', '>>~', '==', '!=', '<', '<=', '>=', '>', '==~', '!=~', '<~', '<=~', '>=~', '>~'}
+nextterm  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'not', 'addressof', 'digestof'}
+term  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', '-', '-~', 'not', 'addressof', 'digestof'}
+withelem  {ˈIDˈ, ˈLPAREN_NEWˈ, '('}
+caseexpr  {'|'}
+elseiftype  {'elseif'}
+iftype  {ˈIDˈ, ˈLPAREN_NEWˈ, '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+elseifdef  {'elseif'}
+elseif  {'elseif'}
+ids  {'\', ε}
+idseq  {ˈIDˈ, ˈLPAREN_NEWˈ, '('}
+idseq_in_seq  {ˈIDˈ, ˈLPAREN_NEWˈ, '('}
+nextpattern  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, '@', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'not', 'addressof', 'digestof'}
+pattern  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, '@', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', '-', '-~', 'not', 'addressof', 'digestof'}
+nextparampattern  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, '@', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'not', 'addressof', 'digestof'}
+parampattern  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, '@', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', '-', '-~', 'not', 'addressof', 'digestof'}
+nextpostfix  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, '@', 'this', 'object', '{', '@{', '__loc', 'true', 'false'}
+postfix  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, '@', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false'}
+call  {'('}
+chain  {'.>'}
+tilde  {'~'}
+dot  {'.'}
+nextatom  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, '@', 'this', 'object', '{', '@{', '__loc', 'true', 'false'}
+atom  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, '@', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false'}
+tuple  {','}
+lambdacaptures  {ˈLPAREN_NEWˈ, '('}
+lambdacapture  {ˈIDˈ}
+lambdaparams  {ˈIDˈ}
+lambdaparam  {ˈIDˈ}
+positional  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof'}
+named  {'where'}
+namedarg  {ˈIDˈ}
+type  {ˈIDˈ, ˈLPAREN_NEWˈ, '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+atomtype  {ˈIDˈ, ˈLPAREN_NEWˈ, '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+barelambdatype  {'@{'}
+lambdatype  {'{'}
+tupletype  {','}
+infixtype  {ˈIDˈ, ˈLPAREN_NEWˈ, '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+isecttype  {'&'}
+uniontype  {'|'}
+nominal  {ˈIDˈ}
+gencap  {'#read', '#send', '#share', '#alias', '#any'}
+cap  {'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+typeargs  {'['}
+typeparams  {ˈLSQUARE_NEWˈ, '['}
+params  {ˈIDˈ, '...'}
+typeparam  {ˈIDˈ}
+typearg  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, '#', '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag', 'true', 'false'}
+literal  {ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, 'true', 'false'}
+param  {ˈIDˈ}
+antlr_0  {'is', 'as', 'isnt', 'and', 'or', 'xor', '+', '-', '*', '/', '%', '%%', '+~', '-~', '*~', '/~', '%~', '%%~', '<<', '>>', '<<~', '>>~', '==', '!=', '<', '<=', '>=', '>', '==~', '!=~', '<~', '<=~', '>=~', '>~'}
+antlr_1  {'is', 'as', 'isnt', 'and', 'or', 'xor', '+', '-', '*', '/', '%', '%%', '+~', '-~', '*~', '/~', '%~', '%%~', '<<', '>>', '<<~', '>>~', '==', '!=', '<', '<=', '>=', '>', '==~', '!=~', '<~', '<=~', '>=~', '>~'}
+antlr_2  {'(', '.>', '~', '.', '['}
+antlr_3  {'(', '.>', '~', '.', '['}
+antlr_4  {'|', '&'}
+__N1  {ˈSTRINGˈ, ε}
+__N2  {'use', ε}
+__N3  {'type', 'interface', 'trait', 'primitive', 'struct', 'class', 'actor', ε}
+__N4  {ˈIDˈ, ε}
+__N5  {ˈSTRINGˈ, '@'}
+__N6  {'if', ε}
+__N7  {ˈIDˈ, ˈSTRINGˈ}
+__N8  {ˈLPAREN_NEWˈ, '('}
+__N9  {ˈIDˈ, '...', ε}
+__N10  {'?', ε}
+__N11  {'type', 'interface', 'trait', 'primitive', 'struct', 'class', 'actor'}
+__N13  {',', ε}
+__N12  {'\', ε}
+__N14  {'@', ε}
+__N15  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N16  {ˈLSQUARE_NEWˈ, '[', ε}
+__N17  {'is', ε}
+__N18  {ˈSTRINGˈ, ε}
+__N19  {'var', 'let', 'embed', ε}
+__N20  {'fun', 'be', 'new', ε}
+__N21  {'var', 'let', 'embed'}
+__N22  {'=', ε}
+__N23  {ˈSTRINGˈ, ε}
+__N24  {'fun', 'be', 'new'}
+__N26  {',', ε}
+__N25  {'\', ε}
+__N28  {'@', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+__N27  {'@', 'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N29  {ˈLSQUARE_NEWˈ, '[', ε}
+__N30  {ˈLPAREN_NEWˈ, '('}
+__N31  {ˈIDˈ, '...', ε}
+__N32  {':', ε}
+__N33  {'?', ε}
+__N34  {ˈSTRINGˈ, ε}
+__N35  {'=>', ε}
+__N37  {',', ε}
+__N36  {'\', ε}
+__N38  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof'}
+__N40  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', ';', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', 'not', 'addressof', 'digestof'}
+__N39  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', ';', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', 'not', 'addressof', 'digestof', ε}
+__N42  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', ';', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', 'not', 'addressof', 'digestof'}
+__N41  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', ';', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', 'this', 'object', '{', '@{', '__loc', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', 'not', 'addressof', 'digestof', ε}
+__N43  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof'}
+__N44  {'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error'}
+__N45  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N46  {'=', ε}
+__N47  {'=', ε}
+__N48  {'is', 'as', 'isnt', 'and', 'or', 'xor', '+', '-', '*', '/', '%', '%%', '+~', '-~', '*~', '/~', '%~', '%%~', '<<', '>>', '<<~', '>>~', '==', '!=', '<', '<=', '>=', '>', '==~', '!=~', '<~', '<=~', '>=~', '>~', ε}
+__N49  {'is', 'as', 'isnt', 'and', 'or', 'xor', '+', '-', '*', '/', '%', '%%', '+~', '-~', '*~', '/~', '%~', '%%~', '<<', '>>', '<<~', '>>~', '==', '!=', '<', '<=', '>=', '>', '==~', '!=~', '<~', '<=~', '>=~', '>~', ε}
+__N50  {'is', 'isnt'}
+__N51  {'and', 'or', 'xor', '+', '-', '*', '/', '%', '%%', '+~', '-~', '*~', '/~', '%~', '%%~', '<<', '>>', '<<~', '>>~', '==', '!=', '<', '<=', '>=', '>', '==~', '!=~', '<~', '<=~', '>=~', '>~'}
+__N52  {'?', ε}
+__N54  {',', ε}
+__N53  {'\', ε}
+__N56  {'else', 'elseif'}
+__N55  {'else', 'elseif', ε}
+__N58  {',', ε}
+__N57  {'\', ε}
+__N60  {'else', 'elseif'}
+__N59  {'else', 'elseif', ε}
+__N62  {',', ε}
+__N61  {'\', ε}
+__N64  {'else', 'elseif'}
+__N63  {'else', 'elseif', ε}
+__N66  {',', ε}
+__N65  {'\', ε}
+__N67  {'|', ε}
+__N68  {'else', ε}
+__N70  {',', ε}
+__N69  {'\', ε}
+__N71  {'else', ε}
+__N73  {',', ε}
+__N72  {'\', ε}
+__N74  {'else', ε}
+__N76  {',', ε}
+__N75  {'\', ε}
+__N77  {'else', ε}
+__N79  {',', ε}
+__N78  {'\', ε}
+__N80  {',', ε}
+__N81  {'else', ε}
+__N83  {',', ε}
+__N82  {'\', ε}
+__N84  {'else', ε}
+__N85  {'then', ε}
+__N87  {',', ε}
+__N86  {'\', ε}
+__N88  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N89  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N91  {',', ε}
+__N90  {'\', ε}
+__N93  {'else', 'elseif'}
+__N92  {'else', 'elseif', ε}
+__N95  {',', ε}
+__N94  {'\', ε}
+__N97  {'else', 'elseif'}
+__N96  {'else', 'elseif', ε}
+__N99  {',', ε}
+__N98  {'\', ε}
+__N101  {'else', 'elseif'}
+__N100  {'else', 'elseif', ε}
+__N103  {',', ε}
+__N102  {'\', ε}
+__N104  {'|', ε}
+__N105  {'else', ε}
+__N107  {',', ε}
+__N106  {'\', ε}
+__N108  {'else', ε}
+__N110  {',', ε}
+__N109  {'\', ε}
+__N111  {'else', ε}
+__N113  {',', ε}
+__N112  {'\', ε}
+__N114  {'else', ε}
+__N116  {',', ε}
+__N115  {'\', ε}
+__N117  {',', ε}
+__N118  {'else', ε}
+__N120  {',', ε}
+__N119  {'\', ε}
+__N121  {'else', ε}
+__N122  {'then', ε}
+__N124  {',', ε}
+__N123  {'\', ε}
+__N125  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N126  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N128  {',', ε}
+__N127  {'\', ε}
+__N129  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, '@', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N130  {'if', ε}
+__N131  {'=>', ε}
+__N133  {',', ε}
+__N132  {'\', ε}
+__N135  {'else', 'elseif'}
+__N134  {'else', 'elseif', ε}
+__N137  {',', ε}
+__N136  {'\', ε}
+__N139  {'else', 'elseif'}
+__N138  {'else', 'elseif', ε}
+__N141  {',', ε}
+__N140  {'\', ε}
+__N143  {'else', 'elseif'}
+__N142  {'else', 'elseif', ε}
+__N145  {',', ε}
+__N144  {'\', ε}
+__N146  {ˈLPAREN_NEWˈ, '('}
+__N147  {',', ε}
+__N148  {ˈLPAREN_NEWˈ, '('}
+__N149  {',', ε}
+__N150  {'var', 'let', 'embed'}
+__N151  {':', ε}
+__N152  {'var', 'let', 'embed'}
+__N153  {':', ε}
+__N154  {ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'not', 'addressof', 'digestof'}
+__N155  {ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, '-', '-~', 'not', 'addressof', 'digestof'}
+__N156  {'(', '.>', '~', '.', '[', ε}
+__N157  {'(', '.>', '~', '.', '[', ε}
+__N158  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N159  {'where', ε}
+__N160  {'?', ε}
+__N161  {',', ε}
+__N162  {'as', ε}
+__N163  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N165  {',', ε}
+__N164  {'\', ε}
+__N166  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N167  {'is', ε}
+__N169  {',', ε}
+__N168  {'\', ε}
+__N170  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N171  {ˈIDˈ, ε}
+__N172  {ˈLSQUARE_NEWˈ, '[', ε}
+__N173  {ˈLPAREN_NEWˈ, '('}
+__N174  {ˈIDˈ, ε}
+__N175  {ˈLPAREN_NEWˈ, '(', ε}
+__N176  {':', ε}
+__N177  {'?', ε}
+__N178  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N180  {',', ε}
+__N179  {'\', ε}
+__N181  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N182  {ˈIDˈ, ε}
+__N183  {ˈLSQUARE_NEWˈ, '[', ε}
+__N184  {ˈLPAREN_NEWˈ, '('}
+__N185  {ˈIDˈ, ε}
+__N186  {ˈLPAREN_NEWˈ, '(', ε}
+__N187  {':', ε}
+__N188  {'?', ε}
+__N189  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N190  {ˈIDˈ, ˈSTRINGˈ}
+__N191  {'[', ε}
+__N192  {ˈLPAREN_NEWˈ, '('}
+__N193  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N194  {'where', ε}
+__N195  {'?', ε}
+__N196  {ˈLPAREN_NEWˈ, '('}
+__N197  {',', ε}
+__N198  {ˈLSQUARE_NEWˈ, '['}
+__N199  {'as', ε}
+__N200  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N202  {',', ε}
+__N201  {'\', ε}
+__N203  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N204  {'is', ε}
+__N206  {',', ε}
+__N205  {'\', ε}
+__N207  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N208  {ˈIDˈ, ε}
+__N209  {ˈLSQUARE_NEWˈ, '[', ε}
+__N210  {ˈLPAREN_NEWˈ, '('}
+__N211  {ˈIDˈ, ε}
+__N212  {ˈLPAREN_NEWˈ, '(', ε}
+__N213  {':', ε}
+__N214  {'?', ε}
+__N215  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N217  {',', ε}
+__N216  {'\', ε}
+__N218  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N219  {ˈIDˈ, ε}
+__N220  {ˈLSQUARE_NEWˈ, '[', ε}
+__N221  {ˈLPAREN_NEWˈ, '('}
+__N222  {ˈIDˈ, ε}
+__N223  {ˈLPAREN_NEWˈ, '(', ε}
+__N224  {':', ε}
+__N225  {'?', ε}
+__N226  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N227  {ˈIDˈ, ˈSTRINGˈ}
+__N228  {'[', ε}
+__N229  {ˈLPAREN_NEWˈ, '('}
+__N230  {ˈIDˈ, ˈINTˈ, ˈFLOATˈ, ˈSTRINGˈ, ˈLPAREN_NEWˈ, ˈLSQUARE_NEWˈ, ˈMINUS_NEWˈ, ˈMINUS_TILDE_NEWˈ, 'if', '@', 'ifdef', 'iftype', 'match', 'while', 'repeat', 'for', 'with', 'try', 'recover', 'consume', '#', '(', 'this', 'object', '{', '@{', '__loc', '[', 'true', 'false', 'var', 'let', 'embed', 'return', 'break', 'continue', 'error', 'compile_intrinsic', 'compile_error', '-', '-~', 'not', 'addressof', 'digestof', ε}
+__N231  {'where', ε}
+__N232  {'?', ε}
+__N233  {',', ε}
+__N234  {ˈLPAREN_NEWˈ, '('}
+__N235  {ˈIDˈ, 'this'}
+__N237  {ˈIDˈ, 'this'}
+__N236  {',', ε}
+__N238  {':', ε}
+__N239  {'=', ε}
+__N240  {',', ε}
+__N241  {':', ε}
+__N242  {'=', ε}
+__N243  {',', ε}
+__N244  {',', ε}
+__N245  {'->', ε}
+__N246  {ˈLPAREN_NEWˈ, '('}
+__N247  {',', ε}
+__N248  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N249  {ˈIDˈ, ε}
+__N250  {ˈLSQUARE_NEWˈ, '[', ε}
+__N251  {ˈLPAREN_NEWˈ, '('}
+__N253  {',', ε}
+__N252  {ˈIDˈ, ˈLPAREN_NEWˈ, '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N254  {':', ε}
+__N255  {'?', ε}
+__N257  {'#read', '#send', '#share', '#alias', '#any', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+__N256  {'#read', '#send', '#share', '#alias', '#any', 'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N259  {'^', '!'}
+__N258  {'^', '!', ε}
+__N260  {'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N261  {ˈIDˈ, ε}
+__N262  {ˈLSQUARE_NEWˈ, '[', ε}
+__N263  {ˈLPAREN_NEWˈ, '('}
+__N265  {',', ε}
+__N264  {ˈIDˈ, ˈLPAREN_NEWˈ, '(', 'this', '{', '@{', 'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N266  {':', ε}
+__N267  {'?', ε}
+__N269  {'#read', '#send', '#share', '#alias', '#any', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+__N268  {'#read', '#send', '#share', '#alias', '#any', 'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N271  {'^', '!'}
+__N270  {'^', '!', ε}
+__N272  {',', ε}
+__N273  {'|', '&', ε}
+__N274  {'.', ε}
+__N275  {'[', ε}
+__N277  {'#read', '#send', '#share', '#alias', '#any', 'iso', 'trn', 'ref', 'val', 'box', 'tag'}
+__N276  {'#read', '#send', '#share', '#alias', '#any', 'iso', 'trn', 'ref', 'val', 'box', 'tag', ε}
+__N279  {'^', '!'}
+__N278  {'^', '!', ε}
+__N280  {',', ε}
+__N281  {ˈLSQUARE_NEWˈ, '['}
+__N282  {',', ε}
+__N283  {ˈIDˈ, '...'}
+__N285  {ˈIDˈ, '...'}
+__N284  {',', ε}
+__N286  {':', ε}
+__N287  {'=', ε}
+__N288  {'=', ε}

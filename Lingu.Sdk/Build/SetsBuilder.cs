@@ -296,10 +296,14 @@ namespace Lingu.Build
 
             var dfas = Enumerable.Repeat(FA.None(), already.Count).ToArray();
 
+            var count = dfas.Length;
+
             result = Parallel.ForEach(already, kv =>
             {
                 var terminalSet = kv.Key;
                 var index = kv.Value;
+
+                Console.WriteLine($"dfa {index} - {--count} to go");
 
                 FA dfa;
                 if (terminalSet.Cardinality == 1)

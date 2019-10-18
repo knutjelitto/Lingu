@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 using Lingu.Commons;
 using Lingu.Dumping;
 using Lingu.Runtime.Concretes;
-using Lingu.Runtime.Lexing;
 using Lingu.Runtime.Sources;
 using Lingu.CSharpWrite;
 using Lingu.Build;
@@ -28,7 +26,8 @@ namespace Lingu.Bootstrap
             //program.BuildTree("S3", "grammar s3 { a = b, b = c, c = d, d = a}");
             //program.BuildTree("S4", @"'\\'");
             //program.BuildTree("S5", @"aaa");
-            program.BuildTree("Lingu", "grammar x {}");
+            //program.BuildTree("S6", @"   ");
+            //program.BuildTree("Lingu", "grammar x {}");
             //program.BuildTree("Lingu", FileRef.Source($"./S4.Grammar"));
             //program.BuildTree("Lingu", FileRef.From($"./Lingu.Grammar"));
             //program.BuildTree("Lingu", "grammar x {}");

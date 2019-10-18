@@ -1,0 +1,17 @@
+﻿grammar Ucd
+{
+    options
+    {
+    }
+
+    rules
+    {
+        start : whitespace*;
+    }
+
+    terminals
+    {
+        whitespace : ' '*;
+    }
+}
+

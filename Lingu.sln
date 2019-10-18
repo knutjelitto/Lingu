@@ -46,6 +46,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC0", "LinguCC0\LinguC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC", "LinguCC\LinguCC.csproj", "{C6F811D1-56B1-442D-A7DA-27B5DA5172DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinguUcd", "LinguUcd\LinguUcd.csproj", "{68719C5E-8066-467F-9ADE-34FAC5CE7637}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{C6F811D1-56B1-442D-A7DA-27B5DA5172DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F811D1-56B1-442D-A7DA-27B5DA5172DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F811D1-56B1-442D-A7DA-27B5DA5172DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

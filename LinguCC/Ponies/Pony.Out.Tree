@@ -1386,6 +1386,27 @@ file
                               $*$
               $*$
           rule
+            identifier <ids>
+            rule_expression
+              rule_sequence
+                $*$
+                  rule_option
+                    rule_expression
+                      rule_sequence
+                        $*$
+                          text <'\\'>
+                          identifier <ID>
+                          rule_star
+                            rule_expression
+                              rule_sequence
+                                $*$
+                                  text <','>
+                                  identifier <ID>
+                              $*$
+                          text <'\\'>
+                      $*$
+              $*$
+          rule
             identifier <idseq>
             rule_expression
               rule_sequence
@@ -2669,12 +2690,12 @@ file
             terminal_expression
               terminal_sequence
                 $*$
-                  identifier <LETTER>
+                  identifier <letter>
                   terminal_star
                     terminal_expression
                       terminal_sequence
                         $*$
-                          identifier <LETTER>
+                          identifier <letter>
                       $*$
                         terminal_sequence
                           $*$
@@ -2694,7 +2715,7 @@ file
                       terminal_expression
                         terminal_sequence
                           $*$
-                            identifier <LETTER>
+                            identifier <letter>
                         $*$
                           terminal_sequence
                             $*$
@@ -3091,7 +3112,7 @@ file
                     __T13 <+>
               $*$
           terminal_rule
-            identifier <LETTER>
+            identifier <letter>
             terminal_expression
               terminal_sequence
                 $*$

@@ -34,7 +34,9 @@ namespace Lingu.Automata
                         {
                             if (i >= j) continue;
 
-                            table[i, j] = s[i].Final && !s[j].Final || s[i].Final && s[j].Final && s[i].Payload != s[j].Payload;
+                            table[i, j] = s[i].Final && !s[j].Final ||
+                                          !s[i].Final && s[j].Final ||
+                                          s[i].Final && s[j].Final && s[i].Payload != s[j].Payload;
                         }
                     }
 

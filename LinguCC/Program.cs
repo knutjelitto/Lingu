@@ -6,7 +6,7 @@ namespace Lingu.CC
     {
         static void Main(/*string[] args*/)
         {
-            new Ponies.Pony().Build();
+            new Ucds.Ucd().Build();
 
             Console.Write("press (almost) any key ... ");
             Console.ReadKey(true);

@@ -1,0 +1,19 @@
+﻿grammar Wiki
+{
+    options
+    {
+		Start = start;
+    }
+    terminals
+    {
+        WS
+          : (' ' | '\t' | '\r')+
+          ;
+    }
+    rules
+    {
+		start
+            : WS+
+            ;
+    }
+}

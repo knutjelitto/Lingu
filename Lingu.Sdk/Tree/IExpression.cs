@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,5 @@ namespace Lingu.Tree
         FA GetFA();
 
         IEnumerable<IExpression> Children { get; }
-        //Repeat Repeat { get; set; }
     }
 }

@@ -329,12 +329,14 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 
-Lingu.Boot/Grammar/Out/*.*
-Lingu.Boot/Hime
-Mean.Language/Generated/*.txt
-Mean.Language/Generated/*.dot
-Mean.Language/Generated/*.dll
-Lingu.Hime/*.dot
-Lingu.Hime/*.txt
+/Lingu.Boot/Grammar/Out/*.*
+/Lingu.Boot/Hime
+/Mean.Language/Generated/*.txt
+/Mean.Language/Generated/*.dot
+/Mean.Language/Generated/*.dll
+/Lingu.Hime/*.dot
+/Lingu.Hime/*.txt
 /LinguCC0/Gen/*.Out.*
 /LinguCC/Gen/*.Out.*
+/LinguUcd/Data/**
+/LinguUcd/Generated/*.Out.*
