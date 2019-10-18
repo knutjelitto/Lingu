@@ -2678,7 +2678,7 @@ file
                       $*$
                         terminal_sequence
                           $*$
-                            identifier <DIGIT>
+                            identifier <decimalDigit>
                         terminal_sequence
                           $*$
                             text <'_'>
@@ -2698,7 +2698,7 @@ file
                         $*$
                           terminal_sequence
                             $*$
-                              identifier <DIGIT>
+                              identifier <decimalDigit>
                           terminal_sequence
                             $*$
                               text <'_'>
@@ -2711,12 +2711,12 @@ file
             terminal_expression
               terminal_sequence
                 $*$
-                  identifier <DIGIT>
+                  identifier <decimalDigit>
                   terminal_star
                     terminal_expression
                       terminal_sequence
                         $*$
-                          identifier <DIGIT>
+                          identifier <decimalDigit>
                       $*$
                         terminal_sequence
                           $*$
@@ -2731,7 +2731,7 @@ file
                       terminal_expression
                         terminal_sequence
                           $*$
-                            identifier <HEX>
+                            identifier <hexDigit>
                         $*$
                           terminal_sequence
                             $*$
@@ -2745,7 +2745,7 @@ file
                       terminal_expression
                         terminal_sequence
                           $*$
-                            identifier <BINARY>
+                            identifier <binaryDigit>
                         $*$
                           terminal_sequence
                             $*$
@@ -2755,7 +2755,7 @@ file
                   $*$
                     text <'\''>
                     terminal_star
-                      identifier <CHAR_CHAR>
+                      identifier <charChar>
                       __T12 <*>
                     text <'\''>
           terminal_rule
@@ -2763,12 +2763,12 @@ file
             terminal_expression
               terminal_sequence
                 $*$
-                  identifier <DIGIT>
+                  identifier <decimalDigit>
                   terminal_star
                     terminal_expression
                       terminal_sequence
                         $*$
-                          identifier <DIGIT>
+                          identifier <decimalDigit>
                       $*$
                         terminal_sequence
                           $*$
@@ -2779,12 +2779,12 @@ file
                       terminal_sequence
                         $*$
                           text <'.'>
-                          identifier <DIGIT>
+                          identifier <decimalDigit>
                           terminal_star
                             terminal_expression
                               terminal_sequence
                                 $*$
-                                  identifier <DIGIT>
+                                  identifier <decimalDigit>
                               $*$
                                 terminal_sequence
                                   $*$
@@ -2803,7 +2803,7 @@ file
                 $*$
                   text <'"'>
                   terminal_star
-                    identifier <STRING_CHAR>
+                    identifier <stringChar>
                     __T12 <*>
                   text <'"'>
               $*$
@@ -3015,49 +3015,47 @@ file
                     __T12 <*>
               $*$
           terminal_rule
-            identifier <CHAR_CHAR>
+            identifier <charChar>
             terminal_expression
-              terminal_sequence
-                $*$
-                  text <'\\'>
-                  text <'\''>
+              terminal_diff
+                terminal_sequence
+                  $*$
+                    any <.>
+                terminal_sequence
+                  $*$
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          text <'\''>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'\\'>
               $*$
                 terminal_sequence
                   $*$
-                    identifier <CHAR_ESC>
-                terminal_sequence
-                  $*$
-                    terminal_not
-                      terminal_expression
-                        terminal_sequence
-                          $*$
-                            text <'\''>
-                        $*$
-                          terminal_sequence
-                            $*$
-                              text <'\\'>
+                    identifier <charEscape>
           terminal_rule
-            identifier <STRING_CHAR>
+            identifier <stringChar>
             terminal_expression
-              terminal_sequence
-                $*$
-                  text <'\\'>
-                  text <'"'>
+              terminal_diff
+                terminal_sequence
+                  $*$
+                    any <.>
+                terminal_sequence
+                  $*$
+                    terminal_expression
+                      terminal_sequence
+                        $*$
+                          text <'"'>
+                      $*$
+                        terminal_sequence
+                          $*$
+                            text <'\\'>
               $*$
                 terminal_sequence
                   $*$
-                    identifier <ESC>
-                terminal_sequence
-                  $*$
-                    terminal_not
-                      terminal_expression
-                        terminal_sequence
-                          $*$
-                            text <'"'>
-                        $*$
-                          terminal_sequence
-                            $*$
-                              text <'\\'>
+                    identifier <stringEscape>
           terminal_rule
             identifier <EXP>
             terminal_expression
@@ -3085,7 +3083,7 @@ file
                     terminal_expression
                       terminal_sequence
                         $*$
-                          identifier <DIGIT>
+                          identifier <decimalDigit>
                       $*$
                         terminal_sequence
                           $*$
@@ -3107,7 +3105,7 @@ file
                       text <'A'>
                       text <'Z'>
           terminal_rule
-            identifier <BINARY>
+            identifier <binaryDigit>
             terminal_expression
               terminal_sequence
                 $*$
@@ -3116,20 +3114,35 @@ file
                     text <'1'>
               $*$
           terminal_rule
-            identifier <DIGIT>
+            identifier <octalDigit>
             terminal_expression
               terminal_sequence
                 $*$
-                  characterRange
-                    text <'0'>
-                    text <'9'>
+                  identifier <binaryDigit>
               $*$
+                terminal_sequence
+                  $*$
+                    characterRange
+                      text <'2'>
+                      text <'7'>
           terminal_rule
-            identifier <HEX>
+            identifier <decimalDigit>
             terminal_expression
               terminal_sequence
                 $*$
-                  identifier <DIGIT>
+                  identifier <octalDigit>
+              $*$
+                terminal_sequence
+                  $*$
+                    characterRange
+                      text <'8'>
+                      text <'9'>
+          terminal_rule
+            identifier <hexDigit>
+            terminal_expression
+              terminal_sequence
+                $*$
+                  identifier <decimalDigit>
               $*$
                 terminal_sequence
                   $*$
@@ -3142,11 +3155,11 @@ file
                       text <'A'>
                       text <'F'>
           terminal_rule
-            identifier <ESC>
+            identifier <stringEscape>
             terminal_expression
               terminal_sequence
                 $*$
-                  identifier <CHAR_ESC>
+                  identifier <charEscape>
               $*$
                 terminal_sequence
                   $*$
@@ -3155,7 +3168,7 @@ file
                   $*$
                     identifier <UNICODE2_ESC>
           terminal_rule
-            identifier <CHAR_ESC>
+            identifier <charEscape>
             terminal_expression
               terminal_sequence
                 $*$
@@ -3163,8 +3176,14 @@ file
                   terminal_expression
                     terminal_sequence
                       $*$
-                        text <'a'>
+                        text <'"'>
                     $*$
+                      terminal_sequence
+                        $*$
+                          text <'\''>
+                      terminal_sequence
+                        $*$
+                          text <'a'>
                       terminal_sequence
                         $*$
                           text <'b'>
@@ -3203,8 +3222,8 @@ file
                 $*$
                   text <'\\'>
                   text <'x'>
-                  identifier <HEX>
-                  identifier <HEX>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
               $*$
           terminal_rule
             identifier <UNICODE_ESC>
@@ -3213,10 +3232,10 @@ file
                 $*$
                   text <'\\'>
                   text <'u'>
-                  identifier <HEX>
-                  identifier <HEX>
-                  identifier <HEX>
-                  identifier <HEX>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
               $*$
           terminal_rule
             identifier <UNICODE2_ESC>
@@ -3225,10 +3244,10 @@ file
                 $*$
                   text <'\\'>
                   text <'U'>
-                  identifier <HEX>
-                  identifier <HEX>
-                  identifier <HEX>
-                  identifier <HEX>
-                  identifier <HEX>
-                  identifier <HEX>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
+                  identifier <hexDigit>
               $*$

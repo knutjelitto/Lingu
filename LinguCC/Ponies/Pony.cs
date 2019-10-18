@@ -18,7 +18,7 @@ namespace Lingu.CC.Ponies
     {
         public void Build()
         {
-            var lingu = new Lingu.CC.LinguContext();
+            var lingu = new LinguContext();
 
             var projectDir = DirRef.ProjectDir();
             var ponyDir = projectDir.Dir("Ponies");
@@ -41,15 +41,15 @@ namespace Lingu.CC.Ponies
                 if (ast != null)
                 {
                     var grammar = new GrammarBuilder(ast).Build();
+
+                    if (grammar != null)
+                    {
+                        new Dumper(grammar).Dump(dumps);
+
+                        new CSharpWriter(grammar, file, ponyDir).Write();
+                    }
                 }
             }
-
-#if false
-
-            Timer.Time("dump", () => new Dumper(grammar).Dump(dumps));
-
-            Timer.Time("write", () => new CSharpWriter(grammar, file, ponyDir).Write());
-#endif
         }
     }
 }

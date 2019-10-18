@@ -24,10 +24,6 @@ namespace Lingu.CSharpWrite
             {
                 foreach (var production in Grammar.Productions)
                 {
-                    if (production.Nonterminal.Name == "__N5")
-                    {
-                        Debug.Assert(true);
-                    }
                     var drops = string.Join(",", production.Drops.Select(Bool));
                     drops = $"new bool[]{{{drops}}}";
                     var promotes = string.Join(",", production.Promotes.Select(Bool));

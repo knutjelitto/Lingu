@@ -413,7 +413,7 @@
           : decimalDigit (decimalDigit | '_')*
           | '0' 'x' (hexDigit | '_')+
           | '0' 'b' (binaryDigit | '_')+
-          | '\'' CHAR_CHAR* '\''
+          | '\'' charChar* '\''
           ;
 
         FLOAT
@@ -421,7 +421,7 @@
           ;
 
         STRING
-          : '"' STRING_CHAR* '"'
+          : '"' stringChar* '"'
           | '"""' ( ('"' | '""') ? ~'"')* '"""' '"'*
           ;
 
@@ -481,14 +481,14 @@
           : '\n' (' ' | '\t' | '\r')*
           ;
 
-        CHAR_CHAR
-          : '\\' '\'' | CHAR_ESC
-          | ~('\'' | '\\')
+        charChar
+          : . - ('\'' | '\\')
+          | charEscape
           ;
 
-        STRING_CHAR
-          : '\\' '"' | ESC
-          | ~('"' | '\\')
+        stringChar
+          : . - ('"' | '\\')
+          | stringEscape
           ;
 
         EXP
@@ -503,22 +503,26 @@
           : '0'..'1'
           ;
 
+        octalDigit
+          : binaryDigit | '2'..'7'
+          ;
+
         decimalDigit
-          : '0'..'9'
+          : octalDigit | '8'..'9'
           ;
 
         hexDigit
           : decimalDigit | 'a'..'f' | 'A'..'F'
           ;
 
-        ESC
-          : CHAR_ESC
+        stringEscape
+          : charEscape
           | UNICODE_ESC
           | UNICODE2_ESC
           ;
 
-        CHAR_ESC
-          : '\\' ('a' | 'b' | 'e' | 'f' | 'n' | 'r' | 't' | 'v' | '\\' | '0')
+        charEscape
+          : '\\' ('"' | '\'' | 'a' | 'b' | 'e' | 'f' | 'n' | 'r' | 't' | 'v' | '\\' | '0')
           | HEX_ESC
           ;
 
