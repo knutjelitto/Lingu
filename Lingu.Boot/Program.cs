@@ -10,7 +10,7 @@ using Lingu.CSharpWrite;
 using Lingu.Build;
 using Lingu.Runtime.Commons;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Boot
 {
     public class Program
     {

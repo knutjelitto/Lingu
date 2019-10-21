@@ -6,7 +6,7 @@ using Hime.Redist;
 using Lingu.Commons;
 using Lingu.Tree;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Boot
 {
     public class Parser
     {

@@ -139,15 +139,13 @@ namespace Lingu.Runtime.Parsing
                                     token = new RepeatToken(RepeatSymbol.Option);
                                     break;
                                 }
-                            case 1:
+                            default:
                                 /* core part */
                                 {
                                     var item = rhs[0];
-                                    token = new RepeatToken(RepeatSymbol.Option, item);
+                                    token = new RepeatToken(RepeatSymbol.Option, rhs);
                                     break;
                                 }
-                            default:
-                                throw new InternalException();
                         }
                         break;
                     case RepeatKind.None:

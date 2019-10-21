@@ -1,4 +1,4 @@
-﻿grammar UcdBlocks
+﻿grammar UcdScripts
 {
     options
     {

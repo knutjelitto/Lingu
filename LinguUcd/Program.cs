@@ -20,6 +20,20 @@ namespace Lingu.Ucd
             var dataDir = projectDir.Dir("Data");
             var ucdDir = dataDir.Dir("ucd");
 
+            AquireData(ucdDir);
+
+            var blocksFile = ucdDir.File("Blocks.txt");
+            new UcdBlocksParser().Parse(blocksFile);
+
+            var scriptsFile = ucdDir.File("Scripts.txt");
+            new UcdScriptsParser().Parse(scriptsFile);
+
+            Console.Write("press (almost) any key ... ");
+            Console.ReadKey(true);
+        }
+
+        internal static void AquireData(DirRef ucdDir)
+        {
             using (var client = new WebClient())
             {
                 foreach (var fileName in unicodeFiles)
@@ -29,7 +43,7 @@ namespace Lingu.Ucd
 
                     if (!localFile.OnPladde)
                     {
-                        Console.WriteLine($"{localFile.FileName}");
+                        Console.WriteLine($"download {localFile.FileName}");
 
                         client.DownloadFile(@"https://www.unicode.org/Public/12.1.0/ucd/" + fileName, tmpFile);
 
@@ -38,22 +52,14 @@ namespace Lingu.Ucd
                             File.Delete(localFile);
                         }
 
+                        Console.WriteLine($"extract {localFile.FileName}");
+
+                        ZipFile.ExtractToDirectory(tmpFile, ucdDir, true);
+
                         File.Move(tmpFile, localFile);
                     }
                 }
             }
-
-            foreach (var fileName in unicodeFiles)
-            {
-                var localFile = ucdDir.File(fileName);
-
-                Console.WriteLine($"{localFile.FileName}");
-
-                ZipFile.ExtractToDirectory(localFile, ucdDir, true);
-            }
-
-            Console.Write("press (almost) any key ... ");
-            Console.ReadKey(true);
         }
     }
 }

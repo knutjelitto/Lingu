@@ -114,6 +114,11 @@
 
         terminal_alternative
             : ^terminal_sequence
+            | ^terminal_diff
+            ;
+
+        terminal_diff
+            : terminal_sequence ,'-' terminal_sequence
             ;
 
         terminal_sequence
@@ -151,7 +156,6 @@
         terminal_element
             : ^terminal_atom
             | ,'(' ^terminal_expression ,')'
-            | ,'(' {terminal_diff: terminal_expression ,'-' terminal_expression } ,')'
             ;
 
         terminal_atom

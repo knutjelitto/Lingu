@@ -19,7 +19,7 @@ namespace Lingu.LR
 
         public override LR1Set Close()
         {
-            for (var repeat = 0; repeat < 2; ++repeat)
+            for (var repeat = 0; repeat < 1; ++repeat)
             {
                 for (var i = 0; i < Count; ++i)
                 {

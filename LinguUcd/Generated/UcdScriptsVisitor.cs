@@ -4,7 +4,7 @@ namespace Lingu.CC
     using System.Diagnostics;
     using Lingu.Runtime.Structures;
     
-    public abstract class AbstractUcdBlocksVisitor<T> where T : class
+    public abstract class AbstractUcdScriptsVisitor<T> where T : class
     {
         protected abstract T OnNl(ITerminalToken token);
         protected abstract T OnNonl(ITerminalToken token);
@@ -24,18 +24,18 @@ namespace Lingu.CC
             Debug.Assert(token != null);
             return token.Symbol.Id switch
             {
-                UcdBlocksId.Nl => (TAst)OnNl((ITerminalToken)token),
-                UcdBlocksId.Nonl => (TAst)OnNonl((ITerminalToken)token),
-                UcdBlocksId.Ws => (TAst)OnWs((ITerminalToken)token),
-                UcdBlocksId.Begin => (TAst)OnBegin((ITerminalToken)token),
-                UcdBlocksId.End => (TAst)OnEnd((ITerminalToken)token),
-                UcdBlocksId.Id => (TAst)OnId((ITerminalToken)token),
-                UcdBlocksId.Start => (TAst)OnStart((INonterminalToken)token),
-                UcdBlocksId.Missing => (TAst)OnMissing((INonterminalToken)token),
-                UcdBlocksId.Comment => (TAst)OnComment((INonterminalToken)token),
-                UcdBlocksId.Empty => (TAst)OnEmpty((INonterminalToken)token),
-                UcdBlocksId.Range => (TAst)OnRange((INonterminalToken)token),
-                UcdBlocksId.Data => (TAst)OnData((INonterminalToken)token),
+                UcdScriptsId.Nl => (TAst)OnNl((ITerminalToken)token),
+                UcdScriptsId.Nonl => (TAst)OnNonl((ITerminalToken)token),
+                UcdScriptsId.Ws => (TAst)OnWs((ITerminalToken)token),
+                UcdScriptsId.Begin => (TAst)OnBegin((ITerminalToken)token),
+                UcdScriptsId.End => (TAst)OnEnd((ITerminalToken)token),
+                UcdScriptsId.Id => (TAst)OnId((ITerminalToken)token),
+                UcdScriptsId.Start => (TAst)OnStart((INonterminalToken)token),
+                UcdScriptsId.Missing => (TAst)OnMissing((INonterminalToken)token),
+                UcdScriptsId.Comment => (TAst)OnComment((INonterminalToken)token),
+                UcdScriptsId.Empty => (TAst)OnEmpty((INonterminalToken)token),
+                UcdScriptsId.Range => (TAst)OnRange((INonterminalToken)token),
+                UcdScriptsId.Data => (TAst)OnData((INonterminalToken)token),
                 
                 _ => throw new NotImplementedException(),
             };
@@ -44,7 +44,7 @@ namespace Lingu.CC
         protected abstract T DefaultOn(IToken token);
     }
     
-    public abstract class UcdBlocksVisitor<T> : AbstractUcdBlocksVisitor<T> where T : class
+    public abstract class UcdScriptsVisitor<T> : AbstractUcdScriptsVisitor<T> where T : class
     {
         protected override T OnNl(ITerminalToken token)
         {
@@ -108,7 +108,7 @@ namespace Lingu.CC
         }
     }
     
-    public static class UcdBlocksId
+    public static class UcdScriptsId
     {
         public const int Nl = 0;
         public const int Nonl = 1;

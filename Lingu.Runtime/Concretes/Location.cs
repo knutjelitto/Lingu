@@ -1,11 +1,13 @@
 ﻿using Lingu.Runtime.Structures;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Lingu.Runtime.Concretes
 {
-    public struct Location : ILocation
+    [DebuggerDisplay("{DbgOut()}")]
+    public class Location : ILocation
     {
         private Location(ISource source, int start, int end)
         {
@@ -31,6 +33,13 @@ namespace Lingu.Runtime.Concretes
         public string GetText()
         {
             return Source.GetText(Offset, Length);
+        }
+
+        public string DbgOut()
+        {
+            var (lineNo, colNo) = Source.GetLineCol(Offset);
+
+            return $"{Source.Name}:{lineNo}:{colNo}";
         }
     }
 }

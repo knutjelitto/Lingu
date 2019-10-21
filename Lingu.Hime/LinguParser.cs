@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Hime.Redist;
 using Hime.Redist.Parsers;
 
-namespace Lingu.Bootstrap.Hime
+namespace Lingu.Boot.Hime
 {
 	/// <summary>
 	/// Represents a parser
@@ -16,7 +16,7 @@ namespace Lingu.Bootstrap.Hime
 		/// <summary>
 		/// The automaton for this parser
 		/// </summary>
-		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser");
+		private static readonly LRkAutomaton commonAutomaton = LRkAutomaton.Find(typeof(LinguParser), "LinguParser.bin");
 		/// <summary>
 		/// Contains the constant IDs for the variables and virtuals in this parser
 		/// </summary>

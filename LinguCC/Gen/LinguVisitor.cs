@@ -30,15 +30,14 @@ namespace Lingu.CC
         protected abstract T OnGrammarTerminals(INonterminalToken token);
         protected abstract T OnTerminalRule(INonterminalToken token);
         protected abstract T OnTerminalExpression(INonterminalToken token);
+        protected abstract T OnTerminalDiff(INonterminalToken token);
         protected abstract T OnTerminalSequence(INonterminalToken token);
         protected abstract T OnTerminalOption(INonterminalToken token);
         protected abstract T OnTerminalStar(INonterminalToken token);
         protected abstract T OnTerminalPlus(INonterminalToken token);
         protected abstract T OnTerminalRangeLoop(INonterminalToken token);
         protected abstract T OnRange(INonterminalToken token);
-        protected abstract T OnTerminalNot(INonterminalToken token);
         protected abstract T OnCharacterRange(INonterminalToken token);
-        protected abstract T OnTerminalDiff(INonterminalToken token);
         
         protected TAst Visit<TAst>(IToken token) where TAst : T
         {
@@ -69,15 +68,14 @@ namespace Lingu.CC
                 LinguId.GrammarTerminals => (TAst)OnGrammarTerminals((INonterminalToken)token),
                 LinguId.TerminalRule => (TAst)OnTerminalRule((INonterminalToken)token),
                 LinguId.TerminalExpression => (TAst)OnTerminalExpression((INonterminalToken)token),
+                LinguId.TerminalDiff => (TAst)OnTerminalDiff((INonterminalToken)token),
                 LinguId.TerminalSequence => (TAst)OnTerminalSequence((INonterminalToken)token),
                 LinguId.TerminalOption => (TAst)OnTerminalOption((INonterminalToken)token),
                 LinguId.TerminalStar => (TAst)OnTerminalStar((INonterminalToken)token),
                 LinguId.TerminalPlus => (TAst)OnTerminalPlus((INonterminalToken)token),
                 LinguId.TerminalRangeLoop => (TAst)OnTerminalRangeLoop((INonterminalToken)token),
                 LinguId.Range => (TAst)OnRange((INonterminalToken)token),
-                LinguId.TerminalNot => (TAst)OnTerminalNot((INonterminalToken)token),
                 LinguId.CharacterRange => (TAst)OnCharacterRange((INonterminalToken)token),
-                LinguId.TerminalDiff => (TAst)OnTerminalDiff((INonterminalToken)token),
                 
                 _ => throw new NotImplementedException(),
             };
@@ -208,6 +206,11 @@ namespace Lingu.CC
             Debug.Assert(token != null);
             return DefaultOn(token);
         }
+        protected override T OnTerminalDiff(INonterminalToken token)
+        {
+            Debug.Assert(token != null);
+            return DefaultOn(token);
+        }
         protected override T OnTerminalSequence(INonterminalToken token)
         {
             Debug.Assert(token != null);
@@ -238,17 +241,7 @@ namespace Lingu.CC
             Debug.Assert(token != null);
             return DefaultOn(token);
         }
-        protected override T OnTerminalNot(INonterminalToken token)
-        {
-            Debug.Assert(token != null);
-            return DefaultOn(token);
-        }
         protected override T OnCharacterRange(INonterminalToken token)
-        {
-            Debug.Assert(token != null);
-            return DefaultOn(token);
-        }
-        protected override T OnTerminalDiff(INonterminalToken token)
         {
             Debug.Assert(token != null);
             return DefaultOn(token);
@@ -264,31 +257,30 @@ namespace Lingu.CC
         public const int UcBlock = 4;
         public const int UcCategory = 5;
         public const int UcCodepoint = 6;
-        public const int File = 31;
-        public const int Grammar = 32;
-        public const int GrammarOptions = 34;
-        public const int Option = 35;
-        public const int GrammarRules = 36;
-        public const int Rule = 37;
-        public const int RuleExpression = 38;
-        public const int RuleSequence = 39;
-        public const int RuleOption = 41;
-        public const int RuleStar = 42;
-        public const int RulePlus = 43;
-        public const int RuleDropElement = 45;
-        public const int RulePromoteElement = 46;
-        public const int SubRule = 48;
-        public const int GrammarTerminals = 51;
-        public const int TerminalRule = 52;
-        public const int TerminalExpression = 53;
+        public const int File = 30;
+        public const int Grammar = 31;
+        public const int GrammarOptions = 33;
+        public const int Option = 34;
+        public const int GrammarRules = 35;
+        public const int Rule = 36;
+        public const int RuleExpression = 37;
+        public const int RuleSequence = 38;
+        public const int RuleOption = 40;
+        public const int RuleStar = 41;
+        public const int RulePlus = 42;
+        public const int RuleDropElement = 44;
+        public const int RulePromoteElement = 45;
+        public const int SubRule = 47;
+        public const int GrammarTerminals = 50;
+        public const int TerminalRule = 51;
+        public const int TerminalExpression = 52;
+        public const int TerminalDiff = 54;
         public const int TerminalSequence = 55;
         public const int TerminalOption = 57;
         public const int TerminalStar = 58;
         public const int TerminalPlus = 59;
         public const int TerminalRangeLoop = 60;
         public const int Range = 61;
-        public const int TerminalNot = 63;
-        public const int CharacterRange = 65;
-        public const int TerminalDiff = 77;
+        public const int CharacterRange = 64;
     }
 }

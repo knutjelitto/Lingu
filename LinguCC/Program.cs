@@ -8,6 +8,7 @@ namespace Lingu.CC
         {
             new Ucds.Ucd().Build("Ucd");
             new Ucds.Ucd().Build("UcdBlocks");
+            new Ucds.Ucd().Build("UcdScripts");
 
             Console.Write("press (almost) any key ... ");
             Console.ReadKey(true);

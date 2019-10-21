@@ -16,6 +16,11 @@ namespace Lingu.Commons
 
         public bool OnPladde => IOFile.Exists(this);
 
+        public string GetContent()
+        {
+            return IOFile.ReadAllText(this);
+        }
+
         public bool NewerThan(FileRef dst)
         {
             Debug.Assert(IOFile.Exists(this));

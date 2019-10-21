@@ -24,7 +24,7 @@ namespace Lingu.Hime
             var options = new HimeTaskOptions
             {
                 Public = true,
-                Namespace = "Lingu.Bootstrap.Hime",
+                Namespace = "Lingu.Boot.Hime",
                 //RNGLR = true,
                 Debug = true,
                 Grammar = "Lingu",

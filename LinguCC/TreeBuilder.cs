@@ -239,11 +239,6 @@ namespace Lingu.CC
             return new SubRule(Visit<Name>(token[0]), Visit<IExpression>(token[1]));
         }
 
-        protected override object OnTerminalNot(INonterminalToken token)
-        {
-            return new Not(Visit<IExpression>(token[0]));
-        }
-
         protected override object OnRange(INonterminalToken token)
         {
             throw new NotSupportedException();

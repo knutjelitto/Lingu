@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 
 using Hime.Redist;
-using Lingu.Bootstrap.Hime;
+using Lingu.Boot.Hime;
 using Lingu.Grammars;
 using Lingu.Tree;
 using Symbol = Hime.Redist.Symbol;
 
-namespace Lingu.Bootstrap
+namespace Lingu.Boot
 {
     public class TreeBuilder : LinguVisitor
     {
