@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Net;
 using Lingu.Commons;
@@ -9,7 +10,8 @@ namespace Lingu.Ucd
     {
         public static readonly string[] unicodeFiles =
         {
-            "UCD.zip"
+            "UCD.zip",
+            "Unihan.zip",
         };
 
         internal static void Main()
@@ -23,10 +25,21 @@ namespace Lingu.Ucd
                 foreach (var fileName in unicodeFiles)
                 {
                     var localFile = ucdDir.File(fileName);
+                    var tmpFile = ucdDir.File(fileName).Add(".tmp");
 
-                    Console.WriteLine($"{localFile.FileName}");
+                    if (!localFile.OnPladde)
+                    {
+                        Console.WriteLine($"{localFile.FileName}");
 
-                    client.DownloadFile(@"https://www.unicode.org/Public/12.1.0/ucd/" + fileName, localFile);
+                        client.DownloadFile(@"https://www.unicode.org/Public/12.1.0/ucd/" + fileName, tmpFile);
+
+                        if (localFile.OnPladde)
+                        {
+                            File.Delete(localFile);
+                        }
+
+                        File.Move(tmpFile, localFile);
+                    }
                 }
             }
 
@@ -36,7 +49,7 @@ namespace Lingu.Ucd
 
                 Console.WriteLine($"{localFile.FileName}");
 
-                ZipFile.ExtractToDirectory(localFile, ucdDir);
+                ZipFile.ExtractToDirectory(localFile, ucdDir, true);
             }
 
             Console.Write("press (almost) any key ... ");

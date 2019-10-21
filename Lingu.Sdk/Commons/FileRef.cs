@@ -1,5 +1,7 @@
 using System.Diagnostics;
 
+using IOFile = System.IO.File;
+
 namespace Lingu.Commons
 {
     public class FileRef
@@ -12,11 +14,13 @@ namespace Lingu.Commons
 
         public string Path { get; }
 
+        public bool OnPladde => IOFile.Exists(this);
+
         public bool NewerThan(FileRef dst)
         {
-            Debug.Assert(System.IO.File.Exists(this));
+            Debug.Assert(IOFile.Exists(this));
 
-            return !System.IO.File.Exists(dst) || System.IO.File.GetLastWriteTime(this) > System.IO.File.GetLastWriteTime(dst);
+            return !IOFile.Exists(dst) || IOFile.GetLastWriteTime(this) > IOFile.GetLastWriteTime(dst);
         }
 
         public FileRef ForceAddExtension(string newExtension)

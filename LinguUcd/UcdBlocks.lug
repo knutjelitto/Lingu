@@ -1,0 +1,30 @@
+﻿grammar UcdBlocks
+{
+    options
+    {
+        Start = start;
+    }
+
+    rules
+    {
+        start
+            : line*
+            ;
+
+        line
+            : '#' (. - newline)* newline
+            ;
+    }
+
+    terminals
+    {
+        newline
+            : '\n'
+            | '\r\n'
+            | '\r'
+            ;
+
+        whitespace : (' ' | '\t')*;
+    }
+}
+

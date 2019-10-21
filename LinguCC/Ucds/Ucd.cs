@@ -16,7 +16,7 @@ namespace Lingu.CC.Ucds
 {
     public class Ucd
     {
-        public void Build()
+        public void Build(string name)
         {
             var lingu = new LinguContext();
 
@@ -25,9 +25,9 @@ namespace Lingu.CC.Ucds
 
             Environment.CurrentDirectory = ucdDir;
 
-            var sourceFile = ucdDir.File("Ucd.lug");
+            var sourceFile = ucdDir.File($"{name}.lug");
             var outputDir = ucdDir.Dir("Generated");
-            var dumps = outputDir.File("Ucd.Out");
+            var dumps = outputDir.File($"{name}.Out");
 
             var source = Source.FromFile(sourceFile);
 

@@ -37,7 +37,6 @@ namespace Lingu.CC
         protected abstract T OnTerminalPlus(INonterminalToken token);
         protected abstract T OnTerminalRangeLoop(INonterminalToken token);
         protected abstract T OnRange(INonterminalToken token);
-        protected abstract T OnTerminalNot(INonterminalToken token);
         protected abstract T OnCharacterRange(INonterminalToken token);
         
         protected TAst Visit<TAst>(IToken token) where TAst : T
@@ -76,7 +75,6 @@ namespace Lingu.CC
                 LinguId.TerminalPlus => (TAst)OnTerminalPlus((INonterminalToken)token),
                 LinguId.TerminalRangeLoop => (TAst)OnTerminalRangeLoop((INonterminalToken)token),
                 LinguId.Range => (TAst)OnRange((INonterminalToken)token),
-                LinguId.TerminalNot => (TAst)OnTerminalNot((INonterminalToken)token),
                 LinguId.CharacterRange => (TAst)OnCharacterRange((INonterminalToken)token),
                 
                 _ => throw new NotImplementedException(),
@@ -243,11 +241,6 @@ namespace Lingu.CC
             Debug.Assert(token != null);
             return DefaultOn(token);
         }
-        protected override T OnTerminalNot(INonterminalToken token)
-        {
-            Debug.Assert(token != null);
-            return DefaultOn(token);
-        }
         protected override T OnCharacterRange(INonterminalToken token)
         {
             Debug.Assert(token != null);
@@ -264,31 +257,30 @@ namespace Lingu.CC
         public const int UcBlock = 4;
         public const int UcCategory = 5;
         public const int UcCodepoint = 6;
-        public const int File = 31;
-        public const int Angrammar = 32;
-        public const int GrammarOptions = 34;
-        public const int Option = 35;
-        public const int GrammarRules = 36;
-        public const int Rule = 37;
-        public const int RuleExpression = 38;
-        public const int RuleSequence = 40;
-        public const int RuleOption = 42;
-        public const int RuleStar = 43;
-        public const int RulePlus = 44;
-        public const int RuleDrop = 46;
-        public const int RulePromote = 47;
-        public const int SubRule = 49;
-        public const int GrammarTerminals = 52;
-        public const int TerminalRule = 53;
-        public const int TerminalExpression = 54;
-        public const int TerminalDiff = 56;
-        public const int TerminalSequence = 57;
-        public const int TerminalOption = 59;
-        public const int TerminalStar = 60;
-        public const int TerminalPlus = 61;
-        public const int TerminalRangeLoop = 62;
-        public const int Range = 63;
-        public const int TerminalNot = 65;
-        public const int CharacterRange = 67;
+        public const int File = 30;
+        public const int Angrammar = 31;
+        public const int GrammarOptions = 33;
+        public const int Option = 34;
+        public const int GrammarRules = 35;
+        public const int Rule = 36;
+        public const int RuleExpression = 37;
+        public const int RuleSequence = 39;
+        public const int RuleOption = 41;
+        public const int RuleStar = 42;
+        public const int RulePlus = 43;
+        public const int RuleDrop = 45;
+        public const int RulePromote = 46;
+        public const int SubRule = 48;
+        public const int GrammarTerminals = 51;
+        public const int TerminalRule = 52;
+        public const int TerminalExpression = 53;
+        public const int TerminalDiff = 55;
+        public const int TerminalSequence = 56;
+        public const int TerminalOption = 58;
+        public const int TerminalStar = 59;
+        public const int TerminalPlus = 60;
+        public const int TerminalRangeLoop = 61;
+        public const int Range = 62;
+        public const int CharacterRange = 65;
     }
 }

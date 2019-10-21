@@ -30,7 +30,6 @@ namespace Lingu.CC
         protected abstract T OnGrammarTerminals(INonterminalToken token);
         protected abstract T OnTerminalRule(INonterminalToken token);
         protected abstract T OnTerminalExpression(INonterminalToken token);
-        protected abstract T OnTerminalDiff(INonterminalToken token);
         protected abstract T OnTerminalSequence(INonterminalToken token);
         protected abstract T OnTerminalOption(INonterminalToken token);
         protected abstract T OnTerminalStar(INonterminalToken token);
@@ -39,6 +38,7 @@ namespace Lingu.CC
         protected abstract T OnRange(INonterminalToken token);
         protected abstract T OnTerminalNot(INonterminalToken token);
         protected abstract T OnCharacterRange(INonterminalToken token);
+        protected abstract T OnTerminalDiff(INonterminalToken token);
         
         protected TAst Visit<TAst>(IToken token) where TAst : T
         {
@@ -69,7 +69,6 @@ namespace Lingu.CC
                 LinguId.GrammarTerminals => (TAst)OnGrammarTerminals((INonterminalToken)token),
                 LinguId.TerminalRule => (TAst)OnTerminalRule((INonterminalToken)token),
                 LinguId.TerminalExpression => (TAst)OnTerminalExpression((INonterminalToken)token),
-                LinguId.TerminalDiff => (TAst)OnTerminalDiff((INonterminalToken)token),
                 LinguId.TerminalSequence => (TAst)OnTerminalSequence((INonterminalToken)token),
                 LinguId.TerminalOption => (TAst)OnTerminalOption((INonterminalToken)token),
                 LinguId.TerminalStar => (TAst)OnTerminalStar((INonterminalToken)token),
@@ -78,6 +77,7 @@ namespace Lingu.CC
                 LinguId.Range => (TAst)OnRange((INonterminalToken)token),
                 LinguId.TerminalNot => (TAst)OnTerminalNot((INonterminalToken)token),
                 LinguId.CharacterRange => (TAst)OnCharacterRange((INonterminalToken)token),
+                LinguId.TerminalDiff => (TAst)OnTerminalDiff((INonterminalToken)token),
                 
                 _ => throw new NotImplementedException(),
             };
@@ -208,11 +208,6 @@ namespace Lingu.CC
             Debug.Assert(token != null);
             return DefaultOn(token);
         }
-        protected override T OnTerminalDiff(INonterminalToken token)
-        {
-            Debug.Assert(token != null);
-            return DefaultOn(token);
-        }
         protected override T OnTerminalSequence(INonterminalToken token)
         {
             Debug.Assert(token != null);
@@ -253,6 +248,11 @@ namespace Lingu.CC
             Debug.Assert(token != null);
             return DefaultOn(token);
         }
+        protected override T OnTerminalDiff(INonterminalToken token)
+        {
+            Debug.Assert(token != null);
+            return DefaultOn(token);
+        }
     }
     
     public static class LinguId
@@ -281,14 +281,14 @@ namespace Lingu.CC
         public const int GrammarTerminals = 51;
         public const int TerminalRule = 52;
         public const int TerminalExpression = 53;
-        public const int TerminalDiff = 55;
-        public const int TerminalSequence = 56;
-        public const int TerminalOption = 58;
-        public const int TerminalStar = 59;
-        public const int TerminalPlus = 60;
-        public const int TerminalRangeLoop = 61;
-        public const int Range = 62;
-        public const int TerminalNot = 64;
-        public const int CharacterRange = 66;
+        public const int TerminalSequence = 55;
+        public const int TerminalOption = 57;
+        public const int TerminalStar = 58;
+        public const int TerminalPlus = 59;
+        public const int TerminalRangeLoop = 60;
+        public const int Range = 61;
+        public const int TerminalNot = 63;
+        public const int CharacterRange = 65;
+        public const int TerminalDiff = 77;
     }
 }
