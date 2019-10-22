@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Grammars\CSharpParser.peg" />
+    <None Remove="Grammars\lipeg.peg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
     <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
     <ProjectReference Include="..\Lipeg.Runtime\Lipeg.Runtime.csproj" />
@@ -21,6 +26,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+    <PackageReference Include="Pegasus" Version="4.2.0-alpha0003" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PegGrammar Include="Grammars\CSharpParser.peg" />
+    <PegGrammar Include="Grammars\lipeg.peg" />
   </ItemGroup>
 
 </Project>
