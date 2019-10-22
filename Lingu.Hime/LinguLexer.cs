@@ -17,7 +17,7 @@ namespace Lingu.Boot.Hime
 		/// <summary>
 		/// The automaton for this lexer
 		/// </summary>
-		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer.bin");
+		private static readonly Automaton commonAutomaton = Automaton.Find(typeof(LinguLexer), "LinguLexer");
 		/// <summary>
 		/// Contains the constant IDs for the terminals for this lexer
 		/// </summary>

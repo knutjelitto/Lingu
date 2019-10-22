@@ -46,7 +46,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC0", "LinguCC0\LinguC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguCC", "LinguCC\LinguCC.csproj", "{C6F811D1-56B1-442D-A7DA-27B5DA5172DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinguUcd", "LinguUcd\LinguUcd.csproj", "{68719C5E-8066-467F-9ADE-34FAC5CE7637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinguUcd", "LinguUcd\LinguUcd.csproj", "{68719C5E-8066-467F-9ADE-34FAC5CE7637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lipeg.Boot", "Lipeg.Boot\Lipeg.Boot.csproj", "{17FDC87C-F56D-4602-88F2-915B341E9CED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lipeg.SDK", "Lipeg.SDK\Lipeg.SDK.csproj", "{297A2850-B567-4C0D-BBC6-06E7D4E13C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lipeg.Runtime", "Lipeg.Runtime\Lipeg.Runtime.csproj", "{40D76311-32B2-4EE3-B591-F35F4DB982A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +132,18 @@ Global
 		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68719C5E-8066-467F-9ADE-34FAC5CE7637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17FDC87C-F56D-4602-88F2-915B341E9CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FDC87C-F56D-4602-88F2-915B341E9CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17FDC87C-F56D-4602-88F2-915B341E9CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17FDC87C-F56D-4602-88F2-915B341E9CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{297A2850-B567-4C0D-BBC6-06E7D4E13C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{297A2850-B567-4C0D-BBC6-06E7D4E13C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297A2850-B567-4C0D-BBC6-06E7D4E13C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{297A2850-B567-4C0D-BBC6-06E7D4E13C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D76311-32B2-4EE3-B591-F35F4DB982A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D76311-32B2-4EE3-B591-F35F4DB982A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D76311-32B2-4EE3-B591-F35F4DB982A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D76311-32B2-4EE3-B591-F35F4DB982A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
