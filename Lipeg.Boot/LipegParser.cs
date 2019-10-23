@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Lipeg.Boot.Tree;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pegasus.Common;
 
 namespace Lipeg.Boot
@@ -117,6 +121,72 @@ namespace Lipeg.Boot
         protected CodeExpression CodeResult(CodeSpan codeSpan)
         {
             return CodeExpression.From(codeSpan, CodeType.Result);
+        }
+
+        protected CodeSpan Span(string text, Cursor start, Cursor end)
+        {
+            return CodeSpan.From(text, start, end);
+        }
+
+        protected CodeSpan Span(TypeSyntax type, Cursor start, Cursor end)
+        {
+            var value = Regex.Replace(Regex.Replace(type.ToString(), @"(?<!,)\s+|\s+(?=[,\]])", ""), @",(?=\w)", ", ");
+            return CodeSpan.From(type.ToFullString(), start, end, value);
+        }
+
+        protected string Concat(IList<string> strings)
+        {
+            return string.Concat(strings);
+        }
+
+        protected bool IsBlock(StatementSyntax maybeBlock)
+        {
+            return maybeBlock is BlockSyntax;
+        }
+
+        protected BlockSyntax AsBlock(StatementSyntax block)
+        {
+            return (BlockSyntax)block;
+        }
+
+        protected Identifier Identifier(string name, Cursor start, Cursor end)
+        {
+            return Tree.Identifier.From(name, start, end);
+        }
+
+        protected T Error<T>()
+        {
+            throw new InvalidOperationException();
+        }
+
+        protected void Error(string resourceKey, params object[] parameters)
+        {
+
+        }
+
+        protected CharacterRange Range(string begin, string end)
+        {
+            return CharacterRange.From(begin[0], end[0]);
+        }
+
+        protected string SimpleEsc(string c)
+        {
+            Debug.Assert(c.Length == 1);
+
+            return c
+                .Replace("0", "\0")
+                .Replace("a", "\a")
+                .Replace("b", "\b")
+                .Replace("f", "\f")
+                .Replace("n", "\n")
+                .Replace("r", "\r")
+                .Replace("t", "\t")
+                .Replace("v", "\v");
+        }
+
+        protected string HexChar(string hexDigits)
+        {
+            return ((char)int.Parse(hexDigits, NumberStyles.HexNumber)).ToString();
         }
     }
 }

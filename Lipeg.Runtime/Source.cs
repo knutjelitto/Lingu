@@ -140,5 +140,10 @@ namespace Lipeg.Runtime
 
             return lines;
         }
+
+        public override string ToString()
+        {
+            return Content;
+        }
     }
 }

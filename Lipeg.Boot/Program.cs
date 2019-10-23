@@ -14,11 +14,11 @@ namespace Lipeg.Boot
             var grammarDir = projectDir.Dir("Grammars");
             var lipegGrammar = grammarDir.File("lipeg.lpg");
 
-            var source = Source.FromFile(lipegGrammar);
-            var lexer = Lexer.From(source);
-            var parser = Parser.From(lexer);
+            var parser = new LipegParser();
 
-            parser.Parse();
+            var source = Source.FromFile(lipegGrammar);
+
+            var grammar = parser.Parse(source.ToString(), lipegGrammar);
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
