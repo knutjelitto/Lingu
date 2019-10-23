@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Lipeg.Boot.Tree;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pegasus.Common;
 
@@ -37,7 +38,7 @@ namespace Lipeg.Boot
             return choices.Count == 1 ? choices[0] : ChoiceExpression.From(choices);
         }
 
-        protected Expression Sequence(IList<Expression> sequence, CodeExpression? code = null)
+        protected Expression Sequence(IList<Expression> sequence, Expression? code = null)
         {
             if (code != null)
             {
@@ -98,6 +99,16 @@ namespace Lipeg.Boot
             return Tree.Quantifier.From(start, end, min, max, delimiter);
         }
 
+        protected Quantifier Quantifier(Cursor start, Cursor end, int min)
+        {
+            return Tree.Quantifier.From(start, end, min, null);
+        }
+
+        protected Quantifier Quantifier(Cursor start, Cursor end, int min, IList<int> max, Expression? delimiter = null)
+        {
+            return Tree.Quantifier.From(start, end, min, max.SingleOrDefault(), delimiter);
+        }
+
         protected int Int(string digits)
         {
             return Int32.Parse(digits);
@@ -121,6 +132,11 @@ namespace Lipeg.Boot
         protected CodeExpression CodeResult(CodeSpan codeSpan)
         {
             return CodeExpression.From(codeSpan, CodeType.Result);
+        }
+
+        protected CodeSpan Span(CSharpSyntaxNode syntax, Cursor start, Cursor end)
+        {
+            return Span(syntax.ToFullString(), start, end);
         }
 
         protected CodeSpan Span(string text, Cursor start, Cursor end)
@@ -187,6 +203,16 @@ namespace Lipeg.Boot
         protected string HexChar(string hexDigits)
         {
             return ((char)int.Parse(hexDigits, NumberStyles.HexNumber)).ToString();
+        }
+
+        protected LiteralExpression Literal(Cursor start, Cursor end, string value)
+        {
+            return LiteralExpression.From(start, end, value);
+        }
+
+        protected ClassExpression Class(IList<CharacterRange> ranges, IList<string> inverted)
+        {
+            return ClassExpression.From(ranges, inverted.SingleOrDefault() == "^");
         }
     }
 }

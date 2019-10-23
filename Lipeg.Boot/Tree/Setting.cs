@@ -19,5 +19,9 @@ namespace Lipeg.Boot.Tree
             return new Setting(identifier, value);
         }
 
+        public override string ToString()
+        {
+            return $"[{Identifier}={Value}]";
+        }
     }
 }

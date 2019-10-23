@@ -7,20 +7,18 @@ namespace Lipeg.Boot.Tree
 {
     public class ClassExpression : Expression
     {
-        public ClassExpression(IEnumerable<CharacterRange> ranges, bool negated, bool? ignoreCase)
+        public ClassExpression(IEnumerable<CharacterRange> ranges, bool negated)
         {
             Ranges = ranges.ToList().AsReadOnly();
             Negated = negated;
-            IgnoreCase = ignoreCase;
         }
 
-        public static ClassExpression From(IEnumerable<CharacterRange> ranges, bool negated = false, bool? ignoreCase = null)
+        public static ClassExpression From(IEnumerable<CharacterRange> ranges, bool negated = false)
         {
-            return new ClassExpression(ranges, negated, ignoreCase);
+            return new ClassExpression(ranges, negated);
         }
 
         public IList<CharacterRange> Ranges { get; }
         public bool Negated { get; }
-        public bool? IgnoreCase { get; }
     }
 }

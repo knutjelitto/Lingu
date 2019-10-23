@@ -12,97 +12,101 @@
 }
 
 grammar <Grammar>
-    = _ settings:setting<0,,_> _ rules:rule<0,,_> _ EOF                                         { Grammar(rules, settings, rulesEnd) }
+    = _ settings:setting<0,,_> _ rules:rule<0,,_> _ EOF
+      { Grammar(rules, settings, rulesEnd) }
 
 setting <Setting>
-    = key:settingName _ value:(<object> type / identifier / string / code) (_ semicolon)?       { Setting(key, value) }
+    = key:settingName _ value:(<object> type / identifier / string / code) (_ semicolon)?
+      { Setting(key, value) }
 
 settingName <Identifier> -lexical
-    = "@" id:identifier                                                                         { id }
+    = "@" id:identifier
+      { id }
 
 rulePreamble
     = (!quantifier expressionType _)? ruleFlag<0,,_> _ equals
 
 rule <Rule>
-    = name:ruleName _ type:expressionType? _ flags:ruleFlag<0,,_> _ equals _ expression:expression _ semicolon?
-                                                                                                { Rule(name, type, flags, expression) }
-
-ruleName -lexical
-    = identifier
+    = id:identifier type:expressionType? _ flags:ruleFlag<0,,_> _ equals _ expression:expression _ semicolon?
+      { Rule(id, type, flags, expression) }
 
 ruleFlag <Identifier> -memoize -lexical
-    = "-" flag:identifier                                                                       { flag }
+    = "-" flag:identifier { flag }
 
 expression <Expression>
     = choice
 
 expressionType <CodeSpan> -memoize
-    = lt _ name:type _ (gt / #error{ "PEG0014:" + Resources.PEG0014_ERROR_PARSER_InvalidType }) { name }
-    / &lt #error{ "PEG0014:" + Resources.PEG0014_ERROR_PARSER_InvalidType }
+    = lt _ name:type (gt / error0014) { name }
+    / &lt error0014 { Error<CodeSpan>() }
 
 choice <Expression>
-    = choices:sequence<1,,_ slash _>                                                            { Choice(choices) }
+    = choices:sequence<1,,_ slash _>
+      { Choice(choices) }
 
 sequence <Expression>
-    = elements:labeled<0,,_> _ action:resultAction                                              { Sequence(elements, action) }
-    / elements:labeled<0,,_>                                                                    { Sequence(elements) }
+    = elements:labeled<0,,_> _ action:resultAction
+      { Sequence(elements, action) }
+    / elements:labeled<0,,_>
+      { Sequence(elements) }
 
 labeled <Expression> -memoize
-    = label:identifier _ colon _ expression:prefixed                                            { Prefixed(label, expression) }
+    = label:identifier colon _ expression:prefixed { Prefixed(label, expression) }
     / prefixed
     / stateAction
     / errorAction
 
 prefixed <Expression>
-    = and _ c:delimitedExpression                                                               { AndCode(c) }
-    / and _ e:suffix                                                                            { And(e) }
-    / not _ c:delimitedExpression                                                               { NotCode(c) }
-    / not _ e:suffix                                                                            { Not(e) }
+    = and _ c:delimitedExpression { AndCode(c) }
+    / and _ e:suffix { And(e) }
+    / not _ c:delimitedExpression { NotCode(c) }
+    / not _ e:suffix { Not(e) }
     / suffix
 
 suffix <Expression>
-    = expression:primary _ q:quantifier                                                         { Repetition(expression, q) }
+    = expression:primary _ q:quantifier { Repetition(expression, q) }
     / primary
 
 primary <Expression> -memoize
-    = id:ruleName !(_ rulePreamble)                                                             { Name(id) }
+    = id:identifier !rulePreamble { Name(id) }
     / literal
     / class
-    / dot                                                                                       { Wildcard() }
-    / lparen _ type:expressionType? _ expression:expression _ rparen                            { Typed(type, expression) }
+    / dot { Wildcard() }
+    / lparen _ type:expressionType? _ expression:expression _ rparen { Typed(type, expression) }
     / parseAction
 
 quantifier <Quantifier> -memoize
-    = q:question                                                                                { Quantifier(qStart, qEnd, min: 0, max: 1) }
-    / q:star                                                                                    { Quantifier(qStart, qEnd, min: 0, max: null) }
-    / q:plus                                                                                    { Quantifier(qStart, qEnd, min: 1, max: null) }
-    / start:lt _ min:integer _ comma _ max:integer? _ comma _ delimiter:expression _ end:gt     { Quantifier(startStart, endEnd, min: min, max: max.Cast<int?>().SingleOrDefault(), delimiter: delimiter) }
-    / start:lt _ min:integer _ comma _ max:integer? _ end:gt                                    { Quantifier(startStart, endEnd, min: min, max: max.Cast<int?>().SingleOrDefault()) }
-    / start:lt _ count:integer _ end:gt                                                         { Quantifier(startStart, endEnd, min: count, max: count) }
+    = q:question                                                                                { Quantifier(qStart, qEnd, 0, 1) }
+    / q:star                                                                                    { Quantifier(qStart, qEnd, 0) }
+    / q:plus                                                                                    { Quantifier(qStart, qEnd, 1) }
+    / start:lt _ min:integer comma _ max:integer? comma _ delimiter:expression _ end:gt         { Quantifier(startStart, endEnd, min, max, delimiter) }
+    / start:lt _ min:integer comma _ max:integer? end:gt                                        { Quantifier(startStart, endEnd, min, max) }
+    / start:lt _ count:integer end:gt                                                           { Quantifier(startStart, endEnd, count, count) }
 
 integer <int> -memoize -lexical
-    = digits:(digit+ "")                                                                        { Int(digits) }
+    = digits:(digit+ "") _ { Int(digits) }
 
 errorAction <CodeExpression> -memoize
-    = errorActionType code:delimitedExpression                                                  { CodeError(code) }
+    = errorActionType code:delimitedExpression { CodeError(code) }
 
 parseAction <CodeExpression> -memoize
-    = parseActionType code:delimitedExpression                                                  { CodeParse(code) }
+    = parseActionType code:delimitedExpression { CodeParse(code) }
 
 stateAction <CodeExpression> -memoize
-    = stateActionType code:delimitedStatements                                                  { CodeState(code) }
+    = stateActionType code:delimitedStatements { CodeState(code) }
 
-resultAction <CodeExpression> -memoize
-    = code:delimitedExpression                                                                  { CodeResult(code) }
+resultAction <Expression> -memoize
+    = code:delimitedExpression { CodeResult(code) }
+    //= '=>' _ e:expr { e }
 
 errorActionType -lexical = "#error"i
 parseActionType -lexical = "#parse"i
 stateActionType -lexical = "#" "state"i?
 
 delimitedExpression <CodeSpan> -lexical
-    = "{" _ e:cSharpExpression _ ( "}" / error0011 )                                            { Span(e.ToFullString(), eStart, eEnd) }
-    / "{" _ b:cSharpBlock      _ ( "}" / error0011 )                                            { Span(b.ToFullString(), bStart, bEnd) }
-    / "{"  error0011                                                                            { Error<CodeSpan>() }
+    = "{" _ e:cSharpExpression _ ( "}" / error0011 ) { Span(e, eStart, eEnd) }
+    / "{" _ b:cSharpBlock      _ ( "}" / error0011 ) { Span(b, bStart, bEnd) }
+    / "{"  error0011 { Error<CodeSpan>() }
 
 error0009
     = #error{ "PEG0009:" + Resources.PEG0009_ERROR_PARSER_UnterminatedString } / .
@@ -113,12 +117,20 @@ error0010
 error0011
     = #error{ "PEG0011:" + Resources.PEG0011_ERROR_PARSER_UnterminatedCode } / .
 
+error0014
+    = #error{ "PEG0014:" + Resources.PEG0014_ERROR_PARSER_InvalidType } / .
+
 delimitedStatements <CodeSpan> -lexical
-    = &"{" b:cSharpBlock                                                                        { Span(b.ToFullString(), bStart, bEnd) }
-    / "{" error0011                                                                             { Error<CodeSpan>() }
+    = &"{" b:cSharpBlock { Span(b, bStart, bEnd) }
+    / "{" error0011 { Error<CodeSpan>() }
+
+expr <Expr>
+    = id:identifier "(" _ e:expr<0,,_ comma _> ")" { Expr.From(id, e) }
+    / id:identifier { Expr.From(id) }
+    / i:integer { Expr.From(i) }
 
 cSharpBlock <BlockSyntax>
-    = s:cSharpStatement &{ IsBlock(s) }                                                         { AsBlock(s) }
+    = s:cSharpStatement &{ IsBlock(s) } { AsBlock(s) }
 
 cSharpExpression <ExpressionSyntax> -memoize
     = #parse{ this.cSharpParser.Exported.Expression(ref state) }
@@ -130,11 +142,11 @@ cSharpType <TypeSyntax> -memoize
     = #parse{ this.cSharpParser.Exported.Type(ref state) }
 
 code <CodeSpan> -lexical
-    = "{" contents:braceContents "}"                                                            { Span(contents, contentsStart, contentsEnd) }
-    / "{" error0011                                                                             { Error<CodeSpan>() }
+    = "{" contents:braceContents "}" { Span(contents, contentsStart, contentsEnd) }
+    / "{" error0011                  { Error<CodeSpan>() }
 
 braceContents
-    = parts:("" chars:[^{}]+ / "{" braceContents "}")*                                          { Concat(parts) }
+    = parts:("" chars:[^{}]+ / "{" braceContents "}")* { Concat(parts) }
 
 equals    -lexical = '='
 colon     -lexical = ':'
@@ -155,22 +167,19 @@ lbracket  -lexical = '['
 rbracket  -lexical = ']'
 
 identifier <Identifier> -memoize -lexical
-    = name:(!digit (letter / digit / "_" / "$")+)                                               { Identifier(name, nameStart, nameEnd) }
+    = name:(!digit (letter / digit / "_" / "$")+) _ { Identifier(name, nameStart, nameEnd) }
 
 type <CodeSpan> -memoize -lexical
-    = type:cSharpType                                                                           { Span(type, typeStart, typeEnd) }
+    = type:cSharpType _ { Span(type, typeStart, typeEnd) }
 
 literal <Expression> -lexical
-    = value:string flags:([si] "r" / "r" [si] / [si] / "r" / unrecognized:[a-z]i+ #error{ "PEG0026:" + string.Format(CultureInfo.CurrentCulture, Resources.PEG0026_ERROR_PARSER_StringFlagsUnrecognized, unrecognized) } / )
-    {
-        LiteralExpression.From(valueStart, flagsEnd, value, ignoreCase: flags.Contains('i') ? true : flags.Contains('s') ? false : (bool?)null, fromResource: flags.Contains('r'))
-    }
+    = value:string  { Literal(valueStart, valueEnd, value) }
 
 string -lexical
-    = s:(doubleQuotedString / singleQuotedString)                                               { s }
+    = s:(doubleQuotedString / singleQuotedString) { s }
 
 doubleQuotedString
-  = '"' chars:doubleQuotedCharacter* ('"' / error0009)                                          { Concat(chars) }
+  = '"' chars:doubleQuotedCharacter* ('"' / error0009) { Concat(chars) }
 
 doubleQuotedCharacter
     = simpleDoubleQuotedCharacter
@@ -183,7 +192,7 @@ simpleDoubleQuotedCharacter
     = !('"' / "\\" / eolChar) .
 
 singleQuotedString
-    = "'" chars:singleQuotedCharacter* ('\'' / error0009)                                        { Concat(chars) }
+    = "'" chars:singleQuotedCharacter* ('\'' / error0009) { Concat(chars) }
 
 singleQuotedCharacter
     = simpleSingleQuotedCharacter
@@ -196,18 +205,13 @@ simpleSingleQuotedCharacter
     = !("'" / "\\" / eolChar) .
 
 class <Expression> -lexical
-  = lbracket inverted:'^'? parts:(classCharacterRange / classCharacter)* (rbracket / error0010) flags:([si] / unrecognized:[a-z]i+ #error{ "PEG0026:" + string.Format(CultureInfo.CurrentCulture, Resources.PEG0026_ERROR_PARSER_CharacterClassFlagsUnrecognized, unrecognized) } / ) {
-        new ClassExpression(
-            parts,
-            negated: inverted.SingleOrDefault() == "^",
-            ignoreCase: flags == "i" ? true : flags == "s" ? false : (bool?)null)
-    }
+    = lbracket inverted:'^'? parts:(classCharacterRange / classCharacter)* (rbracket / error0010) { Class(parts, inverted) }
 
 classCharacterRange <CharacterRange>
-    = begin:bracketDelimitedCharacter "-" end:bracketDelimitedCharacter                         { Range(begin, end) }
+    = begin:bracketDelimitedCharacter "-" end:bracketDelimitedCharacter { Range(begin, end) }
 
 classCharacter <CharacterRange>
-    = c:bracketDelimitedCharacter                                                               { Range(c, c) }
+    = c:bracketDelimitedCharacter { Range(c, c) }
 
 bracketDelimitedCharacter -memoize
     = simpleBracketDelimitedCharacter
@@ -220,16 +224,16 @@ simpleBracketDelimitedCharacter
     = !("]" / "\\" / eolChar) .
 
 simpleEscapeSequence
-    = "\\" !("x" / "u" / eolChar) c:.                                                           { SimpleEsc(c) }
+    = "\\" !("x" / "u" / eolChar) c:. { SimpleEsc(c) }
 
 hexEscapeSequence
-    = "\\x" digits:(hexDigit hexDigit)                                                          { HexChar(digits) }
+    = "\\x" digits:(hexDigit hexDigit) { HexChar(digits) }
 
 unicodeEscapeSequence
-    = "\\u" digits:(hexDigit hexDigit hexDigit hexDigit)                                        { HexChar(digits) }
+    = "\\u" digits:(hexDigit hexDigit hexDigit hexDigit) { HexChar(digits) }
 
 eolEscapeSequence
-    = "\\" eol:eol                                                                              { eol }
+    = "\\" eol:eol { eol }
 
 digit
     = [0-9]

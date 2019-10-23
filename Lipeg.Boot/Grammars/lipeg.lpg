@@ -1,3 +1,279 @@
-﻿grammar Lipeg
+﻿@namespace Lipeg.Boot
+@classname LipegParser
+@using Pegasus.Parser
+@using Lipeg.Boot.Tree
+@using System.Globalization
+@using System.Linq
+@using System.Text.RegularExpressions
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@members
 {
-}
+    private readonly CSharpParser cSharpParser = new CSharpParser();
+};
+
+grammar <Grammar>
+    = _ settings:setting<0,,_> _ rules:rule<0,,_> _ EOF
+      { Grammar(rules, settings, rulesEnd) }
+
+setting <Setting>
+    = key:settingName _ value:(<object> type / identifier / string / code) (_ semicolon)?
+      { Setting(key, value) }
+
+settingName <Identifier> -lexical
+    = "@" id:identifier
+      { id }
+
+rulePreamble
+    = (!quantifier expressionType _)? ruleFlag<0,,_> _ equals
+
+rule <Rule>
+    = id:identifier type:expressionType? _ flags:ruleFlag<0,,_> _ equals _ expression:expression _ semicolon
+      { Rule(id, type, flags, expression) }
+
+ruleFlag <Identifier> -memoize -lexical
+    = "-" flag:identifier { flag }
+
+expression <Expression>
+    = choice
+
+expressionType <CodeSpan> -memoize
+    = lt _ name:type (gt / #error{ "PEG0014:" + Resources.PEG0014_ERROR_PARSER_InvalidType })
+      { name }
+    / &lt #error{ "PEG0014:" + Resources.PEG0014_ERROR_PARSER_InvalidType }
+
+choice <Expression>
+    = choices:sequence<1,,_ slash _>
+      { Choice(choices) }
+
+sequence <Expression>
+    = elements:labeled<0,,_> _ action:resultAction
+      { Sequence(elements, action) }
+    / elements:labeled<0,,_>
+      { Sequence(elements) }
+
+labeled <Expression> -memoize
+    = label:identifier colon _ expression:prefixed { Prefixed(label, expression) }
+    / prefixed
+    / stateAction
+    / errorAction
+
+prefixed <Expression>
+    = and _ c:delimitedExpression { AndCode(c) }
+    / and _ e:suffix { And(e) }
+    / not _ c:delimitedExpression { NotCode(c) }
+    / not _ e:suffix { Not(e) }
+    / suffix
+
+suffix <Expression>
+    = expression:primary _ q:quantifier { Repetition(expression, q) }
+    / primary
+
+primary <Expression> -memoize
+    = id:identifier !rulePreamble { Name(id) }
+    / literal
+    / class
+    / dot { Wildcard() }
+    / lparen _ type:expressionType? _ expression:expression _ rparen { Typed(type, expression) }
+    / parseAction
+
+quantifier <Quantifier> -memoize
+    = q:question                                                                                { Quantifier(qStart, qEnd, 0, 1) }
+    / q:star                                                                                    { Quantifier(qStart, qEnd, 0) }
+    / q:plus                                                                                    { Quantifier(qStart, qEnd, 1) }
+    / start:lt _ min:integer comma _ max:integer? comma _ delimiter:expression _ end:gt         { Quantifier(startStart, endEnd, min, max, delimiter) }
+    / start:lt _ min:integer comma _ max:integer? end:gt                                        { Quantifier(startStart, endEnd, min, max) }
+    / start:lt _ count:integer end:gt                                                           { Quantifier(startStart, endEnd, count, count) }
+
+integer <int> -memoize -lexical
+    = digits:(digit+ "") _ { Int(digits) }
+
+errorAction <CodeExpression> -memoize
+    = errorActionType code:delimitedExpression { CodeError(code) }
+
+parseAction <CodeExpression> -memoize
+    = parseActionType code:delimitedExpression { CodeParse(code) }
+
+stateAction <CodeExpression> -memoize
+    = stateActionType code:delimitedStatements { CodeState(code) }
+
+resultAction <CodeExpression> -memoize
+    = code:delimitedExpression { CodeResult(code) }
+
+errorActionType -lexical = "#error"i
+parseActionType -lexical = "#parse"i
+stateActionType -lexical = "#" "state"i?
+
+delimitedExpression <CodeSpan> -lexical
+    = "{" _ e:cSharpExpression _ ( "}" / error0011 ) { Span(e, eStart, eEnd) }
+    / "{" _ b:cSharpBlock      _ ( "}" / error0011 ) { Span(b, bStart, bEnd) }
+    / "{"  error0011 { Error<CodeSpan>() }
+
+error0009
+    = #error{ "PEG0009:" + Resources.PEG0009_ERROR_PARSER_UnterminatedString } / .
+
+error0010
+    = #error{ "PEG0010:" + Resources.PEG0010_ERROR_PARSER_UnterminatedClass } / .
+
+error0011
+    = #error{ "PEG0011:" + Resources.PEG0011_ERROR_PARSER_UnterminatedCode } / .
+
+delimitedStatements <CodeSpan> -lexical
+    = &"{" b:cSharpBlock { Span(b, bStart, bEnd) }
+    / "{" error0011 { Error<CodeSpan>() }
+
+expr <Expr>
+    = id:identifier "(" _ e:expr<0,,_ comma _> ")" { Expr.From(id, e) }
+    / id:identifier { Expr.From(id) }
+    / i:integer { Expr.From(i) }
+
+cSharpBlock <BlockSyntax>
+    = s:cSharpStatement &{ IsBlock(s) } { AsBlock(s) }
+
+cSharpExpression <ExpressionSyntax> -memoize
+    = #parse{ this.cSharpParser.Exported.Expression(ref state) }
+
+cSharpStatement <StatementSyntax> -memoize
+    = #parse{ this.cSharpParser.Exported.Statement(ref state) }
+
+cSharpType <TypeSyntax> -memoize
+    = #parse{ this.cSharpParser.Exported.Type(ref state) }
+
+code <CodeSpan> -lexical
+    = "{" contents:braceContents "}" { Span(contents, contentsStart, contentsEnd) }
+    / "{" error0011                  { Error<CodeSpan>() }
+
+braceContents
+    = parts:("" chars:[^{}]+ / "{" braceContents "}")* { Concat(parts) }
+
+equals    -lexical = '='
+colon     -lexical = ':'
+semicolon -lexical = ';'
+slash     -lexical = '/'
+and       -lexical = '&'
+not       -lexical = '!'
+question  -lexical = '?'
+star      -lexical = '*'
+plus      -lexical = '+'
+lparen    -lexical = '('
+rparen    -lexical = ')'
+dot       -lexical = '.'
+lt        -lexical = '<'
+gt        -lexical = '>'
+comma     -lexical = ','
+lbracket  -lexical = '['
+rbracket  -lexical = ']'
+
+identifier <Identifier> -memoize -lexical
+    = name:(!digit (letter / digit / "_" / "$")+) _ { Identifier(name, nameStart, nameEnd) }
+
+type <CodeSpan> -memoize -lexical
+    = type:cSharpType _ { Span(type, typeStart, typeEnd) }
+
+literal <Expression> -lexical
+    = value:string  { Literal(valueStart, valueEnd, value) }
+
+string -lexical
+    = s:(doubleQuotedString / singleQuotedString) { s }
+
+doubleQuotedString
+  = '"' chars:doubleQuotedCharacter* ('"' / error0009) { Concat(chars) }
+
+doubleQuotedCharacter
+    = simpleDoubleQuotedCharacter
+    / simpleEscapeSequence
+    / hexEscapeSequence
+    / unicodeEscapeSequence
+    / eolEscapeSequence
+
+simpleDoubleQuotedCharacter
+    = !('"' / "\\" / eolChar) .
+
+singleQuotedString
+    = "'" chars:singleQuotedCharacter* ('\'' / error0009) { Concat(chars) }
+
+singleQuotedCharacter
+    = simpleSingleQuotedCharacter
+    / simpleEscapeSequence
+    / hexEscapeSequence
+    / unicodeEscapeSequence
+    / eolEscapeSequence
+
+simpleSingleQuotedCharacter
+    = !("'" / "\\" / eolChar) .
+
+class <Expression> -lexical
+    = lbracket inverted:'^'? parts:(classCharacterRange / classCharacter)* (rbracket / error0010) { Class(parts, inverted) }
+
+classCharacterRange <CharacterRange>
+    = begin:bracketDelimitedCharacter "-" end:bracketDelimitedCharacter { Range(begin, end) }
+
+classCharacter <CharacterRange>
+    = c:bracketDelimitedCharacter { Range(c, c) }
+
+bracketDelimitedCharacter -memoize
+    = simpleBracketDelimitedCharacter
+    / simpleEscapeSequence
+    / hexEscapeSequence
+    / unicodeEscapeSequence
+    / eolEscapeSequence
+
+simpleBracketDelimitedCharacter
+    = !("]" / "\\" / eolChar) .
+
+simpleEscapeSequence
+    = "\\" !("x" / "u" / eolChar) c:. { SimpleEsc(c) }
+
+hexEscapeSequence
+    = "\\x" digits:(hexDigit hexDigit) { HexChar(digits) }
+
+unicodeEscapeSequence
+    = "\\u" digits:(hexDigit hexDigit hexDigit hexDigit) { HexChar(digits) }
+
+eolEscapeSequence
+    = "\\" eol:eol { eol }
+
+digit
+    = [0-9]
+
+hexDigit
+    = [0-9a-fA-F]
+
+letter
+    = lowerCaseLetter
+    / upperCaseLetter
+
+lowerCaseLetter
+    = [a-z]
+
+upperCaseLetter
+    = [A-Z]
+
+_ -memoize
+    = (whitespace / eol / comment)*
+
+comment -memoize
+    = singleLineComment
+    / multiLineComment
+
+singleLineComment -memoize -lexical
+    = "//" (!eolChar .)*
+
+multiLineComment -lexical
+    = "/*" (!"*/" .)* "*/"
+
+eol -memoize
+    = "\n"
+    / "\r\n"
+    / "\r"
+    / "\u2028"
+    / "\u2029"
+
+eolChar
+    = [\n\r\u2028\u2029]
+
+whitespace -memoize -lexical
+    = [ \t\v\f\u00A0\uFEFF\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+
+EOF
+    = !.
+    / unexpected:&. #error{ "PEG0008:" + string.Format(CultureInfo.CurrentCulture, Resources.PEG0008_ERROR_PARSER_UnexpectedEndOfInput, unexpected) }
