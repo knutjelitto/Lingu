@@ -1,24 +1,26 @@
-﻿using Lingu.Commons;
+﻿using System;
+
+using Lipeg.SDK.Tools;
 using Lipeg.Runtime;
-using System;
+using Lipeg.Runtime.Tools;
 
 namespace Lipeg.Boot
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        internal static void Main()
         {
             Console.WriteLine("Hello World!");
 
             var projectDir = DirRef.ProjectDir();
             var grammarDir = projectDir.Dir("Grammars");
-            var lipegGrammar = grammarDir.File("lipeg.lpg");
+            var lpgGrammar = grammarDir.File("lipeg.lpg");
 
             var parser = new LipegParser();
 
-            var source = Source.FromFile(lipegGrammar);
+            var source = Source.FromFile(lpgGrammar);
 
-            var grammar = parser.Parse(source.ToString(), lipegGrammar);
+            var grammar = Timer.Time("parse", () => parser.Parse(source.ToString(), lpgGrammar));
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);

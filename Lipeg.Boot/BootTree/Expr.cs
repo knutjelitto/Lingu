@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lipeg.Boot.Tree
+namespace Lipeg.Boot.BootTree
 {
     public abstract class Expr : Expression
     {

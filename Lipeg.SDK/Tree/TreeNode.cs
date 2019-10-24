@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lipeg.Boot.Tree
+namespace Lipeg.SDK.Tree
 {
-    public class Expression
+    public abstract class TreeNode
     {
     }
 }

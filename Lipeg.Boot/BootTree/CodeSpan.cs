@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Pegasus.Common;
 
-namespace Lipeg.Boot.Tree
+namespace Lipeg.Boot.BootTree
 {
     public class CodeSpan
     {

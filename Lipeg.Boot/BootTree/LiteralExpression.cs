@@ -1,6 +1,6 @@
 ﻿using Pegasus.Common;
 
-namespace Lipeg.Boot.Tree
+namespace Lipeg.Boot.BootTree
 {
     public class LiteralExpression : Expression
     {

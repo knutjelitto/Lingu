@@ -5,29 +5,32 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Lipeg.Boot.Tree;
+using Lipeg.Boot.BootTree;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pegasus.Common;
+using Pegasus.Parser;
 
 namespace Lipeg.Boot
 {
     public partial class LipegParser
     {
+        internal readonly CSharpParser cSharpParser = new CSharpParser();
+
         protected Grammar Grammar(IEnumerable<Rule> rules, IEnumerable<Setting> settings, Cursor end)
         {
-            return Tree.Grammar.From(rules, settings, end);
+            return BootTree.Grammar.From(rules, settings, end);
         }
 
         protected Setting Setting(Identifier identifier, object value)
         {
-            return Tree.Setting.From(identifier, value);
+            return BootTree.Setting.From(identifier, value);
         }
 
         protected Rule Rule(Identifier identifier, IList<CodeSpan> type, IList<Identifier> flags, Expression expression)
         {
             var typeValue = type.SingleOrDefault();
-            return Tree.Rule.From(
+            return BootTree.Rule.From(
                 identifier,
                 typeValue != null ? TypedExpression.From(typeValue, expression) : expression,
                 flags);
@@ -96,22 +99,22 @@ namespace Lipeg.Boot
 
         protected Quantifier Quantifier(Cursor start, Cursor end, int min, int? max, Expression? delimiter = null)
         {
-            return Tree.Quantifier.From(start, end, min, max, delimiter);
+            return BootTree.Quantifier.From(start, end, min, max, delimiter);
         }
 
         protected Quantifier Quantifier(Cursor start, Cursor end, int min)
         {
-            return Tree.Quantifier.From(start, end, min, null);
+            return BootTree.Quantifier.From(start, end, min, null);
         }
 
         protected Quantifier Quantifier(Cursor start, Cursor end, int min, IList<int> max, Expression? delimiter = null)
         {
-            return Tree.Quantifier.From(start, end, min, max.SingleOrDefault(), delimiter);
+            return BootTree.Quantifier.From(start, end, min, max.SingleOrDefault(), delimiter);
         }
 
         protected int Int(string digits)
         {
-            return Int32.Parse(digits);
+            return int.Parse(digits);
         }
 
         protected CodeExpression CodeError(CodeSpan codeSpan)
@@ -167,17 +170,12 @@ namespace Lipeg.Boot
 
         protected Identifier Identifier(string name, Cursor start, Cursor end)
         {
-            return Tree.Identifier.From(name, start, end);
+            return BootTree.Identifier.From(name, start, end);
         }
 
         protected T Error<T>()
         {
             throw new InvalidOperationException();
-        }
-
-        protected void Error(string resourceKey, params object[] parameters)
-        {
-
         }
 
         protected CharacterRange Range(string begin, string end)

@@ -2,7 +2,7 @@
 
 #nullable enable
 
-namespace Lipeg.Boot.Tree
+namespace Lipeg.Boot.BootTree
 {
     public class Quantifier
     {

@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
     <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
     <ProjectReference Include="..\Lipeg.Runtime\Lipeg.Runtime.csproj" />
+    <ProjectReference Include="..\Lipeg.SDK\Lipeg.SDK.csproj" />
   </ItemGroup>
 
   <ItemGroup>

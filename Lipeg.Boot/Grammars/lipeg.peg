@@ -1,33 +1,27 @@
 ﻿@namespace Lipeg.Boot
 @classname LipegParser
 @using Pegasus.Parser
-@using Lipeg.Boot.Tree
+@using Lipeg.Boot.BootTree
 @using System.Globalization
 @using System.Linq
 @using System.Text.RegularExpressions
 @using Microsoft.CodeAnalysis.CSharp.Syntax
-@members
-{
-    private readonly CSharpParser cSharpParser = new CSharpParser();
-}
+
+start <Grammar>
+    = _ g:grammar _ EOF { g }
 
 grammar <Grammar>
-    = _ settings:setting<0,,_> _ rules:rule<0,,_> _ EOF
-      { Grammar(rules, settings, rulesEnd) }
+    = settings:setting<0,,_> _ rules:rule<0,,_> { Grammar(rules, settings, rulesEnd) }
 
 setting <Setting>
     = key:settingName _ value:(<object> type / identifier / string / code) (_ semicolon)?
       { Setting(key, value) }
 
 settingName <Identifier> -lexical
-    = "@" id:identifier
-      { id }
-
-rulePreamble
-    = (!quantifier expressionType _)? ruleFlag<0,,_> _ equals
+    = "@" id:identifier { id }
 
 rule <Rule>
-    = id:identifier type:expressionType? _ flags:ruleFlag<0,,_> _ equals _ expression:expression _ semicolon?
+    = id:identifier type:expressionType? _ flags:ruleFlag<0,,_> _ equals _ expression:expression _ semicolon
       { Rule(id, type, flags, expression) }
 
 ruleFlag <Identifier> -memoize -lexical
@@ -46,9 +40,11 @@ choice <Expression>
 
 sequence <Expression>
     = elements:labeled<0,,_> _ action:resultAction
-      { Sequence(elements, action) }
+        { Sequence(elements, action) }
+    / elements:labeled<0,,_> _ action:resultActionX
+        { Sequence(elements, action) }
     / elements:labeled<0,,_>
-      { Sequence(elements) }
+        { Sequence(elements) }
 
 labeled <Expression> -memoize
     = label:identifier colon _ expression:prefixed { Prefixed(label, expression) }
@@ -68,10 +64,10 @@ suffix <Expression>
     / primary
 
 primary <Expression> -memoize
-    = id:identifier !rulePreamble { Name(id) }
+    = id:identifier { Name(id) }
     / literal
     / class
-    / dot { Wildcard() }
+    / dot
     / lparen _ type:expressionType? _ expression:expression _ rparen { Typed(type, expression) }
     / parseAction
 
@@ -82,6 +78,9 @@ quantifier <Quantifier> -memoize
     / start:lt _ min:integer comma _ max:integer? comma _ delimiter:expression _ end:gt         { Quantifier(startStart, endEnd, min, max, delimiter) }
     / start:lt _ min:integer comma _ max:integer? end:gt                                        { Quantifier(startStart, endEnd, min, max) }
     / start:lt _ count:integer end:gt                                                           { Quantifier(startStart, endEnd, count, count) }
+
+dot <WildcardExpression>
+    = '.' _ { Wildcard() }
 
 integer <int> -memoize -lexical
     = digits:(digit+ "") _ { Int(digits) }
@@ -97,7 +96,9 @@ stateAction <CodeExpression> -memoize
 
 resultAction <Expression> -memoize
     = code:delimitedExpression { CodeResult(code) }
-    //= '=>' _ e:expr { e }
+
+resultActionX <Expression> -memoize
+    = '=>' _ e:expr { e }
 
 errorActionType -lexical = "#error"i
 parseActionType -lexical = "#parse"i
@@ -159,7 +160,6 @@ star      -lexical = '*'
 plus      -lexical = '+'
 lparen    -lexical = '('
 rparen    -lexical = ')'
-dot       -lexical = '.'
 lt        -lexical = '<'
 gt        -lexical = '>'
 comma     -lexical = ','
@@ -230,7 +230,7 @@ hexEscapeSequence
     = "\\x" digits:(hexDigit hexDigit) { HexChar(digits) }
 
 unicodeEscapeSequence
-    = "\\u" digits:(hexDigit hexDigit hexDigit hexDigit) { HexChar(digits) }
+    = '\\u{' digits:(hexDigit hexDigit hexDigit hexDigit) '}' { HexChar(digits) }
 
 eolEscapeSequence
     = "\\" eol:eol { eol }
