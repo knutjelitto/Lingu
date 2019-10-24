@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lipeg.Boot.BootTree
+namespace Lipeg.SDK.Tree
 {
     public class Setting
     {

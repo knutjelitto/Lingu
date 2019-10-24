@@ -1,15 +1,15 @@
-﻿using Pegasus.Common;
+﻿
+using Lipeg.Runtime;
 
 #nullable enable
 
-namespace Lipeg.Boot.BootTree
+namespace Lipeg.SDK.Tree
 {
     public class Quantifier
     {
-        private Quantifier(Cursor start, Cursor end, int min, int? max, Expression? delimiter)
+        private Quantifier(ILocation location, int min, int? max, Expression? delimiter)
         {
-            Start = start;
-            End = end;
+            Location = location;
             Min = min;
             Max = max;
 
@@ -22,15 +22,14 @@ namespace Lipeg.Boot.BootTree
                 }
             }
         }
-        public Cursor Start { get; }
-        public Cursor End { get; }
+        public ILocation Location { get; }
         public int Min { get; }
         public int? Max { get; }
         public Expression? Delimiter { get; }
 
-        public static Quantifier From(Cursor start, Cursor end, int min, int? max, Expression? delimiter = null)
+        public static Quantifier From(ILocation location, int min, int? max, Expression? delimiter = null)
         {
-            return new Quantifier(start, end, min, max, delimiter);
+            return new Quantifier(location, min, max, delimiter);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lipeg.Boot.BootTree
+namespace Lipeg.SDK.Tree
 {
     public class SequenceExpression : Expression
     {
