@@ -12,6 +12,6 @@ namespace Lipeg.Boot
 
         public string Match();
 
-        public bool Is(Func<char, bool> predicate);
+        public bool Match(Func<char, bool> predicate);
     }
 }

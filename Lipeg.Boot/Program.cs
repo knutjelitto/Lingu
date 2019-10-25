@@ -16,12 +16,12 @@ namespace Lipeg.Boot
             var grammarDir = projectDir.Dir("Grammars");
             var lpgGrammar = grammarDir.File("lipeg.lpg");
 
-            var parser = new LipegParser();
-
             var source = Source.FromFile(lpgGrammar);
 
-            var grammar = Timer.Time("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+            var parser = new LipegParser(source);
 
+            var grammar = Timer.Time("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+            
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }

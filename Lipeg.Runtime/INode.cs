@@ -7,5 +7,6 @@ namespace Lipeg.Runtime
     public interface INode : IReadOnlyList<INode>
     { 
         string Name { get; }
+        ILocation Location { get; }
     }
 }

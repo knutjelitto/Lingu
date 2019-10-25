@@ -11,227 +11,70 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pegasus.Common;
 using Pegasus.Parser;
 
+#nullable enable
+
 namespace Lipeg.Boot
 {
     public partial class LipegParser
     {
         internal readonly CSharpParser cSharpParser = new CSharpParser();
+        private readonly ISource source;
 
-        protected INode N(string name, params INode[] children)
+        public LipegParser(ISource source)
         {
-            return children.Length == 0 ? LeafNode.From(name) : InternalNode.From(name, children);
+            this.source = source;
         }
 
         protected INode N(Cursor start, Cursor end, string name, params INode[] children)
         {
-            return children.Length == 0 ? LeafNode.From(name) : InternalNode.From(name, children);
+            return children.Length == 0
+                ? LeafNode.From(Loc(start, end), name) 
+                : InternalNode.From(Loc(start, end), name, children);
         }
 
         protected INode N(Cursor start, Cursor end, string name, string value)
         {
-            return LeafNode.From(name);
+            return LeafNode.From(Loc(start, end), name, value);
         }
 
-        protected INode NP(IList<INode> children)
+        protected INode NP(Cursor start, Cursor end, IList<INode> children)
         {
-            return InternalNode.From("+", children.ToArray());
+            return InternalNode.From(Loc(start, end), "+", children.ToArray());
         }
 
-        protected string NP(IList<string> children)
+        protected static string Flat(IList<string> children)
         {
-            return String.Join(String.Empty, children);
+            return string.Join(string.Empty, children);
         }
 
-        protected INode NS(IList<INode> children)
+        protected INode NS(Cursor start, Cursor end, IList<INode> children)
         {
-            return InternalNode.From("*", children.ToArray());
+            return InternalNode.From(Loc(start, end), "*", children.ToArray());
         }
 
-        protected INode NO(IList<INode> children)
+        protected static string NO(IList<string> children)
         {
-            return InternalNode.From("?", children.ToArray());
-        }
-
-        protected String NO(IList<String> children)
-        {
-            return children.FirstOrDefault() ?? String.Empty;
-        }
-
-        protected Grammar Grammar(IList<Setting> settings, IList<Rule> rules)
-        {
-            return SDK.Tree.Grammar.From(settings.ToList().AsReadOnly(), rules.ToList().AsReadOnly());
-        }
-
-        protected Setting Setting(Identifier identifier, object value)
-        {
-            return SDK.Tree.Setting.From(identifier, value);
-        }
-
-        protected Rule Rule(Identifier identifier, IList<CodeSpan> type, IList<Identifier> flags, Expression expression)
-        {
-            var typeValue = type.SingleOrDefault();
-            return SDK.Tree.Rule.From(
-                identifier,
-                typeValue != null ? TypedExpression.From(typeValue, expression) : expression,
-                flags);
-        }
-
-        protected Expression Choice(IList<Expression> choices)
-        {
-            return choices.Count == 1 ? choices[0] : ChoiceExpression.From(choices);
-        }
-
-        protected Expression Sequence(IList<Expression> sequence, Expression? code = null)
-        {
-            if (code != null)
-            {
-                return SequenceExpression.From(sequence.Concat(Enumerable.Repeat(code, 1)));
-            }
-
-            return sequence.Count == 1 ? sequence[0] : SequenceExpression.From(sequence);
-        }
-
-        protected PrefixedExpression Prefixed(Identifier identifier, Expression expression)
-        {
-            return PrefixedExpression.From(identifier, expression);
-        }
-
-        protected AndCodeExpression AndCode(CodeSpan codeSpan)
-        {
-            return AndCodeExpression.From(codeSpan);
-        }
-
-        protected NotCodeExpression NotCode(CodeSpan codeSpan)
-        {
-            return NotCodeExpression.From(codeSpan);
-        }
-
-        protected AndExpression And(Expression expression)
-        {
-            return AndExpression.From(expression);
-        }
-
-        protected NotExpression Not(Expression expression)
-        {
-            return NotExpression.From(expression);
-        }
-
-        protected RepetitionExpression Repetition(Expression expression, Quantifier quantifier)
-        {
-            return RepetitionExpression.From(expression, quantifier);
-        }
-
-        protected Expression Typed(IList<CodeSpan> type, Expression expression)
-        {
-            var typeValue = type.SingleOrDefault();
-            return typeValue != null ? TypedExpression.From(typeValue, expression) : expression;
-        }
-
-        protected NameExpression Name(Identifier identifier)
-        {
-            return NameExpression.From(identifier);
-        }
-
-        protected WildcardExpression Wildcard()
-        {
-            return WildcardExpression.From();
+            return children.FirstOrDefault() ?? string.Empty;
         }
 
         private ILocation Loc(Cursor start, Cursor end)
         {
-            return Location.From(start, end);
+            return Location.From(source, start, end);
         }
 
-        protected Quantifier Quantifier(Cursor start, Cursor end, int min, int? max, Expression? delimiter = null)
+        private ILocation Loc(INode start, INode end)
         {
-            return SDK.Tree.Quantifier.From(Loc(start, end), min, max, delimiter);
+            return Location.From(source, start.Location.Start, end.Location.End);
         }
 
-        protected Quantifier Quantifier(Cursor start, Cursor end, int min)
+        protected static string SimpleEsc(string c)
         {
-            return SDK.Tree.Quantifier.From(Loc(start, end), min, null);
-        }
-
-        protected Quantifier Quantifier(Cursor start, Cursor end, int min, IList<int> max, Expression? delimiter = null)
-        {
-            return SDK.Tree.Quantifier.From(Loc(start, end), min, max.SingleOrDefault(), delimiter);
-        }
-
-        protected int Int(string digits)
-        {
-            return int.Parse(digits);
-        }
-
-        protected CodeExpression CodeError(CodeSpan codeSpan)
-        {
-            return CodeExpression.From(codeSpan, CodeType.Error);
-        }
-
-        protected CodeExpression CodeParse(CodeSpan codeSpan)
-        {
-            return CodeExpression.From(codeSpan, CodeType.Parse);
-        }
-
-        protected CodeExpression CodeState(CodeSpan codeSpan)
-        {
-            return CodeExpression.From(codeSpan, CodeType.State);
-        }
-
-        protected CodeExpression CodeResult(CodeSpan codeSpan)
-        {
-            return CodeExpression.From(codeSpan, CodeType.Result);
-        }
-
-        protected CodeSpan Span(CSharpSyntaxNode syntax, Cursor start, Cursor end)
-        {
-            return Span(syntax.ToFullString(), start, end);
-        }
-
-        protected CodeSpan Span(string text, Cursor start, Cursor end)
-        {
-            return CodeSpan.From(Loc(start, end), text);
-        }
-
-        protected CodeSpan Span(TypeSyntax type, Cursor start, Cursor end)
-        {
-            var value = Regex.Replace(Regex.Replace(type.ToString(), @"(?<!,)\s+|\s+(?=[,\]])", ""), @",(?=\w)", ", ");
-            return CodeSpan.From(Loc(start, end), type.ToFullString(), value);
-        }
-
-        protected string Concat(IList<string> strings)
-        {
-            return string.Concat(strings);
-        }
-
-        protected bool IsBlock(StatementSyntax maybeBlock)
-        {
-            return maybeBlock is BlockSyntax;
-        }
-
-        protected BlockSyntax AsBlock(StatementSyntax block)
-        {
-            return (BlockSyntax)block;
-        }
-
-        protected Identifier Identifier(string name, Cursor start, Cursor end)
-        {
-            return SDK.Tree.Identifier.From(Loc(start, end), name);
-        }
-
-        protected T Error<T>()
-        {
-            throw new InvalidOperationException();
-        }
-
-        protected CharacterRange Range(string begin, string end)
-        {
-            return CharacterRange.From(begin[0], end[0]);
-        }
-
-        protected string SimpleEsc(string c)
-        {
+            Debug.Assert(c != null);
+#pragma warning disable CA1062 // Validate arguments of public methods
             Debug.Assert(c.Length == 1);
+#pragma warning restore CA1062 // Validate arguments of public methods
 
+#pragma warning disable CA1307 // Specify StringComparison
             return c
                 .Replace("0", "\0")
                 .Replace("a", "\a")
@@ -241,21 +84,12 @@ namespace Lipeg.Boot
                 .Replace("r", "\r")
                 .Replace("t", "\t")
                 .Replace("v", "\v");
+#pragma warning restore CA1307 // Specify StringComparison
         }
 
-        protected string HexChar(string hexDigits)
+        protected static string HexChar(string hexDigits)
         {
-            return ((char)int.Parse(hexDigits, NumberStyles.HexNumber)).ToString();
-        }
-
-        protected LiteralExpression Literal(Cursor start, Cursor end, string value)
-        {
-            return LiteralExpression.From(Loc(start, end), value);
-        }
-
-        protected ClassExpression Class(IList<CharacterRange> ranges, IList<string> inverted)
-        {
-            return ClassExpression.From(ranges, inverted.SingleOrDefault() == "^");
+            return ((char)int.Parse(hexDigits, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace Lipeg.Runtime
@@ -8,29 +7,40 @@ namespace Lipeg.Runtime
     {
         private static readonly List<LeafNode> Empty = new List<LeafNode>();
 
-        private LeafNode(string name)
+        private LeafNode(ILocation location, string name)
         {
+            Location = location;
             Name = name;
             Value = string.Empty;
         }
 
-        private LeafNode(string name, string value)
+        private LeafNode(ILocation location, string name, string value)
         {
+            Location = location;
             Name = name;
             Value = value;
         }
 
+        public ILocation Location { get; }
         public string Name { get; }
         public string Value { get; }
 
-        public static INode From(string name) => new LeafNode(name);
-        public static INode From(string name, string value) => new LeafNode(name, value);
+        public static INode From(ILocation location, string name) => new LeafNode(location, name);
+        public static INode From(ILocation location, string name, string value) => new LeafNode(location, name, value);
         
         public IEnumerator<INode> GetEnumerator() => Empty.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => 0;
         public INode this[int index] => Empty[0];
 
-        public override string ToString() => Name;
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(Value))
+            {
+                return Name;
+            }
+
+            return $"{Name}={Value}";
+        }
     }
 }

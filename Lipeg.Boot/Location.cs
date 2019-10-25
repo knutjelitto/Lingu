@@ -3,25 +3,32 @@ using Pegasus.Common;
 
 namespace Lipeg.Boot
 {
-    public class Location : ILocation
+    internal class Location : ILocation
     {
-        private Location(int start, int end)
+        private Location(ISource source, int start, int end)
         {
+            Source = source;
             Start = start;
             End = end;
         }
 
+        public ISource Source { get; }
         public int Start { get; }
         public int End { get; }
 
-        public static ILocation From(Cursor start)
+        public static ILocation From(ISource source, Cursor start)
         {
-            return new Location(start.Location, start.Location);
+            return new Location(source, start.Location, start.Location);
         }
 
-        public static ILocation From(Cursor start, Cursor end)
+        public static ILocation From(ISource source, Cursor start, Cursor end)
         {
-            return new Location(start.Location, end.Location);
+            return new Location(source, start.Location, end.Location);
+        }
+
+        public static ILocation From(ISource source, int start, int end)
+        {
+            return new Location(source, start, end);
         }
     }
 }
