@@ -79,6 +79,7 @@ namespace Lipeg.Boot
                 .Replace("0", "\0")
                 .Replace("a", "\a")
                 .Replace("b", "\b")
+                .Replace("e", "\x1B")
                 .Replace("f", "\f")
                 .Replace("n", "\n")
                 .Replace("r", "\r")

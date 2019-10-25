@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Lipeg.SDK.Tree
 {
-    public class RepetitionExpression : Expression
+    public class Quantified : Expression
     {
-        private RepetitionExpression(Expression expression, Quantifier quantifier)
+        private Quantified(Expression expression, Quantifier quantifier)
         {
             Expression = expression;
             Quantifier = quantifier;
@@ -14,9 +14,9 @@ namespace Lipeg.SDK.Tree
         public Expression Expression { get; }
         public Quantifier Quantifier { get; }
 
-        public static RepetitionExpression From(Expression expression, Quantifier quantifier)
+        public static Quantified From(Expression expression, Quantifier quantifier)
         {
-            return new RepetitionExpression(expression, quantifier);
+            return new Quantified(expression, quantifier);
         }
     }
 }

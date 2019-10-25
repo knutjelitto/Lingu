@@ -26,6 +26,19 @@ rules
 
     rules
         = 'rules' _ '{' _ r:rule<0,,_> '}' _
+        ;
+
+    rule
+        = identifier ruleFlags '=' _ expression ';' _
+        ;
+
+    ruleFlags
+        = ruleFlag<0,,_>
+        ;
+
+    ruleFlag
+        = '-' identifier
+        ;
 
     _ -memo
         = (whitespace / newline / comment)*

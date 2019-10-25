@@ -20,7 +20,11 @@ namespace Lipeg.Boot
 
             var parser = new LipegParser(source);
 
-            var grammar = Timer.Time("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+            var parse = Timer.Time("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+
+            var treeBuilder = new TreeBuilder();
+
+            var grammar = treeBuilder.Build(parse);
             
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);

@@ -7,13 +7,13 @@ namespace Lipeg.SDK.Tree
 {
     public class SequenceExpression : Expression
     {
-        private SequenceExpression(IEnumerable<Expression> sequence)
+        private SequenceExpression(IReadOnlyList<Expression> sequence)
         {
-            Sequence = sequence.ToList().AsReadOnly();
+            Sequence = sequence;
         }
         public IReadOnlyList<Expression> Sequence { get; }
 
-        public static SequenceExpression From(IEnumerable<Expression> sequence)
+        public static SequenceExpression From(IReadOnlyList<Expression> sequence)
         {
             return new SequenceExpression(sequence);
         }

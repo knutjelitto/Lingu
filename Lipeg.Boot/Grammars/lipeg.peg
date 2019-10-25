@@ -8,11 +8,8 @@
 @using System.Text.RegularExpressions
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 
-start <INode>
-    = _ g:grammar EOF { N(gStart, gEnd, "start", g) }
-
 grammar <INode>
-    = o:options r:rules { N(oStart, rEnd, "grammar", o, r) }
+    = _ o:options r:rules EOF { N(oStart, rEnd, "grammar", o, r) }
 
 options <INode>
     = a:'options' _ '{' _ s:option<0,,_> o:'}' _ { N(aStart, oEnd, "options", NS(sStart, sEnd, s)) }
@@ -21,11 +18,10 @@ option <INode>
     = a:'@' key:identifier value:(identifier / string) o:(';' _)? { N(aStart, oEnd, "setting", key, value) }
 
 rules <INode>
-    = a:'rules' _ '{' _  r:rule<0,,_> o:'}' { N(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
+    = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { N(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
 
 rule <INode>
-    = id:identifier flags:ruleFlags '=' _ expression:expression o:';' _
-      { N(idStart, oEnd, "rule", id, flags, expression) }
+    = id:identifier flags:ruleFlags '=' _ expression:expression o:';' _ { N(idStart, oEnd, "rule", id, flags, expression) }
 
 ruleFlags <INode>
     = f:ruleFlag<0,,_> { NS(fStart, fEnd, f) }
@@ -43,16 +39,16 @@ sequence <INode>
     = e:labeled<0,,_> { N(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
 
 labeled <INode> -memoize
-    = id:identifier ':' _ e:prefixed { N(idStart, eEnd, "labeled", id, e) }
-    / prefixed
+    = id:identifier ':' _ e:prefix { N(idStart, eEnd, "labeled", id, e) }
+    / prefix
 
-prefixed <INode>
+prefix <INode>
     = a:'&' _ e:suffix { N(aStart, eEnd, "and", e) }
     / a:'!' _ e:suffix { N(aStart, eEnd, "not", e) }
     / suffix
 
 suffix <INode>
-    = e:primary _ q:quantifier { N(eStart, qEnd, "suffix", e, q) }
+    = e:primary _ q:quantifier { N(eStart, qEnd, "quantified", e, q) }
     / primary
 
 primary <INode> -memoize
@@ -60,7 +56,7 @@ primary <INode> -memoize
     / literal
     / class
     / dot
-    / '(' _ expression:expression _ ')' { expression }
+    / '(' _ expression:expression ')' _ { expression }
 
 quantifier <INode> -memoize
     = q:'?' _                                                                       { N(qStart, qEnd, "?") }
@@ -91,27 +87,19 @@ doubleQuotedString <INode>
   = a:'"' c:(doubleQuotedCharacter*) o:'"' _ { N(aStart, oEnd, "doubleString", NS(cStart, cEnd, c)) }
 
 doubleQuotedCharacter <INode>
-    = c:simpleDoubleQuotedCharacter     { N(cStart, cEnd, "doubleCharacter", c) }
-    / c:simpleEscapeSequence            { N(cStart, cEnd, "simpleEscape", c) }
-    / c:hexEscapeSequence               { c }
-    / c:unicodeEscapeSequence           { c }
-    / c:eolEscapeSequence               { N(cStart, cEnd, "eolEscape", c) }
-
-simpleDoubleQuotedCharacter
-    = !('"' / "\\" / eolChar) .
+    = simpleDoubleQuotedCharacter
+    / simpleEscapeSequence
+    / hexEscapeSequence
+    / unicodeEscapeSequence
 
 singleQuotedString <INode>
     = a:'\'' c:(singleQuotedCharacter*) o:'\'' _ { N(aStart, oEnd, "singleString", NS(cStart, cEnd, c)) }
 
 singleQuotedCharacter <INode>
-    = c:simpleSingleQuotedCharacter     { N(cStart, cEnd, "singleCharacter", c) }
-    / c:simpleEscapeSequence            { N(cStart, cEnd, "simpleEscape", c) }
-    / c:hexEscapeSequence               { c }
-    / c:unicodeEscapeSequence           { c }
-    / c:eolEscapeSequence               { N(cStart, cEnd, "eolEscape", c) }
-
-simpleSingleQuotedCharacter
-    = !("'" / "\\" / eolChar) .
+    = simpleSingleQuotedCharacter
+    / simpleEscapeSequence
+    / hexEscapeSequence
+    / unicodeEscapeSequence
 
 class <INode> -lexical
     = a:'[' inv:'^'? p:(classCharacterRange / classCharacter)* o:']' _ { N(aStart, oEnd, "class", NS(pStart, pEnd, p), N(invStart, invEnd, "invert", NO(inv))) }
@@ -123,26 +111,29 @@ classCharacter <INode>
     = c:bracketDelimitedCharacter { N(cStart, cEnd, "single", c) }
 
 bracketDelimitedCharacter <INode>
-    = c:simpleBracketDelimitedCharacter { N(cStart, cEnd, "bracketCharacter", c) }
-    / c:simpleEscapeSequence            { N(cStart, cEnd, "simpleEscape", c) }
-    / c:hexEscapeSequence               { c }
-    / c:unicodeEscapeSequence           { c }
-    / c:eolEscapeSequence               { N(cStart, cEnd, "eolEscape", c) }
+    = simpleBracketDelimitedCharacter
+    / simpleEscapeSequence
+    / hexEscapeSequence
+    / unicodeEscapeSequence
 
-simpleBracketDelimitedCharacter
-    = !("]" / "\\" / eolChar) .
 
-simpleEscapeSequence
-    = "\\" !("x" / "u" / eolChar) c:. { SimpleEsc(c) }
+simpleDoubleQuotedCharacter <INode>
+    = !('"' / "\\" / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
+
+simpleSingleQuotedCharacter <INode>
+    = !("'" / "\\" / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
+
+simpleBracketDelimitedCharacter <INode>
+    = !(']' / '\\' / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
+
+simpleEscapeSequence <INode>
+    = "\\" !("x" / "u" / eolChar) c:.   { N(cStart, cEnd, "simpleEscape", c) }
 
 hexEscapeSequence <INode>
     = a:"\\x" d:(hexDigit<2,2>) { N(aStart, dEnd, "hexEscape", Flat(d)) }
 
 unicodeEscapeSequence <INode>
     = a:'\\u{' d:(hexDigit<1,6>) o:'}' { N(aStart, oEnd, "unicodeEscape", Flat(d)) }
-
-eolEscapeSequence
-    = "\\" nl:newline { nl }
 
 digit
     = [0-9]

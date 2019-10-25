@@ -6,13 +6,14 @@ namespace Lipeg.SDK.Tree
 {
     public class ChoiceExpression : Expression
     {
-        private ChoiceExpression(IEnumerable<Expression> choices)
+        private ChoiceExpression(IReadOnlyList<Expression> choices)
         {
             Choices = choices;
         }
-        public IEnumerable<Expression> Choices { get; }
 
-        public static ChoiceExpression From(IEnumerable<Expression> choices)
+        public IReadOnlyList<Expression> Choices { get; }
+
+        public static ChoiceExpression From(IReadOnlyList<Expression> choices)
         {
             return new ChoiceExpression(choices);
         }

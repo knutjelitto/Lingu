@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Lipeg.SDK.Tree
 {
-    public class Setting
+    public class Option
     {
-        private Setting(Identifier identifier, object value)
+        private Option(Identifier identifier, object value)
         {
             Identifier = identifier;
             Value = value;
@@ -14,9 +14,9 @@ namespace Lipeg.SDK.Tree
         public Identifier Identifier { get; }
         public object Value { get; }
 
-        public static Setting From(Identifier identifier, object value)
+        public static Option From(Identifier identifier, object value)
         {
-            return new Setting(identifier, value);
+            return new Option(identifier, value);
         }
 
         public override string ToString()

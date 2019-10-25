@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lipeg.Runtime
 {
-    public class LeafNode : INode
+    public class LeafNode : ILeafNode
     {
         private static readonly List<LeafNode> Empty = new List<LeafNode>();
 

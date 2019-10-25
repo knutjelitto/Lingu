@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Lipeg.SDK.Tree
 {
-    public class PrefixedExpression : Expression
+    public class LabeledExpression : Expression
     {
-        private PrefixedExpression(Identifier identifier, Expression expression)
+        private LabeledExpression(Identifier identifier, Expression expression)
         {
             Identifier = identifier;
             Expression = expression;
@@ -14,9 +14,9 @@ namespace Lipeg.SDK.Tree
         public Identifier Identifier { get; }
         public Expression Expression { get; }
 
-        public static PrefixedExpression From(Identifier identifier, Expression expression)
+        public static LabeledExpression From(Identifier identifier, Expression expression)
         {
-            return new PrefixedExpression(identifier, expression);
+            return new LabeledExpression(identifier, expression);
         }
     }
 }
