@@ -1,172 +1,176 @@
-﻿options
+﻿grammar lipeg
 {
-    spacing = _;
-}
-
-rules
-{
-    start
-        <- _ grammar EOF
-        ;
-
-    grammar
-        <- s:options r:rules
-        ;
-
     options
-        <- 'options' _ '{' _ s:option* '}' _
-        ;
-
-    option
-        <- '@' _ id:identifier '=' _ v:optionValue
-        ;
-
-    optionValue
-        <- qualifiedIdentifier
-        ;
-
-    qualifiedIdentifier
-        <- ids:(identifier ('.' _ identifier)*)
-        ;
+    {
+        spacing = _;
+    }
 
     rules
-        <- 'rules' _ '{' _ r:rule* '}' _
-        ;
+    {
+        start
+            <= _ grammar EOF
+            ;
 
-    rule
-        <- identifier ruleFlags '=' _ expression ';' _
-        ;
+        grammar
+            <= s:options r:rules
+            ;
 
-    ruleFlags
-        <- ruleFlag*
-        ;
+        options
+            <= 'options' _ '{' _ s:option* '}' _
+            ;
 
-    ruleFlag
-        <- '-' identifier
-        ;
+        option
+            <= '@' _ id:identifier '=' _ v:optionValue
+            ;
 
-    expression
-        <- choice
-        ;
+        optionValue
+            <= qualifiedIdentifier
+            ;
 
-    choice
-        <- sequence ('/' _ sequence)*
-        ;
+        qualifiedIdentifier
+            <= ids:(identifier ('.' _ identifier)*)
+            ;
 
-    sequence
-        <- prefix*
-        ;
+        rules
+            <= 'rules' _ '{' _ r:rule* '}' _
+            ;
 
-    prefix
-        <- '&' _ suffix // and
-        /  '!' _ suffix // not
-        /  ':' _ suffix // drop
-        /  '^' _ suffix // promote
-        /  suffix
-        ;
+        rule
+            <= identifier ruleFlags '<=' _ expression ';' _
+            ;
 
-    suffix
-        <- primary '?' _ 
-        /  primary '*' _
-        /  primary '+' _
-        /  primary
-        ;
+        ruleFlags
+            <= ruleFlag*
+            ;
 
-    primary
-        <- identifier
-        /  stringLiteral
-        /  characterClass
-        /  '.' _
-        /  '(' _ expression ')' _
-        ;
+        ruleFlag
+            <= '-' identifier
+            ;
 
-    identifier
-        <- (letter / '_') (letter / digit / '_')*
-        ;
+        expression
+            <= choice
+            ;
 
-    letter
-        <- [a-zA-Z]
-        ;
+        choice
+            <= sequence ('/' _ sequence)*
+            ;
 
-    digit
-        <- [0-9]
-        ;
+        sequence
+            <= prefix*
+            ;
 
-    hexDigit
-        <- [0-9a-fA-F]
-        ;
+        prefix
+            <= '&' _ suffix // and lookahead
+            /  '!' _ suffix // not lookahead
+            /  ':' _ suffix // drop
+            /  '^' _ suffix // promote
+            /  '~' _ suffix // fuse
+            /  suffix
+            ;
 
-    stringLiteral
-        <- '\'' stringCharacter* '\''
-        ;
+        suffix
+            <= primary '?' _ 
+            /  primary '*' _
+            /  primary '+' _
+            /  primary
+            ;
 
-    stringCharacter
-        <- !('\'' / '\\' / eolChar) .
-        /  escape
-        /  unicode
-        ;
+        primary
+            <= identifier
+            /  string
+            /  characterClass
+            /  '.' _
+            /  '(' _ expression ')' _
+            ;
 
-    escape
-        <- '\\' [0abefnrtv\-\]\\]
-        ;
+        identifier
+            <= (letter / '_') (letter / digit / '_')*
+            ;
 
-    unicode
-        <- '\\u{' hexdigit hexdigit? hexdigit? hexdigit? hexdigit? hexdigit? '}'
-        ;
+        letter
+            <= [a-zA-Z]
+            ;
 
-    characterClass
-        <- '[' '^'? classCharacter* ']'
-        ;
+        digit
+            <= [0-9]
+            ;
 
-    classCharacter
-        <- classRange
-        /  classSingle
-        ;
+        hexDigit
+            <= [0-9a-fA-F]
+            ;
 
-    classRange
-        <- classSingle '-' classSingle
-        ;
+        string
+            <= '\'' character* '\''
+            ;
 
-    classSingle
-        <- !(']' / '\\' / eolChar) .
-        / escape
-        / unicode
-        ;
+        character
+            <= !('\'' / '\\' / eolChar) .
+            /  escape
+            /  unicode
+            ;
 
-    _ -memo
-        <- (whitespace / newline / comment)*
-        ;
+        escape
+            <= '\\' [0abefnrtv\-\]\\]
+            ;
 
-    comment
-        <- singleLineComment
-        / multiLineComment
-        ;
+        unicode
+            <= '\\u{' hexdigit hexdigit? hexdigit? hexdigit? hexdigit? hexdigit? '}'
+            ;
 
-    singleLineComment
-        <- '//' (!eolChar .)*
-        ;
+        characterClass
+            <= '[' '^'? classCharacter* ']'
+            ;
 
-    multiLineComment
-        <- '/*' (!'*/' .)* '*/'
-        ;
+        classCharacter
+            <= classRange
+            /  classSingle
+            ;
 
-    newline
-        <- '\n'
-        / '\r\n'
-        / '\r'
-        / '\u{2028}'
-        / '\u{2029}'
-        ;
+        classRange
+            <= classSingle '-' classSingle
+            ;
 
-    eolChar
-        <- [\n\r\u{2028}\u{2029}]
-        ;
+        classSingle
+            <= !(']' / '\\' / eolChar) .
+            / escape
+            / unicode
+            ;
 
-    whitespace
-        <- [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
-        ;
+        _ -memo
+            <= (whitespace / newline / comment)*
+            ;
 
-    eof
-        <- !.
-        ;
+        comment
+            <= singleLineComment
+            / multiLineComment
+            ;
+
+        singleLineComment
+            <= '//' (!eolChar .)*
+            ;
+
+        multiLineComment
+            <= '/*' (!'*/' .)* '*/'
+            ;
+
+        newline
+            <= '\n'
+            / '\r\n'
+            / '\r'
+            / '\u{2028}'
+            / '\u{2029}'
+            ;
+
+        eolChar
+            <= [\n\r\u{2028}\u{2029}]
+            ;
+
+        whitespace
+            <= [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+            ;
+
+        eof
+            <= !.
+            ;
+    }
 }

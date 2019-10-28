@@ -18,7 +18,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "grammar");
 
-            return Grammar.From(Options(node[0]), Rules(node[1]));
+            return Grammar.From(Identifier(node[0]), Options(node[1]), Rules(node[2]));
         }
 
         private IReadOnlyList<Option> Options(INode node)

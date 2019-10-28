@@ -6,18 +6,20 @@ namespace Lipeg.SDK.Tree
 {
     public class Grammar
     {
-        private Grammar(IReadOnlyList<Option> settings, IReadOnlyList<Rule> rules)
+        private Grammar(Identifier name, IReadOnlyList<Option> settings, IReadOnlyList<Rule> rules)
         {
+            Name = name;
             Settings = settings;
             Rules = rules;
         }
 
+        public Identifier Name { get; }
         public IEnumerable<Option> Settings { get; }
         public IEnumerable<Rule> Rules { get; }
 
-        public static Grammar From(IReadOnlyList<Option> settings, IReadOnlyList<Rule> rules)
+        public static Grammar From( Identifier name, IReadOnlyList<Option> settings, IReadOnlyList<Rule> rules)
         {
-            return new Grammar(settings, rules);
+            return new Grammar(name, settings, rules);
         }
     }
 }

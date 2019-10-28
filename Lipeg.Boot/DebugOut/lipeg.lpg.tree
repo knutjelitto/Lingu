@@ -1,4 +1,5 @@
-grammar [options, rules]
+grammar [identifier, options, rules]
+    identifier <lipeg>
     options [*]
         * [setting]
             setting [identifier, qualifiedIdentifier]
@@ -153,7 +154,8 @@ grammar [options, rules]
                                 identifier <identifier>
                                 identifier <ruleFlags>
                                 singleString [*]
-                                    * [simpleCharacter]
+                                    * [simpleCharacter, simpleCharacter]
+                                        simpleCharacter <<>
                                         simpleCharacter <=>
                                 identifier <_>
                                 identifier <expression>
@@ -223,7 +225,7 @@ grammar [options, rules]
                 identifier <prefix>
                 * []
                 choice [+]
-                    + [sequence, sequence, sequence, sequence, sequence]
+                    + [sequence, sequence, sequence, sequence, sequence, sequence]
                         sequence [*]
                             * [singleString, identifier, identifier]
                                 singleString [*]
@@ -250,6 +252,13 @@ grammar [options, rules]
                                 singleString [*]
                                     * [simpleCharacter]
                                         simpleCharacter <^>
+                                identifier <_>
+                                identifier <suffix>
+                        sequence [*]
+                            * [singleString, identifier, identifier]
+                                singleString [*]
+                                    * [simpleCharacter]
+                                        simpleCharacter <~>
                                 identifier <_>
                                 identifier <suffix>
                         sequence [*]
@@ -294,7 +303,7 @@ grammar [options, rules]
                                 identifier <identifier>
                         sequence [*]
                             * [identifier]
-                                identifier <stringLiteral>
+                                identifier <string>
                         sequence [*]
                             * [identifier]
                                 identifier <characterClass>
@@ -396,7 +405,7 @@ grammar [options, rules]
                                             simpleCharacter <F>
                                     invert <>
             rule [identifier, *, choice]
-                identifier <stringLiteral>
+                identifier <string>
                 * []
                 choice [+]
                     + [sequence]
@@ -406,13 +415,13 @@ grammar [options, rules]
                                     * [simpleEscape]
                                         simpleEscape <'>
                                 quantified [identifier, *]
-                                    identifier <stringCharacter>
+                                    identifier <character>
                                     * <>
                                 singleString [*]
                                     * [simpleEscape]
                                         simpleEscape <'>
             rule [identifier, *, choice]
-                identifier <stringCharacter>
+                identifier <character>
                 * []
                 choice [+]
                     + [sequence, sequence, sequence]

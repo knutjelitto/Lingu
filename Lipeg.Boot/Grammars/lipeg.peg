@@ -9,7 +9,7 @@
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 
 grammar <INode>
-    = _ o:options r:rules EOF { N(oStart, rEnd, "grammar", o, r) }
+    = _ a:'grammar' _ i:identifier '{' _ o:options r:rules e:'}' _ EOF { N(aStart, eEnd, "grammar", i, o, r) }
 
 options <INode>
     = a:'options' _ '{' _ s:option<0,,_> o:'}' _ { N(aStart, oEnd, "options", NS(sStart, sEnd, s)) }
@@ -27,7 +27,8 @@ rules <INode>
     = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { N(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
 
 rule <INode>
-    = id:identifier flags:ruleFlags '<-' _ expression:expression o:';' _ { N(idStart, oEnd, "rule", id, flags, expression) }
+    = a:identifier f:ruleFlags '<=' _ e:expression o:';' _ { N(aStart, oEnd, "rule", a, f, e) }
+    / a:alias      f:ruleFlags '<=' _ e:expression o:';' _ { N(aStart, oEnd, "alias", a, f, e) }    
 
 ruleFlags <INode>
     = f:ruleFlag<0,,_> { NS(fStart, fEnd, f) }
@@ -59,6 +60,7 @@ suffix <INode>
 
 primary <INode> -memoize
     = identifier
+    / alias
     / stringLiteral
     / class
     / dot
@@ -85,9 +87,8 @@ identifier <INode> -memoize
 stringLiteral <INode>
     = singleQuotedString
 
-string <INode>
+alias <INode>
     = doubleQuotedString
-    / singleQuotedString
 
 doubleQuotedString <INode>
   = a:'"' c:(doubleQuotedCharacter*) o:'"' _ { N(aStart, oEnd, "doubleString", NS(cStart, cEnd, c)) }
