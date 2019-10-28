@@ -15,18 +15,24 @@ options <INode>
     = a:'options' _ '{' _ s:option<0,,_> o:'}' _ { N(aStart, oEnd, "options", NS(sStart, sEnd, s)) }
 
 option <INode>
-    = a:'@' key:identifier value:(identifier / string) o:(';' _)? { N(aStart, oEnd, "setting", key, value) }
+    = id:identifier '=' _ value:optionValue o:(';' _)? { N(idStart, oEnd, "setting", id, value) }
+
+optionValue <INode>
+    = qualifiedIdentifier
+
+qualifiedIdentifier <INode>
+    = id:identifier<1,,'.' _> { N(idStart, idEnd, "qualifiedIdentifier", NP(idStart, idEnd, id)) }
 
 rules <INode>
     = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { N(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
 
 rule <INode>
-    = id:identifier flags:ruleFlags '=' _ expression:expression o:';' _ { N(idStart, oEnd, "rule", id, flags, expression) }
+    = id:identifier flags:ruleFlags '<-' _ expression:expression o:';' _ { N(idStart, oEnd, "rule", id, flags, expression) }
 
 ruleFlags <INode>
     = f:ruleFlag<0,,_> { NS(fStart, fEnd, f) }
 
-ruleFlag <INode> -memoize -lexical
+ruleFlag <INode> -memoize
     = '-' id:identifier { id }
 
 expression <INode>
@@ -53,7 +59,7 @@ suffix <INode>
 
 primary <INode> -memoize
     = identifier
-    / literal
+    / stringLiteral
     / class
     / dot
     / '(' _ expression:expression ')' _ { expression }
@@ -62,29 +68,35 @@ quantifier <INode> -memoize
     = q:'?' _                                                                       { N(qStart, qEnd, "?") }
     / q:'*' _                                                                       { N(qStart, qEnd, "*") }
     / q:'+' _                                                                       { N(qStart, qEnd, "+") }
-    / a:'<' _ min:integer ',' _ max:integer ',' _ delimiter:expression _ o:'>' _    { N(aStart, oEnd, "<n,n,d>", min, max, delimiter) }
-    / a:'<' _ min:integer ',' _ ',' _ delimiter:expression _ o:'>' _                { N(aStart, oEnd, "<n,,d>", min, delimiter) }
-    / a:'<' _ min:integer ',' _ max:integer o:'>' _                                 { N(aStart, oEnd, "<n,n>", min, max) }
-    / a:'<' _ count:integer o:'>' _                                                 { N(aStart, oEnd, "<n>", count, count) }
 
 dot <INode>
     = q:'.' _ { N(qStart, qEnd, ".") }
 
 
 integer <INode> -memoize
-    = d:(digit+) _ { N(dStart, dEnd, "integer", Flat(d)) }
+    = d:digits _ { N(dStart, dEnd, "integer", Flat(d)) }
 
-identifier <INode> -memoize -lexical
+digits
+    = digit+
+
+identifier <INode> -memoize
     = name:(!digit (letter / digit / "_" / "$")+) _ { N(nameStart, nameEnd, "identifier", name) }
 
-literal <INode> -lexical
-    = v:string  { N(vStart, vEnd, "literal", v) }
+stringLiteral <INode>
+    = singleQuotedString
 
 string <INode>
-    = s:(doubleQuotedString / singleQuotedString) { N(sStart, sEnd, "string", s) }
+    = doubleQuotedString
+    / singleQuotedString
 
 doubleQuotedString <INode>
   = a:'"' c:(doubleQuotedCharacter*) o:'"' _ { N(aStart, oEnd, "doubleString", NS(cStart, cEnd, c)) }
+
+singleQuotedString <INode>
+    = a:'\'' c:(singleQuotedCharacter*) o:'\'' _ { N(aStart, oEnd, "singleString", NS(cStart, cEnd, c)) }
+
+class <INode>
+    = a:'[' inv:'^'? p:(classCharacterRange / classCharacter)* o:']' _ { N(aStart, oEnd, "class", NS(pStart, pEnd, p), N(invStart, invEnd, "invert", NO(inv))) }
 
 doubleQuotedCharacter <INode>
     = simpleDoubleQuotedCharacter
@@ -92,23 +104,11 @@ doubleQuotedCharacter <INode>
     / hexEscapeSequence
     / unicodeEscapeSequence
 
-singleQuotedString <INode>
-    = a:'\'' c:(singleQuotedCharacter*) o:'\'' _ { N(aStart, oEnd, "singleString", NS(cStart, cEnd, c)) }
-
 singleQuotedCharacter <INode>
     = simpleSingleQuotedCharacter
     / simpleEscapeSequence
     / hexEscapeSequence
     / unicodeEscapeSequence
-
-class <INode> -lexical
-    = a:'[' inv:'^'? p:(classCharacterRange / classCharacter)* o:']' _ { N(aStart, oEnd, "class", NS(pStart, pEnd, p), N(invStart, invEnd, "invert", NO(inv))) }
-
-classCharacterRange <INode>
-    = a:bracketDelimitedCharacter '-' o:bracketDelimitedCharacter { N(aStart, oEnd, "range", a, o) }
-
-classCharacter <INode>
-    = c:bracketDelimitedCharacter { N(cStart, cEnd, "single", c) }
 
 bracketDelimitedCharacter <INode>
     = simpleBracketDelimitedCharacter
@@ -116,6 +116,11 @@ bracketDelimitedCharacter <INode>
     / hexEscapeSequence
     / unicodeEscapeSequence
 
+classCharacterRange <INode>
+    = a:bracketDelimitedCharacter '-' o:bracketDelimitedCharacter { N(aStart, oEnd, "range", a, o) }
+
+classCharacter <INode>
+    = c:bracketDelimitedCharacter { N(cStart, cEnd, "single", c) }
 
 simpleDoubleQuotedCharacter <INode>
     = !('"' / "\\" / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
@@ -151,10 +156,10 @@ comment -memoize
     = singleLineComment
     / multiLineComment
 
-singleLineComment -memoize -lexical
+singleLineComment -memoize
     = "//" (!eolChar .)*
 
-multiLineComment -lexical
+multiLineComment
     = "/*" (!"*/" .)* "*/"
 
 newline -memoize
@@ -167,7 +172,7 @@ newline -memoize
 eolChar
     = [\n\r\u2028\u2029]
 
-whitespace -memoize -lexical
+whitespace -memoize
     = [ \t\v\f\u00A0\uFEFF\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
 
 EOF

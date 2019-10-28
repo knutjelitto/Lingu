@@ -6,22 +6,22 @@ namespace Lipeg.SDK.Tree
 {
     public class Option
     {
-        private Option(Identifier identifier, object value)
+        private Option(Identifier identifier, QualifiedIdentifier qualifiedIdentifier)
         {
             Identifier = identifier;
-            Value = value;
+            QualifiedIdentifier = qualifiedIdentifier;
         }
         public Identifier Identifier { get; }
-        public object Value { get; }
+        public QualifiedIdentifier QualifiedIdentifier { get; }
 
-        public static Option From(Identifier identifier, object value)
+        public static Option From(Identifier identifier, QualifiedIdentifier qualifiedIdentifier)
         {
-            return new Option(identifier, value);
+            return new Option(identifier, qualifiedIdentifier);
         }
 
         public override string ToString()
         {
-            return $"[{Identifier}={Value}]";
+            return $"[{Identifier}={QualifiedIdentifier}]";
         }
     }
 }

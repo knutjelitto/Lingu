@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Windows.Markup;
+
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
@@ -12,13 +12,13 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.Boot
 {
-    internal class TreeBuilder
+    internal class GrammarBuilder
     {
         public Grammar Build(INode node)
         {
             Debug.Assert(node.Name == "grammar");
 
-            return SDK.Tree.Grammar.From(Options(node[0]), Rules(node[1]));
+            return Grammar.From(Options(node[0]), Rules(node[1]));
         }
 
         private IReadOnlyList<Option> Options(INode node)
@@ -30,12 +30,21 @@ namespace Lipeg.Boot
 
         private Option Option(INode node)
         {
-            return SDK.Tree.Option.From(Identifier(node[0]), node[1]);
+            return SDK.Tree.Option.From(Identifier(node[0]), QualifiedIdentifier(node[1]));
         }
 
         private Identifier Identifier(INode node)
         {
             return SDK.Tree.Identifier.From(node.Location, ((ILeafNode) node).Value);
+        }
+
+        private QualifiedIdentifier QualifiedIdentifier(INode node)
+        {
+            Debug.Assert(node.Name == "qualifiedIdentifier");
+
+            var identifiers = node[0].Select(Identifier).ToList();
+
+            return SDK.Tree.QualifiedIdentifier.From(identifiers);
         }
 
         private IReadOnlyList<Rule> Rules(INode node)
@@ -113,8 +122,9 @@ namespace Lipeg.Boot
             {
                 case "identifier":
                     return NameExpression.From(Identifier(node));
-                case "literal":
-                    return Literal(node);
+                case "singleString":
+                case "doubleString":
+                    return StringLiteral(node);
                 case ".":
                     return WildcardExpression.From();
                 case "choice":
@@ -129,29 +139,53 @@ namespace Lipeg.Boot
 
         private Quantifier Quantifier(INode node)
         {
-            //TODO
-            return SDK.Tree.Quantifier.From(node.Location, 0, null);
+            switch (node.Name)
+            {
+                case "?":
+                    return SDK.Tree.Quantifier.From(node.Location, 0, 1);
+                case "*":
+                    return SDK.Tree.Quantifier.From(node.Location, 0, null);
+                case "+":
+                    return SDK.Tree.Quantifier.From(node.Location, 1, null);
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
-        private Expression Literal(INode node)
+        private Expression StringLiteral(INode node)
         {
-            Debug.Assert(node.Name == "literal");
+            switch (node.Name)
+            {
+                case "doubleString":
+                case "singleString":
+                    return DoString(node);
+                default:
+                    throw new NotImplementedException();
 
-            //TODO
-            return LiteralExpression.From(node.Location, String.Empty);
+            }
+        }
+
+        private Expression DoString(INode node)
+        {
+            Debug.Assert(node.Name == "singleString" || node.Name == "doubleString");
+            Debug.Assert(node[0].Name == "*");
+
+            var characters = string.Join(string.Empty, node[0].Select(c => Character(c)));
+
+            return SDK.Tree.StringLiteral.From(node.Location, characters);
         }
 
         private ClassExpression Class(INode node)
         {
             Debug.Assert(node.Name == "class" && node.Count == 2);
 
-            var ranges = node[0].Select(Range).ToList();
+            var ranges = node[0].Select(SingleOrRange).ToList();
             var invert = node[1].Count == 1;
 
             return ClassExpression.From(ranges, invert);
         }
 
-        private CharacterRange Range(INode node)
+        private CharExpression SingleOrRange(INode node)
         {
             if (node.Name == "single")
             {
@@ -159,7 +193,7 @@ namespace Lipeg.Boot
 
                 var c = Character(node[0]);
                 Debug.Assert(c.Length == 1);
-                return CharacterRange.From(c[0], c[0]);
+                return SDK.Tree.Character.From(c[0]);
             }
             else if (node.Name == "range")
             {
@@ -179,21 +213,16 @@ namespace Lipeg.Boot
         {
             var leaf = (ILeafNode) node;
 
-            switch (leaf.Name)
+            return leaf.Name switch
             {
-                case "simpleCharacter":
-                    return leaf.Value;
-                case "simpleEscape":
-                    return simpleEscape(leaf.Value);
-                case "hexEscape":
-                    return ((char)Int32.Parse(leaf.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
-                case "unicodeEscape":
-                    return ((char)Int32.Parse(leaf.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
-                default:
-                    throw new NotImplementedException();
-            }
+                "simpleCharacter" => leaf.Value,
+                "simpleEscape" => simpleEscape(leaf.Value),
+                "hexEscape" => ((char)int.Parse(leaf.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture),
+                "unicodeEscape" => ((char)int.Parse(leaf.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture),
+                _ => throw new NotImplementedException(),
+            };
 
-            string simpleEscape(string escaped)
+            static string simpleEscape(string escaped)
             {
                 return escaped
                        .Replace("0", "\0")
@@ -206,13 +235,6 @@ namespace Lipeg.Boot
                        .Replace("t", "\t")
                        .Replace("v", "\v");
             }
-        }
-
-        private int Single(INode node)
-        {
-            Debug.Assert(node.Name == "single");
-
-            throw new NotImplementedException();
         }
     }
 }

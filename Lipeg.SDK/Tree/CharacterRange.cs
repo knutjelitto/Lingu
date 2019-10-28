@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lipeg.SDK.Tree
 {
-    public class CharacterRange : IEquatable<CharacterRange>
+    public class CharacterRange : CharExpression, IEquatable<CharacterRange>
     {
-        public CharacterRange(char min, char max)
+        private CharacterRange(int min, int max)
         {
             Min = min;
             Max = max;
         }
-        public char Min { get; }
-        public char Max { get; }
+        public int Min { get; }
+        public int Max { get; }
 
-        public static CharacterRange From(char min, char max)
+        public static CharacterRange From(int min, int max)
         {
             return new CharacterRange(min, max);
         }
@@ -23,8 +21,8 @@ namespace Lipeg.SDK.Tree
 
         public bool Equals(CharacterRange? other) =>
             other != null &&
-            other.Min == this.Min &&
-            other.Max == this.Max;
+            other.Min == Min &&
+            other.Max == Max;
 
         public override int GetHashCode() => (Min, Max).GetHashCode();
     }

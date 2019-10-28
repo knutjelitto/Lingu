@@ -40,4 +40,8 @@
     <PegGrammar Include="Grammars\lipeg.peg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DebugOut\" />
+  </ItemGroup>
+
 </Project>

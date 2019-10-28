@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Lipeg.SDK.Tree
 {
     public class ClassExpression : Expression
     {
-        public ClassExpression(IEnumerable<CharacterRange> ranges, bool negated)
+        public ClassExpression(IReadOnlyList<CharExpression> ranges, bool negated)
         {
-            Ranges = ranges.ToList().AsReadOnly();
+            Ranges = ranges.ToList();
             Negated = negated;
         }
 
-        public static ClassExpression From(IEnumerable<CharacterRange> ranges, bool negated = false)
+        public static ClassExpression From(IReadOnlyList<CharExpression> ranges, bool negated = false)
         {
             return new ClassExpression(ranges, negated);
         }
 
-        public IList<CharacterRange> Ranges { get; }
+        public IReadOnlyList<CharExpression> Ranges { get; }
         public bool Negated { get; }
     }
 }

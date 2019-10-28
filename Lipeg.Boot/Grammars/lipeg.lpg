@@ -1,79 +1,172 @@
 ﻿options
 {
+    spacing = _;
 }
 
 rules
 {
     start
-        = _ grammar EOF
+        <- _ grammar EOF
         ;
 
     grammar
-        = s:options r:rules
+        <- s:options r:rules
         ;
 
     options
-        = 'options' _ '{' _ s:option<0,,_> '}' _
+        <- 'options' _ '{' _ s:option* '}' _
         ;
 
     option
-        = '@' _ id:identifier '=' _ v:optionValue
+        <- '@' _ id:identifier '=' _ v:optionValue
         ;
 
     optionValue
-        = _ ids:identifier<1,,'.'_>
+        <- qualifiedIdentifier
+        ;
+
+    qualifiedIdentifier
+        <- ids:(identifier ('.' _ identifier)*)
         ;
 
     rules
-        = 'rules' _ '{' _ r:rule<0,,_> '}' _
+        <- 'rules' _ '{' _ r:rule* '}' _
         ;
 
     rule
-        = identifier ruleFlags '=' _ expression ';' _
+        <- identifier ruleFlags '=' _ expression ';' _
         ;
 
     ruleFlags
-        = ruleFlag<0,,_>
+        <- ruleFlag*
         ;
 
     ruleFlag
-        = '-' identifier
+        <- '-' identifier
+        ;
+
+    expression
+        <- choice
+        ;
+
+    choice
+        <- sequence ('/' _ sequence)*
+        ;
+
+    sequence
+        <- prefix*
+        ;
+
+    prefix
+        <- '&' _ suffix // and
+        /  '!' _ suffix // not
+        /  ':' _ suffix // drop
+        /  '^' _ suffix // promote
+        /  suffix
+        ;
+
+    suffix
+        <- primary '?' _ 
+        /  primary '*' _
+        /  primary '+' _
+        /  primary
+        ;
+
+    primary
+        <- identifier
+        /  stringLiteral
+        /  characterClass
+        /  '.' _
+        /  '(' _ expression ')' _
+        ;
+
+    identifier
+        <- (letter / '_') (letter / digit / '_')*
+        ;
+
+    letter
+        <- [a-zA-Z]
+        ;
+
+    digit
+        <- [0-9]
+        ;
+
+    hexDigit
+        <- [0-9a-fA-F]
+        ;
+
+    stringLiteral
+        <- '\'' stringCharacter* '\''
+        ;
+
+    stringCharacter
+        <- !('\'' / '\\' / eolChar) .
+        /  escape
+        /  unicode
+        ;
+
+    escape
+        <- '\\' [0abefnrtv\-\]\\]
+        ;
+
+    unicode
+        <- '\\u{' hexdigit hexdigit? hexdigit? hexdigit? hexdigit? hexdigit? '}'
+        ;
+
+    characterClass
+        <- '[' '^'? classCharacter* ']'
+        ;
+
+    classCharacter
+        <- classRange
+        /  classSingle
+        ;
+
+    classRange
+        <- classSingle '-' classSingle
+        ;
+
+    classSingle
+        <- !(']' / '\\' / eolChar) .
+        / escape
+        / unicode
         ;
 
     _ -memo
-        = (whitespace / newline / comment)*
+        <- (whitespace / newline / comment)*
         ;
 
-    comment -memoize
-        = singleLineComment
+    comment
+        <- singleLineComment
         / multiLineComment
         ;
 
-    singleLineComment -memoize -lexical
-        = "//" (!eolChar .)*
+    singleLineComment
+        <- '//' (!eolChar .)*
         ;
 
-    multiLineComment -lexical
-        = "/*" (!"*/" .)* "*/"
+    multiLineComment
+        <- '/*' (!'*/' .)* '*/'
         ;
 
-    newline -memoize
-        = "\n"
-        / "\r\n"
-        / "\r"
-        / "\u{2028}"
-        / "\u{2029}"
+    newline
+        <- '\n'
+        / '\r\n'
+        / '\r'
+        / '\u{2028}'
+        / '\u{2029}'
         ;
 
     eolChar
-        = [\n\r\u{2028}\u{2029}]
+        <- [\n\r\u{2028}\u{2029}]
         ;
 
-    whitespace -memoize
-        = [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+    whitespace
+        <- [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
         ;
 
     eof
-        = !.
+        <- !.
         ;
 }
