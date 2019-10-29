@@ -25,7 +25,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "options");
 
-            return node[0].Select(Option).ToList();
+            return node.Select(Option).ToList();
         }
 
         private Option Option(INode node)
@@ -42,7 +42,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "qualifiedIdentifier");
 
-            var identifiers = node[0].Select(Identifier).ToList();
+            var identifiers = node.Select(Identifier).ToList();
 
             return SDK.Tree.QualifiedIdentifier.From(identifiers);
         }
@@ -51,7 +51,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "rules");
 
-            return node[0].Select(Rule).ToList();
+            return node.Select(Rule).ToList();
         }
 
         private Rule Rule(INode node)
@@ -67,7 +67,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "choice");
 
-            var choices = node[0].Select(Sequence).ToList();
+            var choices = node.Select(Sequence).ToList();
 
             return ChoiceExpression.From(choices);
         }
@@ -76,7 +76,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var labeled = node[0].Select(Labeled).ToList();
+            var labeled = node.Select(Labeled).ToList();
 
             return SequenceExpression.From(labeled);
         }
@@ -168,9 +168,9 @@ namespace Lipeg.Boot
         private Expression DoString(INode node)
         {
             Debug.Assert(node.Name == "singleString" || node.Name == "doubleString");
-            Debug.Assert(node[0].Name == "*");
+            //Debug.Assert(node[0].Name == "*");
 
-            var characters = string.Join(string.Empty, node[0].Select(c => Character(c)));
+            var characters = string.Join(string.Empty, node.Select(c => Character(c)));
 
             return SDK.Tree.StringLiteral.From(node.Location, characters);
         }
@@ -179,10 +179,10 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "class" && node.Count == 2);
 
-            var ranges = node[0].Select(SingleOrRange).ToList();
-            var invert = node[1].Count == 1;
+            var invert = node[0].Count == 1;
+            var ranges = node[1].Select(SingleOrRange).ToArray();
 
-            return ClassExpression.From(ranges, invert);
+            return ClassExpression.From(invert, ranges);
         }
 
         private CharExpression SingleOrRange(INode node)
@@ -215,7 +215,7 @@ namespace Lipeg.Boot
 
             return leaf.Name switch
             {
-                "simpleCharacter" => leaf.Value,
+                "character" => leaf.Value,
                 "simpleEscape" => simpleEscape(leaf.Value),
                 "hexEscape" => ((char)int.Parse(leaf.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture),
                 "unicodeEscape" => ((char)int.Parse(leaf.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture),

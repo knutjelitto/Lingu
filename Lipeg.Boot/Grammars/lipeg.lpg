@@ -12,7 +12,7 @@
             ;
 
         grammar
-            <= s:options r:rules
+            <= 'grammar' _ '{' _ s:options r:rules '}' _
             ;
 
         options

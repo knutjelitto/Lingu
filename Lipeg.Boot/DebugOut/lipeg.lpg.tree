@@ -1,766 +1,607 @@
 grammar [identifier, options, rules]
     identifier <lipeg>
-    options [*]
-        * [setting]
-            setting [identifier, qualifiedIdentifier]
-                identifier <spacing>
-                qualifiedIdentifier [+]
-                    + [identifier]
-                        identifier <_>
-    rules [*]
-        * [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
-            rule [identifier, *, choice]
-                identifier <start>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [identifier, identifier, identifier]
-                                identifier <_>
-                                identifier <grammar>
-                                identifier <EOF>
-            rule [identifier, *, choice]
-                identifier <grammar>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [labeled, labeled]
-                                labeled [identifier, identifier]
-                                    identifier <s>
-                                    identifier <options>
-                                labeled [identifier, identifier]
-                                    identifier <r>
-                                    identifier <rules>
-            rule [identifier, *, choice]
-                identifier <options>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, identifier, singleString, identifier, labeled, singleString, identifier]
-                                singleString [*]
-                                    * [simpleCharacter, simpleCharacter, simpleCharacter, simpleCharacter, simpleCharacter, simpleCharacter, simpleCharacter]
-                                        simpleCharacter <o>
-                                        simpleCharacter <p>
-                                        simpleCharacter <t>
-                                        simpleCharacter <i>
-                                        simpleCharacter <o>
-                                        simpleCharacter <n>
-                                        simpleCharacter <s>
-                                identifier <_>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <{>
-                                identifier <_>
-                                labeled [identifier, quantified]
-                                    identifier <s>
-                                    quantified [identifier, *]
-                                        identifier <option>
-                                        * <>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <}>
-                                identifier <_>
-            rule [identifier, *, choice]
-                identifier <option>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, identifier, labeled, singleString, identifier, labeled]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <@>
-                                identifier <_>
-                                labeled [identifier, identifier]
-                                    identifier <id>
-                                    identifier <identifier>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <=>
-                                identifier <_>
-                                labeled [identifier, identifier]
-                                    identifier <v>
-                                    identifier <optionValue>
-            rule [identifier, *, choice]
-                identifier <optionValue>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [identifier]
-                                identifier <qualifiedIdentifier>
-            rule [identifier, *, choice]
-                identifier <qualifiedIdentifier>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [labeled]
-                                labeled [identifier, choice]
-                                    identifier <ids>
-                                    choice [+]
-                                        + [sequence]
-                                            sequence [*]
-                                                * [identifier, quantified]
-                                                    identifier <identifier>
-                                                    quantified [choice, *]
-                                                        choice [+]
-                                                            + [sequence]
-                                                                sequence [*]
-                                                                    * [singleString, identifier, identifier]
-                                                                        singleString [*]
-                                                                            * [simpleCharacter]
-                                                                                simpleCharacter <.>
-                                                                        identifier <_>
-                                                                        identifier <identifier>
-                                                        * <>
-            rule [identifier, *, choice]
-                identifier <rules>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, identifier, singleString, identifier, labeled, singleString, identifier]
-                                singleString [*]
-                                    * [simpleCharacter, simpleCharacter, simpleCharacter, simpleCharacter, simpleCharacter]
-                                        simpleCharacter <r>
-                                        simpleCharacter <u>
-                                        simpleCharacter <l>
-                                        simpleCharacter <e>
-                                        simpleCharacter <s>
-                                identifier <_>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <{>
-                                identifier <_>
-                                labeled [identifier, quantified]
-                                    identifier <r>
-                                    quantified [identifier, *]
-                                        identifier <rule>
-                                        * <>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <}>
-                                identifier <_>
-            rule [identifier, *, choice]
-                identifier <rule>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [identifier, identifier, singleString, identifier, identifier, singleString, identifier]
-                                identifier <identifier>
-                                identifier <ruleFlags>
-                                singleString [*]
-                                    * [simpleCharacter, simpleCharacter]
-                                        simpleCharacter <<>
-                                        simpleCharacter <=>
-                                identifier <_>
-                                identifier <expression>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <;>
-                                identifier <_>
-            rule [identifier, *, choice]
-                identifier <ruleFlags>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [quantified]
-                                quantified [identifier, *]
-                                    identifier <ruleFlag>
-                                    * <>
-            rule [identifier, *, choice]
-                identifier <ruleFlag>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <->
-                                identifier <identifier>
-            rule [identifier, *, choice]
-                identifier <expression>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [identifier]
-                                identifier <choice>
-            rule [identifier, *, choice]
-                identifier <choice>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [identifier, quantified]
-                                identifier <sequence>
-                                quantified [choice, *]
-                                    choice [+]
-                                        + [sequence]
-                                            sequence [*]
-                                                * [singleString, identifier, identifier]
-                                                    singleString [*]
-                                                        * [simpleCharacter]
-                                                            simpleCharacter </>
-                                                    identifier <_>
-                                                    identifier <sequence>
-                                    * <>
-            rule [identifier, *, choice]
-                identifier <sequence>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [quantified]
-                                quantified [identifier, *]
-                                    identifier <prefix>
-                                    * <>
-            rule [identifier, *, choice]
-                identifier <prefix>
-                * []
-                choice [+]
-                    + [sequence, sequence, sequence, sequence, sequence, sequence]
-                        sequence [*]
-                            * [singleString, identifier, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <&>
-                                identifier <_>
-                                identifier <suffix>
-                        sequence [*]
-                            * [singleString, identifier, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <!>
-                                identifier <_>
-                                identifier <suffix>
-                        sequence [*]
-                            * [singleString, identifier, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <:>
-                                identifier <_>
-                                identifier <suffix>
-                        sequence [*]
-                            * [singleString, identifier, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <^>
-                                identifier <_>
-                                identifier <suffix>
-                        sequence [*]
-                            * [singleString, identifier, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <~>
-                                identifier <_>
-                                identifier <suffix>
-                        sequence [*]
-                            * [identifier]
-                                identifier <suffix>
-            rule [identifier, *, choice]
-                identifier <suffix>
-                * []
-                choice [+]
-                    + [sequence, sequence, sequence, sequence]
-                        sequence [*]
-                            * [identifier, singleString, identifier]
-                                identifier <primary>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <?>
-                                identifier <_>
-                        sequence [*]
-                            * [identifier, singleString, identifier]
-                                identifier <primary>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <*>
-                                identifier <_>
-                        sequence [*]
-                            * [identifier, singleString, identifier]
-                                identifier <primary>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <+>
-                                identifier <_>
-                        sequence [*]
-                            * [identifier]
-                                identifier <primary>
-            rule [identifier, *, choice]
-                identifier <primary>
-                * []
-                choice [+]
-                    + [sequence, sequence, sequence, sequence, sequence]
-                        sequence [*]
-                            * [identifier]
-                                identifier <identifier>
-                        sequence [*]
-                            * [identifier]
-                                identifier <string>
-                        sequence [*]
-                            * [identifier]
-                                identifier <characterClass>
-                        sequence [*]
-                            * [singleString, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <.>
-                                identifier <_>
-                        sequence [*]
-                            * [singleString, identifier, identifier, singleString, identifier]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <(>
-                                identifier <_>
-                                identifier <expression>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <)>
-                                identifier <_>
-            rule [identifier, *, choice]
-                identifier <identifier>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [choice, quantified]
-                                choice [+]
-                                    + [sequence, sequence]
-                                        sequence [*]
-                                            * [identifier]
-                                                identifier <letter>
-                                        sequence [*]
-                                            * [singleString]
-                                                singleString [*]
-                                                    * [simpleCharacter]
-                                                        simpleCharacter <_>
-                                quantified [choice, *]
-                                    choice [+]
-                                        + [sequence, sequence, sequence]
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <letter>
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <digit>
-                                            sequence [*]
-                                                * [singleString]
-                                                    singleString [*]
-                                                        * [simpleCharacter]
-                                                            simpleCharacter <_>
-                                    * <>
-            rule [identifier, *, choice]
-                identifier <letter>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [class]
-                                class [*, invert]
-                                    * [range, range]
-                                        range [simpleCharacter, simpleCharacter]
-                                            simpleCharacter <a>
-                                            simpleCharacter <z>
-                                        range [simpleCharacter, simpleCharacter]
-                                            simpleCharacter <A>
-                                            simpleCharacter <Z>
-                                    invert <>
-            rule [identifier, *, choice]
-                identifier <digit>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [class]
-                                class [*, invert]
-                                    * [range]
-                                        range [simpleCharacter, simpleCharacter]
-                                            simpleCharacter <0>
-                                            simpleCharacter <9>
-                                    invert <>
-            rule [identifier, *, choice]
-                identifier <hexDigit>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [class]
-                                class [*, invert]
-                                    * [range, range, range]
-                                        range [simpleCharacter, simpleCharacter]
-                                            simpleCharacter <0>
-                                            simpleCharacter <9>
-                                        range [simpleCharacter, simpleCharacter]
-                                            simpleCharacter <a>
-                                            simpleCharacter <f>
-                                        range [simpleCharacter, simpleCharacter]
-                                            simpleCharacter <A>
-                                            simpleCharacter <F>
-                                    invert <>
-            rule [identifier, *, choice]
-                identifier <string>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, quantified, singleString]
-                                singleString [*]
-                                    * [simpleEscape]
-                                        simpleEscape <'>
-                                quantified [identifier, *]
-                                    identifier <character>
-                                    * <>
-                                singleString [*]
-                                    * [simpleEscape]
-                                        simpleEscape <'>
-            rule [identifier, *, choice]
-                identifier <character>
-                * []
-                choice [+]
-                    + [sequence, sequence, sequence]
-                        sequence [*]
-                            * [not, .]
-                                not [choice]
-                                    choice [+]
-                                        + [sequence, sequence, sequence]
-                                            sequence [*]
-                                                * [singleString]
-                                                    singleString [*]
-                                                        * [simpleEscape]
-                                                            simpleEscape <'>
-                                            sequence [*]
-                                                * [singleString]
-                                                    singleString [*]
-                                                        * [simpleEscape]
-                                                            simpleEscape <\>
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <eolChar>
-                                . <>
-                        sequence [*]
-                            * [identifier]
-                                identifier <escape>
-                        sequence [*]
-                            * [identifier]
-                                identifier <unicode>
-            rule [identifier, *, choice]
-                identifier <escape>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, class]
-                                singleString [*]
-                                    * [simpleEscape]
-                                        simpleEscape <\>
-                                class [*, invert]
-                                    * [single, single, single, single, single, single, single, single, single, single, single, single]
-                                        single [simpleCharacter]
-                                            simpleCharacter <0>
-                                        single [simpleCharacter]
-                                            simpleCharacter <a>
-                                        single [simpleCharacter]
-                                            simpleCharacter <b>
-                                        single [simpleCharacter]
-                                            simpleCharacter <e>
-                                        single [simpleCharacter]
-                                            simpleCharacter <f>
-                                        single [simpleCharacter]
-                                            simpleCharacter <n>
-                                        single [simpleCharacter]
-                                            simpleCharacter <r>
-                                        single [simpleCharacter]
-                                            simpleCharacter <t>
-                                        single [simpleCharacter]
-                                            simpleCharacter <v>
-                                        single [simpleEscape]
-                                            simpleEscape <->
-                                        single [simpleEscape]
-                                            simpleEscape <]>
-                                        single [simpleEscape]
-                                            simpleEscape <\>
-                                    invert <>
-            rule [identifier, *, choice]
-                identifier <unicode>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, identifier, quantified, quantified, quantified, quantified, quantified, singleString]
-                                singleString [*]
-                                    * [simpleEscape, simpleCharacter, simpleCharacter]
-                                        simpleEscape <\>
-                                        simpleCharacter <u>
-                                        simpleCharacter <{>
-                                identifier <hexdigit>
-                                quantified [identifier, ?]
-                                    identifier <hexdigit>
-                                    ? <>
-                                quantified [identifier, ?]
-                                    identifier <hexdigit>
-                                    ? <>
-                                quantified [identifier, ?]
-                                    identifier <hexdigit>
-                                    ? <>
-                                quantified [identifier, ?]
-                                    identifier <hexdigit>
-                                    ? <>
-                                quantified [identifier, ?]
-                                    identifier <hexdigit>
-                                    ? <>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <}>
-            rule [identifier, *, choice]
-                identifier <characterClass>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, quantified, quantified, singleString]
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <[>
-                                quantified [singleString, ?]
-                                    singleString [*]
-                                        * [simpleCharacter]
-                                            simpleCharacter <^>
-                                    ? <>
-                                quantified [identifier, *]
-                                    identifier <classCharacter>
-                                    * <>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <]>
-            rule [identifier, *, choice]
-                identifier <classCharacter>
-                * []
-                choice [+]
-                    + [sequence, sequence]
-                        sequence [*]
-                            * [identifier]
-                                identifier <classRange>
-                        sequence [*]
-                            * [identifier]
-                                identifier <classSingle>
-            rule [identifier, *, choice]
-                identifier <classRange>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [identifier, singleString, identifier]
-                                identifier <classSingle>
-                                singleString [*]
-                                    * [simpleCharacter]
-                                        simpleCharacter <->
-                                identifier <classSingle>
-            rule [identifier, *, choice]
-                identifier <classSingle>
-                * []
-                choice [+]
-                    + [sequence, sequence, sequence]
-                        sequence [*]
-                            * [not, .]
-                                not [choice]
-                                    choice [+]
-                                        + [sequence, sequence, sequence]
-                                            sequence [*]
-                                                * [singleString]
-                                                    singleString [*]
-                                                        * [simpleCharacter]
-                                                            simpleCharacter <]>
-                                            sequence [*]
-                                                * [singleString]
-                                                    singleString [*]
-                                                        * [simpleEscape]
-                                                            simpleEscape <\>
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <eolChar>
-                                . <>
-                        sequence [*]
-                            * [identifier]
-                                identifier <escape>
-                        sequence [*]
-                            * [identifier]
-                                identifier <unicode>
-            rule [identifier, *, choice]
+    options [option]
+        option [identifier, qualifiedIdentifier]
+            identifier <spacing>
+            qualifiedIdentifier [identifier]
                 identifier <_>
-                * [identifier]
-                    identifier <memo>
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [quantified]
+    rules [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+        rule [identifier, *, choice]
+            identifier <start>
+            * []
+            choice [sequence]
+                sequence [identifier, identifier, identifier]
+                    identifier <_>
+                    identifier <grammar>
+                    identifier <EOF>
+        rule [identifier, *, choice]
+            identifier <grammar>
+            * []
+            choice [sequence]
+                sequence [singleString, identifier, singleString, identifier, labeled, labeled, singleString, identifier]
+                    singleString [character, character, character, character, character, character, character]
+                        character <g>
+                        character <r>
+                        character <a>
+                        character <m>
+                        character <m>
+                        character <a>
+                        character <r>
+                    identifier <_>
+                    singleString [character]
+                        character <{>
+                    identifier <_>
+                    labeled [identifier, identifier]
+                        identifier <s>
+                        identifier <options>
+                    labeled [identifier, identifier]
+                        identifier <r>
+                        identifier <rules>
+                    singleString [character]
+                        character <}>
+                    identifier <_>
+        rule [identifier, *, choice]
+            identifier <options>
+            * []
+            choice [sequence]
+                sequence [singleString, identifier, singleString, identifier, labeled, singleString, identifier]
+                    singleString [character, character, character, character, character, character, character]
+                        character <o>
+                        character <p>
+                        character <t>
+                        character <i>
+                        character <o>
+                        character <n>
+                        character <s>
+                    identifier <_>
+                    singleString [character]
+                        character <{>
+                    identifier <_>
+                    labeled [identifier, quantified]
+                        identifier <s>
+                        quantified [identifier, *]
+                            identifier <option>
+                            * <>
+                    singleString [character]
+                        character <}>
+                    identifier <_>
+        rule [identifier, *, choice]
+            identifier <option>
+            * []
+            choice [sequence]
+                sequence [singleString, identifier, labeled, singleString, identifier, labeled]
+                    singleString [character]
+                        character <@>
+                    identifier <_>
+                    labeled [identifier, identifier]
+                        identifier <id>
+                        identifier <identifier>
+                    singleString [character]
+                        character <=>
+                    identifier <_>
+                    labeled [identifier, identifier]
+                        identifier <v>
+                        identifier <optionValue>
+        rule [identifier, *, choice]
+            identifier <optionValue>
+            * []
+            choice [sequence]
+                sequence [identifier]
+                    identifier <qualifiedIdentifier>
+        rule [identifier, *, choice]
+            identifier <qualifiedIdentifier>
+            * []
+            choice [sequence]
+                sequence [labeled]
+                    labeled [identifier, choice]
+                        identifier <ids>
+                        choice [sequence]
+                            sequence [identifier, quantified]
+                                identifier <identifier>
                                 quantified [choice, *]
-                                    choice [+]
-                                        + [sequence, sequence, sequence]
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <whitespace>
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <newline>
-                                            sequence [*]
-                                                * [identifier]
-                                                    identifier <comment>
+                                    choice [sequence]
+                                        sequence [singleString, identifier, identifier]
+                                            singleString [character]
+                                                character <.>
+                                            identifier <_>
+                                            identifier <identifier>
                                     * <>
-            rule [identifier, *, choice]
-                identifier <comment>
-                * []
-                choice [+]
-                    + [sequence, sequence]
-                        sequence [*]
-                            * [identifier]
-                                identifier <singleLineComment>
-                        sequence [*]
-                            * [identifier]
-                                identifier <multiLineComment>
-            rule [identifier, *, choice]
-                identifier <singleLineComment>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, quantified]
-                                singleString [*]
-                                    * [simpleCharacter, simpleCharacter]
-                                        simpleCharacter </>
-                                        simpleCharacter </>
-                                quantified [choice, *]
-                                    choice [+]
-                                        + [sequence]
-                                            sequence [*]
-                                                * [not, .]
-                                                    not [identifier]
-                                                        identifier <eolChar>
-                                                    . <>
-                                    * <>
-            rule [identifier, *, choice]
-                identifier <multiLineComment>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [singleString, quantified, singleString]
-                                singleString [*]
-                                    * [simpleCharacter, simpleCharacter]
-                                        simpleCharacter </>
-                                        simpleCharacter <*>
-                                quantified [choice, *]
-                                    choice [+]
-                                        + [sequence]
-                                            sequence [*]
-                                                * [not, .]
-                                                    not [singleString]
-                                                        singleString [*]
-                                                            * [simpleCharacter, simpleCharacter]
-                                                                simpleCharacter <*>
-                                                                simpleCharacter </>
-                                                    . <>
-                                    * <>
-                                singleString [*]
-                                    * [simpleCharacter, simpleCharacter]
-                                        simpleCharacter <*>
-                                        simpleCharacter </>
-            rule [identifier, *, choice]
-                identifier <newline>
-                * []
-                choice [+]
-                    + [sequence, sequence, sequence, sequence, sequence]
-                        sequence [*]
-                            * [singleString]
-                                singleString [*]
-                                    * [simpleEscape]
-                                        simpleEscape <n>
-                        sequence [*]
-                            * [singleString]
-                                singleString [*]
-                                    * [simpleEscape, simpleEscape]
-                                        simpleEscape <r>
-                                        simpleEscape <n>
-                        sequence [*]
-                            * [singleString]
-                                singleString [*]
-                                    * [simpleEscape]
-                                        simpleEscape <r>
-                        sequence [*]
-                            * [singleString]
-                                singleString [*]
-                                    * [unicodeEscape]
-                                        unicodeEscape <2028>
-                        sequence [*]
-                            * [singleString]
-                                singleString [*]
-                                    * [unicodeEscape]
-                                        unicodeEscape <2029>
-            rule [identifier, *, choice]
-                identifier <eolChar>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [class]
-                                class [*, invert]
-                                    * [single, single, single, single]
-                                        single [simpleEscape]
-                                            simpleEscape <n>
-                                        single [simpleEscape]
-                                            simpleEscape <r>
-                                        single [unicodeEscape]
-                                            unicodeEscape <2028>
-                                        single [unicodeEscape]
-                                            unicodeEscape <2029>
-                                    invert <>
-            rule [identifier, *, choice]
-                identifier <whitespace>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [class]
-                                class [*, invert]
-                                    * [single, single, single, single, single, single, single, single, range, single, single, single]
-                                        single [simpleCharacter]
-                                            simpleCharacter < >
-                                        single [simpleEscape]
-                                            simpleEscape <t>
-                                        single [simpleEscape]
-                                            simpleEscape <v>
-                                        single [simpleEscape]
-                                            simpleEscape <f>
-                                        single [unicodeEscape]
-                                            unicodeEscape <00A0>
-                                        single [unicodeEscape]
-                                            unicodeEscape <FEFF>
-                                        single [unicodeEscape]
-                                            unicodeEscape <1680>
-                                        single [unicodeEscape]
-                                            unicodeEscape <180E>
-                                        range [unicodeEscape, unicodeEscape]
-                                            unicodeEscape <2000>
-                                            unicodeEscape <200A>
-                                        single [unicodeEscape]
-                                            unicodeEscape <202F>
-                                        single [unicodeEscape]
-                                            unicodeEscape <205F>
-                                        single [unicodeEscape]
-                                            unicodeEscape <3000>
-                                    invert <>
-            rule [identifier, *, choice]
-                identifier <eof>
-                * []
-                choice [+]
-                    + [sequence]
-                        sequence [*]
-                            * [not]
-                                not [.]
-                                    . <>
+        rule [identifier, *, choice]
+            identifier <rules>
+            * []
+            choice [sequence]
+                sequence [singleString, identifier, singleString, identifier, labeled, singleString, identifier]
+                    singleString [character, character, character, character, character]
+                        character <r>
+                        character <u>
+                        character <l>
+                        character <e>
+                        character <s>
+                    identifier <_>
+                    singleString [character]
+                        character <{>
+                    identifier <_>
+                    labeled [identifier, quantified]
+                        identifier <r>
+                        quantified [identifier, *]
+                            identifier <rule>
+                            * <>
+                    singleString [character]
+                        character <}>
+                    identifier <_>
+        rule [identifier, *, choice]
+            identifier <rule>
+            * []
+            choice [sequence]
+                sequence [identifier, identifier, singleString, identifier, identifier, singleString, identifier]
+                    identifier <identifier>
+                    identifier <ruleFlags>
+                    singleString [character, character]
+                        character <<>
+                        character <=>
+                    identifier <_>
+                    identifier <expression>
+                    singleString [character]
+                        character <;>
+                    identifier <_>
+        rule [identifier, *, choice]
+            identifier <ruleFlags>
+            * []
+            choice [sequence]
+                sequence [quantified]
+                    quantified [identifier, *]
+                        identifier <ruleFlag>
+                        * <>
+        rule [identifier, *, choice]
+            identifier <ruleFlag>
+            * []
+            choice [sequence]
+                sequence [singleString, identifier]
+                    singleString [character]
+                        character <->
+                    identifier <identifier>
+        rule [identifier, *, choice]
+            identifier <expression>
+            * []
+            choice [sequence]
+                sequence [identifier]
+                    identifier <choice>
+        rule [identifier, *, choice]
+            identifier <choice>
+            * []
+            choice [sequence]
+                sequence [identifier, quantified]
+                    identifier <sequence>
+                    quantified [choice, *]
+                        choice [sequence]
+                            sequence [singleString, identifier, identifier]
+                                singleString [character]
+                                    character </>
+                                identifier <_>
+                                identifier <sequence>
+                        * <>
+        rule [identifier, *, choice]
+            identifier <sequence>
+            * []
+            choice [sequence]
+                sequence [quantified]
+                    quantified [identifier, *]
+                        identifier <prefix>
+                        * <>
+        rule [identifier, *, choice]
+            identifier <prefix>
+            * []
+            choice [sequence, sequence, sequence, sequence, sequence, sequence]
+                sequence [singleString, identifier, identifier]
+                    singleString [character]
+                        character <&>
+                    identifier <_>
+                    identifier <suffix>
+                sequence [singleString, identifier, identifier]
+                    singleString [character]
+                        character <!>
+                    identifier <_>
+                    identifier <suffix>
+                sequence [singleString, identifier, identifier]
+                    singleString [character]
+                        character <:>
+                    identifier <_>
+                    identifier <suffix>
+                sequence [singleString, identifier, identifier]
+                    singleString [character]
+                        character <^>
+                    identifier <_>
+                    identifier <suffix>
+                sequence [singleString, identifier, identifier]
+                    singleString [character]
+                        character <~>
+                    identifier <_>
+                    identifier <suffix>
+                sequence [identifier]
+                    identifier <suffix>
+        rule [identifier, *, choice]
+            identifier <suffix>
+            * []
+            choice [sequence, sequence, sequence, sequence]
+                sequence [identifier, singleString, identifier]
+                    identifier <primary>
+                    singleString [character]
+                        character <?>
+                    identifier <_>
+                sequence [identifier, singleString, identifier]
+                    identifier <primary>
+                    singleString [character]
+                        character <*>
+                    identifier <_>
+                sequence [identifier, singleString, identifier]
+                    identifier <primary>
+                    singleString [character]
+                        character <+>
+                    identifier <_>
+                sequence [identifier]
+                    identifier <primary>
+        rule [identifier, *, choice]
+            identifier <primary>
+            * []
+            choice [sequence, sequence, sequence, sequence, sequence]
+                sequence [identifier]
+                    identifier <identifier>
+                sequence [identifier]
+                    identifier <string>
+                sequence [identifier]
+                    identifier <characterClass>
+                sequence [singleString, identifier]
+                    singleString [character]
+                        character <.>
+                    identifier <_>
+                sequence [singleString, identifier, identifier, singleString, identifier]
+                    singleString [character]
+                        character <(>
+                    identifier <_>
+                    identifier <expression>
+                    singleString [character]
+                        character <)>
+                    identifier <_>
+        rule [identifier, *, choice]
+            identifier <identifier>
+            * []
+            choice [sequence]
+                sequence [choice, quantified]
+                    choice [sequence, sequence]
+                        sequence [identifier]
+                            identifier <letter>
+                        sequence [singleString]
+                            singleString [character]
+                                character <_>
+                    quantified [choice, *]
+                        choice [sequence, sequence, sequence]
+                            sequence [identifier]
+                                identifier <letter>
+                            sequence [identifier]
+                                identifier <digit>
+                            sequence [singleString]
+                                singleString [character]
+                                    character <_>
+                        * <>
+        rule [identifier, *, choice]
+            identifier <letter>
+            * []
+            choice [sequence]
+                sequence [class]
+                    class [invert, *]
+                        invert <>
+                        * [range, range]
+                            range [character, character]
+                                character <a>
+                                character <z>
+                            range [character, character]
+                                character <A>
+                                character <Z>
+        rule [identifier, *, choice]
+            identifier <digit>
+            * []
+            choice [sequence]
+                sequence [class]
+                    class [invert, *]
+                        invert <>
+                        * [range]
+                            range [character, character]
+                                character <0>
+                                character <9>
+        rule [identifier, *, choice]
+            identifier <hexDigit>
+            * []
+            choice [sequence]
+                sequence [class]
+                    class [invert, *]
+                        invert <>
+                        * [range, range, range]
+                            range [character, character]
+                                character <0>
+                                character <9>
+                            range [character, character]
+                                character <a>
+                                character <f>
+                            range [character, character]
+                                character <A>
+                                character <F>
+        rule [identifier, *, choice]
+            identifier <string>
+            * []
+            choice [sequence]
+                sequence [singleString, quantified, singleString]
+                    singleString [simpleEscape]
+                        simpleEscape <'>
+                    quantified [identifier, *]
+                        identifier <character>
+                        * <>
+                    singleString [simpleEscape]
+                        simpleEscape <'>
+        rule [identifier, *, choice]
+            identifier <character>
+            * []
+            choice [sequence, sequence, sequence]
+                sequence [not, .]
+                    not [choice]
+                        choice [sequence, sequence, sequence]
+                            sequence [singleString]
+                                singleString [simpleEscape]
+                                    simpleEscape <'>
+                            sequence [singleString]
+                                singleString [simpleEscape]
+                                    simpleEscape <\>
+                            sequence [identifier]
+                                identifier <eolChar>
+                    . <>
+                sequence [identifier]
+                    identifier <escape>
+                sequence [identifier]
+                    identifier <unicode>
+        rule [identifier, *, choice]
+            identifier <escape>
+            * []
+            choice [sequence]
+                sequence [singleString, class]
+                    singleString [simpleEscape]
+                        simpleEscape <\>
+                    class [invert, *]
+                        invert <>
+                        * [single, single, single, single, single, single, single, single, single, single, single, single]
+                            single [character]
+                                character <0>
+                            single [character]
+                                character <a>
+                            single [character]
+                                character <b>
+                            single [character]
+                                character <e>
+                            single [character]
+                                character <f>
+                            single [character]
+                                character <n>
+                            single [character]
+                                character <r>
+                            single [character]
+                                character <t>
+                            single [character]
+                                character <v>
+                            single [simpleEscape]
+                                simpleEscape <->
+                            single [simpleEscape]
+                                simpleEscape <]>
+                            single [simpleEscape]
+                                simpleEscape <\>
+        rule [identifier, *, choice]
+            identifier <unicode>
+            * []
+            choice [sequence]
+                sequence [singleString, identifier, quantified, quantified, quantified, quantified, quantified, singleString]
+                    singleString [simpleEscape, character, character]
+                        simpleEscape <\>
+                        character <u>
+                        character <{>
+                    identifier <hexdigit>
+                    quantified [identifier, ?]
+                        identifier <hexdigit>
+                        ? <>
+                    quantified [identifier, ?]
+                        identifier <hexdigit>
+                        ? <>
+                    quantified [identifier, ?]
+                        identifier <hexdigit>
+                        ? <>
+                    quantified [identifier, ?]
+                        identifier <hexdigit>
+                        ? <>
+                    quantified [identifier, ?]
+                        identifier <hexdigit>
+                        ? <>
+                    singleString [character]
+                        character <}>
+        rule [identifier, *, choice]
+            identifier <characterClass>
+            * []
+            choice [sequence]
+                sequence [singleString, quantified, quantified, singleString]
+                    singleString [character]
+                        character <[>
+                    quantified [singleString, ?]
+                        singleString [character]
+                            character <^>
+                        ? <>
+                    quantified [identifier, *]
+                        identifier <classCharacter>
+                        * <>
+                    singleString [character]
+                        character <]>
+        rule [identifier, *, choice]
+            identifier <classCharacter>
+            * []
+            choice [sequence, sequence]
+                sequence [identifier]
+                    identifier <classRange>
+                sequence [identifier]
+                    identifier <classSingle>
+        rule [identifier, *, choice]
+            identifier <classRange>
+            * []
+            choice [sequence]
+                sequence [identifier, singleString, identifier]
+                    identifier <classSingle>
+                    singleString [character]
+                        character <->
+                    identifier <classSingle>
+        rule [identifier, *, choice]
+            identifier <classSingle>
+            * []
+            choice [sequence, sequence, sequence]
+                sequence [not, .]
+                    not [choice]
+                        choice [sequence, sequence, sequence]
+                            sequence [singleString]
+                                singleString [character]
+                                    character <]>
+                            sequence [singleString]
+                                singleString [simpleEscape]
+                                    simpleEscape <\>
+                            sequence [identifier]
+                                identifier <eolChar>
+                    . <>
+                sequence [identifier]
+                    identifier <escape>
+                sequence [identifier]
+                    identifier <unicode>
+        rule [identifier, *, choice]
+            identifier <_>
+            * [identifier]
+                identifier <memo>
+            choice [sequence]
+                sequence [quantified]
+                    quantified [choice, *]
+                        choice [sequence, sequence, sequence]
+                            sequence [identifier]
+                                identifier <whitespace>
+                            sequence [identifier]
+                                identifier <newline>
+                            sequence [identifier]
+                                identifier <comment>
+                        * <>
+        rule [identifier, *, choice]
+            identifier <comment>
+            * []
+            choice [sequence, sequence]
+                sequence [identifier]
+                    identifier <singleLineComment>
+                sequence [identifier]
+                    identifier <multiLineComment>
+        rule [identifier, *, choice]
+            identifier <singleLineComment>
+            * []
+            choice [sequence]
+                sequence [singleString, quantified]
+                    singleString [character, character]
+                        character </>
+                        character </>
+                    quantified [choice, *]
+                        choice [sequence]
+                            sequence [not, .]
+                                not [identifier]
+                                    identifier <eolChar>
+                                . <>
+                        * <>
+        rule [identifier, *, choice]
+            identifier <multiLineComment>
+            * []
+            choice [sequence]
+                sequence [singleString, quantified, singleString]
+                    singleString [character, character]
+                        character </>
+                        character <*>
+                    quantified [choice, *]
+                        choice [sequence]
+                            sequence [not, .]
+                                not [singleString]
+                                    singleString [character, character]
+                                        character <*>
+                                        character </>
+                                . <>
+                        * <>
+                    singleString [character, character]
+                        character <*>
+                        character </>
+        rule [identifier, *, choice]
+            identifier <newline>
+            * []
+            choice [sequence, sequence, sequence, sequence, sequence]
+                sequence [singleString]
+                    singleString [simpleEscape]
+                        simpleEscape <n>
+                sequence [singleString]
+                    singleString [simpleEscape, simpleEscape]
+                        simpleEscape <r>
+                        simpleEscape <n>
+                sequence [singleString]
+                    singleString [simpleEscape]
+                        simpleEscape <r>
+                sequence [singleString]
+                    singleString [unicodeEscape]
+                        unicodeEscape <2028>
+                sequence [singleString]
+                    singleString [unicodeEscape]
+                        unicodeEscape <2029>
+        rule [identifier, *, choice]
+            identifier <eolChar>
+            * []
+            choice [sequence]
+                sequence [class]
+                    class [invert, *]
+                        invert <>
+                        * [single, single, single, single]
+                            single [simpleEscape]
+                                simpleEscape <n>
+                            single [simpleEscape]
+                                simpleEscape <r>
+                            single [unicodeEscape]
+                                unicodeEscape <2028>
+                            single [unicodeEscape]
+                                unicodeEscape <2029>
+        rule [identifier, *, choice]
+            identifier <whitespace>
+            * []
+            choice [sequence]
+                sequence [class]
+                    class [invert, *]
+                        invert <>
+                        * [single, single, single, single, single, single, single, single, range, single, single, single]
+                            single [character]
+                                character < >
+                            single [simpleEscape]
+                                simpleEscape <t>
+                            single [simpleEscape]
+                                simpleEscape <v>
+                            single [simpleEscape]
+                                simpleEscape <f>
+                            single [unicodeEscape]
+                                unicodeEscape <00A0>
+                            single [unicodeEscape]
+                                unicodeEscape <FEFF>
+                            single [unicodeEscape]
+                                unicodeEscape <1680>
+                            single [unicodeEscape]
+                                unicodeEscape <180E>
+                            range [unicodeEscape, unicodeEscape]
+                                unicodeEscape <2000>
+                                unicodeEscape <200A>
+                            single [unicodeEscape]
+                                unicodeEscape <202F>
+                            single [unicodeEscape]
+                                unicodeEscape <205F>
+                            single [unicodeEscape]
+                                unicodeEscape <3000>
+        rule [identifier, *, choice]
+            identifier <eof>
+            * []
+            choice [sequence]
+                sequence [not]
+                    not [.]
+                        . <>

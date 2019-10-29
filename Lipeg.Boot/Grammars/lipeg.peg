@@ -12,19 +12,19 @@ grammar <INode>
     = _ a:'grammar' _ i:identifier '{' _ o:options r:rules e:'}' _ EOF { N(aStart, eEnd, "grammar", i, o, r) }
 
 options <INode>
-    = a:'options' _ '{' _ s:option<0,,_> o:'}' _ { N(aStart, oEnd, "options", NS(sStart, sEnd, s)) }
+    = a:'options' _ '{' _ s:option<0,,_> o:'}' _ { NE(aStart, oEnd, "options", NS(sStart, sEnd, s)) }
 
 option <INode>
-    = id:identifier '=' _ value:optionValue o:(';' _)? { N(idStart, oEnd, "setting", id, value) }
+    = id:identifier '=' _ value:optionValue o:(';' _)? { N(idStart, oEnd, "option", id, value) }
 
 optionValue <INode>
     = qualifiedIdentifier
 
 qualifiedIdentifier <INode>
-    = id:identifier<1,,'.' _> { N(idStart, idEnd, "qualifiedIdentifier", NP(idStart, idEnd, id)) }
+    = id:identifier<1,,'.' _> { NE(idStart, idEnd, "qualifiedIdentifier", NP(idStart, idEnd, id)) }
 
 rules <INode>
-    = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { N(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
+    = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { NE(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
 
 rule <INode>
     = a:identifier f:ruleFlags '<=' _ e:expression o:';' _ { N(aStart, oEnd, "rule", a, f, e) }
@@ -40,10 +40,10 @@ expression <INode>
     = choice
 
 choice <INode>
-    = c:sequence<1,,_ '/' _>  { N(cStart, cEnd, "choice", NP(cStart, cEnd, c)) }
+    = c:sequence<1,,_ '/' _>  { NE(cStart, cEnd, "choice", NP(cStart, cEnd, c)) }
 
 sequence <INode>
-    = e:labeled<0,,_> { N(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
+    = e:labeled<0,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
 
 labeled <INode> -memoize
     = id:identifier ':' _ e:prefix { N(idStart, eEnd, "labeled", id, e) }
@@ -94,10 +94,10 @@ doubleQuotedString <INode>
   = a:'"' c:(doubleQuotedCharacter*) o:'"' _ { N(aStart, oEnd, "doubleString", NS(cStart, cEnd, c)) }
 
 singleQuotedString <INode>
-    = a:'\'' c:(singleQuotedCharacter*) o:'\'' _ { N(aStart, oEnd, "singleString", NS(cStart, cEnd, c)) }
+    = a:'\'' c:(singleQuotedCharacter*) o:'\'' _ { NE(aStart, oEnd, "singleString", NS(cStart, cEnd, c)) }
 
 class <INode>
-    = a:'[' inv:'^'? p:(classCharacterRange / classCharacter)* o:']' _ { N(aStart, oEnd, "class", NS(pStart, pEnd, p), N(invStart, invEnd, "invert", NO(inv))) }
+    = a:'[' inv:'^'? p:(classCharacterRange / classCharacter)* o:']' _ { N(aStart, oEnd, "class", N(invStart, invEnd, "invert", NO(inv)), NS(pStart, pEnd, p)) }
 
 doubleQuotedCharacter <INode>
     = simpleDoubleQuotedCharacter
@@ -124,13 +124,13 @@ classCharacter <INode>
     = c:bracketDelimitedCharacter { N(cStart, cEnd, "single", c) }
 
 simpleDoubleQuotedCharacter <INode>
-    = !('"' / "\\" / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
+    = !('"' / "\\" / eolChar) c:. { N(cStart, cEnd, "character", c) }
 
 simpleSingleQuotedCharacter <INode>
-    = !("'" / "\\" / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
+    = !("'" / "\\" / eolChar) c:. { N(cStart, cEnd, "character", c) }
 
 simpleBracketDelimitedCharacter <INode>
-    = !(']' / '\\' / eolChar) c:. { N(cStart, cEnd, "simpleCharacter", c) }
+    = !(']' / '\\' / eolChar) c:. { N(cStart, cEnd, "character", c) }
 
 simpleEscapeSequence <INode>
     = "\\" !("x" / "u" / eolChar) c:.   { N(cStart, cEnd, "simpleEscape", c) }

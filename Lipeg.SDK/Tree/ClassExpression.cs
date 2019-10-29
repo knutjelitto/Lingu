@@ -5,18 +5,18 @@ namespace Lipeg.SDK.Tree
 {
     public class ClassExpression : Expression
     {
-        public ClassExpression(IReadOnlyList<CharExpression> ranges, bool negated)
+        public ClassExpression(bool negated, params CharExpression[] ranges)
         {
-            Ranges = ranges.ToList();
             Negated = negated;
-        }
-
-        public static ClassExpression From(IReadOnlyList<CharExpression> ranges, bool negated = false)
-        {
-            return new ClassExpression(ranges, negated);
+            Ranges = ranges;
         }
 
         public IReadOnlyList<CharExpression> Ranges { get; }
         public bool Negated { get; }
+
+        public static ClassExpression From(bool negated, params CharExpression[] ranges)
+        {
+            return new ClassExpression(negated,  ranges);
+        }
     }
 }
