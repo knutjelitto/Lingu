@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface ICompileError
+    public enum ErrorCode
     {
-        ErrorCode Code { get; }
-        string Message { get; }
+        SourceFileNotFound = 1,
     }
 }

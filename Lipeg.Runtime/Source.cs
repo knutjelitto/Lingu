@@ -33,16 +33,18 @@ namespace Lipeg.Runtime
         public char this[int index] => Content[index];
         public bool AtEnd(int index) => index >= Content.Length;
 
-        public static ISource FromFile(ICompileResult result, FileRef sourceFile)
+        public static ISource? FromFile(ICompileResult result, FileRef sourceFile)
         {
             try
             {
                 return new Source(sourceFile.FileName, sourceFile.GetContent());
             }
-            catch (FileNotFoundException exception)
+            catch (FileNotFoundException)
             {
-                result.AddError()
+                result.AddError(new CompileError(ErrorCode.SourceFileNotFound, sourceFile));
             }
+
+            return null;
         }
 
         public static ISource FromString(string content)

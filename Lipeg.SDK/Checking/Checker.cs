@@ -15,7 +15,7 @@ namespace Lipeg.SDK.Checking
 
         private static void Check(ICompileResult result, Func<ICheckPass> pass)
         {
-            if (!result.IsExhausted)
+            if (!result.ShouldStop)
             {
                 pass().Check(result);
             }

@@ -9,10 +9,21 @@ namespace Lipeg.SDK.Checking
     {
         private List<ICompileError> errors = new List<ICompileError>();
 
+        public void AddError(ICompileError error)
+        {
+            errors.Add(error);
+        }
+
+        public void AddFatal(ICompileError error)
+        {
+            IsFatal = true;
+            AddError(error);
+        }
+
         public IReadOnlyList<ICompileError> Errors => errors;
 
-        public bool HasError => errors.Count > 0;
-
-        public bool IsExhausted => errors.Count > 4;
+        public bool HasErrors => errors.Count > 0;
+        public bool IsFatal { get; private set; }
+        public bool ShouldStop => IsFatal || errors.Count > 4;
     }
 }

@@ -27,7 +27,7 @@ namespace Lipeg.SDK.Common
             var e1 = watch.ElapsedTicks;
             Console.WriteLine($"{msg}    (cold): {watch.Elapsed}");
 
-            var max = 10;
+            var max = 5;
             T result;
             for (var i = 0; i < max; ++i)
             {

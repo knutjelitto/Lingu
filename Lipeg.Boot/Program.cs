@@ -26,7 +26,8 @@ namespace Lipeg.Boot
             var grammarDir = projectDir.Dir("Grammars");
             var debugOut = projectDir.Dir("DebugOut");
 
-            var lpgGrammar = grammarDir.File(grammarFile + "x");
+            var lpgGrammar = grammarDir.File(grammarFile);
+
 
             Environment.CurrentDirectory = debugOut;
 
@@ -34,16 +35,33 @@ namespace Lipeg.Boot
 
             var source = Source.FromFile(result, lpgGrammar);
 
-            var parser = new LipegParser(source);
+            if (!result.ShouldStop && source != null)
+            {
 
-            var parseTree = Timer.TimeBoth("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+                var parser = new LipegParser(source);
 
-            var parseTreeFile = debugOut.File(lpgGrammar.FileName).Add(".tree");
-            Dumper.Dump(parseTreeFile, new DumpParseTree(), parseTree);
+                GC.TryStartNoGCRegion(32 * 1024 * 1024);
+                var parseTree = Timer.TimeBoth("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+                GC.EndNoGCRegion();
 
-            var grammarBuilder = new GrammarBuilder();
+                var parseTreeFile = debugOut.File(lpgGrammar.FileName).Add(".tree");
+                Dumper.Dump(parseTreeFile, new DumpParseTree(), parseTree);
 
-            var grammar = Timer.TimeBoth("build tree", () => grammarBuilder.Build(parseTree));
+                var grammarBuilder = new GrammarBuilder();
+
+                GC.TryStartNoGCRegion(32 * 1024 * 1024);
+                var grammar = Timer.TimeBoth("build tree", () => grammarBuilder.Build(parseTree));
+                GC.EndNoGCRegion();
+            }
+
+            if (result.HasErrors)
+            {
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"{error.Code}: {error.Message}");
+                }
+            }
+
         }
     }
 }
