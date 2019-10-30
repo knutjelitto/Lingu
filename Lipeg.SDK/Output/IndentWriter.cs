@@ -1,4 +1,4 @@
-using Lipeg.SDK.Tools;
+using Lipeg.SDK.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +38,8 @@ namespace Lipeg.SDK.Output
 
         public void Indent(Action body)
         {
+            if (body == null) throw new ArgumentNullException(nameof(body));
+
             using (Indent())
             {
                 body();
@@ -46,6 +48,8 @@ namespace Lipeg.SDK.Output
 
         public void Indend(string head, Action body)
         {
+            if (body == null) throw new ArgumentNullException(nameof(body));
+
             AddLine(head);
             using (Indent())
             {
@@ -98,9 +102,6 @@ namespace Lipeg.SDK.Output
                     File.WriteAllLines(path, lines);
                     return;
                 }
-                catch
-                {
-                }
                 finally
                 {
                     Thread.Sleep(42);
@@ -110,6 +111,8 @@ namespace Lipeg.SDK.Output
 
         public void Dump(IWriter writer)
         {
+            if (writer == null) throw new ArgumentNullException(nameof(writer));
+
             foreach (var line in lines)
             {
                 writer.WriteLine(line);

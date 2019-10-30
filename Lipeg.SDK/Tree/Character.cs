@@ -6,23 +6,23 @@ namespace Lipeg.SDK.Tree
 {
     public class Character : CharExpression, IEquatable<Character>
     {
-        private Character(int @char)
+        private Character(int value)
         {
-            Char = @char;
+            Value = value;
         }
-        public int Char { get; }
+        public int Value { get; }
 
-        public static Character From(int @char)
+        public static Character From(int value)
         {
-            return new Character(@char);
+            return new Character(value);
         }
 
         public override bool Equals(object? obj) => Equals(obj as Character);
 
         public bool Equals(Character? other) =>
             other != null &&
-            other.Char == Char;
+            other.Value == Value;
 
-        public override int GetHashCode() => Char.GetHashCode();
+        public override int GetHashCode() => Value.GetHashCode();
     }
 }

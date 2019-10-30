@@ -11,6 +11,8 @@ namespace Lipeg.SDK.Dump
     {
         public void Dump(IWriter writer, INode node)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
+
             writer.Indent($"{Head(node)}", () =>
             {
                 foreach (var child in node)

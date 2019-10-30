@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
 using Lipeg.Runtime.Tools;
 
 namespace Lipeg.Runtime
@@ -33,9 +33,16 @@ namespace Lipeg.Runtime
         public char this[int index] => Content[index];
         public bool AtEnd(int index) => index >= Content.Length;
 
-        public static ISource FromFile(FileRef sourceFile)
+        public static ISource FromFile(ICompileResult result, FileRef sourceFile)
         {
-            return new Source(sourceFile.FileName, sourceFile.GetContent());
+            try
+            {
+                return new Source(sourceFile.FileName, sourceFile.GetContent());
+            }
+            catch (FileNotFoundException exception)
+            {
+                result.AddError()
+            }
         }
 
         public static ISource FromString(string content)

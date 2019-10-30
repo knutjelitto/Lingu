@@ -18,6 +18,8 @@ namespace Lipeg.SDK.Tree
 
         public static QualifiedIdentifier From(IReadOnlyList<Identifier> identifiers)
         {
+            if (identifiers == null) throw new ArgumentNullException(nameof(identifiers));
+
             return new QualifiedIdentifier(identifiers);
         }
 

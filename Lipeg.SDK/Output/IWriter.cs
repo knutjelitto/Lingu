@@ -10,9 +10,9 @@ namespace Lipeg.SDK.Output
 
         void WriteLine();
 
-        void Write(object obj);
+        void Write(object something);
 
-        void WriteLine(object obj);
+        void WriteLine(object somthing);
 
         void Indent(Action body);
     }

@@ -44,8 +44,10 @@ namespace Lipeg.SDK.Tree
             public CallExpr(Identifier identifier, IList<Expr> arguments)
             {
                 Identifier = identifier;
+                Arguments = arguments;
             }
             public Identifier Identifier { get; }
+            public IList<Expr> Arguments { get; }
         }
     }
 }

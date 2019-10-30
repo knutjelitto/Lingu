@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lipeg.SDK.Checker
+namespace Lipeg.Runtime
 {
-    public interface IChecker
+    public interface ICompileError
     {
+        int Id { get; }
     }
 }

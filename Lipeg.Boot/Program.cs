@@ -1,9 +1,10 @@
 ﻿using System;
 
-using Lipeg.SDK.Tools;
+using Lipeg.SDK.Common;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
+using Lipeg.SDK.Checking;
 
 namespace Lipeg.Boot
 {
@@ -25,22 +26,24 @@ namespace Lipeg.Boot
             var grammarDir = projectDir.Dir("Grammars");
             var debugOut = projectDir.Dir("DebugOut");
 
-            var lpgGrammar = grammarDir.File(grammarFile);
+            var lpgGrammar = grammarDir.File(grammarFile + "x");
 
             Environment.CurrentDirectory = debugOut;
 
-            var source = Source.FromFile(lpgGrammar);
+            var result = new CompileResult();
+
+            var source = Source.FromFile(result, lpgGrammar);
 
             var parser = new LipegParser(source);
 
-            var parseTree = Timer.Time("parse", () => parser.Parse(source.ToString(), lpgGrammar));
+            var parseTree = Timer.TimeBoth("parse", () => parser.Parse(source.ToString(), lpgGrammar));
 
             var parseTreeFile = debugOut.File(lpgGrammar.FileName).Add(".tree");
             Dumper.Dump(parseTreeFile, new DumpParseTree(), parseTree);
 
             var grammarBuilder = new GrammarBuilder();
 
-            var grammar = Timer.Time("tree", () => grammarBuilder.Build(parseTree));
+            var grammar = Timer.TimeBoth("build tree", () => grammarBuilder.Build(parseTree));
         }
     }
 }

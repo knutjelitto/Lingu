@@ -14,6 +14,8 @@ namespace Lipeg.SDK.Output
 
         public void Indent(Action body)
         {
+            if (body == null) throw new ArgumentNullException(nameof(body));
+
             body();
         }
 

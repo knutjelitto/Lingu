@@ -17,6 +17,8 @@ namespace Lipeg.SDK.Output
 
         public void Data(string head, Action body)
         {
+            if (body == null) throw new ArgumentNullException(nameof(body));
+
             AddLine(head);
             AddLine("{");
             using (Indent())
@@ -28,6 +30,8 @@ namespace Lipeg.SDK.Output
 
         public void Class(string head, Action body)
         {
+            if (body == null) throw new ArgumentNullException(nameof(body));
+
             AddLine(head);
             AddLine("{");
             using (Indent())
