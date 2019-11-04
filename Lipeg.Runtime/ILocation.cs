@@ -6,6 +6,7 @@ namespace Lipeg.Runtime
 {
     public interface ILocation
     {
+        ISource Source { get; }
         int Start { get; }
         int End { get; }
     }

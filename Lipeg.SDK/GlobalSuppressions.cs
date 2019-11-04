@@ -10,3 +10,8 @@
     Scope = "type", 
     Target = "~T:Lipeg.SDK.Tree.Option"
 )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Globalization", 
+    "CA1303:Do not pass literals as localized parameters",
+    Justification = "Scheiß draug",
+    Scope = "module")]

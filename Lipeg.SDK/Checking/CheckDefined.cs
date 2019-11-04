@@ -8,9 +8,15 @@ namespace Lipeg.SDK.Checking
     /// <summary>
     /// Check if all rules are defined
     /// </summary>
-    public class CheckDefined : ICheckPass
+    public class CheckDefined : Check, ICheckPass
     {
-        public void Check(Semantic semantic)
+        public CheckDefined(Semantic semantic)
+            : base(semantic)
+        {
+
+        }
+
+        public void Check()
         {
         }
     }

@@ -1,6 +1,6 @@
-﻿using Lipeg.Runtime;
-using Lipeg.SDK.Tree;
-using System;
+﻿using System;
+
+using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Checking
 {
@@ -10,16 +10,16 @@ namespace Lipeg.SDK.Checking
         {
             if (semantic == null) throw new ArgumentNullException(nameof(semantic));
 
-            Check(semantic, () => new CheckDefineRules());
-            Check(semantic, () => new CheckDefined());
-            Check(semantic, () => new CheckUnusedRules());
+            Check(semantic.Results, () => new CheckCreateRules(semantic));
+            Check(semantic.Results, () => new CheckDefined(semantic));
+            Check(semantic.Results, () => new CheckUnusedRules(semantic));
         }
 
-        private static void Check(Semantic semantic, Func<ICheckPass> pass)
+        private static void Check(ICompileResult results, Func<ICheckPass> pass)
         {
-            if (!semantic.Results.ShouldStop)
+            if (!results.ShouldStop)
             {
-                pass().Check(semantic);
+                pass().Check();
             }
         }
     }

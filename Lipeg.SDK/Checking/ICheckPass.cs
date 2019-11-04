@@ -5,6 +5,7 @@ namespace Lipeg.SDK.Checking
 {
     public interface ICheckPass
     {
-        void Check(Semantic semantic);
+        Semantic Semantic { get; }
+        void Check();
     }
 }

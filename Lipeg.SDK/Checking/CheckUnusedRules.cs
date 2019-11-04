@@ -8,9 +8,14 @@ namespace Lipeg.SDK.Checking
     /// <summary>
     /// Check if all rules are used
     /// </summary>
-    public class CheckUnusedRules : ICheckPass
+    public class CheckUnusedRules : Check, ICheckPass
     {
-        public void Check(Semantic semantic)
+        public CheckUnusedRules(Semantic semantic)
+        : base(semantic)
+        {
+        }
+
+        public void Check()
         {
         }
     }
