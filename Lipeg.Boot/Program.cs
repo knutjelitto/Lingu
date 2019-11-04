@@ -15,7 +15,8 @@ namespace Lipeg.Boot
             Console.WriteLine("Hello World!");
 
             Build("lipeg.lpg");
-            
+            GC.Collect(3, GCCollectionMode.Forced);
+
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }
@@ -31,32 +32,33 @@ namespace Lipeg.Boot
 
             Environment.CurrentDirectory = debugOut;
 
-            var result = new CompileResult();
+            var results = new CompileResult();
 
-            var source = Source.FromFile(result, lpgGrammar);
+            var source = Source.FromFile(results, lpgGrammar);
 
-            if (!result.ShouldStop && source != null)
+
+            if (!results.ShouldStop && source != null)
             {
 
                 var parser = new LipegParser(source);
 
-                GC.TryStartNoGCRegion(32 * 1024 * 1024);
-                var parseTree = Timer.TimeBoth("parse", () => parser.Parse(source.ToString(), lpgGrammar));
-                GC.EndNoGCRegion();
+                var parseTree = Timer.TimeBoth(16, "parse", () => parser.Parse(source.ToString(), lpgGrammar));
 
                 var parseTreeFile = debugOut.File(lpgGrammar.FileName).Add(".tree");
                 Dumper.Dump(parseTreeFile, new DumpParseTree(), parseTree);
 
                 var grammarBuilder = new GrammarBuilder();
 
-                GC.TryStartNoGCRegion(32 * 1024 * 1024);
-                var grammar = Timer.TimeBoth("build tree", () => grammarBuilder.Build(parseTree));
-                GC.EndNoGCRegion();
+                var grammar = Timer.TimeBoth(16, "build tree", () => grammarBuilder.Build(parseTree));
+
+                var semantic = new Semantic(grammar, results);
+
+                Checker.Check(semantic);
             }
 
-            if (result.HasErrors)
+            if (results.HasErrors)
             {
-                foreach (var error in result.Errors)
+                foreach (var error in results.Errors)
                 {
                     Console.WriteLine($"{error.Code}: {error.Message}");
                 }

@@ -6,10 +6,14 @@
 @using System.Globalization
 @using System.Linq
 @using System.Text.RegularExpressions
-@using Microsoft.CodeAnalysis.CSharp.Syntax
 
 grammar <INode>
-    = _ a:'grammar' _ i:identifier '{' _ o:options r:rules e:'}' _ EOF { N(aStart, eEnd, "grammar", i, o, r) }
+    = _ a:'grammar' _ i:identifier '{' _ c:content* e:'}' _ EOF { NE(aStart, eEnd, "grammar", i, NS(cStart, cEnd, c)) }
+
+content <INode>
+    = options
+    / rules
+    / lexical
 
 options <INode>
     = a:'options' _ '{' _ s:option<0,,_> o:'}' _ { NE(aStart, oEnd, "options", NS(sStart, sEnd, s)) }
@@ -26,9 +30,11 @@ qualifiedIdentifier <INode>
 rules <INode>
     = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { NE(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
 
+lexical <INode>
+    = a:'lexical' _ '{' _  r:rule<0,,_> o:'}' _ { NE(aStart, oEnd, "lexical",  NS(rStart, rEnd, r)) }
+
 rule <INode>
     = a:identifier f:ruleFlags '<=' _ e:expression o:';' _ { N(aStart, oEnd, "rule", a, f, e) }
-    / a:alias      f:ruleFlags '<=' _ e:expression o:';' _ { N(aStart, oEnd, "alias", a, f, e) }    
 
 ruleFlags <INode>
     = f:ruleFlag<0,,_> { NS(fStart, fEnd, f) }

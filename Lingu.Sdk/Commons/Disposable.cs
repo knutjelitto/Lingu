@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 namespace Lingu.Commons
 {
-    public class Disposable : IDisposable
+    public sealed class Disposable : IDisposable
     {
         private readonly Action onDispose;
         private bool disposed;

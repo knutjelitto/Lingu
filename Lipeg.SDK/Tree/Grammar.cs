@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
     public class Grammar
     {
-        private Grammar(Identifier name, IReadOnlyList<Option> settings, IReadOnlyList<Rule> rules)
+        private Grammar(Identifier name, IStarList<Option> options, IStarList<Rule> syntax, IStarList<Rule> lexical)
         {
             Name = name;
-            Settings = settings;
-            Rules = rules;
+            Options = options;
+            Syntax = syntax;
+            Lexical = lexical;
         }
 
         public Identifier Name { get; }
-        public IEnumerable<Option> Settings { get; }
-        public IEnumerable<Rule> Rules { get; }
+        public IStarList<Option> Options { get; }
+        public IStarList<Rule> Syntax { get; }
+        public IStarList<Rule> Lexical { get; }
+        public IEnumerable<Rule> Rules => Syntax.Concat(Lexical);
 
-        public static Grammar From( Identifier name, IReadOnlyList<Option> settings, IReadOnlyList<Rule> rules)
+        public static Grammar From(Identifier name, IStarList<Option> options, IStarList<Rule> syntax, IStarList<Rule> lexicals)
         {
-            return new Grammar(name, settings, rules);
+            return new Grammar(name, options, syntax, lexicals);
         }
     }
 }

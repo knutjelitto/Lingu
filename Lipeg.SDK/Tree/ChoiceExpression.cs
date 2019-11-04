@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
     public class ChoiceExpression : Expression
     {
-        private ChoiceExpression(IReadOnlyList<Expression> choices)
+        private ChoiceExpression(IPlusList<Expression> choices)
         {
             Choices = choices;
         }
 
-        public IReadOnlyList<Expression> Choices { get; }
+        public IPlusList<Expression> Choices { get; }
 
-        public static ChoiceExpression From(IReadOnlyList<Expression> choices)
+        public static ChoiceExpression From(IPlusList<Expression> choices)
         {
             return new ChoiceExpression(choices);
         }

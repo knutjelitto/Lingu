@@ -6,12 +6,16 @@ using Lipeg.SDK.Tree;
 namespace Lipeg.SDK.Checking
 {
     /// <summary>
-    /// Check if all rules are used
+    /// Check if all rules are defined
     /// </summary>
-    public class CheckUnusedRules : ICheckPass
+    internal class CheckDefineRules : ICheckPass
     {
         public void Check(Semantic semantic)
         {
+            foreach (var rule in semantic.Grammar.Rules)
+            {
+
+            }
         }
     }
 }

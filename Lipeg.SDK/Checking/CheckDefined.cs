@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checking
 {
@@ -9,9 +10,8 @@ namespace Lipeg.SDK.Checking
     /// </summary>
     public class CheckDefined : ICheckPass
     {
-        public void Check(ICompileResult result)
+        public void Check(Semantic semantic)
         {
-            throw new NotImplementedException();
         }
     }
 }

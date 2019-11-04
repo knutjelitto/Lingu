@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+
+using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
     public class QualifiedIdentifier : Expression
     {
-        private QualifiedIdentifier(IReadOnlyList<Identifier> identifiers)
+        private QualifiedIdentifier(IPlusList<Identifier> identifiers)
         {
             Debug.Assert(identifiers.Count > 0);
 
             Identifiers = identifiers;
         }
 
-        public IReadOnlyList<Identifier> Identifiers { get; }
+        public IPlusList<Identifier> Identifiers { get; }
 
-        public static QualifiedIdentifier From(IReadOnlyList<Identifier> identifiers)
+        public static QualifiedIdentifier From(IPlusList<Identifier> identifiers)
         {
             if (identifiers == null) throw new ArgumentNullException(nameof(identifiers));
 

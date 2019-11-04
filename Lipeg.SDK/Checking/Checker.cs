@@ -1,23 +1,25 @@
 ﻿using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 using System;
 
 namespace Lipeg.SDK.Checking
 {
     public static class Checker
     {
-        public static void Check(ICompileResult result)
+        public static void Check(Semantic semantic)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
 
-            Check(result, () => new CheckDefined()); ;
-            Check(result, () => new CheckUnusedRules());
+            Check(semantic, () => new CheckDefineRules());
+            Check(semantic, () => new CheckDefined());
+            Check(semantic, () => new CheckUnusedRules());
         }
 
-        private static void Check(ICompileResult result, Func<ICheckPass> pass)
+        private static void Check(Semantic semantic, Func<ICheckPass> pass)
         {
-            if (!result.ShouldStop)
+            if (!semantic.Results.ShouldStop)
             {
-                pass().Check(result);
+                pass().Check(semantic);
             }
         }
     }

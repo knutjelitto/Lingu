@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lipeg.SDK.Tree
+namespace Lipeg.Runtime
 {
-    public abstract class CharExpression : Expression
+    public interface IOption<T> : IReadOnlyList<T>
     {
     }
 }

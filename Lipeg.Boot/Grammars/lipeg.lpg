@@ -82,7 +82,10 @@
             /  '.' _
             /  '(' _ expression ')' _
             ;
+    }
 
+    lexical
+    {
         identifier
             <= (letter / '_') (letter / digit / '_')*
             ;

@@ -18,14 +18,42 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "grammar");
 
-            return Grammar.From(Identifier(node[0]), Options(node[1]), Rules(node[2]));
+            var identifier = Identifier(node[0]);
+            var (options, rules, lexicals) = Content(node[1]);
+
+            return Grammar.From(identifier, options, rules, lexicals);
         }
 
-        private IReadOnlyList<Option> Options(INode node)
+        private (IStarList<Option>, IStarList<Rule>, IStarList<Rule>) Content(INode node)
+        {
+            var options = new List<Option>();
+            var rules = new List<Rule>();
+            var lexical = new List<Rule>();
+
+            foreach (var content in node)
+            {
+                switch (content.Name)
+                {
+                    case "options":
+                        options.AddRange(Options(content));
+                        break;
+                    case "rules":
+                        rules.AddRange(Rules(content));
+                        break;
+                    case "lexical":
+                        lexical.AddRange(Rules(content));
+                        break;
+                }
+            }
+
+            return (options.ToStarList(), rules.ToStarList(), lexical.ToStarList());
+        }
+
+        private IEnumerable<Option> Options(INode node)
         {
             Debug.Assert(node.Name == "options");
 
-            return node.Select(Option).ToList();
+            return node.Select(Option);
         }
 
         private Option Option(INode node)
@@ -42,22 +70,22 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "qualifiedIdentifier");
 
-            var identifiers = node.Select(Identifier).ToList();
+            var identifiers = node.Select(Identifier).ToPlusList();
 
             return SDK.Tree.QualifiedIdentifier.From(identifiers);
         }
 
-        private IReadOnlyList<Rule> Rules(INode node)
+        private IEnumerable<Rule> Rules(INode node)
         {
-            Debug.Assert(node.Name == "rules");
+            Debug.Assert(node.Name == "rules" || node.Name == "lexical");
 
-            return node.Select(Rule).ToList();
+            return node.Select(Rule);
         }
 
         private Rule Rule(INode node)
         {
             var identifier = Identifier(node[0]);
-            var flags = node[1].Select(Identifier).ToList();
+            var flags = node[1].Select(Identifier).ToStarList();
             var expression = Expression(node[2]);
 
             return SDK.Tree.Rule.From(identifier, flags, expression);
@@ -67,7 +95,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "choice");
 
-            var choices = node.Select(Sequence).ToList();
+            var choices = node.Select(Sequence).ToPlusList();
 
             return ChoiceExpression.From(choices);
         }
@@ -76,7 +104,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var labeled = node.Select(Labeled).ToList();
+            var labeled = node.Select(Labeled).ToStarList();
 
             return SequenceExpression.From(labeled);
         }
@@ -110,7 +138,7 @@ namespace Lipeg.Boot
             if (node.Name == "quantified")
             {
                 Debug.Assert(node.Count == 2);
-                return Quantified.From(Primary(node[0]), Quantifier(node[1]));
+                return QuantifiedExpression.From(Primary(node[0]), Quantifier(node[1]));
             }
 
             return Primary(node);
@@ -172,7 +200,7 @@ namespace Lipeg.Boot
 
             var characters = string.Join(string.Empty, node.Select(c => Character(c)));
 
-            return SDK.Tree.StringLiteral.From(node.Location, characters);
+            return SDK.Tree.StringLiteralExpression.From(node.Location, characters);
         }
 
         private ClassExpression Class(INode node)
@@ -185,7 +213,7 @@ namespace Lipeg.Boot
             return ClassExpression.From(invert, ranges);
         }
 
-        private CharExpression SingleOrRange(INode node)
+        private Expression SingleOrRange(INode node)
         {
             if (node.Name == "single")
             {
@@ -193,7 +221,7 @@ namespace Lipeg.Boot
 
                 var c = Character(node[0]);
                 Debug.Assert(c.Length == 1);
-                return SDK.Tree.Character.From(c[0]);
+                return CharacterExpression.From(c[0]);
             }
             else if (node.Name == "range")
             {
@@ -203,7 +231,7 @@ namespace Lipeg.Boot
                 Debug.Assert(c1.Length == 1);
                 var c2 = Character(node[1]);
                 Debug.Assert(c2.Length == 1);
-                return CharacterRange.From(c1[0], c2[0]);
+                return CharacterRangeExpression.From(c1[0], c2[0]);
             }
 
             throw  new NotImplementedException();
