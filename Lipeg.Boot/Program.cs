@@ -42,28 +42,24 @@ namespace Lipeg.Boot
 
                 var parser = new LipegParser(source);
 
-                var parseTree = Timer.TimeBoth(16, "parse", () => parser.Parse(source.ToString(), lpgGrammar));
+                var parseTree = Timer.TimeBoth(4, "parse", () => parser.Parse(source.ToString(), lpgGrammar));
 
                 var parseTreeFile = debugOut.File(lpgGrammar.FileName).Add(".tree");
                 Dumper.Dump(parseTreeFile, new DumpParseTree(), parseTree);
 
                 var grammarBuilder = new GrammarBuilder();
 
-                var grammar = Timer.TimeBoth(16, "build tree", () => grammarBuilder.Build(parseTree));
+                var grammar = Timer.TimeBoth(4, "build tree", () => grammarBuilder.Build(parseTree));
 
                 var semantic = new Semantic(grammar, results);
 
                 Checker.Check(semantic);
-            }
 
-            if (results.HasErrors)
-            {
-                foreach (var error in results.Errors)
+                if (semantic.Results.HasErrors)
                 {
-                    Console.WriteLine($"{error.Code}: {error.Message}");
+                    semantic.Results.Report(Console.Out);
                 }
             }
-
         }
     }
 }

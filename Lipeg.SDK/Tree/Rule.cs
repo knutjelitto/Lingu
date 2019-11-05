@@ -1,4 +1,5 @@
 ﻿using Lipeg.Runtime;
+using Lipeg.SDK.Checking;
 
 namespace Lipeg.SDK.Tree
 {
@@ -13,6 +14,8 @@ namespace Lipeg.SDK.Tree
         public Identifier Identifier { get; }
         public Expression Expression { get; }
         public IStarList<Identifier> Flags { get; }
+
+        public IRuleAttribute Attributes { get; } = new RuleAttribute();
 
         public static Rule From(Identifier identifier, IStarList<Identifier> flags, Expression expression)
         {

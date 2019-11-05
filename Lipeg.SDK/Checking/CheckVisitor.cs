@@ -1,28 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
+using System.Diagnostics;
 
-namespace Lipeg.SDK.Tree
+namespace Lipeg.SDK.Checking
 {
-    internal abstract class Visitor
+    internal abstract class CheckVisitor
     {
-        public virtual void VisitGrammar(Grammar grammar)
+        public CheckVisitor(Semantic semantic)
         {
-            VisitGrammarOptions(grammar);
-            VisitGrammarRules(grammar);
+            Semantic = semantic;
+        }
+        public Semantic Semantic { get; }
+        public Grammar Grammar => Semantic.Grammar;
+        public ICompileResult Results => Semantic.Results;
+
+        public virtual void VisitGrammar()
+        {
+            VisitGrammarOptions();
+            VisitGrammarRules();
         }
 
-        public virtual void VisitGrammarRules(Grammar grammar)
+        public virtual void VisitGrammarRules()
         {
-            foreach (var rule in grammar.Syntax)
+            foreach (var rule in Grammar.Rules)
             {
                 VisitRule(rule);
             }
         }
 
-        public virtual void VisitGrammarOptions(Grammar grammar)
+        public virtual void VisitGrammarOptions()
         {
-            foreach (var option in grammar.Options)
+            foreach (var option in Grammar.Options)
             {
                 VisitOption(option);
             }
@@ -72,7 +80,6 @@ namespace Lipeg.SDK.Tree
                     VisitWildcardExpression(wildcardExpression);
                     break;
             }
-
         }
 
         protected virtual void VisitAndExpression(AndExpression expression)

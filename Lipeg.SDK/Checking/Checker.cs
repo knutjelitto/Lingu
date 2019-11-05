@@ -11,7 +11,7 @@ namespace Lipeg.SDK.Checking
             if (semantic == null) throw new ArgumentNullException(nameof(semantic));
 
             Check(semantic.Results, () => new CheckCreateRules(semantic));
-            Check(semantic.Results, () => new CheckDefined(semantic));
+            Check(semantic.Results, () => new CheckDefinedRules(semantic));
             Check(semantic.Results, () => new CheckUnusedRules(semantic));
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.IO;
 
 namespace Lipeg.Runtime
 {
@@ -12,8 +10,15 @@ namespace Lipeg.Runtime
             Location = location;
             Message = message;
         }
+
         public ErrorCode Code { get; set; }
         public ILocation Location { get; }
         public string Message { get; set; }
+
+        public void Report(TextWriter writer)
+        {
+            var (line, col) = Location.Source.GetLineCol(Location.Start);
+            writer.WriteLine($"{Location.Source.Name}({line},{col}): {Code}/{Message}");
+        }
     }
 }

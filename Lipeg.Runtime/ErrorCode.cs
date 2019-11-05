@@ -7,7 +7,9 @@ namespace Lipeg.Runtime
     public enum ErrorCode
     {
         SourceFileNotFound = 1,
-        AlreadyDefinedHere = 201,
-        RedefinedHere = 202,
+        AlreadyDefinedRule = 201,
+        RedefinedRule = 202,
+        UndefinedRule = 203,
+        UnusedRule = 204,
     }
 }

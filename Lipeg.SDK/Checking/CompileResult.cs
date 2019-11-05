@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 using Lipeg.Runtime;
 
@@ -13,6 +14,12 @@ namespace Lipeg.SDK.Checking
         public CompileResult()
         {
         }
+
+        public IReadOnlyList<ICompileError> Errors => errors;
+
+        public bool HasErrors => errors.Count > 0;
+        public bool IsFatal { get; private set; }
+        public bool ShouldStop => IsFatal || errors.Count > 4;
 
         public void AddError(ICompileError error)
         {
@@ -28,10 +35,14 @@ namespace Lipeg.SDK.Checking
         public void SetSource(Source source) => this.source = source;
         public Source GetSource() => this.source ?? throw new NullReferenceException();
 
-        public IReadOnlyList<ICompileError> Errors => errors;
+        public bool Report(TextWriter writer)
+        {
+            foreach (var error in Errors)
+            {
+                error.Report(writer);
+            }
 
-        public bool HasErrors => errors.Count > 0;
-        public bool IsFatal { get; private set; }
-        public bool ShouldStop => IsFatal || errors.Count > 4;
+            return HasErrors;
+        }
     }
 }

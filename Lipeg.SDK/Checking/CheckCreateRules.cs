@@ -23,8 +23,9 @@ namespace Lipeg.SDK.Checking
                 {
                     if (already == null) throw  new InternalErrorException($"{nameof(already)} really shouldn't be NULL");
 
-                    Results.AddError(new CheckError(ErrorCode.AlreadyDefinedHere, already.Identifier.Location, already.Identifier.Name));
-                    Results.AddError(new CheckError(ErrorCode.RedefinedHere, rule.Identifier.Location, rule.Identifier.Name));
+                    Results.AddError(new CheckError(ErrorCode.AlreadyDefinedRule, already.Identifier.Location, already.Identifier.Name));
+                    Results.AddError(new CheckError(ErrorCode.RedefinedRule, rule.Identifier.Location, rule.Identifier.Name));
+                    continue;
                 }
                 Semantic.Rules.Add(rule);
             }

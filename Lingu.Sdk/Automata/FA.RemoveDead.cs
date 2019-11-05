@@ -70,8 +70,6 @@ namespace Lingu.Automata
 
                     if (set.All(s => !s.Final))
                     {
-                        Debug.Assert(true);
-
                         dead.UnionWith(set);
                     }
                 }

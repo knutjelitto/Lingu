@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Lipeg.Runtime
@@ -13,5 +14,10 @@ namespace Lipeg.Runtime
         }
         public ErrorCode Code { get; set; }
         public string Message { get; set; }
+
+        public void Report(TextWriter writer)
+        {
+            writer.WriteLine($"error {Code}/{Message}");
+        }
     }
 }
