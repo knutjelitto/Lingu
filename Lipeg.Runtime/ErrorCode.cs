@@ -8,8 +8,12 @@ namespace Lipeg.Runtime
     {
         SourceFileNotFound = 1,
         AlreadyDefinedRule = 201,
-        RedefinedRule = 202,
-        UndefinedRule = 203,
-        UnusedRule = 204,
+        RedefinedRule,
+        UndefinedRule,
+        UnusedRule,
+        AlreadyDefinedOption,
+        UndefinedOptionValue,
+        IllegalOptionValue,
+        UnknownOption,
     }
 }

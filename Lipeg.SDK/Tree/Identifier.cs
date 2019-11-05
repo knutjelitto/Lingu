@@ -4,7 +4,7 @@ using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
-    public class Identifier
+    public class Identifier : ILocated
     {
         private Identifier(ILocation location, string name)
         {

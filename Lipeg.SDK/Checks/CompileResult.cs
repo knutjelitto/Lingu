@@ -4,7 +4,7 @@ using System.IO;
 
 using Lipeg.Runtime;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     public class CompileResult : ICompileResult
     {

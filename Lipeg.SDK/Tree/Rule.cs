@@ -1,25 +1,23 @@
 ﻿using Lipeg.Runtime;
-using Lipeg.SDK.Checking;
+using Lipeg.SDK.Checks;
 
 namespace Lipeg.SDK.Tree
 {
-    public class Rule
+    public class Rule : IRule
     {
-        private Rule(Identifier identifier, IStarList<Identifier> flags, Expression expression)
+        private Rule(Identifier identifier, Expression expression)
         {
             Identifier = identifier;
-            Flags = flags;
             Expression = expression;
         }
         public Identifier Identifier { get; }
         public Expression Expression { get; }
-        public IStarList<Identifier> Flags { get; }
 
         public IRuleAttribute Attributes { get; } = new RuleAttribute();
 
-        public static Rule From(Identifier identifier, IStarList<Identifier> flags, Expression expression)
+        public static Rule From(Identifier identifier, Expression expression)
         {
-            return new Rule(identifier, flags, expression);
+            return new Rule(identifier, expression);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 using Lipeg.Runtime;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     public static class Checker
     {
@@ -12,12 +12,13 @@ namespace Lipeg.SDK.Checking
 
             Check(semantic.Results, () => new CheckCreateRules(semantic));
             Check(semantic.Results, () => new CheckDefinedRules(semantic));
+            Check(semantic.Results, () => new CheckOptions(semantic));
             Check(semantic.Results, () => new CheckUnusedRules(semantic));
         }
 
         private static void Check(ICompileResult results, Func<ICheckPass> pass)
         {
-            if (!results.ShouldStop)
+            if (!results.HasErrors)
             {
                 pass().Check();
             }

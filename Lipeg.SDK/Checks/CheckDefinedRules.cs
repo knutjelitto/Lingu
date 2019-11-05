@@ -3,7 +3,7 @@
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     /// <summary>
     /// Check if all rules are defined
@@ -28,7 +28,7 @@ namespace Lipeg.SDK.Checking
             {
                 if (!Semantic.Rules.TryGetValue(expression.Identifier.Name, out var _))
                 {
-                    Results.AddError(new CheckError(ErrorCode.UndefinedRule, expression.Identifier.Location, expression.Identifier.Name));
+                    Results.AddError(new CheckError(ErrorCode.UndefinedRule, expression.Identifier));
                 }
             }
         }

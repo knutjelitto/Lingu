@@ -85,10 +85,9 @@ namespace Lipeg.Boot
         private Rule Rule(INode node)
         {
             var identifier = Identifier(node[0]);
-            var flags = node[1].Select(Identifier).ToStarList();
-            var expression = Expression(node[2]);
+            var expression = Expression(node[1]);
 
-            return SDK.Tree.Rule.From(identifier, flags, expression);
+            return SDK.Tree.Rule.From(identifier, expression);
         }
 
         private Expression Expression(INode node)
@@ -121,16 +120,21 @@ namespace Lipeg.Boot
 
         private Expression Prefix(INode node)
         {
-            if (node.Name == "and")
+            switch (node.Name)
             {
-                return AndExpression.From(Suffix(node[0]));
+                case "and":
+                    return AndExpression.From(Suffix(node[0]));
+                case "not":
+                    return NotExpression.From(Suffix(node[0]));
+                case "promote":
+                    return PromoteExpression.From(Suffix(node[0]));
+                case "drop":
+                    return DropExpression.From(Suffix(node[0]));
+                case "fuse":
+                    return FuseExpression.From(Suffix(node[0]));
+                default:
+                    return Suffix(node);
             }
-            if (node.Name == "not")
-            {
-                return NotExpression.From(Suffix(node[0]));
-            }
-
-            return Suffix(node);
         }
 
         private Expression Suffix(INode node)

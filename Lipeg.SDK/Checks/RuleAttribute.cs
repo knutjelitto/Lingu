@@ -1,6 +1,6 @@
 ﻿using Lipeg.Runtime;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     internal class RuleAttribute : IRuleAttribute
     {

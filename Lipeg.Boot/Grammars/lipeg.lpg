@@ -2,85 +2,96 @@
 {
     options
     {
+        start = start;
         spacing = _;
     }
 
     rules
     {
-        start
-            <= _ grammar EOF
+        start <=
+            grammar EOF
             ;
 
-        grammar
-            <= 'grammar' _ '{' _ s:options r:rules '}' _
+        opel <= opel ;
+
+        grammar <=
+            :'grammar' :'{' ^(options / syntax / lexical)* :'}'
             ;
 
-        options
-            <= 'options' _ '{' _ s:option* '}' _
+        options <=
+            :'options' :'{' option* :'}'
             ;
 
-        option
-            <= '@' _ id:identifier '=' _ v:optionValue
+        option <=
+            identifier :'=' optionValue
             ;
 
-        optionValue
-            <= qualifiedIdentifier
+        optionValue <=
+            qualifiedIdentifier
             ;
 
-        qualifiedIdentifier
-            <= ids:(identifier ('.' _ identifier)*)
+        qualifiedIdentifier <=
+            identifier ^(:'.' identifier)*
             ;
 
-        rules
-            <= 'rules' _ '{' _ r:rule* '}' _
+        syntax <=
+            :'rules' :'{' rule* :'}'
             ;
 
-        rule
-            <= identifier ruleFlags '<=' _ expression ';' _
+        lexical <=
+            :'lexical' :'{' rule* :'}'
             ;
 
-        ruleFlags
-            <= ruleFlag*
+        rule <= 
+            identifier ruleFlags :'<=' expression :';'
             ;
 
-        ruleFlag
-            <= '-' identifier
+        ruleFlags <=
+            ^ruleFlag*
             ;
 
-        expression
-            <= choice
+        ruleFlag <=
+            '-' identifier
             ;
 
-        choice
-            <= sequence ('/' _ sequence)*
+        expression <=
+            choice
             ;
 
-        sequence
-            <= prefix*
+        choice <=
+            sequence ^(:'/' sequence)*
             ;
 
-        prefix
-            <= '&' _ suffix // and lookahead
-            /  '!' _ suffix // not lookahead
-            /  ':' _ suffix // drop
-            /  '^' _ suffix // promote
-            /  '~' _ suffix // fuse
+        sequence <=
+            ^prefix*
+            ;
+
+        prefix <=
+            / '&' suffix // and lookahead
+            /  '!' suffix // not lookahead
+            /  ':' suffix // drop
+            /  '^' suffix // promote
+            /  '~' suffix // fuse
             /  suffix
             ;
 
-        suffix
-            <= primary '?' _ 
-            /  primary '*' _
-            /  primary '+' _
-            /  primary
+        suffix <=
+            / primary '?'
+            / primary '*'
+            / primary '+'
+            / primary
             ;
 
-        primary
-            <= identifier
-            /  string
-            /  characterClass
-            /  '.' _
-            /  '(' _ expression ')' _
+        primary <=
+            / identifier
+            / string
+            / characterClass
+            / any
+            / :'(' expression :')'
+            ;
+
+        any <=
+            :'.'
             ;
     }
 
@@ -139,8 +150,8 @@
             / unicode
             ;
 
-        _ -memo
-            <= (whitespace / newline / comment)*
+        _ <= 
+            (whitespace / newline / comment)*
             ;
 
         comment

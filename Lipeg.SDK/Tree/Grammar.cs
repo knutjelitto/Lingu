@@ -2,7 +2,7 @@
 using System.Linq;
 
 using Lipeg.Runtime;
-using Lipeg.SDK.Checking;
+using Lipeg.SDK.Checks;
 
 namespace Lipeg.SDK.Tree
 {

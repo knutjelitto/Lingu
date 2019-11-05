@@ -2,7 +2,7 @@
 using Lipeg.SDK.Tree;
 using System.Diagnostics;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     internal abstract class CheckVisitor
     {
@@ -43,6 +43,18 @@ namespace Lipeg.SDK.Checking
                 case AndExpression andExpression:
                     VisitAndExpression(andExpression);
                     break;
+                case NotExpression notExpression:
+                    VisitNotExpression(notExpression);
+                    break;
+                case PromoteExpression promoteExpression:
+                    VisitPromoteExpression(promoteExpression);
+                    break;
+                case DropExpression dropExpression:
+                    VisitDropExpression(dropExpression);
+                    break;
+                case FuseExpression fuseExpression:
+                    VisitFuseExpression(fuseExpression);
+                    break;
                 case CharacterExpression character:
                     VisitCharacter(character);
                     break;
@@ -64,9 +76,6 @@ namespace Lipeg.SDK.Checking
                 case NameExpression nameExpression:
                     VisitNameExpression(nameExpression);
                     break;
-                case NotExpression notExpression:
-                    VisitNotExpression(notExpression);
-                    break;
                 case QuantifiedExpression quantifiedExpression:
                     VisitQuantifiedExpression(quantifiedExpression);
                     break;
@@ -79,10 +88,32 @@ namespace Lipeg.SDK.Checking
                 case WildcardExpression wildcardExpression:
                     VisitWildcardExpression(wildcardExpression);
                     break;
+                default:
+                    throw new InternalErrorException($"expression of type '{expression.GetType().Name}' not implemented");
             }
         }
 
         protected virtual void VisitAndExpression(AndExpression expression)
+        {
+            VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitNotExpression(NotExpression expression)
+        {
+            VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitPromoteExpression(PromoteExpression expression)
+        {
+            VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitDropExpression(DropExpression expression)
+        {
+            VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitFuseExpression(FuseExpression expression)
         {
             VisitExpression(expression.Expression);
         }
@@ -118,11 +149,6 @@ namespace Lipeg.SDK.Checking
 
         protected virtual void VisitNameExpression(NameExpression expression)
         {
-        }
-
-        protected virtual void VisitNotExpression(NotExpression expression)
-        {
-            VisitExpression(expression.Expression);
         }
 
         protected virtual void VisitQuantifiedExpression(QuantifiedExpression expression)

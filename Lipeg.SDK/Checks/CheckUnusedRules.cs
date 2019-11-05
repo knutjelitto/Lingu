@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using Lipeg.Runtime;
+﻿using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     /// <summary>
     /// Check if all rules are used
@@ -23,7 +21,7 @@ namespace Lipeg.SDK.Checking
             {
                 if (!rule.Attributes.Used)
                 {
-                    Results.AddError(new CheckError(ErrorCode.UnusedRule, rule.Identifier.Location, rule.Identifier.Name));
+                    Results.AddError(new CheckError(ErrorCode.UnusedRule, rule.Identifier));
                 }
             }
         }

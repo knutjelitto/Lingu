@@ -3,7 +3,7 @@ using System.Threading;
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     /// <summary>
     /// Create all rules
@@ -23,8 +23,8 @@ namespace Lipeg.SDK.Checking
                 {
                     if (already == null) throw  new InternalErrorException($"{nameof(already)} really shouldn't be NULL");
 
-                    Results.AddError(new CheckError(ErrorCode.AlreadyDefinedRule, already.Identifier.Location, already.Identifier.Name));
-                    Results.AddError(new CheckError(ErrorCode.RedefinedRule, rule.Identifier.Location, rule.Identifier.Name));
+                    Results.AddError(new CheckError(ErrorCode.AlreadyDefinedRule, already.Identifier));
+                    Results.AddError(new CheckError(ErrorCode.RedefinedRule, rule.Identifier));
                     continue;
                 }
                 Semantic.Rules.Add(rule);

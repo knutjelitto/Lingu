@@ -34,30 +34,26 @@ lexical <INode>
     = a:'lexical' _ '{' _  r:rule<0,,_> o:'}' _ { NE(aStart, oEnd, "lexical",  NS(rStart, rEnd, r)) }
 
 rule <INode>
-    = a:identifier f:ruleFlags '<=' _ e:expression o:';' _ { N(aStart, oEnd, "rule", a, f, e) }
-
-ruleFlags <INode>
-    = f:ruleFlag<0,,_> { NS(fStart, fEnd, f) }
-
-ruleFlag <INode> -memoize
-    = '-' id:identifier { id }
+    = a:identifier '<=' _ e:topChoice o:';' _ { N(aStart, oEnd, "rule", a, e) }
 
 expression <INode>
     = choice
+
+topChoice <INode>
+    = ('/' _)? c:sequence<1,,_ '/' _>  { NE(cStart, cEnd, "choice", NP(cStart, cEnd, c)) }
 
 choice <INode>
     = c:sequence<1,,_ '/' _>  { NE(cStart, cEnd, "choice", NP(cStart, cEnd, c)) }
 
 sequence <INode>
-    = e:labeled<0,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
-
-labeled <INode> -memoize
-    = id:identifier ':' _ e:prefix { N(idStart, eEnd, "labeled", id, e) }
-    / prefix
+    = e:prefix<0,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
 
 prefix <INode>
     = a:'&' _ e:suffix { N(aStart, eEnd, "and", e) }
     / a:'!' _ e:suffix { N(aStart, eEnd, "not", e) }
+    / a:'^' _ e:suffix { N(aStart, eEnd, "promote", e) }
+    / a:':' _ e:suffix { N(aStart, eEnd, "drop", e) }
+    / a:'~' _ e:suffix { N(aStart, eEnd, "fuse", e) }
     / suffix
 
 suffix <INode>

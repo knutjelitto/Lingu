@@ -6,7 +6,7 @@ using Lipeg.Runtime;
 using Lipeg.SDK.Common;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     public class Semantic
     {

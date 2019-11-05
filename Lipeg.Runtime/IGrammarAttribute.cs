@@ -8,5 +8,8 @@ namespace Lipeg.Runtime
     {
         IRule Start { get; }
         IRule Spacing { get; }
+
+        bool SetStart(IRule rule);
+        bool SetSpacing(IRule rule);
     }
 }

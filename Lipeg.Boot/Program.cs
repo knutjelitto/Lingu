@@ -4,7 +4,7 @@ using Lipeg.SDK.Common;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
-using Lipeg.SDK.Checking;
+using Lipeg.SDK.Checks;
 
 namespace Lipeg.Boot
 {

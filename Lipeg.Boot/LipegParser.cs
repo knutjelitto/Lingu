@@ -85,7 +85,7 @@ namespace Lipeg.Boot
 
         private ILocation Loc(Cursor start, Cursor end)
         {
-            return Location.From(source, start, end);
+            return BootLocation.From(source, start, end);
         }
 
         protected static string SimpleEsc(string c)

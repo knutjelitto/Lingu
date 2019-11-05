@@ -1,7 +1,7 @@
 ﻿using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checking
+namespace Lipeg.SDK.Checks
 {
     public interface ICheckPass
     {

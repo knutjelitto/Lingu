@@ -3,9 +3,9 @@ using Pegasus.Common;
 
 namespace Lipeg.Boot
 {
-    internal class Location : ILocation
+    internal class BootLocation : ILocation
     {
-        private Location(ISource source, int start, int end)
+        private BootLocation(ISource source, int start, int end)
         {
             Source = source;
             Start = start;
@@ -18,17 +18,17 @@ namespace Lipeg.Boot
 
         public static ILocation From(ISource source, Cursor start)
         {
-            return new Location(source, start.Location, start.Location);
+            return new BootLocation(source, start.Location, start.Location);
         }
 
         public static ILocation From(ISource source, Cursor start, Cursor end)
         {
-            return new Location(source, start.Location, end.Location);
+            return new BootLocation(source, start.Location, end.Location);
         }
 
         public static ILocation From(ISource source, int start, int end)
         {
-            return new Location(source, start, end);
+            return new BootLocation(source, start, end);
         }
     }
 }
