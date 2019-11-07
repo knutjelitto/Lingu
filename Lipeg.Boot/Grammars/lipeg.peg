@@ -51,8 +51,8 @@ sequence <INode>
 prefix <INode>
     = a:'&' _ e:suffix { N(aStart, eEnd, "and", e) }
     / a:'!' _ e:suffix { N(aStart, eEnd, "not", e) }
-    / a:'^' _ e:suffix { N(aStart, eEnd, "promote", e) }
-    / a:':' _ e:suffix { N(aStart, eEnd, "drop", e) }
+    / a:'^' _ e:suffix { N(aStart, eEnd, "lift", e) }
+    / a:',' _ e:suffix { N(aStart, eEnd, "drop", e) }
     / a:'~' _ e:suffix { N(aStart, eEnd, "fuse", e) }
     / suffix
 

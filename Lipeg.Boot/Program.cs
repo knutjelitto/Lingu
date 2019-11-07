@@ -53,7 +53,7 @@ namespace Lipeg.Boot
 
                 var semantic = new Semantic(grammar, results);
 
-                Checker.Check(semantic);
+                var ok = Timer.TimeBoth(4, "check tree", () => { Checker.Check(semantic); return !semantic.Results.HasErrors; });
 
                 if (semantic.Results.HasErrors)
                 {

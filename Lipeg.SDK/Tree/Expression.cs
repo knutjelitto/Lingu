@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lipeg.Runtime;
+using Lipeg.SDK.Checks;
 
 namespace Lipeg.SDK.Tree
 {
     public class Expression
     {
+        public IExpressionAttribute Attributes { get; } = new ExpressionAttribute();
     }
 }

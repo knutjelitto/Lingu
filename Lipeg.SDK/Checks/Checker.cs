@@ -14,6 +14,7 @@ namespace Lipeg.SDK.Checks
             Check(semantic.Results, () => new CheckDefinedRules(semantic));
             Check(semantic.Results, () => new CheckOptions(semantic));
             Check(semantic.Results, () => new CheckUnusedRules(semantic));
+            Check(semantic.Results, () => new CheckNullable(semantic));
         }
 
         private static void Check(ICompileResult results, Func<ICheckPass> pass)

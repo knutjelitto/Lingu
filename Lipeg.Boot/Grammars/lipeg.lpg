@@ -12,18 +12,20 @@
             grammar EOF
             ;
 
-        opel <= opel ;
+        opel <=
+            opel
+            ;
 
         grammar <=
-            :'grammar' :'{' ^(options / syntax / lexical)* :'}'
+            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
             ;
 
         options <=
-            :'options' :'{' option* :'}'
+            ,'options' ,'{' option* ,'}'
             ;
 
         option <=
-            identifier :'=' optionValue
+            identifier ,'=' optionValue
             ;
 
         optionValue <=
@@ -31,19 +33,19 @@
             ;
 
         qualifiedIdentifier <=
-            identifier ^(:'.' identifier)*
+            identifier ^(,'.' identifier)*
             ;
 
         syntax <=
-            :'rules' :'{' rule* :'}'
+            ,'rules' ,'{' rule* ,'}'
             ;
 
         lexical <=
-            :'lexical' :'{' rule* :'}'
+            ,'lexical' ,'{' rule* ,'}'
             ;
 
         rule <= 
-            identifier ruleFlags :'<=' expression :';'
+            identifier ruleFlags ,'<=' expression ,';'
             ;
 
         ruleFlags <=
@@ -59,20 +61,25 @@
             ;
 
         choice <=
-            sequence ^(:'/' sequence)*
+            sequence ^(,'/' sequence)*
             ;
 
         sequence <=
-            ^prefix*
+            ^aliased*
+            ;
+
+        aliased <=
+            / prefix ':' identifier
+            / prefix
             ;
 
         prefix <=
             / '&' suffix // and lookahead
-            /  '!' suffix // not lookahead
-            /  ':' suffix // drop
-            /  '^' suffix // promote
-            /  '~' suffix // fuse
-            /  suffix
+            / '!' suffix // not lookahead
+            / ',' suffix // drop
+            / '^' suffix // lift
+            / '~' suffix // fuse
+            / suffix
             ;
 
         suffix <=
@@ -87,65 +94,65 @@
             / string
             / characterClass
             / any
-            / :'(' expression :')'
+            / ,'(' expression ,')'
             ;
 
         any <=
-            :'.'
+            ,'.'
             ;
     }
 
     lexical
     {
-        identifier
-            <= (letter / '_') (letter / digit / '_')*
+        identifier <=
+            (letter / '_') (letter / digit / '_')*
             ;
 
-        letter
-            <= [a-zA-Z]
+        letter <=
+            [a-zA-Z]
             ;
 
-        digit
-            <= [0-9]
+        digit <=
+            [0-9]
             ;
 
-        hexDigit
-            <= [0-9a-fA-F]
+        hexDigit <=
+            [0-9a-fA-F]
             ;
 
-        string
-            <= '\'' character* '\''
+        string <=
+            '\'' character* '\''
             ;
 
-        character
-            <= !('\'' / '\\' / eolChar) .
-            /  escape
-            /  unicode
+        character <=
+            / !('\'' / '\\' / eolChar) .
+            / escape
+            / unicode
             ;
 
-        escape
-            <= '\\' [0abefnrtv\-\]\\]
+        escape <=
+            '\\' [0abefnrtv\-\]\\]
             ;
 
-        unicode
-            <= '\\u{' hexdigit hexdigit? hexdigit? hexdigit? hexdigit? hexdigit? '}'
+        unicode <=
+            '\\u{' hexdigit hexdigit? hexdigit? hexdigit? hexdigit? hexdigit? '}'
             ;
 
-        characterClass
-            <= '[' '^'? classCharacter* ']'
+        characterClass <=
+            '[' '^'? classCharacter* ']'
             ;
 
-        classCharacter
-            <= classRange
-            /  classSingle
+        classCharacter <=
+            / classRange
+            / classSingle
             ;
 
-        classRange
-            <= classSingle '-' classSingle
+        classRange <=
+            classSingle '-' classSingle
             ;
 
-        classSingle
-            <= !(']' / '\\' / eolChar) .
+        classSingle <=
+            / !(']' / '\\' / eolChar) .
             / escape
             / unicode
             ;
@@ -154,37 +161,37 @@
             (whitespace / newline / comment)*
             ;
 
-        comment
-            <= singleLineComment
+        comment <=
+            / singleLineComment
             / multiLineComment
             ;
 
-        singleLineComment
-            <= '//' (!eolChar .)*
+        singleLineComment <=
+            '//' (!eolChar .)*
             ;
 
-        multiLineComment
-            <= '/*' (!'*/' .)* '*/'
+        multiLineComment <=
+            '/*' (!'*/' .)* '*/'
             ;
 
-        newline
-            <= '\n'
+        newline <=
+            / '\n'
             / '\r\n'
             / '\r'
             / '\u{2028}'
             / '\u{2029}'
             ;
 
-        eolChar
-            <= [\n\r\u{2028}\u{2029}]
+        eolChar <=
+            [\n\r\u{2028}\u{2029}]
             ;
 
-        whitespace
-            <= [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+        whitespace <=
+            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
             ;
 
-        eof
-            <= !.
+        eof <= 
+            !.
             ;
     }
 }

@@ -36,7 +36,7 @@ namespace Lipeg.SDK.Checks
             }
         }
 
-        protected void VisitExpression(Expression expression)
+        protected virtual void VisitExpression(Expression expression)
         {
             switch (expression)
             {
@@ -46,8 +46,8 @@ namespace Lipeg.SDK.Checks
                 case NotExpression notExpression:
                     VisitNotExpression(notExpression);
                     break;
-                case PromoteExpression promoteExpression:
-                    VisitPromoteExpression(promoteExpression);
+                case LiftExpression promoteExpression:
+                    VisitLiftExpression(promoteExpression);
                     break;
                 case DropExpression dropExpression:
                     VisitDropExpression(dropExpression);
@@ -64,11 +64,8 @@ namespace Lipeg.SDK.Checks
                 case ChoiceExpression choiceExpression:
                     VisitChoiceExpression(choiceExpression);
                     break;
-                case ClassExpression classExpression:
-                    VisitClassExpression(classExpression);
-                    break;
-                case LabeledExpression labeledExpression:
-                    VisitLabeledExpression(labeledExpression);
+                case CharacterClassExpression classExpression:
+                    VisitCharacterClassExpression(classExpression);
                     break;
                 case LiteralExpression literalExpression:
                     VisitLiteralExpression(literalExpression);
@@ -103,7 +100,7 @@ namespace Lipeg.SDK.Checks
             VisitExpression(expression.Expression);
         }
 
-        protected virtual void VisitPromoteExpression(PromoteExpression expression)
+        protected virtual void VisitLiftExpression(LiftExpression expression)
         {
             VisitExpression(expression.Expression);
         }
@@ -134,13 +131,8 @@ namespace Lipeg.SDK.Checks
             }
         }
 
-        protected virtual void VisitClassExpression(ClassExpression expression)
+        protected virtual void VisitCharacterClassExpression(CharacterClassExpression expression)
         {
-        }
-
-        protected virtual void VisitLabeledExpression(LabeledExpression expression)
-        {
-            VisitExpression(expression.Expression);
         }
 
         protected virtual void VisitLiteralExpression(LiteralExpression expression)

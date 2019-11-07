@@ -10,7 +10,7 @@ grammar [identifier, *]
                 identifier <spacing>
                 qualifiedIdentifier [identifier]
                     identifier <_>
-        rules [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+        rules [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
             rule [identifier, choice]
                 identifier <start>
                 choice [sequence]
@@ -25,7 +25,7 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier <grammar>
                 choice [sequence]
-                    sequence [drop, drop, promote, drop]
+                    sequence [drop, drop, lift, drop]
                         drop [singleString]
                             singleString [character, character, character, character, character, character, character]
                                 character <g>
@@ -38,7 +38,7 @@ grammar [identifier, *]
                         drop [singleString]
                             singleString [character]
                                 character <{>
-                        promote [quantified]
+                        lift [quantified]
                             quantified [choice, *]
                                 choice [sequence, sequence, sequence]
                                     sequence [identifier]
@@ -90,9 +90,9 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier <qualifiedIdentifier>
                 choice [sequence]
-                    sequence [identifier, promote]
+                    sequence [identifier, lift]
                         identifier <identifier>
-                        promote [quantified]
+                        lift [quantified]
                             quantified [choice, *]
                                 choice [sequence]
                                     sequence [drop, identifier]
@@ -160,8 +160,8 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier <ruleFlags>
                 choice [sequence]
-                    sequence [promote]
-                        promote [quantified]
+                    sequence [lift]
+                        lift [quantified]
                             quantified [identifier, *]
                                 identifier <ruleFlag>
                                 * <>
@@ -180,9 +180,9 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier <choice>
                 choice [sequence]
-                    sequence [identifier, promote]
+                    sequence [identifier, lift]
                         identifier <sequence>
-                        promote [quantified]
+                        lift [quantified]
                             quantified [choice, *]
                                 choice [sequence]
                                     sequence [drop, identifier]
@@ -194,11 +194,21 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier <sequence>
                 choice [sequence]
-                    sequence [promote]
-                        promote [quantified]
+                    sequence [lift]
+                        lift [quantified]
                             quantified [identifier, *]
-                                identifier <prefix>
+                                identifier <aliased>
                                 * <>
+            rule [identifier, choice]
+                identifier <aliased>
+                choice [sequence, sequence]
+                    sequence [identifier, singleString, identifier]
+                        identifier <prefix>
+                        singleString [character]
+                            character <:>
+                        identifier <identifier>
+                    sequence [identifier]
+                        identifier <prefix>
             rule [identifier, choice]
                 identifier <prefix>
                 choice [sequence, sequence, sequence, sequence, sequence, sequence]
@@ -212,7 +222,7 @@ grammar [identifier, *]
                         identifier <suffix>
                     sequence [singleString, identifier]
                         singleString [character]
-                            character <:>
+                            character <,>
                         identifier <suffix>
                     sequence [singleString, identifier]
                         singleString [character]

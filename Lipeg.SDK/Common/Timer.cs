@@ -17,38 +17,40 @@ namespace Lipeg.SDK.Common
             Console.WriteLine($"{msg}: {watch.Elapsed}");
             return result;
         }
-        public static T TimeBoth<T>(int megs, string msg, Func<T> action) where T: class
+        public static T TimeBoth<T>(int megs, string msg, Func<T> action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
 
             var watch = new Stopwatch();
-            GC.TryStartNoGCRegion((long)megs * 1024 * 1024);
-            watch.Start();
-            action();
-            watch.Stop();
-            GC.EndNoGCRegion();
-            GC.Collect(3, GCCollectionMode.Forced, true, true);
-            var e1 = watch.ElapsedTicks;
-            Console.WriteLine($"{msg}    (cold): {watch.Elapsed}");
 
             var max = 5;
-            T? result = null;
             List<(long, TimeSpan)> elapsed = new List<(long, TimeSpan)>();
+            T result = Run();
             for (var i = 0; i < max; ++i)
+            {
+                result = Run();
+            }
+
+            T Run()
             {
                 GC.TryStartNoGCRegion((long)megs * 1024 * 1024);
                 watch.Restart();
-                result = action();
+                var result = action();
                 watch.Stop();
                 GC.EndNoGCRegion();
                 GC.Collect(3, GCCollectionMode.Forced, true, true);
                 elapsed.Add((watch.ElapsedTicks, watch.Elapsed));
+                return result;
             }
-            for (var i = 0; i < max; ++i)
+
+            var e1 = elapsed[0].Item1;
+            for (var i = 0; i < elapsed.Count; ++i)
             {
+                var what = i == 0 ? "   cold" : $"warmed{i}";
+
                 var timers = elapsed[i];
 
-                Console.WriteLine($"{msg} (warmed{i}): {timers.Item2} (x{e1 / timers.Item1})");
+                Console.WriteLine($"{msg} ({what}): {timers.Item2} (x{e1 / timers.Item1})");
             }
 
             Debug.Assert(result != null);

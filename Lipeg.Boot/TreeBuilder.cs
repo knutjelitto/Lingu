@@ -103,19 +103,9 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var labeled = node.Select(Labeled).ToStarList();
+            var prefixeds = node.Select(Prefix).ToStarList();
 
-            return SequenceExpression.From(labeled);
-        }
-
-        private Expression Labeled(INode node)
-        {
-            if (node.Name == "labeled")
-            {
-                return LabeledExpression.From(Identifier(node[0]), Prefix(node[1]));
-            }
-
-            return Prefix(node);
+            return SequenceExpression.From(prefixeds);
         }
 
         private Expression Prefix(INode node)
@@ -126,8 +116,8 @@ namespace Lipeg.Boot
                     return AndExpression.From(Suffix(node[0]));
                 case "not":
                     return NotExpression.From(Suffix(node[0]));
-                case "promote":
-                    return PromoteExpression.From(Suffix(node[0]));
+                case "lift":
+                    return LiftExpression.From(Suffix(node[0]));
                 case "drop":
                     return DropExpression.From(Suffix(node[0]));
                 case "fuse":
@@ -207,14 +197,14 @@ namespace Lipeg.Boot
             return SDK.Tree.StringLiteralExpression.From(node.Location, characters);
         }
 
-        private ClassExpression Class(INode node)
+        private CharacterClassExpression Class(INode node)
         {
             Debug.Assert(node.Name == "class" && node.Count == 2);
 
             var invert = node[0].Count == 1;
             var ranges = node[1].Select(SingleOrRange).ToArray();
 
-            return ClassExpression.From(invert, ranges);
+            return CharacterClassExpression.From(invert, ranges);
         }
 
         private Expression SingleOrRange(INode node)
