@@ -1,12 +1,13 @@
-﻿using Lipeg.Runtime;
-using Lipeg.SDK.Tree;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-namespace Lipeg.SDK.Checks
+using Lipeg.Runtime;
+using Lipeg.SDK.Checks;
+
+namespace Lipeg.SDK.Tree
 {
-    internal abstract class CheckVisitor
+    internal abstract class TreeVisitor
     {
-        public CheckVisitor(Semantic semantic)
+        public TreeVisitor(Semantic semantic)
         {
             Semantic = semantic;
         }
@@ -22,7 +23,21 @@ namespace Lipeg.SDK.Checks
 
         public virtual void VisitGrammarRules()
         {
-            foreach (var rule in Grammar.Rules)
+            VisitGrammarSyntax();
+            VisitGrammarLexical();
+        }
+
+        protected virtual void VisitGrammarSyntax()
+        {
+            foreach (var rule in Grammar.Syntax)
+            {
+                VisitRule(rule);
+            }
+        }
+
+        protected virtual void VisitGrammarLexical()
+        {
+            foreach (var rule in Grammar.Lexical)
             {
                 VisitRule(rule);
             }

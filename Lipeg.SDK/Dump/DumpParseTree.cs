@@ -7,7 +7,7 @@ using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Dump
 {
-    public class DumpParseTree : IDump<INode>
+    public class DumpNodes : IDump<INode>
     {
         public void Dump(IWriter writer, INode node)
         {

@@ -46,7 +46,11 @@ choice <INode>
     = c:sequence<1,,_ '/' _>  { NE(cStart, cEnd, "choice", NP(cStart, cEnd, c)) }
 
 sequence <INode>
-    = e:prefix<0,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
+    = e:aliased<0,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
+
+aliased <INode>
+    = p:prefix ':' _ i:identifier { N(pStart, iEnd, "alias", p, i) }
+    / prefix
 
 prefix <INode>
     = a:'&' _ e:suffix { N(aStart, eEnd, "and", e) }

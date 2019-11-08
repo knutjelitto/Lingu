@@ -14,5 +14,9 @@ namespace Lipeg.Runtime.Tools
         public const string Lift = "^";
         public const string Drop = ",";
         public const string Fuse = "~";
+
+        public const string Options = "options";
+        public const string Syntax = "rules";
+        public const string Lexical = "lexical";
     }
 }

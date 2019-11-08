@@ -17,13 +17,12 @@ namespace Lipeg.SDK.Common
             Console.WriteLine($"{msg}: {watch.Elapsed}");
             return result;
         }
-        public static T TimeBoth<T>(int megs, string msg, Func<T> action)
+        public static T TimeColdWarm<T>(int megs, int max, string msg, Func<T> action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
 
             var watch = new Stopwatch();
 
-            var max = 5;
             List<(long, TimeSpan)> elapsed = new List<(long, TimeSpan)>();
             T result = Run();
             for (var i = 0; i < max; ++i)

@@ -17,7 +17,7 @@ namespace Lipeg.SDK.Checks
             new CheckOptionsVisitor(Semantic).VisitGrammarOptions();
         }
 
-        private class CheckOptionsVisitor : CheckVisitor
+        private class CheckOptionsVisitor : TreeVisitor
         {
             public CheckOptionsVisitor(Semantic semantic) : base(semantic) { }
 
@@ -26,10 +26,10 @@ namespace Lipeg.SDK.Checks
                 switch (option.Identifier.Name.ToUpperInvariant())
                 {
                     case "START":
-                        FindRule(option, rule => Grammar.Attributes.SetStart(rule));
+                        FindRule(option, rule => Semantic[Grammar].SetStart(rule));
                         break;
                     case "SPACING":
-                        FindRule(option, rule => Grammar.Attributes.SetSpacing(rule));
+                        FindRule(option, rule => Semantic[Grammar].SetSpacing(rule));
                         break;
                     default:
                         Results.AddError(new CheckError(ErrorCode.UnknownOption, option.Identifier));

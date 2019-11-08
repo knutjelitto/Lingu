@@ -36,24 +36,27 @@ namespace Lipeg.Boot
 
             var source = Source.FromFile(results, lpgGrammar);
 
-
-            if (!results.ShouldStop && source != null)
+            if (!results.HasErrors && source != null)
             {
-
                 var parser = new LipegParser(source);
 
-                var parseTree = Timer.TimeBoth(4, "parse", () => parser.Parse(source.ToString(), lpgGrammar));
+                var parseTree = Timer.TimeColdWarm(4, 5, "parse", () => parser.Parse(source.ToString(), lpgGrammar));
 
-                var parseTreeFile = debugOut.File(lpgGrammar.FileName).Add(".tree");
-                Dumper.Dump(parseTreeFile, new DumpParseTree(), parseTree);
+                Dumper.Dump(debugOut.File(lpgGrammar.FileName).Add(".nodes"), new DumpNodes(), parseTree);
 
                 var grammarBuilder = new GrammarBuilder();
 
-                var grammar = Timer.TimeBoth(4, "build tree", () => grammarBuilder.Build(parseTree));
+                var grammar = Timer.TimeColdWarm(4, 5, "build tree", () => grammarBuilder.Build(parseTree));
 
-                var semantic = new Semantic(grammar, results);
+                var semantic = Timer.TimeColdWarm(4, 5, "check tree", () => 
+                {
+                    var results = new CompileResult();
+                    var semantic = new Semantic(grammar, results); 
+                    Checker.Check(semantic); 
+                    return semantic; 
+                });
 
-                var ok = Timer.TimeBoth(4, "check tree", () => { Checker.Check(semantic); return !semantic.Results.HasErrors; });
+                Dumper.Dump(debugOut.File(lpgGrammar.FileName).Add(".tree"), new DumpTree(), semantic);
 
                 if (semantic.Results.HasErrors)
                 {

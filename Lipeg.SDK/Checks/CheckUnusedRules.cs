@@ -26,7 +26,7 @@ namespace Lipeg.SDK.Checks
             }
         }
 
-        private class CheckUsedVisitor : CheckVisitor
+        private class CheckUsedVisitor : TreeVisitor
         {
             public CheckUsedVisitor(Semantic semantic) : base(semantic) { }
 

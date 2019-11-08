@@ -20,7 +20,7 @@ namespace Lipeg.SDK.Checks
             new CheckDefinedVisitor(Semantic).VisitGrammarRules();
         }
 
-        private class CheckDefinedVisitor : CheckVisitor
+        private class CheckDefinedVisitor : TreeVisitor
         {
             public CheckDefinedVisitor(Semantic semantic) : base(semantic) { }
 
