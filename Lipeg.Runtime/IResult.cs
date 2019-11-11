@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface IExpressionAttribute
+    public interface IResult
     {
-        bool Nullable { get; }
-        bool SetNullable();
+        ICursor Next { get; }
     }
 }

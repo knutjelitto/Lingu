@@ -9,6 +9,6 @@ namespace Lipeg.Runtime
         ISource Source { get; }
         int Start { get; }
         int End { get; }
-        int Length => End - Start + 1;
+        int Length => End - Start;
     }
 }

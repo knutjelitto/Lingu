@@ -1,14 +1,17 @@
-﻿namespace Lipeg.SDK.Tree
+﻿using Lipeg.Runtime;
+
+namespace Lipeg.SDK.Tree
 {
-    public class WildcardExpression : Expression
+    public class WildcardExpression : SimpleExpression
     {
-        private WildcardExpression()
+        private WildcardExpression(ILocated located)
+            : base(located)
         {
         }
 
-        public static WildcardExpression From()
+        public static WildcardExpression From(ILocated located)
         {
-            return new WildcardExpression();
+            return new WildcardExpression(located);
         }
     }
 }

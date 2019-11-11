@@ -1,16 +1,19 @@
-﻿namespace Lipeg.SDK.Tree
+﻿using Lipeg.Runtime;
+
+namespace Lipeg.SDK.Tree
 {
-    public class NameExpression : Expression
+    public class NameExpression : SimpleExpression
     {
-        private NameExpression(Identifier identifier)
+        private NameExpression(ILocated located, Identifier identifier)
+            : base(located)
         {
             Identifier = identifier;
         }
         public Identifier Identifier { get; }
 
-        public static NameExpression From(Identifier identifier)
+        public static NameExpression From(ILocated located, Identifier identifier)
         {
-            return new NameExpression(identifier);
+            return new NameExpression(located, identifier);
         }
     }
 }

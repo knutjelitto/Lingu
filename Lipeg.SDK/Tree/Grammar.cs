@@ -21,7 +21,6 @@ namespace Lipeg.SDK.Tree
         public IStarList<Rule> Syntax { get; }
         public IStarList<Rule> Lexical { get; }
         public IEnumerable<Rule> Rules => Syntax.Concat(Lexical);
-        public IGrammarAttribute Attributes { get; } = new GrammarAttribute();
 
         public static Grammar From(Identifier name, IStarList<Option> options, IStarList<Rule> syntax, IStarList<Rule> lexicals)
         {

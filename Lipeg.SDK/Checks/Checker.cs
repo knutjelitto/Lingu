@@ -11,10 +11,12 @@ namespace Lipeg.SDK.Checks
             if (semantic == null) throw new ArgumentNullException(nameof(semantic));
 
             Check(semantic.Results, () => new CheckCreateRules(semantic));
-            Check(semantic.Results, () => new CheckDefinedRules(semantic));
+            Check(semantic.Results, () => new CheckUndefinedRules(semantic));
             Check(semantic.Results, () => new CheckOptions(semantic));
-            Check(semantic.Results, () => new CheckUnusedRules(semantic));
+            Check(semantic.Results, () => new CheckUsedRules(semantic));
+            Check(semantic.Results, () => new CheckReachableRules(semantic));
             Check(semantic.Results, () => new CheckNullable(semantic));
+            Check(semantic.Results, () => new CheckManySanity(semantic));
         }
 
         private static void Check(ICompileResult results, Func<ICheckPass> pass)

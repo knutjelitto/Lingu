@@ -8,21 +8,21 @@ namespace Lipeg.SDK.Checks
     /// <summary>
     /// Check if all rules are defined
     /// </summary>
-    public class CheckDefinedRules : Check, ICheckPass
+    public class CheckUndefinedRules : Check, ICheckPass
     {
-        public CheckDefinedRules(Semantic semantic)
+        public CheckUndefinedRules(Semantic semantic)
             : base(semantic)
         {
         }
 
         public void Check()
         {
-            new CheckDefinedVisitor(Semantic).VisitGrammarRules();
+            new Visitor(Semantic).VisitGrammarRules();
         }
 
-        private class CheckDefinedVisitor : TreeVisitor
+        private class Visitor : TreeVisitor
         {
-            public CheckDefinedVisitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Semantic semantic) : base(semantic) { }
 
             protected override void VisitNameExpression(NameExpression expression)
             {

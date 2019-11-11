@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lipeg.Runtime.Tools
+namespace Lipeg.SDK.Tree
 {
     public static class OpSymbols
     {
+        public const string Any = ".";
         public const string Option = "?";
         public const string Star = "*";
         public const string Plus = "+";

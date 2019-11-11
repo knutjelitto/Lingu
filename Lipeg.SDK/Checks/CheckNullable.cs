@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-
+using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checks
@@ -16,7 +16,7 @@ namespace Lipeg.SDK.Checks
 
         public void Check()
         {
-            var visitor = new CheckNullableVisitor(Semantic);
+            var visitor = new Visitor(Semantic);
 
             visitor.Changed = true;
             while (visitor.Changed)
@@ -26,37 +26,50 @@ namespace Lipeg.SDK.Checks
             }
         }
 
-        private class CheckNullableVisitor : TreeVisitor
+        private class Visitor : TreeVisitor
         {
-            public CheckNullableVisitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Semantic semantic) : base(semantic) { }
 
             public bool Changed { get; set; }
 
-            private void Set(Expression expression, bool nullable)
+            private void SetNullable(Expression expression, bool nullable)
             {
-                if (nullable && expression.Attributes.SetNullable())
+                if (nullable && Semantic[expression].SetNullable())
                 {
                     Changed = true;
                 }
             }
 
+            private void SetNullable(Rule rule, bool nullable)
+            {
+                if (nullable && Semantic[rule].SetNullable())
+                {
+                    Changed = true;
+                }
+            }
+
+            protected override void VisitRule(Rule rule)
+            {
+                base.VisitRule(rule);
+                SetNullable(rule, Semantic[rule.Expression].Nullable);
+            }
 
             protected override void VisitAndExpression(AndExpression expression)
             {
                 base.VisitAndExpression(expression);
-                Set(expression, true);
+                SetNullable(expression, true);
             }
 
-            protected override void VisitCharacter(CharacterExpression expression)
+            protected override void VisitClassCharExpression(ClassCharExpression expression)
             {
-                base.VisitCharacter(expression);
-                Set(expression, false);
+                base.VisitClassCharExpression(expression);
+                SetNullable(expression, false);
             }
 
-            protected override void VisitCharacterRange(CharacterRangeExpression expression)
+            protected override void VisitClassRangeExpression(ClassRangeExpression expression)
             {
-                base.VisitCharacterRange(expression);
-                Set(expression, false);
+                base.VisitClassRangeExpression(expression);
+                SetNullable(expression, false);
             }
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
@@ -64,35 +77,29 @@ namespace Lipeg.SDK.Checks
                 base.VisitChoiceExpression(expression);
                 foreach (var choice in expression.Choices)
                 {
-                    if (choice.Attributes.Nullable)
+                    if (Semantic[choice].Nullable)
                     {
-                        Set(expression, true);
+                        SetNullable(expression, true);
                     }
                 }
             }
 
-            protected override void VisitCharacterClassExpression(CharacterClassExpression expression)
+            protected override void VisitClassExpression(ClassExpression expression)
             {
-                base.VisitCharacterClassExpression(expression);
-                Set(expression, false);
+                base.VisitClassExpression(expression);
+                SetNullable(expression, false);
             }
 
             protected override void VisitDropExpression(DropExpression expression)
             {
                 base.VisitDropExpression(expression);
-                Set(expression, expression.Expression.Attributes.Nullable);
+                SetNullable(expression, Semantic[expression.Expression].Nullable);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
-                Set(expression, expression.Expression.Attributes.Nullable);
-            }
-
-            protected override void VisitLiteralExpression(LiteralExpression expression)
-            {
-                base.VisitLiteralExpression(expression);
-                Set(expression, expression.Value.Length == 0);
+                SetNullable(expression, Semantic[expression.Expression].Nullable);
             }
 
             protected override void VisitNameExpression(NameExpression expression)
@@ -100,44 +107,46 @@ namespace Lipeg.SDK.Checks
                 base.VisitNameExpression(expression);
                 if (Semantic.Rules.TryGetValue(expression.Identifier.Name, out var rule))
                 {
-                    Set(expression, rule?.Expression.Attributes.Nullable ?? false);
+                    if (rule == null) throw new InternalErrorException($"`{nameof(rule)}` can't be NULL");
+
+                    SetNullable(expression, Semantic[rule].Nullable);
                 }
             }
 
             protected override void VisitNotExpression(NotExpression expression)
             {
                 base.VisitNotExpression(expression);
-                Set(expression, expression.Expression.Attributes.Nullable);
+                SetNullable(expression, true);
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
-                Set(expression, expression.Expression.Attributes.Nullable);
+                SetNullable(expression, Semantic[expression.Expression].Nullable);
             }
 
             protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
             {
                 base.VisitQuantifiedExpression(expression);
-                Set(expression, expression.Quantifier.Nullable || expression.Expression.Attributes.Nullable);
+                SetNullable(expression, expression.Quantifier.Nullable || Semantic[expression.Expression].Nullable);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
                 base.VisitSequenceExpression(expression);
-                Set(expression, expression.Sequence.All(s => s.Attributes.Nullable));
+                SetNullable(expression, expression.Sequence.All(s => Semantic[s].Nullable));
             }
 
-            protected override void VisitStringLiteral(StringLiteralExpression expression)
+            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
             {
-                base.VisitStringLiteral(expression);
-                Set(expression, expression.Value.Length == 0);
+                base.VisitStringLiteralExpression(expression);
+                SetNullable(expression, expression.Value.Length == 0);
             }
 
             protected override void VisitWildcardExpression(WildcardExpression expression)
             {
                 base.VisitWildcardExpression(expression);
-                Set(expression, false);
+                SetNullable(expression, false);
             }
         }
     }

@@ -1,16 +1,17 @@
-﻿namespace Lipeg.SDK.Tree
-{
-    public class LiftExpression : Expression
-    {
-        private LiftExpression(Expression expression)
-        {
-            Expression = expression;
-        }
-        public Expression Expression { get; }
+﻿using Lipeg.Runtime;
 
-        public static LiftExpression From(Expression expression)
+namespace Lipeg.SDK.Tree
+{
+    public class LiftExpression : WithInnerExpression
+    {
+        private LiftExpression(ILocated located, Expression expression)
+            : base(located, expression)
         {
-            return new LiftExpression(expression);
+        }
+
+        public static LiftExpression From(ILocated located, Expression expression)
+        {
+            return new LiftExpression(located, expression);
         }
     }
 }

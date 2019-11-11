@@ -1,16 +1,17 @@
-﻿namespace Lipeg.SDK.Tree
-{
-    public class FuseExpression : Expression
-    {
-        private FuseExpression(Expression expression)
-        {
-            Expression = expression;
-        }
-        public Expression Expression { get; }
+﻿using Lipeg.Runtime;
 
-        public static FuseExpression From(Expression expression)
+namespace Lipeg.SDK.Tree
+{
+    public class FuseExpression : WithInnerExpression
+    {
+        private FuseExpression(ILocated located, Expression expression)
+            : base(located, expression)
         {
-            return new FuseExpression(expression);
+        }
+
+        public static FuseExpression From(ILocated located, Expression expression)
+        {
+            return new FuseExpression(located, expression);
         }
     }
 }

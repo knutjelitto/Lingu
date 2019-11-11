@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface IRule
+    public interface IFail : IResult
     {
     }
 }

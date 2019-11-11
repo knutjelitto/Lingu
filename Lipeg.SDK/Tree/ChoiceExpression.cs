@@ -4,16 +4,17 @@ namespace Lipeg.SDK.Tree
 {
     public class ChoiceExpression : Expression
     {
-        private ChoiceExpression(IPlusList<Expression> choices)
+        private ChoiceExpression(ILocated located, IPlusList<Expression> choices)
+            : base(located)
         {
             Choices = choices;
         }
 
         public IPlusList<Expression> Choices { get; }
 
-        public static ChoiceExpression From(IPlusList<Expression> choices)
+        public static ChoiceExpression From(ILocated located, IPlusList<Expression> choices)
         {
-            return new ChoiceExpression(choices);
+            return new ChoiceExpression(located, choices);
         }
     }
 }

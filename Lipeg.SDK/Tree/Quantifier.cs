@@ -29,6 +29,7 @@ namespace Lipeg.SDK.Tree
         public int? Max { get; }
         public Expression? Delimiter { get; }
         public bool Nullable => Min == 0;
+        public bool Many => !Max.HasValue;
 
         public static Quantifier From(ILocation location, int min, int? max, Expression? delimiter = null)
         {

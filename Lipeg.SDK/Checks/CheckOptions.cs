@@ -14,12 +14,12 @@ namespace Lipeg.SDK.Checks
 
         public void Check()
         {
-            new CheckOptionsVisitor(Semantic).VisitGrammarOptions();
+            new Visitor(Semantic).VisitGrammarOptions();
         }
 
-        private class CheckOptionsVisitor : TreeVisitor
+        private class Visitor : TreeVisitor
         {
-            public CheckOptionsVisitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Semantic semantic) : base(semantic) { }
 
             protected override void VisitOption(Option option)
             {
@@ -37,7 +37,7 @@ namespace Lipeg.SDK.Checks
                 }
             }
 
-            private void FindRule(Option option, Func<IRule, bool> setter)
+            private void FindRule(Option option, Func<Rule, bool> setter)
             {
                 if (option.QualifiedIdentifier.Identifiers.Count == 1)
                 {
@@ -53,7 +53,7 @@ namespace Lipeg.SDK.Checks
                         }
                         else
                         {
-                            rule.Attributes.Use();
+                            Semantic[rule].SetUsed();
                             return;
                         }
                     }

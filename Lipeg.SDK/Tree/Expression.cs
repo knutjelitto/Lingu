@@ -1,10 +1,17 @@
 ﻿using Lipeg.Runtime;
-using Lipeg.SDK.Checks;
+using System;
 
 namespace Lipeg.SDK.Tree
 {
-    public class Expression
+    public abstract class Expression : ILocated
     {
-        public IExpressionAttribute Attributes { get; } = new ExpressionAttribute();
+        protected internal Expression(ILocated located)
+        {
+            if (located == null) throw new ArgumentNullException(nameof(located));
+
+            Location = located.Location;
+        }
+
+        public ILocation Location { get; }
     }
 }

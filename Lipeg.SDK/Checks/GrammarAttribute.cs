@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checks
 {
-    internal class GrammarAttribute : IGrammarAttribute
+    internal class GrammarAttribute : IGrammarAttributes
     {
-        private readonly List<IRule> start = new List<IRule>();
-        private readonly List<IRule> spacing = new List<IRule>();
+        private readonly List<Rule> start = new List<Rule>();
+        private readonly List<Rule> spacing = new List<Rule>();
 
-        public IRule Start => start.First();
-        public IRule Spacing => spacing.First();
+        public Rule Start => start.First();
+        public Rule Spacing => spacing.First();
 
-        public bool SetStart(IRule rule)
+        public bool SetStart(Rule rule)
         {
             if (start.Count == 0)
             {
@@ -24,7 +25,7 @@ namespace Lipeg.SDK.Checks
             return false;
         }
 
-        public bool SetSpacing(IRule rule)
+        public bool SetSpacing(Rule rule)
         {
             if (spacing.Count == 0)
             {

@@ -1,16 +1,17 @@
-﻿namespace Lipeg.SDK.Tree
-{
-    public class AndExpression : Expression
-    {
-        private AndExpression(Expression expression)
-        {
-            Expression = expression;
-        }
-        public Expression Expression { get; }
+﻿using Lipeg.Runtime;
 
-        public static AndExpression From(Expression expression)
+namespace Lipeg.SDK.Tree
+{
+    public class AndExpression : WithInnerExpression
+    {
+        private AndExpression(ILocated located, Expression expression)
+            : base(located, expression)
         {
-            return new AndExpression(expression);
+        }
+
+        public static AndExpression From(ILocated located, Expression expression)
+        {
+            return new AndExpression(located, expression);
         }
     }
 }

@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface INode : IReadOnlyList<INode>, ILocated
-    { 
-        string Name { get; }
+    public interface ICursor
+    {
+        ISource Source { get; }
+        int Offset { get; }
     }
 }

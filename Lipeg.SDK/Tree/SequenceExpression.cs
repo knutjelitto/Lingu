@@ -8,15 +8,16 @@ namespace Lipeg.SDK.Tree
 {
     public class SequenceExpression : Expression
     {
-        private SequenceExpression(IStarList<Expression> sequence)
+        private SequenceExpression(ILocated located, IStarList<Expression> sequence)
+            : base(located)
         {
             Sequence = sequence;
         }
         public IStarList<Expression> Sequence { get; }
 
-        public static SequenceExpression From(IStarList<Expression> sequence)
+        public static SequenceExpression From(ILocated located, IStarList<Expression> sequence)
         {
-            return new SequenceExpression(sequence);
+            return new SequenceExpression(located, sequence);
         }
 
     }

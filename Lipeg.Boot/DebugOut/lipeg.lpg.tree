@@ -8,110 +8,181 @@ grammar lipeg
     rules
     {
         start =>
-            /  
-        opel =>
-            / 
+            grammar EOF
+            ;
+        
         grammar =>
-            / ,() ,() ^(((() / () / ()))*) ,()
+            ,'grammar' ,'{' ^(options / syntax / lexical / )* ,'}'
+            ;
+        
         options =>
-            / ,() ,() ()* ,()
+            ,'options' ,'{' ^option* ,'}'
+            ;
+        
         option =>
-            /  ,() 
+            identifier ,'=' optionValue ,';'
+            ;
+        
         optionValue =>
-            / 
+            qualifiedIdentifier
+            ;
+        
         qualifiedIdentifier =>
-            /  ^((((,() )))*)
+            identifier ^(,'.' identifier)*
+            ;
+        
         syntax =>
-            / ,() ,() ()* ,()
+            ,'rules' ,'{' ^rule* ,'}'
+            ;
+        
         lexical =>
-            / ,() ,() ()* ,()
+            ,'lexical' ,'{' ^rule* ,'}'
+            ;
+        
         rule =>
-            /   ,()  ,()
-        ruleFlags =>
-            / ^(()*)
-        ruleFlag =>
-            /  
+            identifier ,'<=' expression ,';'
+            ;
+        
+        // nullable
         expression =>
-            / 
+            choice
+            ;
+        
+        // nullable
         choice =>
-            /  ^((((,() )))*)
+            sequence ^(,'/' sequence)*
+            ;
+        
+        // nullable
         sequence =>
-            / ^(()*)
+            ^aliased*
+            ;
+        
         aliased =>
-            /   
-            / 
+            / prefix ':' identifier
+            / prefix
+            ;
+        
         prefix =>
-            /  
-            /  
-            /  
-            /  
-            /  
-            / 
+            / (,'&' suffix):and
+            / (,'!' suffix):not
+            / (,',' suffix):drop
+            / (,'^' suffix):lift
+            / (,'~' suffix):fuse
+            / suffix
+            ;
+        
         suffix =>
-            /  
-            /  
-            /  
-            / 
+            / (primary '?'):zero-or-one
+            / (primary '*'):zero-or-more
+            / (primary '+'):one-or-more
+            / primary
+            ;
+        
         primary =>
-            / 
-            / 
-            / 
-            / 
-            / ,()  ,()
+            / identifier
+            / string
+            / character-class
+            / any
+            / ,'(' expression ,')'
+            ;
+        
         any =>
-            / ,()
+            ,'.'
+            ;
     }
     lexical
     {
         identifier =>
-            / (() / ()) ((() / () / ()))*
+            letter letter-or-digit* ('-' letter-or-digit+)*
+            ;
+        
         letter =>
-            / 
-        digit =>
-            / 
-        hexDigit =>
-            / 
+            [a-zA-Z]
+            ;
+        
+        letter-or-digit =>
+            [a-zA-Z0-9]
+            ;
+        
+        hex-digit =>
+            [0-9a-fA-F]
+            ;
+        
         string =>
-            /  ()* 
+            '\'' character* '\''
+            ;
+        
         character =>
-            / !((() / () / ())) 
-            / 
-            / 
+            / !('\'' / '\\' / eol-char) .
+            / escape
+            / unicode
+            ;
+        
         escape =>
-            /  
+            '\\' [0abefnrtv\-\]\\]
+            ;
+        
         unicode =>
-            /   ()? ()? ()? ()? ()? 
-        characterClass =>
-            /  ()? ()* 
-        classCharacter =>
-            / 
-            / 
-        classRange =>
-            /   
-        classSingle =>
-            / !((() / () / ())) 
-            / 
-            / 
+            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}'
+            ;
+        
+        character-class =>
+            '[' '^'? class-part* ']'
+            ;
+        
+        class-part =>
+            / class-range
+            / class-char
+            ;
+        
+        class-range =>
+            class-char '-' class-char
+            ;
+        
+        class-char =>
+            / !(']' / '\\' / eol-char) .
+            / escape
+            / unicode
+            ;
+        
+        // nullable
         _ =>
-            / ((() / () / ()))*
+            (whitespace / newline / comment)*
+            ;
+        
         comment =>
-            / 
-            / 
-        singleLineComment =>
-            /  (((!() )))*
-        multiLineComment =>
-            /  (((!() )))* 
+            / single-line-comment
+            / multi-line-comment
+            ;
+        
+        single-line-comment =>
+            '//' (!eol-char .)*
+            ;
+        
+        multi-line-comment =>
+            '/*' (!'*/' .)* '*/'
+            ;
+        
         newline =>
-            / 
-            / 
-            / 
-            / 
-            / 
-        eolChar =>
-            / 
+            / '\n'
+            / '\r\n'
+            / '\r'
+            / '\u{2028}'
+            / '\u{2029}'
+            ;
+        
+        eol-char =>
+            [\n\r\u{2028}\u{2029}]
+            ;
+        
         whitespace =>
-            / 
+            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+            ;
+        
+        // nullable
         eof =>
-            / !()
+            !.
+            ;
     }
 }

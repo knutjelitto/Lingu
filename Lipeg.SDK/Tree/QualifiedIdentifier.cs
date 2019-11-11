@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 
 using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
-    public class QualifiedIdentifier : Expression, ILocated
+    public class QualifiedIdentifier : SimpleExpression, ILocated
     {
-        private QualifiedIdentifier(IPlusList<Identifier> identifiers)
+        private QualifiedIdentifier(ILocated located, IPlusList<Identifier> identifiers)
+            : base(located)
         {
             Debug.Assert(identifiers.Count > 0);
 
             Identifiers = identifiers;
-            Location = Runtime.Location.From(identifiers[0].Location, identifiers[identifiers.Count - 1].Location);
         }
 
         public IPlusList<Identifier> Identifiers { get; }
 
-        public ILocation Location { get; }
-
-        public static QualifiedIdentifier From(IPlusList<Identifier> identifiers)
+        public static QualifiedIdentifier From(ILocated located, IPlusList<Identifier> identifiers)
         {
             if (identifiers == null) throw new ArgumentNullException(nameof(identifiers));
 
-            return new QualifiedIdentifier(identifiers);
+            return new QualifiedIdentifier(located, identifiers);
         }
 
         public override string ToString()

@@ -12,20 +12,16 @@
             grammar EOF
             ;
 
-        opel <=
-            opel
-            ;
-
         grammar <=
-            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
+            ,'grammar' ,'{' ^(options / syntax / lexical /)* ,'}'
             ;
 
         options <=
-            ,'options' ,'{' option* ,'}'
+            ,'options' ,'{' ^option* ,'}'
             ;
 
         option <=
-            identifier ,'=' optionValue
+            identifier ,'=' optionValue ,';'
             ;
 
         optionValue <=
@@ -37,23 +33,15 @@
             ;
 
         syntax <=
-            ,'rules' ,'{' rule* ,'}'
+            ,'rules' ,'{' ^rule* ,'}'
             ;
 
         lexical <=
-            ,'lexical' ,'{' rule* ,'}'
+            ,'lexical' ,'{' ^rule* ,'}'
             ;
 
         rule <= 
-            identifier ruleFlags ,'<=' expression ,';'
-            ;
-
-        ruleFlags <=
-            ^ruleFlag*
-            ;
-
-        ruleFlag <=
-            '-' identifier
+            identifier ,'<=' expression ,';'
             ;
 
         expression <=
@@ -74,25 +62,25 @@
             ;
 
         prefix <=
-            / '&' suffix // and lookahead
-            / '!' suffix // not lookahead
-            / ',' suffix // drop
-            / '^' suffix // lift
-            / '~' suffix // fuse
+            / (,'&' suffix):and
+            / (,'!' suffix):not
+            / (,',' suffix):drop
+            / (,'^' suffix):lift
+            / (,'~' suffix):fuse
             / suffix
             ;
 
         suffix <=
-            / primary '?'
-            / primary '*'
-            / primary '+'
+            / (primary '?'):zero-or-one
+            / (primary '*'):zero-or-more
+            / (primary '+'):one-or-more
             / primary
             ;
 
         primary <=
             / identifier
             / string
-            / characterClass
+            / character-class
             / any
             / ,'(' expression ,')'
             ;
@@ -105,19 +93,19 @@
     lexical
     {
         identifier <=
-            (letter / '_') (letter / digit / '_')*
+            / letter letter-or-digit* ('-' letter-or-digit+)*
             ;
 
         letter <=
-            [a-zA-Z]
+            / [a-zA-Z]
             ;
 
-        digit <=
-            [0-9]
+        letter-or-digit <=
+            / [a-zA-Z0-9]
             ;
 
-        hexDigit <=
-            [0-9a-fA-F]
+        hex-digit <=
+            / [0-9a-fA-F]
             ;
 
         string <=
@@ -125,7 +113,7 @@
             ;
 
         character <=
-            / !('\'' / '\\' / eolChar) .
+            / !('\'' / '\\' / eol-char) .
             / escape
             / unicode
             ;
@@ -135,24 +123,24 @@
             ;
 
         unicode <=
-            '\\u{' hexdigit hexdigit? hexdigit? hexdigit? hexdigit? hexdigit? '}'
+            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}'
             ;
 
-        characterClass <=
-            '[' '^'? classCharacter* ']'
+        character-class <=
+            '[' '^'? class-part* ']'
             ;
 
-        classCharacter <=
-            / classRange
-            / classSingle
+        class-part <=
+            / class-range
+            / class-char
             ;
 
-        classRange <=
-            classSingle '-' classSingle
+        class-range <=
+            class-char '-' class-char
             ;
 
-        classSingle <=
-            / !(']' / '\\' / eolChar) .
+        class-char <=
+            / !(']' / '\\' / eol-char) .
             / escape
             / unicode
             ;
@@ -162,15 +150,15 @@
             ;
 
         comment <=
-            / singleLineComment
-            / multiLineComment
+            / single-line-comment
+            / multi-line-comment
             ;
 
-        singleLineComment <=
-            '//' (!eolChar .)*
+        single-line-comment <=
+            '//' (!eol-char .)*
             ;
 
-        multiLineComment <=
+        multi-line-comment <=
             '/*' (!'*/' .)* '*/'
             ;
 
@@ -182,7 +170,7 @@
             / '\u{2029}'
             ;
 
-        eolChar <=
+        eol-char <=
             [\n\r\u{2028}\u{2029}]
             ;
 

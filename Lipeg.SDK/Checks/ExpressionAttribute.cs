@@ -1,11 +1,8 @@
-﻿using Lipeg.Runtime;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checks
 {
-    public class ExpressionAttribute : IExpressionAttribute
+    public class ExpressionAttribute : IExpressionAttributes
     {
         public bool Nullable { get; private set; }
 

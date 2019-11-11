@@ -4,11 +4,11 @@ using Lipeg.SDK.Tree;
 namespace Lipeg.SDK.Checks
 {
     /// <summary>
-    /// Check if all rules are used
+    /// Check for rules that are used
     /// </summary>
-    public class CheckUnusedRules : Check, ICheckPass
+    public class CheckUsedRules : Check, ICheckPass
     {
-        public CheckUnusedRules(Semantic semantic)
+        public CheckUsedRules(Semantic semantic)
         : base(semantic)
         {
         }
@@ -19,7 +19,7 @@ namespace Lipeg.SDK.Checks
 
             foreach (var rule in Semantic.Rules)
             {
-                if (!rule.Attributes.Used)
+                if (!Semantic[rule].Used)
                 {
                     Results.AddError(new CheckError(ErrorCode.UnusedRule, rule.Identifier));
                 }
@@ -32,7 +32,7 @@ namespace Lipeg.SDK.Checks
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                Semantic.Rules[expression.Identifier.Name].Attributes.Use();
+                Semantic[Semantic.Rules[expression.Identifier.Name]].SetUsed();
             }
         }
     }

@@ -2,20 +2,18 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class StringLiteralExpression : Expression
+    public class StringLiteralExpression : SimpleExpression
     {
-        private StringLiteralExpression(ILocation location, string value)
+        private StringLiteralExpression(ILocated located, string value)
+            : base(located)
         {
-            Location = location;
             Value = value;
         }
-
-        public ILocation Location { get; }
         public string Value { get; }
 
-        public static StringLiteralExpression From(ILocation location, string value)
+        public static StringLiteralExpression From(ILocated located, string value)
         {
-            return new StringLiteralExpression(location, value);
+            return new StringLiteralExpression(located, value);
         }
     }
 }

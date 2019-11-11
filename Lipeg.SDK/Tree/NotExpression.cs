@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
-    public class NotExpression : Expression
+    public class NotExpression : WithInnerExpression
     {
-        private NotExpression(Expression expression)
+        private NotExpression(ILocated located, Expression expression)
+            : base(located, expression)
         {
-            Expression = expression;
         }
-        public Expression Expression { get; }
 
-        public static NotExpression From(Expression expression)
+        public static NotExpression From(ILocated located, Expression expression)
         {
-            return new NotExpression(expression);
+            return new NotExpression(located, expression);
         }
     }
 }

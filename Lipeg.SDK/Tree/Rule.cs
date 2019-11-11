@@ -1,9 +1,6 @@
-﻿using Lipeg.Runtime;
-using Lipeg.SDK.Checks;
-
-namespace Lipeg.SDK.Tree
+﻿namespace Lipeg.SDK.Tree
 {
-    public class Rule : IRule
+    public class Rule
     {
         private Rule(Identifier identifier, Expression expression)
         {
@@ -12,8 +9,6 @@ namespace Lipeg.SDK.Tree
         }
         public Identifier Identifier { get; }
         public Expression Expression { get; }
-
-        public IRuleAttribute Attributes { get; } = new RuleAttribute();
 
         public static Rule From(Identifier identifier, Expression expression)
         {

@@ -88,7 +88,8 @@ digits
     = digit+
 
 identifier <INode> -memoize
-    = name:(!digit (letter / digit / "_" / "$")+) _ { N(nameStart, nameEnd, "identifier", name) }
+    //= name:(!digit (letter / digit / "_" / "$")+) _ { N(nameStart, nameEnd, "identifier", name) }
+    = name:('_' / (letter (letter / digit)* ('-' (letter / digit)+)*)) _ { N(nameStart, nameEnd, "identifier", name) }
 
 stringLiteral <INode>
     = singleQuotedString

@@ -72,7 +72,7 @@ namespace Lipeg.Boot
 
             var identifiers = node.Select(Identifier).ToPlusList();
 
-            return SDK.Tree.QualifiedIdentifier.From(identifiers);
+            return SDK.Tree.QualifiedIdentifier.From(node, identifiers);
         }
 
         private IEnumerable<Rule> Rules(INode node)
@@ -96,16 +96,29 @@ namespace Lipeg.Boot
 
             var choices = node.Select(Sequence).ToPlusList();
 
-            return ChoiceExpression.From(choices);
+            return ChoiceExpression.From(node, choices);
         }
 
         private Expression Sequence(INode node)
         {
             Debug.Assert(node.Name == "sequence");
 
-            var prefixeds = node.Select(Prefix).ToStarList();
+            var prefixeds = node.Select(Aliased).ToStarList();
 
-            return SequenceExpression.From(prefixeds);
+            return SequenceExpression.From(node, prefixeds);
+        }
+
+        private Expression Aliased(INode node)
+        {
+            if (node.Name == "alias")
+            {
+                var expression = Expression(node[0]);
+                var identifier = Identifier(node[1]);
+
+                return AliasExpression.From(node, expression, identifier);
+            }
+
+            return Prefix(node);
         }
 
         private Expression Prefix(INode node)
@@ -113,15 +126,15 @@ namespace Lipeg.Boot
             switch (node.Name)
             {
                 case "and":
-                    return AndExpression.From(Suffix(node[0]));
+                    return AndExpression.From(node, Suffix(node[0]));
                 case "not":
-                    return NotExpression.From(Suffix(node[0]));
+                    return NotExpression.From(node, Suffix(node[0]));
                 case "lift":
-                    return LiftExpression.From(Suffix(node[0]));
+                    return LiftExpression.From(node, Suffix(node[0]));
                 case "drop":
-                    return DropExpression.From(Suffix(node[0]));
+                    return DropExpression.From(node, Suffix(node[0]));
                 case "fuse":
-                    return FuseExpression.From(Suffix(node[0]));
+                    return FuseExpression.From(node, Suffix(node[0]));
                 default:
                     return Suffix(node);
             }
@@ -132,7 +145,7 @@ namespace Lipeg.Boot
             if (node.Name == "quantified")
             {
                 Debug.Assert(node.Count == 2);
-                return QuantifiedExpression.From(Primary(node[0]), Quantifier(node[1]));
+                return QuantifiedExpression.From(node, Primary(node[0]), Quantifier(node[1]));
             }
 
             return Primary(node);
@@ -143,12 +156,12 @@ namespace Lipeg.Boot
             switch (node.Name)
             {
                 case "identifier":
-                    return NameExpression.From(Identifier(node));
+                    return NameExpression.From(node, Identifier(node));
                 case "singleString":
                 case "doubleString":
                     return StringLiteral(node);
                 case ".":
-                    return WildcardExpression.From();
+                    return WildcardExpression.From(node);
                 case "choice":
                     return Expression(node);
                 case "class":
@@ -194,20 +207,20 @@ namespace Lipeg.Boot
 
             var characters = string.Join(string.Empty, node.Select(c => Character(c)));
 
-            return SDK.Tree.StringLiteralExpression.From(node.Location, characters);
+            return SDK.Tree.StringLiteralExpression.From(node, characters);
         }
 
-        private CharacterClassExpression Class(INode node)
+        private ClassExpression Class(INode node)
         {
             Debug.Assert(node.Name == "class" && node.Count == 2);
 
             var invert = node[0].Count == 1;
             var ranges = node[1].Select(SingleOrRange).ToArray();
 
-            return CharacterClassExpression.From(invert, ranges);
+            return ClassExpression.From(node, invert, ranges);
         }
 
-        private Expression SingleOrRange(INode node)
+        private ClassPartExpression SingleOrRange(INode node)
         {
             if (node.Name == "single")
             {
@@ -215,7 +228,7 @@ namespace Lipeg.Boot
 
                 var c = Character(node[0]);
                 Debug.Assert(c.Length == 1);
-                return CharacterExpression.From(c[0]);
+                return ClassCharExpression.From(node, c[0]);
             }
             else if (node.Name == "range")
             {
@@ -225,7 +238,7 @@ namespace Lipeg.Boot
                 Debug.Assert(c1.Length == 1);
                 var c2 = Character(node[1]);
                 Debug.Assert(c2.Length == 1);
-                return CharacterRangeExpression.From(c1[0], c2[0]);
+                return ClassRangeExpression.From(node, c1[0], c2[0]);
             }
 
             throw  new NotImplementedException();

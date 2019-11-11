@@ -51,7 +51,7 @@ namespace Lipeg.SDK.Tree
             }
         }
 
-        protected virtual void VisitExpression(Expression expression)
+        public virtual void VisitExpression(Expression expression)
         {
             switch (expression)
             {
@@ -70,20 +70,17 @@ namespace Lipeg.SDK.Tree
                 case FuseExpression fuseExpression:
                     VisitFuseExpression(fuseExpression);
                     break;
-                case CharacterExpression character:
-                    VisitCharacter(character);
+                case ClassCharExpression character:
+                    VisitClassCharExpression(character);
                     break;
-                case CharacterRangeExpression characterRange:
-                    VisitCharacterRange(characterRange);
+                case ClassRangeExpression characterRange:
+                    VisitClassRangeExpression(characterRange);
                     break;
                 case ChoiceExpression choiceExpression:
                     VisitChoiceExpression(choiceExpression);
                     break;
-                case CharacterClassExpression classExpression:
-                    VisitCharacterClassExpression(classExpression);
-                    break;
-                case LiteralExpression literalExpression:
-                    VisitLiteralExpression(literalExpression);
+                case ClassExpression classExpression:
+                    VisitClassExpression(classExpression);
                     break;
                 case NameExpression nameExpression:
                     VisitNameExpression(nameExpression);
@@ -95,10 +92,13 @@ namespace Lipeg.SDK.Tree
                     VisitSequenceExpression(sequenceExpression);
                     break;
                 case StringLiteralExpression stringLiteral:
-                    VisitStringLiteral(stringLiteral);
+                    VisitStringLiteralExpression(stringLiteral);
                     break;
                 case WildcardExpression wildcardExpression:
                     VisitWildcardExpression(wildcardExpression);
+                    break;
+                case AliasExpression aliasExpression:
+                    VisitAliasExpression(aliasExpression);
                     break;
                 default:
                     throw new InternalErrorException($"expression of type '{expression.GetType().Name}' not implemented");
@@ -130,11 +130,11 @@ namespace Lipeg.SDK.Tree
             VisitExpression(expression.Expression);
         }
 
-        protected virtual void VisitCharacter(CharacterExpression expression)
+        protected virtual void VisitClassCharExpression(ClassCharExpression expression)
         {
         }
 
-        protected virtual void VisitCharacterRange(CharacterRangeExpression expression)
+        protected virtual void VisitClassRangeExpression(ClassRangeExpression expression)
         {
         }
 
@@ -146,11 +146,7 @@ namespace Lipeg.SDK.Tree
             }
         }
 
-        protected virtual void VisitCharacterClassExpression(CharacterClassExpression expression)
-        {
-        }
-
-        protected virtual void VisitLiteralExpression(LiteralExpression expression)
+        protected virtual void VisitClassExpression(ClassExpression expression)
         {
         }
 
@@ -171,12 +167,17 @@ namespace Lipeg.SDK.Tree
             }
         }
 
-        protected virtual void VisitStringLiteral(StringLiteralExpression expression)
+        protected virtual void VisitStringLiteralExpression(StringLiteralExpression expression)
         {
         }
 
         protected virtual void VisitWildcardExpression(WildcardExpression expression)
         {
+        }
+
+        protected virtual void VisitAliasExpression(AliasExpression expression)
+        {
+            VisitExpression(expression.Expression);
         }
 
         protected virtual void VisitRule(Rule rule)
