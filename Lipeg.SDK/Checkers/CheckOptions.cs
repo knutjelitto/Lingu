@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     public class CheckOptions : Check, ICheckPass
     {

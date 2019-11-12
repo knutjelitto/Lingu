@@ -6,6 +6,5 @@ namespace Lipeg.Runtime
 {
     public interface ISuccess : IResult
     {
-        INode Node { get; }
     }
 }

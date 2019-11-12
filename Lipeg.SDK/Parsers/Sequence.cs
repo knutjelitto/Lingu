@@ -1,29 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
     public class Sequence : IParser
     {
-        public Sequence(params IParser[] parsers)
+        public Sequence(IReadOnlyList<IParser> parsers)
         {
             Parsers = parsers;
         }
 
-        private IReadOnlyCollection<IParser> Parsers { get; }
+        private IReadOnlyList<IParser> Parsers { get; }
 
         public IResult Parse(ICursor cursor)
         {
             var current = cursor;
+            var nodes = new List<INode>();
             foreach (var parser in Parsers)
             {
                 var result = parser.Parse(current);
-                if (result is IFail)
-                { 
+                if (result.IsFail)
+                {
+                    return Result.Fail(cursor);
                 }
+                nodes.Add(result.Node);
+                current = result.Next;
             }
+
+            return Result.Success(
+                current, 
+                InternalNode.From(Location.From(cursor, current), OpSymbols.Sequence, nodes));
         }
     }
 }

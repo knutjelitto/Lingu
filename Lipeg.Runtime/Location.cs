@@ -21,5 +21,18 @@ namespace Lipeg.Runtime
         {
             return new Location(start.Source, start.Start, end.End);
         }
+
+        public static ILocation From(ICursor start, ICursor end)
+        {
+            return new Location(start.Source, start.Offset, end.Offset);
+        }
+
+        public override string ToString()
+        {
+            var start = Source.GetLineCol(Start);
+            var end = Source.GetLineCol(End);
+            var text = Source.GetText(Start, End - Start);
+            return $"({start.lineNo}-{start.colNo})-({end.lineNo}-{end.colNo})<{text}>";
+        }
     }
 }

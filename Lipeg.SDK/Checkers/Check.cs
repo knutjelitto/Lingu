@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Lipeg.Runtime;
+﻿using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     public abstract class Check
     {

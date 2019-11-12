@@ -2,9 +2,8 @@ using System.Diagnostics;
 
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
-using Lipeg.SDK.Checks;
+using Lipeg.SDK.Checkers;
 using Lipeg.SDK.Common;
-using Lipeg.Runtime.Tools;
 
 namespace Lipeg.SDK.Dump
 {

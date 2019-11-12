@@ -2,7 +2,7 @@
 
 using Lipeg.Runtime;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     public static class Checker
     {

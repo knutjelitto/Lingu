@@ -12,7 +12,7 @@ grammar lipeg
             ;
         
         grammar =>
-            ,'grammar' ,'{' ^(options / syntax / lexical / )* ,'}'
+            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
             ;
         
         options =>

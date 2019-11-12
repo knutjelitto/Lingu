@@ -3,7 +3,7 @@
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     /// <summary>
     /// Check if all rules are defined

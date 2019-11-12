@@ -3,7 +3,7 @@ using System.Threading;
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     /// <summary>
     /// Create all rules

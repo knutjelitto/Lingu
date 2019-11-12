@@ -4,7 +4,7 @@ using Lipeg.SDK.Common;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
-using Lipeg.SDK.Checks;
+using Lipeg.SDK.Checkers;
 
 namespace Lipeg.Boot
 {
@@ -48,15 +48,29 @@ namespace Lipeg.Boot
 
                 var grammar = Timer.TimeColdWarm(4, 5, "build tree", () => grammarBuilder.Build(parseTree));
 
-                var semantic = Timer.TimeColdWarm(4, 5, "check tree", () => 
+                Semantic semantic;
+
+                semantic = Timer.TimeColdWarm(4, 5, "check tree", () =>
                 {
                     var results = new CompileResult();
-                    var semantic = new Semantic(grammar, results); 
-                    Checker.Check(semantic); 
-                    return semantic; 
+                    var semantic = new Semantic(grammar, results);
+                    Checker.Check(semantic);
+                    return semantic;
                 });
 
-                Dumper.Dump(debugOut.File(lpgGrammar.FileName).Add(".tree"), new DumpTree(), semantic);
+                if (!semantic.Results.HasErrors)
+                {
+
+                    semantic = Timer.TimeColdWarm(4, 5, "build outcome", () =>
+                    {
+                        var results = new CompileResult();
+                        var semantic = new Semantic(grammar, results);
+                        Builder.Build(semantic);
+                        return semantic;
+                    });
+
+                    Dumper.Dump(debugOut.File(lpgGrammar.FileName).Add(".tree"), new DumpTree(), semantic);
+                }
 
                 if (semantic.Results.HasErrors)
                 {

@@ -35,14 +35,13 @@ grammar [identifier, *]
                                 character <{>
                         lift [quantified]
                             quantified [choice, *]
-                                choice [sequence, sequence, sequence, sequence]
+                                choice [sequence, sequence, sequence]
                                     sequence [identifier]
                                         identifier <options>
                                     sequence [identifier]
                                         identifier <syntax>
                                     sequence [identifier]
                                         identifier <lexical>
-                                    sequence []
                                 * <>
                         drop [singleString]
                             singleString [character]

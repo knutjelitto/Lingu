@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Lipeg.Runtime;
 using Lipeg.SDK.Common;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     public class Semantic
     {

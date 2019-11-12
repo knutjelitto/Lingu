@@ -8,7 +8,7 @@ namespace Lipeg.Runtime
 {
     public class InternalNode : INode
     {
-        private InternalNode(ILocation location, string name, params INode[] children)
+        private InternalNode(ILocation location, string name, IReadOnlyList<INode> children)
         {
             Location = location;
             Name = name;
@@ -19,6 +19,7 @@ namespace Lipeg.Runtime
         public string Name { get; set; }
         private IReadOnlyList<INode> Children { get; }
         public static INode From(ILocation location, string name, params INode[] children) => new InternalNode(location, name, children);
+        public static INode From(ILocation location, string name, IReadOnlyList<INode> children) => new InternalNode(location, name, children);
         public IEnumerator<INode> GetEnumerator() => Children.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => Children.Count;

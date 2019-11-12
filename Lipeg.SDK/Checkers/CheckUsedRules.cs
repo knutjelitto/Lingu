@@ -1,7 +1,7 @@
 ﻿using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
-namespace Lipeg.SDK.Checks
+namespace Lipeg.SDK.Checkers
 {
     /// <summary>
     /// Check for rules that are used
