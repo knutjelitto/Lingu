@@ -18,8 +18,11 @@ namespace Lipeg.SDK.Parsers
 
         public bool IsFail { get; }
         public bool IsDrop { get; private set; }
+        public bool IsLift { get; private set; }
+        public bool IsFuse { get; private set; }
 
         public virtual INode Node => throw new InvalidOperationException();
+
 
         public static IResult Fail(ICursor next)
         {
@@ -34,6 +37,18 @@ namespace Lipeg.SDK.Parsers
         public IResult SetDrop()
         {
             IsDrop = true;
+            return this;
+        }
+
+        public IResult SetFuse()
+        {
+            IsFuse = true;
+            return this;
+        }
+
+        public IResult SetLift()
+        {
+            IsLift = true;
             return this;
         }
 

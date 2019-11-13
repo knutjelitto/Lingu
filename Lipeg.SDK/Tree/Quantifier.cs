@@ -30,6 +30,9 @@ namespace Lipeg.SDK.Tree
         public Expression? Delimiter { get; }
         public bool Nullable => Min == 0;
         public bool Many => !Max.HasValue;
+        public bool IsStar => Min == 0 && Many;
+        public bool IsPlus => Min == 1 && Many;
+        public bool IsOption => Min == 0 && !Many && Max == 1;
 
         public static Quantifier From(ILocation location, int min, int? max, Expression? delimiter = null)
         {
@@ -38,21 +41,12 @@ namespace Lipeg.SDK.Tree
 
         public override string ToString()
         {
-            if (Min == 0)
-            {
-                if (Max == 1)
-                {
-                    return OpSymbols.Option;
-                }
+            if (IsStar)
                 return OpSymbols.Star;
-            }
-            else if (Min == 1)
-            {
-                if (Max == null)
-                {
-                    return OpSymbols.Plus;
-                }
-            }
+            if (IsPlus)
+                return OpSymbols.Plus;
+            if (IsOption)
+                return OpSymbols.Option;
 
             return "<-- quantifier not implemented -->";
         }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Lingu.Runtime.Parsing;
 using Lipeg.Runtime;
 using Lipeg.SDK.Checkers;
+using Lipeg.SDK.Parsers;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Builders
@@ -87,23 +88,26 @@ namespace Lipeg.SDK.Builders
             {
                 base.VisitDropExpression(expression);
                 
-                Push(new Parsers.Drop(Pop()));
+                Push(new Drop(Pop()));
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
+
+                Push(new Fuse(Pop()));
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
+
+                Push(new Lift(Pop()));
             }
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                var name = new Parsers.Name(() => Semantic[Semantic.Rules[expression.Identifier.Name]].Parser);
-                Push(name);
+                Push(new Name(() => Semantic[Semantic.Rules[expression.Identifier.Name]].Parser));
             }
 
             protected override void VisitNotExpression(NotExpression expression)
@@ -114,6 +118,23 @@ namespace Lipeg.SDK.Builders
             protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
             {
                 base.VisitQuantifiedExpression(expression);
+
+                if (expression.Quantifier.IsOption)
+                {
+                    Push(new Parsers.Option(Pop()));
+                }
+                else if (expression.Quantifier.IsStar)
+                {
+                    Push(new Star(Pop()));
+                }
+                else if (expression.Quantifier.IsPlus)
+                {
+                    Push(new Plus(Pop()));
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
@@ -122,7 +143,7 @@ namespace Lipeg.SDK.Builders
 
                 base.VisitSequenceExpression(expression);
 
-                var parser = new Parsers.Sequence(Pop(start));
+                var parser = new Sequence(Pop(start));
                 parsers.Add(parser);
             }
 
@@ -133,9 +154,14 @@ namespace Lipeg.SDK.Builders
                     {
                         if (cursor.Source.Part(cursor.Offset, expression.Value.Length) == expression.Value)
                         {
+                            var next = cursor.Advance(expression.Value.Length);
+                            var location = Location.From(cursor, next);
+                            return Result.Success(next, LeafNode.From(location, NodeSymbols.StringLiteral, expression.Value));
                         }
-                        throw new NotImplementedException();
+                        return Result.Fail(cursor);
                     });
+
+                Push(new Predicate(matcher));
             }
 
             protected override void VisitWildcardExpression(WildcardExpression expression)
@@ -175,7 +201,7 @@ namespace Lipeg.SDK.Builders
                 base.VisitGrammarSyntax();
             }
 
-            protected override void VisitOption(Option option)
+            protected override void VisitOption(Tree.Option option)
             {
                 base.VisitOption(option);
             }

@@ -27,6 +27,11 @@ namespace Lipeg.Runtime
             return new Location(start.Source, start.Offset, end.Offset);
         }
 
+        public static ILocation From(ICursor both)
+        {
+            return new Location(both.Source, both.Offset, both.Offset);
+        }
+
         public override string ToString()
         {
             var start = Source.GetLineCol(Start);

@@ -32,7 +32,7 @@ namespace Lipeg.SDK.Parsers
 
             return Result.Success(
                 current, 
-                InternalNode.From(Location.From(cursor, current), OpSymbols.Sequence, nodes));
+                InternalNode.From(Location.From(cursor, current), NodeSymbols.Sequence, nodes));
         }
     }
 }
