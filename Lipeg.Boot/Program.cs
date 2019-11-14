@@ -5,6 +5,7 @@ using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
+using System.Diagnostics;
 
 namespace Lipeg.Boot
 {
@@ -12,69 +13,53 @@ namespace Lipeg.Boot
     {
         internal static void Main()
         {
-            Console.WriteLine("Hello World!");
-
             Build("lipeg.lpg");
-            GC.Collect(3, GCCollectionMode.Forced);
+            GC.Collect(2, GCCollectionMode.Forced);
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }
 
-        private static void Build(string grammarFile)
+        private static void Build(string grammarFilename)
         {
             var projectDir = DirRef.ProjectDir();
             var grammarDir = projectDir.Dir("Grammars");
-            var debugOut = projectDir.Dir("DebugOut");
+            var debugDir = projectDir.Dir("DebugOut");
 
-            var lpgGrammar = grammarDir.File(grammarFile);
+            var grammarFile = grammarDir.File(grammarFilename);
 
-
-            Environment.CurrentDirectory = debugOut;
+            Environment.CurrentDirectory = debugDir;
 
             var results = new CompileResult();
 
-            var source = Source.FromFile(results, lpgGrammar);
+            var source = Source.FromFile(results, grammarFile);
 
             if (!results.HasErrors && source != null)
             {
                 var parser = new LipegParser(source);
 
-                var parseTree = Timer.TimeColdWarm(4, 5, "parse", () => parser.Parse(source.ToString(), lpgGrammar));
+                var parseTree = parser.Parse(source.ToString(), grammarFile);
 
-                Dumper.Dump(debugOut.File(lpgGrammar.FileName).Add(".nodes"), new DumpNodes(), parseTree);
+                Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".nodes"), new DumpNodes(), parseTree);
 
                 var grammarBuilder = new GrammarBuilder();
 
-                var grammar = Timer.TimeColdWarm(4, 5, "build tree", () => grammarBuilder.Build(parseTree));
+                var grammar = grammarBuilder.Build(parseTree);
 
-                Semantic semantic;
+                var semantic = new Semantic(grammar, results);
 
-                semantic = Timer.TimeColdWarm(4, 5, "check tree", () =>
+                Checker.Check(semantic);
+
+                if (!results.HasErrors)
                 {
-                    var results = new CompileResult();
-                    var semantic = new Semantic(grammar, results);
-                    Checker.Check(semantic);
-                    return semantic;
-                });
+                    Builder.Build(semantic);
 
-                if (!semantic.Results.HasErrors)
-                {
-
-                    semantic = Timer.TimeColdWarm(4, 5, "build outcome", () =>
-                    {
-                        var results = new CompileResult();
-                        var semantic = new Semantic(grammar, results);
-                        Builder.Build(semantic);
-                        return semantic;
-                    });
-
-                    Dumper.Dump(debugOut.File(lpgGrammar.FileName).Add(".tree"), new DumpTree(), semantic);
+                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".tree"), new DumpTree(), semantic);
                 }
 
-                if (semantic.Results.HasErrors)
+                if (results.HasErrors)
                 {
-                    semantic.Results.Report(Console.Out);
+                    results.Report(Console.Out);
                 }
             }
         }

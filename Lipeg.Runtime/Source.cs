@@ -29,8 +29,7 @@ namespace Lipeg.Runtime
         public int Length => Content.Length;
         protected List<int> Lines => lazyLines.Value;
         public int LineCount => Lines.Count;
-
-        public char this[int index] => Content[index];
+        public int this[int index] => Content[index];
         public bool AtEnd(int index) => index >= Content.Length;
 
         public static ISource? FromFile(ICompileResult result, FileRef sourceFile)

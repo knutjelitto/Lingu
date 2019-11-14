@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
@@ -8,8 +6,10 @@ namespace Lipeg.SDK.Tree
     {
         Rule Start { get; }
         Rule Spacing { get; }
+        IParser Parser { get; }
 
         bool SetStart(Rule rule);
         bool SetSpacing(Rule rule);
+        bool SetParser(IParser parser);
     }
 }

@@ -211,7 +211,7 @@ namespace Lipeg.SDK.Dump
             protected override void VisitClassExpression(ClassExpression expression)
             {
                 Writer.Write("[");
-                foreach (var part in expression.Parts)
+                foreach (var part in expression.Choices)
                 {
                     VisitExpression(part);
                 }

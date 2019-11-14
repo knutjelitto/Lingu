@@ -9,5 +9,7 @@ namespace Lipeg.Runtime
         ISource Source { get; }
         int Offset { get; }
         ICursor Advance(int count);
+        int Current => Source[Offset];
+        bool AtEnd => Source.AtEnd(Offset);
     }
 }

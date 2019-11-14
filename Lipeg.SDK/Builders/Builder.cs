@@ -12,6 +12,15 @@ namespace Lipeg.SDK.Checkers
             if (semantic == null) throw new ArgumentNullException(nameof(semantic));
 
             Build(semantic.Results, () => new BuildCombinator(semantic));
+
+            var parser = semantic[semantic[semantic.Grammar].Start].Parser;
+
+            if (parser == null)
+            {
+                throw new InternalErrorException($"{parser} shouldn't be NULL here");
+            }
+
+            semantic[semantic.Grammar].SetParser(parser);
         }
 
         private static void Build(ICompileResult results, Func<IBuildPass> pass)

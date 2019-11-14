@@ -6,14 +6,14 @@ namespace Lipeg.SDK.Tree
 {
     public class ClassExpression : Expression
     {
-        private ClassExpression(ILocated located, bool negated, params ClassPartExpression[] parts)
+        private ClassExpression(ILocated located, bool negated, params ClassPartExpression[] choices)
             : base(located)
         {
             Negated = negated;
-            Parts = parts;
+            Choices = choices;
         }
 
-        public IReadOnlyList<ClassPartExpression> Parts { get; }
+        public IReadOnlyList<ClassPartExpression> Choices { get; }
         public bool Negated { get; }
 
         public static ClassExpression From(ILocated located, bool negated, params ClassPartExpression[] parts)

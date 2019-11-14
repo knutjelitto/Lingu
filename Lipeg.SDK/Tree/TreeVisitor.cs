@@ -146,6 +146,10 @@ namespace Lipeg.SDK.Tree
 
         protected virtual void VisitClassExpression(ClassExpression expression)
         {
+            foreach (var choice in expression.Choices)
+            {
+                VisitExpression(choice);
+            }
         }
 
         protected virtual void VisitNameExpression(NameExpression expression)
