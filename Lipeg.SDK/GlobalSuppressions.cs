@@ -13,5 +13,13 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Globalization", 
     "CA1303:Do not pass literals as localized parameters",
-    Justification = "Scheiß draug",
-    Scope = "module")]
+    Justification = "Scheiß drauf",
+    Scope = "module"
+ )]
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Design", 
+    "CA1065:Do not raise exceptions in unexpected locations", 
+    Justification = "Scheiß drauf", 
+    Scope = "module"
+)]

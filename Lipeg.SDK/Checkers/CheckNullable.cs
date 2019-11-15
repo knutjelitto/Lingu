@@ -7,7 +7,7 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all rules are used
     /// </summary>
-    public class CheckNullable : Check, ICheckPass
+    public class CheckNullable : ACheckBase, ICheckPass
     {
         public CheckNullable(Semantic semantic)
         : base(semantic)
@@ -26,6 +26,14 @@ namespace Lipeg.SDK.Checkers
             }
         }
 
+        private class NotVisitor : TreeVisitor
+        {
+            public NotVisitor(Semantic semantic) : base(semantic)
+            {
+            }
+        }
+
+
         private class Visitor : TreeVisitor
         {
             public Visitor(Semantic semantic) : base(semantic) { }
@@ -34,7 +42,7 @@ namespace Lipeg.SDK.Checkers
 
             private void SetNullable(Expression expression, bool nullable)
             {
-                if (nullable && Semantic[expression].SetNullable())
+                if (nullable && Semantic[expression].SetIsNullable())
                 {
                     Changed = true;
                 }
@@ -42,7 +50,7 @@ namespace Lipeg.SDK.Checkers
 
             private void SetNullable(Rule rule, bool nullable)
             {
-                if (nullable && Semantic[rule].SetNullable())
+                if (nullable && Semantic[rule].SetIsNullable(nullable))
                 {
                     Changed = true;
                 }
@@ -51,7 +59,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitRule(Rule rule)
             {
                 base.VisitRule(rule);
-                SetNullable(rule, Semantic[rule.Expression].Nullable);
+                SetNullable(rule, Semantic[rule.Expression].IsNullable);
             }
 
             protected override void VisitAndExpression(AndExpression expression)
@@ -77,7 +85,7 @@ namespace Lipeg.SDK.Checkers
                 base.VisitChoiceExpression(expression);
                 foreach (var choice in expression.Choices)
                 {
-                    if (Semantic[choice].Nullable)
+                    if (Semantic[choice].IsNullable)
                     {
                         SetNullable(expression, true);
                     }
@@ -93,13 +101,13 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitDropExpression(DropExpression expression)
             {
                 base.VisitDropExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].Nullable);
+                SetNullable(expression, Semantic[expression.Expression].IsNullable);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].Nullable);
+                SetNullable(expression, Semantic[expression.Expression].IsNullable);
             }
 
             protected override void VisitNameExpression(NameExpression expression)
@@ -109,7 +117,7 @@ namespace Lipeg.SDK.Checkers
                 {
                     if (rule == null) throw new InternalErrorException($"`{nameof(rule)}` can't be NULL");
 
-                    SetNullable(expression, Semantic[rule].Nullable);
+                    SetNullable(expression, Semantic[rule].IsNullable);
                 }
             }
 
@@ -122,19 +130,19 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].Nullable);
+                SetNullable(expression, Semantic[expression.Expression].IsNullable);
             }
 
             protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
             {
                 base.VisitQuantifiedExpression(expression);
-                SetNullable(expression, expression.Quantifier.Nullable || Semantic[expression.Expression].Nullable);
+                SetNullable(expression, expression.Quantifier.Nullable || Semantic[expression.Expression].IsNullable);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
                 base.VisitSequenceExpression(expression);
-                SetNullable(expression, expression.Sequence.All(s => Semantic[s].Nullable));
+                SetNullable(expression, expression.Sequence.All(s => Semantic[s].IsNullable));
             }
 
             protected override void VisitStringLiteralExpression(StringLiteralExpression expression)

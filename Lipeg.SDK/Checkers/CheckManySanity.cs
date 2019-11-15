@@ -6,7 +6,7 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all X* or X+ rules have non-nullable X
     /// </summary>
-    public class CheckManySanity : Check, ICheckPass
+    public class CheckManySanity : ACheckBase, ICheckPass
     {
         public CheckManySanity(Semantic semantic)
             : base(semantic)
@@ -24,7 +24,7 @@ namespace Lipeg.SDK.Checkers
 
             protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
             {
-                if (expression.Quantifier.Many && Semantic[expression.Expression].Nullable)
+                if (expression.Quantifier.Many && Semantic[expression.Expression].IsNullable)
                 {
                     Results.AddError(new CheckError(ErrorCode.NullableManyContent, expression));
                 }

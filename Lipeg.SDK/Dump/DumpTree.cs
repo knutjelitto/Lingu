@@ -70,11 +70,11 @@ namespace Lipeg.SDK.Dump
             protected override void VisitRule(Rule rule)
             {
                 if (ruleCount > 0) Writer.WriteLine();
-                if (Semantic[rule].Nullable)
+                if (Semantic[rule].IsNullable)
                 {
                     Writer.WriteLine("// nullable");
                 }
-                if (!Semantic[rule].Reachable)
+                if (!Semantic[rule].IsReachable)
                 {
                     Writer.WriteLine("// !reachable");
                 }

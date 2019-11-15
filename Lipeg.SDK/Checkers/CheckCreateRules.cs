@@ -8,7 +8,7 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Create all rules
     /// </summary>
-    internal class CheckCreateRules : Check, ICheckPass
+    internal class CheckCreateRules : ACheckBase, ICheckPass
     {
         public CheckCreateRules(Semantic semantic)
             : base(semantic)
@@ -28,6 +28,14 @@ namespace Lipeg.SDK.Checkers
                     continue;
                 }
                 Semantic.Rules.Add(rule);
+            }
+            foreach (var syntax in Grammar.Syntax)
+            {
+                Semantic[syntax].SetIsLexical(false);
+            }
+            foreach (var lexical in Grammar.Lexical)
+            {
+                Semantic[lexical].SetIsLexical(true);
             }
         }
     }

@@ -4,7 +4,7 @@ using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Checkers
 {
-    public static class Checker
+    public static class AChecker
     {
         public static void Check(Semantic semantic)
         {

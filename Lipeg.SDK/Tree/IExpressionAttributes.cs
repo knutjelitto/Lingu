@@ -6,7 +6,9 @@ namespace Lipeg.SDK.Tree
 {
     public interface IExpressionAttributes
     {
-        bool Nullable { get; }
-        bool SetNullable();
+        bool IsNullable { get; }
+        bool SetIsNullable();
+        bool IsTerminal { get; }
+        bool SetIsTerminal();
     }
 }

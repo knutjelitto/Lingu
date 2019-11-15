@@ -5,7 +5,7 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checkers
 {
-    public class CheckOptions : Check, ICheckPass
+    public class CheckOptions : ACheckBase, ICheckPass
     {
         public CheckOptions(Semantic semantic)
             : base(semantic)
@@ -53,7 +53,7 @@ namespace Lipeg.SDK.Checkers
                         }
                         else
                         {
-                            Semantic[rule].SetUsed();
+                            Semantic[rule].SetIsUsed(true);
                             return;
                         }
                     }

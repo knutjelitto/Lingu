@@ -8,7 +8,7 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all rules are defined
     /// </summary>
-    public class CheckUndefinedRules : Check, ICheckPass
+    public class CheckUndefinedRules : ACheckBase, ICheckPass
     {
         public CheckUndefinedRules(Semantic semantic)
             : base(semantic)

@@ -6,7 +6,8 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check for rules that are reached from start symbol
     /// </summary>
-    public class CheckReachableRules : Check, ICheckPass
+    public class CheckReachableRules : ACheckBase
+        , ICheckPass
     {
         public CheckReachableRules(Semantic semantic)
         : base(semantic)
@@ -16,9 +17,9 @@ namespace Lipeg.SDK.Checkers
         public void Check()
         {
             var start = Semantic[Grammar].Start;
-            Semantic[start].SetReachable();
+            Semantic[start].SetIsReachable(true);
             var spacing = Semantic[Grammar].Spacing;
-            Semantic[spacing].SetReachable();
+            Semantic[spacing].SetIsReachable(true);
 
             var visitor = new Visitor(Semantic);
             visitor.VisitExpression(start.Expression);
@@ -26,7 +27,7 @@ namespace Lipeg.SDK.Checkers
 
             foreach (var rule in Semantic.Rules)
             {
-                if (!Semantic[rule].Reachable)
+                if (!Semantic[rule].IsReachable)
                 {
                     Results.AddError(new CheckError(ErrorCode.UnreachableRule, rule.Identifier));
                 }
@@ -41,7 +42,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitNameExpression(NameExpression expression)
             {
                 var rule = Semantic.Rules[expression.Identifier.Name];
-                if (Semantic[rule].SetReachable())
+                if (Semantic[rule].SetIsReachable(true))
                 {
                     VisitExpression(rule.Expression);
                 }

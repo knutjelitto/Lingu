@@ -3,9 +3,9 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checkers
 {
-    public abstract class Check
+    public abstract class ACheckBase
     {
-        protected Check(Semantic semantic)
+        protected ACheckBase(Semantic semantic)
         {
             Semantic = semantic;
         }

@@ -48,7 +48,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!ruleAttributes.TryGetValue(rule, out var attributes))
                 {
-                    attributes = new RuleAttribute();
+                    attributes = new RuleAttributes();
                     ruleAttributes.Add(rule, attributes);
                 }
 
@@ -63,7 +63,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!expressionAttributes.TryGetValue(expression, out var attributes))
                 {
-                    attributes = new ExpressionAttribute();
+                    attributes = new ExpressionAttributes();
                     expressionAttributes.Add(expression, attributes);
                 }
 

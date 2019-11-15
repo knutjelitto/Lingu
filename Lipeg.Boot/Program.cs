@@ -1,11 +1,9 @@
 ﻿using System;
 
-using Lipeg.SDK.Common;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
-using System.Diagnostics;
 
 namespace Lipeg.Boot
 {
@@ -13,14 +11,14 @@ namespace Lipeg.Boot
     {
         internal static void Main()
         {
-            Build("lipeg.lpg");
+            RamboBuild("lipeg.lpg");
             GC.Collect(2, GCCollectionMode.Forced);
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }
 
-        private static void Build(string grammarFilename)
+        private static void RamboBuild(string grammarFilename)
         {
             var projectDir = DirRef.ProjectDir();
             var grammarDir = projectDir.Dir("Grammars");
@@ -48,7 +46,7 @@ namespace Lipeg.Boot
 
                 var semantic = new Semantic(grammar, results);
 
-                Checker.Check(semantic);
+                AChecker.Check(semantic);
 
                 if (!results.HasErrors)
                 {
