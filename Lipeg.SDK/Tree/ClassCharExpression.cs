@@ -5,10 +5,10 @@ namespace Lipeg.SDK.Tree
 {
     public class ClassCharExpression : ClassPartExpression, IEquatable<ClassCharExpression>
     {
-        private ClassCharExpression(ILocated located, int value)
+        private ClassCharExpression(ILocated located, int charValue)
             : base(located)
         {
-            Value = value;
+            Value = charValue;
         }
         public int Value { get; }
 

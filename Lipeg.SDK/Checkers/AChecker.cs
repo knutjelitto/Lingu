@@ -17,6 +17,7 @@ namespace Lipeg.SDK.Checkers
             Check(semantic.Results, () => new CheckReachableRules(semantic));
             Check(semantic.Results, () => new CheckNullable(semantic));
             Check(semantic.Results, () => new CheckManySanity(semantic));
+            Check(semantic.Results, () => new CheckIsLexical(semantic));
         }
 
         private static void Check(ICompileResult results, Func<ICheckPass> pass)

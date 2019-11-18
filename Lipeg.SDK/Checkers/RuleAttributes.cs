@@ -17,7 +17,7 @@ namespace Lipeg.SDK.Checkers
         public bool IsNullable => Get(ref isNullable, nameof(IsNullable));
         public bool IsUsed => Get(ref isUsed, nameof(IsUsed));
         public bool IsReachable => Get(ref isReachable, nameof(IsReachable));
-        public bool IsTerminal => Get(ref isTerminal, nameof(IsTerminal));
+        public bool StartsTerminal => Get(ref isTerminal, nameof(StartsTerminal));
         public bool IsLexical => Get(ref isLexical, nameof(IsLexical));
 
         public IParser Parser
@@ -40,7 +40,7 @@ namespace Lipeg.SDK.Checkers
         public bool SetIsNullable(bool value) => Set(ref isNullable, value);
         public bool SetIsReachable(bool value) => Set(ref isReachable, value);
         public bool SetIsUsed(bool value) => Set(ref isUsed, value);
-        public bool SetIsTerminal(bool value) => Set(ref isTerminal, value);
+        public bool SetStartsTerminal(bool value) => Set(ref isTerminal, value);
         public bool SetIsLexical(bool value) => Set(ref isLexical, value);
     }
 }

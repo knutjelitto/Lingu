@@ -12,15 +12,15 @@ namespace Lipeg.SDK.Tree
         {
             Name = name;
             Options = options;
-            Syntax = syntax;
-            Lexical = lexical;
+            SyntaxRules = syntax;
+            LexicalRules = lexical;
         }
 
         public Identifier Name { get; }
         public IStarList<Option> Options { get; }
-        public IStarList<Rule> Syntax { get; }
-        public IStarList<Rule> Lexical { get; }
-        public IEnumerable<Rule> Rules => Syntax.Concat(Lexical);
+        public IStarList<Rule> SyntaxRules { get; }
+        public IStarList<Rule> LexicalRules { get; }
+        public IEnumerable<Rule> Rules => SyntaxRules.Concat(LexicalRules);
 
         public static Grammar From(Identifier name, IStarList<Option> options, IStarList<Rule> syntax, IStarList<Rule> lexicals)
         {

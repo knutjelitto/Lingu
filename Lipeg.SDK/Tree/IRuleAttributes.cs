@@ -10,13 +10,10 @@ namespace Lipeg.SDK.Tree
         bool SetIsReachable(bool value);
         bool IsNullable { get; }
         bool SetIsNullable(bool value);
-        bool IsTerminal { get; }
-        bool SetIsTerminal(bool value);
         bool IsLexical { get; }
         bool SetIsLexical(bool value);
 
         IParser Parser { get; }
         bool SetParser(IParser parser);
-
     }
 }

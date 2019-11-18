@@ -103,9 +103,9 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var prefixeds = node.Select(Aliased).ToStarList();
+            var aliased = node.Select(Aliased).ToStarList();
 
-            return SequenceExpression.From(node, prefixeds);
+            return SequenceExpression.From(node, aliased);
         }
 
         private Expression Aliased(INode node)

@@ -29,13 +29,13 @@ namespace Lipeg.SDK.Checkers
                 }
                 Semantic.Rules.Add(rule);
             }
-            foreach (var syntax in Grammar.Syntax)
+            foreach (var syntaxRule in Grammar.SyntaxRules)
             {
-                Semantic[syntax].SetIsLexical(false);
+                Semantic[syntaxRule].SetIsLexical(false);
             }
-            foreach (var lexical in Grammar.Lexical)
+            foreach (var lexicalRule in Grammar.LexicalRules)
             {
-                Semantic[lexical].SetIsLexical(true);
+                Semantic[lexicalRule].SetIsLexical(true);
             }
         }
     }

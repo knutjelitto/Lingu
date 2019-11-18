@@ -265,9 +265,9 @@ namespace Lipeg.SDK.Builders
                 base.VisitGrammar();
             }
 
-            protected override void VisitGrammarLexical()
+            protected override void VisitGrammarLexicalRules()
             {
-                base.VisitGrammarLexical();
+                base.VisitGrammarLexicalRules();
             }
 
             public override void VisitGrammarOptions()
@@ -280,9 +280,9 @@ namespace Lipeg.SDK.Builders
                 base.VisitGrammarRules();
             }
 
-            protected override void VisitGrammarSyntax()
+            protected override void VisitGrammarSyntaxRules()
             {
-                base.VisitGrammarSyntax();
+                base.VisitGrammarSyntaxRules();
             }
 
             protected override void VisitOption(Tree.Option option)

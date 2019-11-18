@@ -1,15 +1,16 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checkers
 {
     /// <summary>
-    /// Check if all rules are used
+    /// Check which rules are terminal
     /// </summary>
-    public class CheckNullable : ACheckBase, ICheckPass
+    public class CheckIsLexical : ACheckBase, ICheckPass
     {
-        public CheckNullable(Semantic semantic)
+        public CheckIsLexical(Semantic semantic)
         : base(semantic)
         {
         }
@@ -17,6 +18,11 @@ namespace Lipeg.SDK.Checkers
         public void Check()
         {
             var visitor = new Visitor(Semantic);
+
+            foreach (var rule in Grammar.LexicalRules)
+            {
+                rule.Attr(Semantic).SetIsLexical(true);
+            }
 
             visitor.Changed = true;
             while (visitor.Changed)
@@ -28,78 +34,79 @@ namespace Lipeg.SDK.Checkers
 
         private class Visitor : TreeVisitor
         {
+            private bool changed;
+
             public Visitor(Semantic semantic) : base(semantic) { }
 
-            public bool Changed { get; set; }
-
-            private void SetNullable(Expression expression, bool nullable)
+            public bool Changed
             {
-                if (Semantic[expression].SetIsNullable(nullable))
+                get => changed;
+                set
                 {
-                    Changed = true;
+                    if (!changed && value)
+                    {
+                        Debug.Assert(true);
+                    }
+                    changed = value;
                 }
             }
 
-            private void SetNullable(Rule rule, bool nullable)
+            private void SetIsLexical(Expression expression, bool isLexical)
             {
-                if (nullable && Semantic[rule].SetIsNullable(nullable))
+                if (expression.Attr(Semantic).SetIsLexical(isLexical))
                 {
                     Changed = true;
                 }
-            }
-
-            protected override void VisitRule(Rule rule)
-            {
-                base.VisitRule(rule);
-                SetNullable(rule, Semantic[rule.Expression].IsNullable);
             }
 
             protected override void VisitAndExpression(AndExpression expression)
             {
                 base.VisitAndExpression(expression);
-                SetNullable(expression, true);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitClassCharExpression(ClassCharExpression expression)
             {
-                base.VisitClassCharExpression(expression);
-                SetNullable(expression, false);
+                SetIsLexical(expression, true);
             }
 
             protected override void VisitClassRangeExpression(ClassRangeExpression expression)
             {
-                base.VisitClassRangeExpression(expression);
-                SetNullable(expression, false);
+                SetIsLexical(expression, true);
+            }
+            protected override void VisitClassExpression(ClassExpression expression)
+            {
+                base.VisitClassExpression(expression);
+                SetIsLexical(expression, true);
+            }
+
+            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
+            {
+                SetIsLexical(expression, expression.Value.Length > 0);
+            }
+
+            protected override void VisitAliasExpression(AliasExpression expression)
+            {
+                base.VisitAliasExpression(expression);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
                 base.VisitChoiceExpression(expression);
-                foreach (var choice in expression.Choices)
-                {
-                    if (Semantic[choice].IsNullable)
-                    {
-                        SetNullable(expression, true);
-                    }
-                }
-            }
-
-            protected override void VisitClassExpression(ClassExpression expression)
-            {
-                base.VisitClassExpression(expression);
-                SetNullable(expression, false);
+                SetIsLexical(expression, expression.Choices.All(c => c.Attr(Semantic).IsLexical));
             }
 
             protected override void VisitDropExpression(DropExpression expression)
             {
                 base.VisitDropExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitNameExpression(NameExpression expression)
@@ -109,44 +116,37 @@ namespace Lipeg.SDK.Checkers
                 {
                     if (rule == null) throw new InternalErrorException($"`{nameof(rule)}` can't be NULL");
 
-                    SetNullable(expression, Semantic[rule].IsNullable);
+                    SetIsLexical(expression, rule.Attr(Semantic).IsLexical);
                 }
             }
 
             protected override void VisitNotExpression(NotExpression expression)
             {
                 base.VisitNotExpression(expression);
-                SetNullable(expression, true);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
             {
                 base.VisitQuantifiedExpression(expression);
-                SetNullable(expression, expression.Quantifier.Nullable || Semantic[expression.Expression].IsNullable);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
                 base.VisitSequenceExpression(expression);
-                SetNullable(expression, expression.Sequence.All(s => Semantic[s].IsNullable));
+                SetIsLexical(expression, expression.Sequence[0].Attr(Semantic).IsLexical);
             }
-
-            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
-            {
-                base.VisitStringLiteralExpression(expression);
-                SetNullable(expression, expression.Value.Length == 0);
-            }
-
             protected override void VisitWildcardExpression(WildcardExpression expression)
             {
                 base.VisitWildcardExpression(expression);
-                SetNullable(expression, false);
+                SetIsLexical(expression, true);
             }
         }
     }

@@ -8,19 +8,19 @@ grammar lipeg
     rules
     {
         start =>
-            grammar EOF
+            grammar _ EOF
             ;
         
         grammar =>
-            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
+            _ _ _ ,_ 'grammar' _ ,_ '{' ^(options / syntax / lexical)* _ ,_ '}'
             ;
         
         options =>
-            ,'options' ,'{' ^option* ,'}'
+            _ _ _ ,_ 'options' _ ,_ '{' ^option* _ ,_ '}'
             ;
         
         option =>
-            identifier ,'=' optionValue ,';'
+            _ _ _ identifier _ ,_ '=' optionValue _ ,_ ';'
             ;
         
         optionValue =>
@@ -28,19 +28,19 @@ grammar lipeg
             ;
         
         qualifiedIdentifier =>
-            identifier ^(,'.' identifier)*
+            _ _ _ identifier _ ^_ _ _ (_ ,_ '.' _ identifier)*
             ;
         
         syntax =>
-            ,'rules' ,'{' ^rule* ,'}'
+            _ _ _ ,_ 'rules' _ ,_ '{' ^rule* _ ,_ '}'
             ;
         
         lexical =>
-            ,'lexical' ,'{' ^rule* ,'}'
+            _ _ _ ,_ 'lexical' _ ,_ '{' ^rule* _ ,_ '}'
             ;
         
         rule =>
-            identifier ,'<=' expression ,';'
+            _ _ _ identifier _ ,_ '<=' expression _ ,_ ';'
             ;
         
         // nullable
@@ -50,7 +50,7 @@ grammar lipeg
         
         // nullable
         choice =>
-            sequence ^(,'/' sequence)*
+            sequence _ ^_ _ _ (_ ,_ '/' sequence)*
             ;
         
         // nullable
@@ -59,130 +59,150 @@ grammar lipeg
             ;
         
         aliased =>
-            / prefix ':' identifier
+            / prefix _ ':' _ identifier
             / prefix
             ;
         
         prefix =>
-            / (,'&' suffix):and
-            / (,'!' suffix):not
-            / (,',' suffix):drop
-            / (,'^' suffix):lift
-            / (,'~' suffix):fuse
+            / _ _ _ _ (_ ,_ '&' suffix):and
+            / _ _ _ _ (_ ,_ '!' suffix):not
+            / _ _ _ _ (_ ,_ ',' suffix):drop
+            / _ _ _ _ (_ ,_ '^' suffix):lift
+            / _ _ _ _ (_ ,_ '~' suffix):fuse
             / suffix
             ;
         
         suffix =>
-            / (primary '?'):zero-or-one
-            / (primary '*'):zero-or-more
-            / (primary '+'):one-or-more
+            / (primary _ '?'):zero-or-one
+            / (primary _ '*'):zero-or-more
+            / (primary _ '+'):one-or-more
             / primary
             ;
         
         primary =>
-            / identifier
-            / string
-            / character-class
+            / _ _ identifier
+            / _ _ string
+            / _ _ character-class
             / any
-            / ,'(' expression ,')'
+            / _ _ ,_ '(' expression _ ,_ ')'
             ;
         
         any =>
-            ,'.'
+            _ _ _ ,_ '.'
             ;
     }
     lexical
     {
+        // lexical
         identifier =>
-            letter letter-or-digit* ('-' letter-or-digit+)*
+            _ _ _ letter _ _ letter-or-digit* _ _ _ (_ '-' _ _ letter-or-digit+)*
             ;
         
+        // lexical
         letter =>
-            [a-zA-Z]
+            _ _ _ [_ a-z_ A-Z]
             ;
         
+        // lexical
         letter-or-digit =>
-            [a-zA-Z0-9]
+            _ _ _ [_ a-z_ A-Z_ 0-9]
             ;
         
+        // lexical
         hex-digit =>
-            [0-9a-fA-F]
+            _ _ _ [_ 0-9_ a-f_ A-F]
             ;
         
+        // lexical
         string =>
-            '\'' character* '\''
+            _ _ _ '\'' _ _ character* _ '\''
             ;
         
+        // lexical
         character =>
-            / !('\'' / '\\' / eol-char) .
-            / escape
-            / unicode
+            _ / _ _ !_ (_ _ '\'' / _ _ '\\' / _ _ eol-char) _ .
+            / _ _ escape
+            / _ _ unicode
             ;
         
+        // lexical
         escape =>
-            '\\' [0abefnrtv\-\]\\]
+            _ _ _ '\\' _ [_ 0_ a_ b_ e_ f_ n_ r_ t_ v_ \-_ \]_ \\]
             ;
         
+        // lexical
         unicode =>
-            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}'
+            _ _ _ '\\u{' _ hex-digit _ _ hex-digit? _ _ hex-digit? _ _ hex-digit? _ _ hex-digit? _ _ hex-digit? _ '}'
             ;
         
+        // lexical
         character-class =>
-            '[' '^'? class-part* ']'
+            _ _ _ '[' _ _ '^'? _ _ class-part* _ ']'
             ;
         
+        // lexical
         class-part =>
-            / class-range
-            / class-char
+            _ / _ _ class-range
+            / _ _ class-char
             ;
         
+        // lexical
         class-range =>
-            class-char '-' class-char
+            _ _ _ class-char _ '-' _ class-char
             ;
         
+        // lexical
         class-char =>
-            / !(']' / '\\' / eol-char) .
-            / escape
-            / unicode
+            _ / _ _ !_ (_ _ ']' / _ _ '\\' / _ _ eol-char) _ .
+            / _ _ escape
+            / _ _ unicode
             ;
         
         // nullable
+        // lexical
         _ =>
-            (whitespace / newline / comment)*
+            _ _ _ _ (_ _ whitespace / _ _ newline / _ _ comment)*
             ;
         
+        // lexical
         comment =>
-            / single-line-comment
-            / multi-line-comment
+            _ / _ _ single-line-comment
+            / _ _ multi-line-comment
             ;
         
+        // lexical
         single-line-comment =>
-            '//' (!eol-char .)*
+            _ _ _ '//' _ _ _ (_ !_ eol-char _ .)*
             ;
         
+        // lexical
         multi-line-comment =>
-            '/*' (!'*/' .)* '*/'
+            _ _ _ '/*' _ _ _ (_ !_ '*/' _ .)* _ '*/'
             ;
         
+        // lexical
         newline =>
-            / '\n'
-            / '\r\n'
-            / '\r'
-            / '\u{2028}'
-            / '\u{2029}'
+            _ / _ _ '\n'
+            / _ _ '\r\n'
+            / _ _ '\r'
+            / _ _ '\u{2028}'
+            / _ _ '\u{2029}'
             ;
         
+        // lexical
         eol-char =>
-            [\n\r\u{2028}\u{2029}]
+            _ _ _ [_ \n_ \r_ \u{2028}_ \u{2029}]
             ;
         
+        // lexical
         whitespace =>
-            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+            _ _ _ [_  _ \t_ \v_ \f_ \u{00A0}_ \u{FEFF}_ \u{1680}_ \u{180E}_ \u{2000}-\u{200A}_ \u{202F}_ \u{205F}_ \u{3000}]
             ;
         
         // nullable
+        // lexical
         eof =>
-            !.
+            _ _ _ !_ .
             ;
     }
 }

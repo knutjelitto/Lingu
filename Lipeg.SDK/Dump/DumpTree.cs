@@ -49,21 +49,21 @@ namespace Lipeg.SDK.Dump
                 Writer.WriteLine($"{option.Identifier} = {option.QualifiedIdentifier};");
             }
 
-            protected override void VisitGrammarSyntax()
+            protected override void VisitGrammarSyntaxRules()
             {
                 Writer.Block($"{OpSymbols.Syntax}", () =>
                 {
                     ruleCount = 0;
-                    base.VisitGrammarSyntax();
+                    base.VisitGrammarSyntaxRules();
                 });
             }
 
-            protected override void VisitGrammarLexical()
+            protected override void VisitGrammarLexicalRules()
             {
                 Writer.Block($"{OpSymbols.Lexical}", () =>
                 {
                     ruleCount = 0;
-                    base.VisitGrammarLexical();
+                    base.VisitGrammarLexicalRules();
                 });
             }
 
@@ -77,6 +77,10 @@ namespace Lipeg.SDK.Dump
                 if (!Semantic[rule].IsReachable)
                 {
                     Writer.WriteLine("// !reachable");
+                }
+                if (Semantic[rule].IsLexical)
+                {
+                    Writer.WriteLine("// lexical");
                 }
                 Writer.WriteLine($"{rule.Identifier} =>");
                 if (rule.Identifier.Name == "identifier")

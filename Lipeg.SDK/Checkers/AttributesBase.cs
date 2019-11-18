@@ -1,8 +1,4 @@
-﻿using Lipeg.Runtime;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Diagnostics;
 
 namespace Lipeg.SDK.Checkers
 {
@@ -11,12 +7,14 @@ namespace Lipeg.SDK.Checkers
         protected static bool Is(ref bool? field) => field.HasValue;
         protected static bool Get(ref bool? field, string name)
         {
-            return field ?? throw new InternalErrorException($"{name} should be set somewhere else");
+            Debug.Assert(!string.IsNullOrWhiteSpace(name));
+            return field ?? false;
+            // return field ?? throw new InternalErrorException($"{name} should be set somewhere else");
         }
 
         protected static bool Set(ref bool? field, bool value)
         {
-            if (!Is(ref field))
+            if (!field.HasValue || field != value)
             {
                 field = value;
                 return true;

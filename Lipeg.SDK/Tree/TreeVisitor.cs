@@ -21,21 +21,21 @@ namespace Lipeg.SDK.Tree
 
         public virtual void VisitGrammarRules()
         {
-            VisitGrammarSyntax();
-            VisitGrammarLexical();
+            VisitGrammarSyntaxRules();
+            VisitGrammarLexicalRules();
         }
 
-        protected virtual void VisitGrammarSyntax()
+        protected virtual void VisitGrammarSyntaxRules()
         {
-            foreach (var rule in Grammar.Syntax)
+            foreach (var rule in Grammar.SyntaxRules)
             {
                 VisitRule(rule);
             }
         }
 
-        protected virtual void VisitGrammarLexical()
+        protected virtual void VisitGrammarLexicalRules()
         {
-            foreach (var rule in Grammar.Lexical)
+            foreach (var rule in Grammar.LexicalRules)
             {
                 VisitRule(rule);
             }
