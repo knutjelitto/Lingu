@@ -9,15 +9,15 @@
     rules
     {
         start <=
-            grammar EOF
+            grammar eof
             ;
 
         grammar <=
-            ,'grammar' ,'{' (options / syntax / lexical)*^ ,'}'
+            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
             ;
 
         options <=
-            ,'options' ,'{' option*^ ,'}'
+            ,'options' ,'{' ^option* ,'}'
             ;
 
         option <=
@@ -29,19 +29,23 @@
             ;
 
         qualifiedIdentifier <=
-            identifier (,'.' identifier)*^
+            identifier ^(,'.' identifier)*
             ;
 
         syntax <=
-            ,'rules' ,'{' rule*^ ,'}'
+            ,'rules' ,'{' rules ,'}'
             ;
 
         lexical <=
-            ,'lexical' ,'{' rule*^ ,'}'
+            ,'lexical' ,'{' rules ,'}'
+            ;
+
+        rules <=
+            ^(rule ^(,';' rule)* ,';'?)?
             ;
 
         rule <= 
-            identifier ,'<=' expression ,';'
+            identifier ,'<=' expression
             ;
 
         expression <=
@@ -49,11 +53,11 @@
             ;
 
         choice <=
-            ,'/'? sequence (,'/' sequence)*^
+            ,'/'? sequence ^(,'/' sequence)*
             ;
 
         sequence <=
-            aliased+^
+            ^aliased+
             ;
 
         aliased <=
@@ -62,20 +66,18 @@
             ;
 
         prefix <=
-            / (,'&' suffix):and
-            / (,'!' suffix):not
-            / (,',' suffix):drop
-            / (,'~' suffix):fuse
+            / (and  <= ,'&' suffix)
+            / (not  <= ,'!' suffix)
+            / (drop <= ,',' suffix)
+            / (fuse <= ,'~' suffix)
+            / (lift <= ,'^' suffix)
             / suffix
             ;
 
         suffix <=
-            / (primary '?'):zero-or-one
-            / (primary '?^'):zero-or-one-lift
-            / (primary '*'):zero-or-more
-            / (primary '*^'):zero-or-more-lift
-            / (primary '+'):one-or-more
-            / (primary '+^'):one-or-more-lift
+            / (zero-or-one  <= primary '?')
+            / (zero-or-more <= primary '*')
+            / (one-or-more  <= primary '+')
             / primary
             ;
 

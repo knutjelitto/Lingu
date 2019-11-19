@@ -12,84 +12,104 @@ grammar lipeg
         // ! zeroable
         // ! behave lexical
         start =>
-            grammar EOF;
+            grammar eof
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         grammar =>
-            ,('grammar') ,('{') ^(options / syntax / lexical)* ,('}');
+            ,( _ 'grammar') ,( _ '{') ^(options / syntax / lexical)* ,( _ '}')
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         options =>
-            ,('options') ,('{') ^option* ,('}');
+            ,( _ 'options') ,( _ '{') ^option* ,( _ '}')
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         option =>
-            identifier ,('=') optionValue ,(';');
+            identifier ,( _ '=') optionValue ,( _ ';')
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         optionValue =>
-            qualifiedIdentifier;
+            qualifiedIdentifier
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         qualifiedIdentifier =>
-            identifier ^(,('.') identifier)*;
+            identifier ^(,( _ '.') identifier)*
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         syntax =>
-            ,('rules') ,('{') ^rule* ,('}');
+            ,( _ 'rules') ,( _ '{') rules ,( _ '}')
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         lexical =>
-            ,('lexical') ,('{') ^rule* ,('}');
+            ,( _ 'lexical') ,( _ '{') rules ,( _ '}')
+            ;
+        
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
+        rules =>
+            ^(rule ^(,( _ ';') rule)* ,( _ ';'?))?
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         rule =>
-            identifier ,('<=') expression ,(';');
+            identifier ,( _ '<=') expression
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         expression =>
-            choice;
+            choice
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         choice =>
-            ,('/'?) sequence ^(,('/') sequence)*;
+            ,( _ '/'?) sequence ^(,( _ '/') sequence)*
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // ! behave lexical
         sequence =>
-            ^aliased+;
+            ^aliased+
+            ;
         
         // used somewhere
         // reachable from start
@@ -105,10 +125,46 @@ grammar lipeg
         // ! zeroable
         // ! behave lexical
         prefix =>
-            / ,('&') suffix:and
-            / ,('!') suffix:not
-            / ,(',') suffix:drop
-            / ,('~') suffix:fuse
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            and =>
+                (,( _ '&') suffix);
+            
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            not =>
+                (,( _ '!') suffix);
+            
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            drop =>
+                (,( _ ',') suffix);
+            
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            fuse =>
+                (,( _ '~') suffix);
+            
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            lift =>
+                (,( _ '^') suffix);
+            
             / suffix
             ;
         
@@ -117,12 +173,30 @@ grammar lipeg
         // ! zeroable
         // ! behave lexical
         suffix =>
-            / primary '?':zero-or-one
-            / primary '?^':zero-or-one-lift
-            / primary '*':zero-or-more
-            / primary '*^':zero-or-more-lift
-            / primary '+':one-or-more
-            / primary '+^':one-or-more-lift
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            zero-or-one =>
+                (primary '?');
+            
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            zero-or-more =>
+                (primary '*');
+            
+            / 
+            // ! used somewhere
+            // ! reachable from start
+            // ! zeroable
+            // ! behave lexical
+            one-or-more =>
+                (primary '+');
+            
             / primary
             ;
         
@@ -136,7 +210,7 @@ grammar lipeg
             / character-class
             / any
             / epsilon
-            / ,('(') expression ,(')')
+            / ,( _ '(') expression ,( _ ')')
             ;
         
         // used somewhere
@@ -144,7 +218,8 @@ grammar lipeg
         // ! zeroable
         // ! behave lexical
         any =>
-            ,('.');
+            ,( _ '.')
+            ;
         
         // used somewhere
         // reachable from start
@@ -160,7 +235,72 @@ grammar lipeg
         // zeroable
         // ! behave lexical
         eof =>
-            !.;
+            !.
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        prefix.and =>
+            ,( _ '&') suffix
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        prefix.not =>
+            ,( _ '!') suffix
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        prefix.drop =>
+            ,( _ ',') suffix
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        prefix.fuse =>
+            ,( _ '~') suffix
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        prefix.lift =>
+            ,( _ '^') suffix
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        suffix.zero-or-one =>
+            primary '?'
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        suffix.zero-or-more =>
+            primary '*'
+            ;
+        
+        // ! used somewhere
+        // ! reachable from start
+        // ! zeroable
+        // ! behave lexical
+        suffix.one-or-more =>
+            primary '+'
+            ;
     }
     lexical
     {
@@ -169,35 +309,40 @@ grammar lipeg
         // ! zeroable
         // behave lexical
         identifier =>
-            letter letter-or-digit* ('-' letter-or-digit+)*;
+            letter letter-or-digit* ('-' letter-or-digit+)*
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         letter =>
-            [a-zA-Z];
+            [a-zA-Z]
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         letter-or-digit =>
-            [a-zA-Z0-9];
+            [a-zA-Z0-9]
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         hex-digit =>
-            [0-9a-fA-F];
+            [0-9a-fA-F]
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         string =>
-            '\'' character* '\'';
+            '\'' character* '\''
+            ;
         
         // used somewhere
         // reachable from start
@@ -214,21 +359,24 @@ grammar lipeg
         // ! zeroable
         // behave lexical
         escape =>
-            '\\' [0abefnrtv\-\]\\];
+            '\\' [0abefnrtv\-\]\\]
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         unicode =>
-            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}';
+            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}'
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         character-class =>
-            '[' '^'? class-part* ']';
+            '[' '^'? class-part* ']'
+            ;
         
         // used somewhere
         // reachable from start
@@ -244,7 +392,8 @@ grammar lipeg
         // ! zeroable
         // behave lexical
         class-range =>
-            class-char '-' class-char;
+            class-char '-' class-char
+            ;
         
         // used somewhere
         // reachable from start
@@ -261,10 +410,8 @@ grammar lipeg
         // ! zeroable
         // behave lexical
         _ =>
-            / whitespace
-            / newline
-            / comment
-            *;
+            (whitespace / newline / comment)*
+            ;
         
         // used somewhere
         // reachable from start
@@ -280,14 +427,16 @@ grammar lipeg
         // ! zeroable
         // behave lexical
         single-line-comment =>
-            '//' (!eol-char .)*;
+            '//' (!eol-char .)*
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         multi-line-comment =>
-            '/*' (!'*/' .)* '*/';
+            '/*' (!'*/' .)* '*/'
+            ;
         
         // used somewhere
         // reachable from start
@@ -306,13 +455,15 @@ grammar lipeg
         // ! zeroable
         // behave lexical
         eol-char =>
-            [\n\r\u{2028}\u{2029}];
+            [\n\r\u{2028}\u{2029}]
+            ;
         
         // used somewhere
         // reachable from start
         // ! zeroable
         // behave lexical
         whitespace =>
-            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}];
+            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+            ;
     }
 }

@@ -156,12 +156,6 @@ namespace Lipeg.SDK.Dump
                 top = isTop;
             }
 
-            protected override void VisitAliasExpression(AliasExpression expression)
-            {
-                VisitExpression(expression.Expression);
-                Writer.Write($":{expression.Alias.Name}");
-            }
-
             protected override void VisitAndExpression(AndExpression expression)
             {
                 Writer.Write($"{OpSymbols.And}");
@@ -260,7 +254,7 @@ namespace Lipeg.SDK.Dump
             {
                 if (grouped)
                 {
-                    Writer.Write("(");
+                    Writer.Write("( _ ");
                 }
                 VisitExpression(expression);
                 if (grouped)

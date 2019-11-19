@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Checkers
@@ -17,7 +17,8 @@ namespace Lipeg.SDK.Checkers
 
         public IReadOnlyList<ICompileError> Errors => errors;
 
-        public bool HasErrors => errors.Count > 0;
+        public bool HasErrors => errors.Any(e => e.Severity == ErrorSeverity.Error || e.Severity == ErrorSeverity.Fatal);
+        public bool HasAny => this.errors.Count > 0;
         public bool IsFatal { get; private set; }
         public bool ShouldStop => IsFatal || errors.Count > 4;
 

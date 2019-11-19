@@ -4,13 +4,15 @@ namespace Lipeg.Runtime
 {
     public class CheckError : ICompileError
     {
-        public CheckError(ErrorCode code, ILocated located)
+        public CheckError(ErrorSeverity severity, ErrorCode code, ILocated located)
         {
+            Severity = severity;
             Code = code;
             Location = located.Location;
             Message = Subject(Location);
         }
 
+        public ErrorSeverity Severity { get; }
         public ErrorCode Code { get; set; }
         public ILocation Location { get; }
         public string Message { get; set; }

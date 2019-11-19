@@ -92,9 +92,6 @@ namespace Lipeg.SDK.Tree
                 case AnyExpression anyExpression:
                     VisitAnyExpression(anyExpression);
                     break;
-                case AliasExpression aliasExpression:
-                    VisitAliasExpression(aliasExpression);
-                    break;
                 case OptionalExpression optionalExpression:
                     VisitOptionalExpression(optionalExpression);
                     break;
@@ -103,6 +100,9 @@ namespace Lipeg.SDK.Tree
                     break;
                 case StarExpression starExpression:
                     VisitStarExpression(starExpression);
+                    break;
+                case InlineExpression inlineRule:
+                    VisitInlineExpression(inlineRule);
                     break;
                 default:
                     throw new InternalErrorException($"expression of type '{expression.GetType().Name}' not implemented");
@@ -178,11 +178,6 @@ namespace Lipeg.SDK.Tree
         {
         }
 
-        protected virtual void VisitAliasExpression(AliasExpression expression)
-        {
-            VisitExpression(expression.Expression);
-        }
-
         protected virtual void VisitRule(Rule rule)
         {
             VisitExpression(rule.Expression);
@@ -205,6 +200,11 @@ namespace Lipeg.SDK.Tree
         protected virtual void VisitPlusExpression(PlusExpression expression)
         {
             VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitInlineExpression(InlineExpression expression)
+        {
+            VisitRule(expression.InlineRule);
         }
     }
 }

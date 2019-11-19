@@ -21,7 +21,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!Semantic[rule].IsUsed)
                 {
-                    Results.AddError(new CheckError(ErrorCode.UnusedRule, rule.Identifier));
+                    Results.AddError(new CheckError(ErrorSeverity.Warning, ErrorCode.UnusedRule, rule.Identifier));
                 }
             }
         }

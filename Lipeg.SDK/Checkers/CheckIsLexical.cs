@@ -85,12 +85,6 @@ namespace Lipeg.SDK.Checkers
                 SetIsLexical(expression, expression.Value.Length > 0);
             }
 
-            protected override void VisitAliasExpression(AliasExpression expression)
-            {
-                base.VisitAliasExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
-            }
-
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
                 base.VisitChoiceExpression(expression);

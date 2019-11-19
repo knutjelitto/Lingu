@@ -29,7 +29,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!Semantic[rule].IsReachable)
                 {
-                    Results.AddError(new CheckError(ErrorCode.UnreachableRule, rule.Identifier));
+                    Results.AddError(new CheckError(ErrorSeverity.Warning, ErrorCode.UnreachableRule, rule.Identifier));
                 }
             }
 

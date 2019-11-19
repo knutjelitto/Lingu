@@ -28,13 +28,13 @@ qualifiedIdentifier <INode>
     = id:identifier<1,,'.' _> { NE(idStart, idEnd, "qualifiedIdentifier", NP(idStart, idEnd, id)) }
 
 rules <INode>
-    = a:'rules' _ '{' _  r:rule<0,,_> o:'}' _ { NE(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
+    = a:'rules' _ '{' _  r:rule<0,,(';' _)> (';' _)? o:'}' _ { NE(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
 
 lexical <INode>
-    = a:'lexical' _ '{' _  r:rule<0,,_> o:'}' _ { NE(aStart, oEnd, "lexical",  NS(rStart, rEnd, r)) }
+    = a:'lexical' _ '{' _  r:rule<0,,(';' _)> (';' _)? o:'}' _ { NE(aStart, oEnd, "lexical",  NS(rStart, rEnd, r)) }
 
 rule <INode>
-    = a:identifier '<=' _ e:topChoice o:';' _ { N(aStart, oEnd, "rule", a, e) }
+    = a:identifier '<=' _ e:topChoice { N(aStart, eEnd, "rule", a, e) }
 
 expression <INode>
     = choice
@@ -71,14 +71,15 @@ primary <INode> -memoize
     / class
     / dot
     / epsilon
+    / inlineRule
     / '(' _ expression:expression ')' _ { expression }
 
+inlineRule <INode>
+    = a:'(' _ r:rule o:')' _ { N(aStart, oEnd, "inline", r) }
+
 quantifier <INode> -memoize
-    = q:'?^' _ { N(qStart, qEnd, "?^") }
-    / q:'?' _  { N(qStart, qEnd, "?") }
-    / q:'*^' _ { N(qStart, qEnd, "*^") }
+    = q:'?' _  { N(qStart, qEnd, "?") }
     / q:'*' _  { N(qStart, qEnd, "*") }
-    / q:'+^' _ { N(qStart, qEnd, "+^") }
     / q:'+' _  { N(qStart, qEnd, "+") }
 
 dot <INode>

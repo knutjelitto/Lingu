@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
@@ -17,25 +19,75 @@ namespace Lipeg.SDK.Checkers
 
         public void Check()
         {
-            foreach (var rule in Grammar.Rules)
-            {
-                if (Semantic.Rules.TryGetValue(rule.Identifier.Name, out var already))
-                {
-                    if (already == null) throw  new InternalErrorException($"{nameof(already)} really shouldn't be NULL");
-
-                    Results.AddError(new CheckError(ErrorCode.AlreadyDefinedRule, already.Identifier));
-                    Results.AddError(new CheckError(ErrorCode.RedefinedRule, rule.Identifier));
-                    continue;
-                }
-                Semantic.Rules.Add(rule);
-            }
             foreach (var syntaxRule in Grammar.SyntaxRules)
             {
-                Semantic[syntaxRule].SetIsLexical(false);
+                syntaxRule.Attr(Semantic).SetIsLexical(false);
             }
             foreach (var lexicalRule in Grammar.LexicalRules)
             {
-                Semantic[lexicalRule].SetIsLexical(true);
+                lexicalRule.Attr(Semantic).SetIsLexical(true);
+            }
+
+            var visitor = new Visitor(this, Semantic);
+
+            foreach (var rule in Grammar.Rules.ToList())
+            {
+                TryAdd(rule);
+
+                visitor.Visit(rule);
+            }
+        }
+
+        public void TryAdd(Rule rule)
+        {
+            if (Semantic.Rules.TryGetValue(rule.Identifier.Name, out var already))
+            {
+                if (already == null) throw new InternalErrorException($"{nameof(already)} really shouldn't be NULL");
+
+                Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.AlreadyDefinedRule, already.Identifier));
+                Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.RedefinedRule, rule.Identifier));
+            }
+            else
+            {
+                Semantic.Rules.Add(rule);
+            }
+        }
+
+        private class Visitor : TreeVisitor
+        {
+            public Visitor(CheckCreateRules check, Semantic semantic)
+                : base(semantic)
+            {
+                Check = check;
+            }
+            public CheckCreateRules Check { get; }
+
+            private readonly Stack<Rule> parents = new Stack<Rule>();
+
+            public void Visit(Rule rule)
+            {
+                this.parents.Push(rule);
+                VisitRule(rule);
+                this.parents.Pop();
+            }
+
+            protected override void VisitInlineExpression(InlineExpression expression)
+            {
+                var parent = this.parents.Peek();
+                var rule = Rule.From(parent.Identifier.With(expression.InlineRule.Identifier), expression.InlineRule.Expression);
+
+                Console.WriteLine($"{rule.Identifier.Name}");
+                Check.TryAdd(rule);
+                rule.Attr(Semantic).SetIsLexical(parent.Attr(Semantic).IsLexical);
+                if (rule.Attr(Semantic).IsLexical)
+                {
+                    Grammar.LexicalRules.Add(rule);
+                }
+                else
+                {
+                    Grammar.SyntaxRules.Add(rule);
+                }
+                Visit(rule);
             }
         }
     }

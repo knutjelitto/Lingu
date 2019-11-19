@@ -40,7 +40,7 @@ namespace Lipeg.Runtime
             }
             catch (FileNotFoundException)
             {
-                result.AddError(new CompileError(ErrorCode.SourceFileNotFound, sourceFile));
+                result.AddError(new CompileError(ErrorSeverity.Fatal, ErrorCode.SourceFileNotFound, sourceFile));
             }
 
             return null;

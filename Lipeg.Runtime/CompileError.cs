@@ -7,11 +7,14 @@ namespace Lipeg.Runtime
 {
     public class CompileError : ICompileError
     {
-        public CompileError(ErrorCode code, string message)
+        public CompileError(ErrorSeverity severity, ErrorCode code, string message)
         {
+            Severity = severity;
             Code = code;
             Message = message;
         }
+
+        public ErrorSeverity Severity { get; }
         public ErrorCode Code { get; set; }
         public string Message { get; set; }
 

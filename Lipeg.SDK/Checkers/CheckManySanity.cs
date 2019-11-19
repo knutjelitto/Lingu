@@ -27,7 +27,7 @@ namespace Lipeg.SDK.Checkers
                 base.VisitStarExpression(expression);
                 if (Semantic[expression.Expression].IsNullable)
                 {
-                    Results.AddError(new CheckError(ErrorCode.NullableManyContent, expression));
+                    Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.NullableManyContent, expression));
                 }
             }
 
@@ -36,7 +36,7 @@ namespace Lipeg.SDK.Checkers
                 base.VisitPlusExpression(expression);
                 if (Semantic[expression.Expression].IsNullable)
                 {
-                    Results.AddError(new CheckError(ErrorCode.NullableManyContent, expression));
+                    Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.NullableManyContent, expression));
                 }
             }
         }

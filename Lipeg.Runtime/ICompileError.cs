@@ -4,6 +4,7 @@ namespace Lipeg.Runtime
 {
     public interface ICompileError
     {
+        ErrorSeverity Severity { get; }
         ErrorCode Code { get; }
         string Message { get; }
 

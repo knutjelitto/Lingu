@@ -1,34 +1,51 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
-    public class Identifier : ILocated
+    public class Identifier : SimpleExpression
     {
-        private Identifier(ILocation location, string name)
+        private Identifier(ILocated located, string name)
+            : base(located)
         {
-            if (string.IsNullOrEmpty(name))
+            Parts = new List<IdPart> { new IdPart(located, name)};
+        }
+
+        private Identifier(ILocated located, IEnumerable<Identifier> identifiers)
+            : base(located)
+        {
+            var parts = new List<IdPart>();
+            foreach (var identifier in identifiers)
             {
-                throw new ArgumentNullException(nameof(name));
+                parts.AddRange(identifier.Parts);
             }
-
-            Location = location;
-            Name = name;
+            Parts = parts;
         }
 
-        public ILocation Location { get; }
-        public string Name { get; }
+        public IList<IdPart> Parts { get; }
 
-        public static Identifier From(ILocation location, string name)
+        public string Name => string.Join(".", Parts);
+
+        public Identifier With(Identifier append)
         {
-            return new Identifier(location, name);
+            return From(this, Enumerable.Repeat(this, 1).Concat(Enumerable.Repeat(append, 1)));
         }
 
-        /// <inheritdoc />
-        public override string ToString()
+        public static Identifier From(ILocated located, string name)
         {
-            return Name;
+            return new Identifier(located, name);
         }
+
+        public static Identifier From(ILocated located, IEnumerable<Identifier> identifiers)
+        {
+            if (identifiers == null) throw new ArgumentNullException(nameof(identifiers));
+
+            return new Identifier(located, identifiers);
+        }
+
+        public override string ToString() => Name;
     }
 }

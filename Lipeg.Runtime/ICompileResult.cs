@@ -13,7 +13,6 @@ namespace Lipeg.Runtime
         bool IsFatal { get; }
 
         void AddError(ICompileError error);
-        void AddFatal(ICompileError error);
         IReadOnlyList<ICompileError> Errors { get; }
 
         bool Report(TextWriter writer);

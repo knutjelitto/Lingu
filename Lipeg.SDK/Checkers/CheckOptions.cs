@@ -32,16 +32,16 @@ namespace Lipeg.SDK.Checkers
                         FindRule(option, rule => Semantic[Grammar].SetSpacing(rule));
                         break;
                     default:
-                        Results.AddError(new CheckError(ErrorCode.UnknownOption, option.Identifier));
+                        Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.UnknownOption, option.Identifier));
                         break;
                 }
             }
 
             private void FindRule(Option option, Func<Rule, bool> setter)
             {
-                if (option.QualifiedIdentifier.Identifiers.Count == 1)
+                if (option.QualifiedIdentifier.Parts.Count == 1)
                 {
-                    var identifier = option.QualifiedIdentifier.Identifiers[0];
+                    var identifier = option.QualifiedIdentifier.Parts[0];
 
                     if (Semantic.Rules.TryGetValue(identifier.Name, out var rule))
                     {
@@ -49,7 +49,7 @@ namespace Lipeg.SDK.Checkers
 
                         if (!setter(rule))
                         {
-                            Results.AddError(new CheckError(ErrorCode.AlreadyDefinedOption, identifier));
+                            Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.AlreadyDefinedOption, identifier));
                         }
                         else
                         {
@@ -57,10 +57,10 @@ namespace Lipeg.SDK.Checkers
                             return;
                         }
                     }
-                    Results.AddError(new CheckError(ErrorCode.UndefinedOptionValue, identifier));
+                    Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.UndefinedOptionValue, identifier));
                     return;
                 }
-                Results.AddError(new CheckError(ErrorCode.IllegalOptionValue, option.QualifiedIdentifier));
+                Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.IllegalOptionValue, option.QualifiedIdentifier));
             }
         }
     }

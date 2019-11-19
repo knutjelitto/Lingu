@@ -7,12 +7,9 @@
             Identifier = identifier;
             Expression = expression;
         }
-        public Identifier Identifier { get; }
+        public Identifier Identifier { get; private set; }
         public Expression Expression { get; }
-
-        public static Rule From(Identifier identifier, Expression expression)
-        {
-            return new Rule(identifier, expression);
-        }
+        public void Rename(Identifier identifier) => Identifier = identifier;
+        public static Rule From(Identifier identifier, Expression expression) => new Rule(identifier, expression);
     }
 }

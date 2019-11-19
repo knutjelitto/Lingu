@@ -24,7 +24,7 @@ namespace Lipeg.Boot
             return Grammar.From(identifier, options, rules, lexicals);
         }
 
-        private (IStarList<Option>, IStarList<Rule>, IStarList<Rule>) Content(INode node)
+        private (IList<Option>, IList<Rule>, IList<Rule>) Content(INode node)
         {
             var options = new List<Option>();
             var rules = new List<Rule>();
@@ -46,7 +46,7 @@ namespace Lipeg.Boot
                 }
             }
 
-            return (options.ToStarList(), rules.ToStarList(), lexical.ToStarList());
+            return (options, rules, lexical);
         }
 
         private IEnumerable<Option> Options(INode node)
@@ -63,16 +63,16 @@ namespace Lipeg.Boot
 
         private Identifier Identifier(INode node)
         {
-            return SDK.Tree.Identifier.From(node.Location, ((ILeafNode) node).Value);
+            return SDK.Tree.Identifier.From(node, ((ILeafNode) node).Value);
         }
 
-        private QualifiedIdentifier QualifiedIdentifier(INode node)
+        private Identifier QualifiedIdentifier(INode node)
         {
             Debug.Assert(node.Name == "qualifiedIdentifier");
 
             var identifiers = node.Select(Identifier).ToPlusList();
 
-            return SDK.Tree.QualifiedIdentifier.From(node, identifiers);
+            return SDK.Tree.Identifier.From(node, identifiers);
         }
 
         private IEnumerable<Rule> Rules(INode node)
@@ -96,12 +96,14 @@ namespace Lipeg.Boot
 
             var choices = node.Select(Sequence).ToPlusList();
 
+#if false
             if (choices.Count == 1)
             {
                 return choices[0];
             }
 
             Debug.Assert(choices.Count > 1);
+#endif
 
             return ChoiceExpression.From(node, choices);
         }
@@ -110,29 +112,18 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var aliased = node.Select(Aliased).ToPlusList();
+            var prefixes = node.Select(Prefix).ToPlusList();
 
-            if (aliased.Count == 1)
+#if false
+            if (prefixes.Count == 1)
             {
-                return aliased[0];
+                return prefixes[0];
             }
 
-            Debug.Assert(aliased.Count > 1);
+            Debug.Assert(prefixes.Count > 1);
+#endif
 
-            return SequenceExpression.From(node, aliased);
-        }
-
-        private Expression Aliased(INode node)
-        {
-            if (node.Name == "alias")
-            {
-                var expression = Expression(node[0]);
-                var identifier = Identifier(node[1]);
-
-                return AliasExpression.From(node, expression, identifier);
-            }
-
-            return Prefix(node);
+            return SequenceExpression.From(node, prefixes);
         }
 
         private Expression Prefix(INode node)
@@ -165,16 +156,10 @@ namespace Lipeg.Boot
                 {
                     case "?":
                         return OptionalExpression.From(node, expression);
-                    case "?^":
-                        return LiftExpression.From(node, OptionalExpression.From(node, expression));
                     case "*":
                         return StarExpression.From(node, expression);
-                    case "*^":
-                        return LiftExpression.From(node, StarExpression.From(node, expression));
                     case "+":
                         return PlusExpression.From(node, expression);
-                    case "+^":
-                        return LiftExpression.From(node, PlusExpression.From(node, expression));
                     default:
                         throw new NotImplementedException();
                 }
@@ -200,6 +185,8 @@ namespace Lipeg.Boot
                     return Class(node);
                 case "ε":
                     return EpsilonExpression.From(node);
+                case "inline":
+                    return InlineExpression.From(node, Rule(node[0]));
 
                 default:
                     throw new NotImplementedException();

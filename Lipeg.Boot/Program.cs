@@ -55,7 +55,7 @@ namespace Lipeg.Boot
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".tree"), new DumpTree(), semantic);
                 }
 
-                if (results.HasErrors)
+                if (results.HasAny)
                 {
                     results.Report(Console.Out);
                 }

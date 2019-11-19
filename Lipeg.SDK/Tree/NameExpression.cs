@@ -9,6 +9,7 @@ namespace Lipeg.SDK.Tree
         {
             Identifier = identifier;
         }
+
         public Identifier Identifier { get; }
 
         public static NameExpression From(ILocated located, Identifier identifier)

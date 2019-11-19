@@ -154,6 +154,11 @@ namespace Lipeg.SDK.Builders
                 Push(new Name(() => Semantic[Semantic.Rules[expression.Identifier.Name]].Parser));
             }
 
+            protected override void VisitInlineExpression(InlineExpression expression)
+            {
+                Push(new Name(() => Semantic[Semantic.Rules[expression.InlineRule.Identifier.Name]].Parser));
+            }
+
             protected override void VisitAndExpression(AndExpression expression)
             {
                 base.VisitAndExpression(expression);
@@ -250,11 +255,6 @@ namespace Lipeg.SDK.Builders
             }
 
             // >===>
-
-            protected override void VisitAliasExpression(AliasExpression expression)
-            {
-                base.VisitAliasExpression(expression);
-            }
 
             public override void VisitGrammar()
             {
