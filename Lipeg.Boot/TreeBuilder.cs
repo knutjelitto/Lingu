@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-
+using Lingu.Tree;
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
@@ -96,6 +96,13 @@ namespace Lipeg.Boot
 
             var choices = node.Select(Sequence).ToPlusList();
 
+            if (choices.Count == 1)
+            {
+                return choices[0];
+            }
+
+            Debug.Assert(choices.Count > 1);
+
             return ChoiceExpression.From(node, choices);
         }
 
@@ -103,7 +110,14 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var aliased = node.Select(Aliased).ToStarList();
+            var aliased = node.Select(Aliased).ToPlusList();
+
+            if (aliased.Count == 1)
+            {
+                return aliased[0];
+            }
+
+            Debug.Assert(aliased.Count > 1);
 
             return SequenceExpression.From(node, aliased);
         }
@@ -145,7 +159,25 @@ namespace Lipeg.Boot
             if (node.Name == "quantified")
             {
                 Debug.Assert(node.Count == 2);
-                return QuantifiedExpression.From(node, Primary(node[0]), Quantifier(node[1]));
+
+                var expression = Primary(node[0]);
+                switch (node[1].Name)
+                {
+                    case "?":
+                        return OptionalExpression.From(node, expression);
+                    case "?^":
+                        return LiftExpression.From(node, OptionalExpression.From(node, expression));
+                    case "*":
+                        return StarExpression.From(node, expression);
+                    case "*^":
+                        return LiftExpression.From(node, StarExpression.From(node, expression));
+                    case "+":
+                        return PlusExpression.From(node, expression);
+                    case "+^":
+                        return LiftExpression.From(node, PlusExpression.From(node, expression));
+                    default:
+                        throw new NotImplementedException();
+                }
             }
 
             return Primary(node);
@@ -161,27 +193,14 @@ namespace Lipeg.Boot
                 case "doubleString":
                     return StringLiteral(node);
                 case ".":
-                    return WildcardExpression.From(node);
+                    return AnyExpression.From(node);
                 case "choice":
                     return Expression(node);
                 case "class":
                     return Class(node);
+                case "ε":
+                    return EpsilonExpression.From(node);
 
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        private Quantifier Quantifier(INode node)
-        {
-            switch (node.Name)
-            {
-                case "?":
-                    return SDK.Tree.Quantifier.From(node.Location, 0, 1);
-                case "*":
-                    return SDK.Tree.Quantifier.From(node.Location, 0, null);
-                case "+":
-                    return SDK.Tree.Quantifier.From(node.Location, 1, null);
                 default:
                     throw new NotImplementedException();
             }

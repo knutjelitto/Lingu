@@ -1,0 +1,45 @@
+﻿using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
+using System.Collections.Generic;
+
+namespace Lipeg.SDK.Checkers
+{
+    /// <summary>
+    /// Check for rules that are reached from start symbol
+    /// </summary>
+    public class CheckParentRules : ACheckBase, ICheckPass
+    {
+        public CheckParentRules(Semantic semantic)
+        : base(semantic)
+        {
+        }
+
+        public void Check()
+        {
+            new Visitor(Semantic).VisitGrammarRules();
+        }
+
+        private class Visitor : TreeVisitor
+        {
+            public Visitor(Semantic semantic) : base(semantic) { }
+
+            private Stack<Rule> rules = new Stack<Rule>();
+            private void Push(Rule rule) => rules.Push(rule);
+            private void Pop() => rules.Pop();
+            private Rule Rule => rules.Peek();
+
+            protected override void VisitRule(Rule rule)
+            {
+                Push(rule);
+                base.VisitRule(rule);
+                Pop();
+            }
+
+            public override void VisitExpression(Expression expression)
+            {
+                base.VisitExpression(expression);
+                expression.Attr(Semantic).SetRule(Rule);
+            }
+        }
+    }
+}

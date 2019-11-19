@@ -83,20 +83,26 @@ namespace Lipeg.SDK.Tree
                 case NameExpression nameExpression:
                     VisitNameExpression(nameExpression);
                     break;
-                case QuantifiedExpression quantifiedExpression:
-                    VisitQuantifiedExpression(quantifiedExpression);
-                    break;
                 case SequenceExpression sequenceExpression:
                     VisitSequenceExpression(sequenceExpression);
                     break;
                 case StringLiteralExpression stringLiteral:
                     VisitStringLiteralExpression(stringLiteral);
                     break;
-                case WildcardExpression wildcardExpression:
-                    VisitWildcardExpression(wildcardExpression);
+                case AnyExpression anyExpression:
+                    VisitAnyExpression(anyExpression);
                     break;
                 case AliasExpression aliasExpression:
                     VisitAliasExpression(aliasExpression);
+                    break;
+                case OptionalExpression optionalExpression:
+                    VisitOptionalExpression(optionalExpression);
+                    break;
+                case PlusExpression plusExpression:
+                    VisitPlusExpression(plusExpression);
+                    break;
+                case StarExpression starExpression:
+                    VisitStarExpression(starExpression);
                     break;
                 default:
                     throw new InternalErrorException($"expression of type '{expression.GetType().Name}' not implemented");
@@ -156,11 +162,6 @@ namespace Lipeg.SDK.Tree
         {
         }
 
-        protected virtual void VisitQuantifiedExpression(QuantifiedExpression expression)
-        {
-            VisitExpression(expression.Expression);
-        }
-
         protected virtual void VisitSequenceExpression(SequenceExpression expression)
         {
             foreach (var element in expression.Sequence)
@@ -173,7 +174,7 @@ namespace Lipeg.SDK.Tree
         {
         }
 
-        protected virtual void VisitWildcardExpression(WildcardExpression expression)
+        protected virtual void VisitAnyExpression(AnyExpression expression)
         {
         }
 
@@ -189,6 +190,21 @@ namespace Lipeg.SDK.Tree
 
         protected virtual void VisitOption(Option option)
         {
+        }
+
+        protected virtual void VisitOptionalExpression(OptionalExpression expression)
+        {
+            VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitStarExpression(StarExpression expression)
+        {
+            VisitExpression(expression.Expression);
+        }
+
+        protected virtual void VisitPlusExpression(PlusExpression expression)
+        {
+            VisitExpression(expression.Expression);
         }
     }
 }

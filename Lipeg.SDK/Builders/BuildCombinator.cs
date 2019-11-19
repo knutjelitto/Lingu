@@ -194,26 +194,22 @@ namespace Lipeg.SDK.Builders
                 Push(new Predicate(matcher));
             }
 
-            protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
+            protected override void VisitOptionalExpression(OptionalExpression optional)
             {
-                base.VisitQuantifiedExpression(expression);
+                VisitExpression(optional.Expression);
+                Push(new Parsers.Option(Pop()));
+            }
 
-                if (expression.Quantifier.IsOption)
-                {
-                    Push(new Parsers.Option(Pop()));
-                }
-                else if (expression.Quantifier.IsStar)
-                {
-                    Push(new Star(Pop()));
-                }
-                else if (expression.Quantifier.IsPlus)
-                {
-                    Push(new Plus(Pop()));
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+            protected override void VisitPlusExpression(PlusExpression plus)
+            {
+                VisitExpression(plus.Expression);
+                Push(new Plus(Pop()));
+            }
+
+            protected override void VisitStarExpression(StarExpression star)
+            {
+                VisitExpression(star.Expression);
+                Push(new Star(Pop()));
             }
 
             protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
@@ -233,9 +229,9 @@ namespace Lipeg.SDK.Builders
                 Push(new Predicate(matcher));
             }
 
-            protected override void VisitWildcardExpression(WildcardExpression expression)
+            protected override void VisitAnyExpression(AnyExpression expression)
             {
-                base.VisitWildcardExpression(expression);
+                base.VisitAnyExpression(expression);
 
                 var matcher = new Func<ICursor, IResult>(
                     (cursor) =>

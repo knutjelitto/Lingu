@@ -46,7 +46,7 @@ choice <INode>
     = c:sequence<1,,_ '/' _>  { NE(cStart, cEnd, "choice", NP(cStart, cEnd, c)) }
 
 sequence <INode>
-    = e:aliased<0,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
+    = e:aliased<1,,_> { NE(eStart, eEnd, "sequence", NS(eStart, eEnd, e)) }
 
 aliased <INode>
     = p:prefix ':' _ i:identifier { N(pStart, iEnd, "alias", p, i) }
@@ -70,16 +70,23 @@ primary <INode> -memoize
     / stringLiteral
     / class
     / dot
+    / epsilon
     / '(' _ expression:expression ')' _ { expression }
 
 quantifier <INode> -memoize
-    = q:'?' _                                                                       { N(qStart, qEnd, "?") }
-    / q:'*' _                                                                       { N(qStart, qEnd, "*") }
-    / q:'+' _                                                                       { N(qStart, qEnd, "+") }
+    = q:'?^' _ { N(qStart, qEnd, "?^") }
+    / q:'?' _  { N(qStart, qEnd, "?") }
+    / q:'*^' _ { N(qStart, qEnd, "*^") }
+    / q:'*' _  { N(qStart, qEnd, "*") }
+    / q:'+^' _ { N(qStart, qEnd, "+^") }
+    / q:'+' _  { N(qStart, qEnd, "+") }
 
 dot <INode>
     = q:'.' _ { N(qStart, qEnd, ".") }
 
+epsilon <INode>
+    = q:'epsilon' { N(qStart, qEnd, "ε") }
+    / q:'ε' { N(qStart, qEnd, "ε") }
 
 integer <INode> -memoize
     = d:digits _ { N(dStart, dEnd, "integer", Flat(d)) }

@@ -7,202 +7,312 @@ grammar lipeg
     }
     rules
     {
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         start =>
-            grammar _ EOF
-            ;
+            grammar EOF;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         grammar =>
-            _ _ _ ,_ 'grammar' _ ,_ '{' ^(options / syntax / lexical)* _ ,_ '}'
-            ;
+            ,('grammar') ,('{') ^(options / syntax / lexical)* ,('}');
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         options =>
-            _ _ _ ,_ 'options' _ ,_ '{' ^option* _ ,_ '}'
-            ;
+            ,('options') ,('{') ^option* ,('}');
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         option =>
-            _ _ _ identifier _ ,_ '=' optionValue _ ,_ ';'
-            ;
+            identifier ,('=') optionValue ,(';');
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         optionValue =>
-            qualifiedIdentifier
-            ;
+            qualifiedIdentifier;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         qualifiedIdentifier =>
-            _ _ _ identifier _ ^_ _ _ (_ ,_ '.' _ identifier)*
-            ;
+            identifier ^(,('.') identifier)*;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         syntax =>
-            _ _ _ ,_ 'rules' _ ,_ '{' ^rule* _ ,_ '}'
-            ;
+            ,('rules') ,('{') ^rule* ,('}');
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         lexical =>
-            _ _ _ ,_ 'lexical' _ ,_ '{' ^rule* _ ,_ '}'
-            ;
+            ,('lexical') ,('{') ^rule* ,('}');
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         rule =>
-            _ _ _ identifier _ ,_ '<=' expression _ ,_ ';'
-            ;
+            identifier ,('<=') expression ,(';');
         
-        // nullable
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         expression =>
-            choice
-            ;
+            choice;
         
-        // nullable
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         choice =>
-            sequence _ ^_ _ _ (_ ,_ '/' sequence)*
-            ;
+            ,('/'?) sequence ^(,('/') sequence)*;
         
-        // nullable
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         sequence =>
-            ^aliased*
-            ;
+            ^aliased+;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         aliased =>
-            / prefix _ ':' _ identifier
+            / prefix ':' identifier
             / prefix
             ;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         prefix =>
-            / _ _ _ _ (_ ,_ '&' suffix):and
-            / _ _ _ _ (_ ,_ '!' suffix):not
-            / _ _ _ _ (_ ,_ ',' suffix):drop
-            / _ _ _ _ (_ ,_ '^' suffix):lift
-            / _ _ _ _ (_ ,_ '~' suffix):fuse
+            / ,('&') suffix:and
+            / ,('!') suffix:not
+            / ,(',') suffix:drop
+            / ,('~') suffix:fuse
             / suffix
             ;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         suffix =>
-            / (primary _ '?'):zero-or-one
-            / (primary _ '*'):zero-or-more
-            / (primary _ '+'):one-or-more
+            / primary '?':zero-or-one
+            / primary '?^':zero-or-one-lift
+            / primary '*':zero-or-more
+            / primary '*^':zero-or-more-lift
+            / primary '+':one-or-more
+            / primary '+^':one-or-more-lift
             / primary
             ;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         primary =>
-            / _ _ identifier
-            / _ _ string
-            / _ _ character-class
+            / identifier
+            / string
+            / character-class
             / any
-            / _ _ ,_ '(' expression _ ,_ ')'
+            / epsilon
+            / ,('(') expression ,(')')
             ;
         
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
         any =>
-            _ _ _ ,_ '.'
+            ,('.');
+        
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // ! behave lexical
+        epsilon =>
+            / 'epsilon'
+            / '\u{03B5}'
             ;
+        
+        // used somewhere
+        // reachable from start
+        // zeroable
+        // ! behave lexical
+        eof =>
+            !.;
     }
     lexical
     {
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         identifier =>
-            _ _ _ letter _ _ letter-or-digit* _ _ _ (_ '-' _ _ letter-or-digit+)*
-            ;
+            letter letter-or-digit* ('-' letter-or-digit+)*;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         letter =>
-            _ _ _ [_ a-z_ A-Z]
-            ;
+            [a-zA-Z];
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         letter-or-digit =>
-            _ _ _ [_ a-z_ A-Z_ 0-9]
-            ;
+            [a-zA-Z0-9];
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         hex-digit =>
-            _ _ _ [_ 0-9_ a-f_ A-F]
-            ;
+            [0-9a-fA-F];
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         string =>
-            _ _ _ '\'' _ _ character* _ '\''
-            ;
+            '\'' character* '\'';
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         character =>
-            _ / _ _ !_ (_ _ '\'' / _ _ '\\' / _ _ eol-char) _ .
-            / _ _ escape
-            / _ _ unicode
+            / !('\'' / '\\' / eol-char) .
+            / escape
+            / unicode
             ;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         escape =>
-            _ _ _ '\\' _ [_ 0_ a_ b_ e_ f_ n_ r_ t_ v_ \-_ \]_ \\]
-            ;
+            '\\' [0abefnrtv\-\]\\];
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         unicode =>
-            _ _ _ '\\u{' _ hex-digit _ _ hex-digit? _ _ hex-digit? _ _ hex-digit? _ _ hex-digit? _ _ hex-digit? _ '}'
-            ;
+            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}';
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         character-class =>
-            _ _ _ '[' _ _ '^'? _ _ class-part* _ ']'
-            ;
+            '[' '^'? class-part* ']';
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         class-part =>
-            _ / _ _ class-range
-            / _ _ class-char
+            / class-range
+            / class-char
             ;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         class-range =>
-            _ _ _ class-char _ '-' _ class-char
-            ;
+            class-char '-' class-char;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         class-char =>
-            _ / _ _ !_ (_ _ ']' / _ _ '\\' / _ _ eol-char) _ .
-            / _ _ escape
-            / _ _ unicode
+            / !(']' / '\\' / eol-char) .
+            / escape
+            / unicode
             ;
         
-        // nullable
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         _ =>
-            _ _ _ _ (_ _ whitespace / _ _ newline / _ _ comment)*
-            ;
+            / whitespace
+            / newline
+            / comment
+            *;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         comment =>
-            _ / _ _ single-line-comment
-            / _ _ multi-line-comment
+            / single-line-comment
+            / multi-line-comment
             ;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         single-line-comment =>
-            _ _ _ '//' _ _ _ (_ !_ eol-char _ .)*
-            ;
+            '//' (!eol-char .)*;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         multi-line-comment =>
-            _ _ _ '/*' _ _ _ (_ !_ '*/' _ .)* _ '*/'
-            ;
+            '/*' (!'*/' .)* '*/';
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         newline =>
-            _ / _ _ '\n'
-            / _ _ '\r\n'
-            / _ _ '\r'
-            / _ _ '\u{2028}'
-            / _ _ '\u{2029}'
+            / '\n'
+            / '\r\n'
+            / '\r'
+            / '\u{2028}'
+            / '\u{2029}'
             ;
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         eol-char =>
-            _ _ _ [_ \n_ \r_ \u{2028}_ \u{2029}]
-            ;
+            [\n\r\u{2028}\u{2029}];
         
-        // lexical
+        // used somewhere
+        // reachable from start
+        // ! zeroable
+        // behave lexical
         whitespace =>
-            _ _ _ [_  _ \t_ \v_ \f_ \u{00A0}_ \u{FEFF}_ \u{1680}_ \u{180E}_ \u{2000}-\u{200A}_ \u{202F}_ \u{205F}_ \u{3000}]
-            ;
-        
-        // nullable
-        // lexical
-        eof =>
-            _ _ _ !_ .
-            ;
+            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}];
     }
 }

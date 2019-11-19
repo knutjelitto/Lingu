@@ -22,13 +22,22 @@ namespace Lipeg.SDK.Checkers
         {
             public Visitor(Semantic semantic) : base(semantic) { }
 
-            protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
+            protected override void VisitStarExpression(StarExpression expression)
             {
-                if (expression.Quantifier.Many && Semantic[expression.Expression].IsNullable)
+                base.VisitStarExpression(expression);
+                if (Semantic[expression.Expression].IsNullable)
                 {
                     Results.AddError(new CheckError(ErrorCode.NullableManyContent, expression));
                 }
-                base.VisitQuantifiedExpression(expression);
+            }
+
+            protected override void VisitPlusExpression(PlusExpression expression)
+            {
+                base.VisitPlusExpression(expression);
+                if (Semantic[expression.Expression].IsNullable)
+                {
+                    Results.AddError(new CheckError(ErrorCode.NullableManyContent, expression));
+                }
             }
         }
     }

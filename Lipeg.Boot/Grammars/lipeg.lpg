@@ -13,11 +13,11 @@
             ;
 
         grammar <=
-            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
+            ,'grammar' ,'{' (options / syntax / lexical)*^ ,'}'
             ;
 
         options <=
-            ,'options' ,'{' ^option* ,'}'
+            ,'options' ,'{' option*^ ,'}'
             ;
 
         option <=
@@ -29,15 +29,15 @@
             ;
 
         qualifiedIdentifier <=
-            identifier ^(,'.' identifier)*
+            identifier (,'.' identifier)*^
             ;
 
         syntax <=
-            ,'rules' ,'{' ^rule* ,'}'
+            ,'rules' ,'{' rule*^ ,'}'
             ;
 
         lexical <=
-            ,'lexical' ,'{' ^rule* ,'}'
+            ,'lexical' ,'{' rule*^ ,'}'
             ;
 
         rule <= 
@@ -49,11 +49,11 @@
             ;
 
         choice <=
-            sequence ^(,'/' sequence)*
+            ,'/'? sequence (,'/' sequence)*^
             ;
 
         sequence <=
-            ^aliased*
+            aliased+^
             ;
 
         aliased <=
@@ -65,15 +65,17 @@
             / (,'&' suffix):and
             / (,'!' suffix):not
             / (,',' suffix):drop
-            / (,'^' suffix):lift
             / (,'~' suffix):fuse
             / suffix
             ;
 
         suffix <=
             / (primary '?'):zero-or-one
+            / (primary '?^'):zero-or-one-lift
             / (primary '*'):zero-or-more
+            / (primary '*^'):zero-or-more-lift
             / (primary '+'):one-or-more
+            / (primary '+^'):one-or-more-lift
             / primary
             ;
 
@@ -82,11 +84,21 @@
             / string
             / character-class
             / any
+            / epsilon
             / ,'(' expression ,')'
             ;
 
         any <=
             ,'.'
+            ;
+
+        epsilon <=
+            / 'epsilon'
+            / 'ε'
+            ;
+
+        eof <= 
+            !.
             ;
     }
 
@@ -176,10 +188,6 @@
 
         whitespace <=
             [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
-            ;
-
-        eof <= 
-            !.
             ;
     }
 }

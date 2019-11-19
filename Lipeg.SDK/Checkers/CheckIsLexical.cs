@@ -100,7 +100,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitDropExpression(DropExpression expression)
             {
                 base.VisitDropExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
@@ -132,9 +132,21 @@ namespace Lipeg.SDK.Checkers
                 SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
-            protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
+            protected override void VisitOptionalExpression(OptionalExpression expression)
             {
-                base.VisitQuantifiedExpression(expression);
+                base.VisitOptionalExpression(expression);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+            }
+
+            protected override void VisitPlusExpression(PlusExpression expression)
+            {
+                base.VisitPlusExpression(expression);
+                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+            }
+
+            protected override void VisitStarExpression(StarExpression expression)
+            {
+                base.VisitStarExpression(expression);
                 SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
             }
 
@@ -143,9 +155,9 @@ namespace Lipeg.SDK.Checkers
                 base.VisitSequenceExpression(expression);
                 SetIsLexical(expression, expression.Sequence[0].Attr(Semantic).IsLexical);
             }
-            protected override void VisitWildcardExpression(WildcardExpression expression)
+            protected override void VisitAnyExpression(AnyExpression expression)
             {
-                base.VisitWildcardExpression(expression);
+                base.VisitAnyExpression(expression);
                 SetIsLexical(expression, true);
             }
         }

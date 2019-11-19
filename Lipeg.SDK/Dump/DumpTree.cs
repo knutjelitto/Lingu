@@ -69,19 +69,15 @@ namespace Lipeg.SDK.Dump
 
             protected override void VisitRule(Rule rule)
             {
-                if (ruleCount > 0) Writer.WriteLine();
-                if (Semantic[rule].IsNullable)
+                if (ruleCount > 0)
                 {
-                    Writer.WriteLine("// nullable");
+                    Writer.WriteLine();
                 }
-                if (!Semantic[rule].IsReachable)
-                {
-                    Writer.WriteLine("// !reachable");
-                }
-                if (Semantic[rule].IsLexical)
-                {
-                    Writer.WriteLine("// lexical");
-                }
+
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsUsed)}used somewhere");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}reachable from start");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}zeroable");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}behave lexical");
                 Writer.WriteLine($"{rule.Identifier} =>");
                 if (rule.Identifier.Name == "identifier")
                 {
@@ -181,25 +177,43 @@ namespace Lipeg.SDK.Dump
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 Writer.Write($"{OpSymbols.Lift}");
-                VisitExpression(expression.Expression);
+                LexGrouped(
+                    expression.Expression.Attr(Semantic).IsLexical,
+                    expression.Expression);
             }
 
             protected override void VisitDropExpression(DropExpression expression)
             {
                 Writer.Write($"{OpSymbols.Drop}");
-                VisitExpression(expression.Expression);
+                LexGrouped(
+                    expression.Expression.Attr(Semantic).IsLexical,
+                    expression.Expression);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 Writer.Write($"{OpSymbols.Fuse}");
-                VisitExpression(expression.Expression);
+                LexGrouped(
+                    expression.Expression.Attr(Semantic).IsLexical,
+                    expression.Expression);
             }
 
-            protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
+            protected override void VisitOptionalExpression(OptionalExpression expression)
             {
-                VisitExpression(expression.Expression);
-                Writer.Write($"{expression.Quantifier}");
+                base.VisitOptionalExpression(expression);
+                Writer.Write($"{OpSymbols.Option}");
+            }
+
+            protected override void VisitPlusExpression(PlusExpression expression)
+            {
+                base.VisitPlusExpression(expression);
+                Writer.Write($"{OpSymbols.Plus}");
+            }
+
+            protected override void VisitStarExpression(StarExpression expression)
+            {
+                base.VisitStarExpression(expression);
+                Writer.Write($"{OpSymbols.Star}");
             }
 
             protected override void VisitNameExpression(NameExpression expression)
@@ -232,9 +246,27 @@ namespace Lipeg.SDK.Dump
                 Writer.Write($"'{CharRep.InText(expression.Value)}'");
             }
 
-            protected override void VisitWildcardExpression(WildcardExpression expression)
+            protected override void VisitAnyExpression(AnyExpression expression)
             {
                 Writer.Write($"{OpSymbols.Any}");
+            }
+
+            private string Not(bool value)
+            {
+                return value ? string.Empty : "! ";
+            }
+
+            private void LexGrouped(bool grouped, Expression expression)
+            {
+                if (grouped)
+                {
+                    Writer.Write("(");
+                }
+                VisitExpression(expression);
+                if (grouped)
+                {
+                    Writer.Write(")");
+                }
             }
         }
     }

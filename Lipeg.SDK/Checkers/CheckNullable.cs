@@ -125,10 +125,16 @@ namespace Lipeg.SDK.Checkers
                 SetNullable(expression, Semantic[expression.Expression].IsNullable);
             }
 
-            protected override void VisitQuantifiedExpression(QuantifiedExpression expression)
+            protected override void VisitStarExpression(StarExpression expression)
             {
-                base.VisitQuantifiedExpression(expression);
-                SetNullable(expression, expression.Quantifier.Nullable || Semantic[expression.Expression].IsNullable);
+                base.VisitStarExpression(expression);
+                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+            }
+
+            protected override void VisitPlusExpression(PlusExpression expression)
+            {
+                base.VisitPlusExpression(expression);
+                SetNullable(expression, Semantic[expression.Expression].IsNullable);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
@@ -143,9 +149,9 @@ namespace Lipeg.SDK.Checkers
                 SetNullable(expression, expression.Value.Length == 0);
             }
 
-            protected override void VisitWildcardExpression(WildcardExpression expression)
+            protected override void VisitAnyExpression(AnyExpression expression)
             {
-                base.VisitWildcardExpression(expression);
+                base.VisitAnyExpression(expression);
                 SetNullable(expression, false);
             }
         }
