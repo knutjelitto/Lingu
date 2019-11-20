@@ -34,6 +34,11 @@ namespace Lipeg.SDK.Checkers
             {
                 Semantic[Semantic.Rules[expression.Identifier.Name]].SetIsUsed(true);
             }
+
+            protected override void VisitInlineExpression(InlineExpression expression)
+            {
+                Semantic[Semantic.Rules[expression.Rule.Identifier.Name]].SetIsUsed(true);
+            }
         }
     }
 }

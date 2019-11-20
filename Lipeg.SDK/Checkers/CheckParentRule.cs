@@ -23,12 +23,12 @@ namespace Lipeg.SDK.Checkers
         {
             public Visitor(Semantic semantic) : base(semantic) { }
 
-            private Stack<Rule> rules = new Stack<Rule>();
-            private void Push(Rule rule) => rules.Push(rule);
+            private Stack<IRule> rules = new Stack<IRule>();
+            private void Push(IRule rule) => rules.Push(rule);
             private void Pop() => rules.Pop();
-            private Rule Rule => rules.Peek();
+            private IRule Rule => rules.Peek();
 
-            protected override void VisitRule(Rule rule)
+            protected override void VisitRule(IRule rule)
             {
                 Push(rule);
                 base.VisitRule(rule);

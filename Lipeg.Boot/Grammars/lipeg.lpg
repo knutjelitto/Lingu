@@ -21,31 +21,31 @@
             ;
 
         option <=
-            identifier ,'=' optionValue ,';'
+            identifier ,'=' option-value ,';'
             ;
 
-        optionValue <=
-            qualifiedIdentifier
+        option-value <=
+            qualified-identifier
             ;
 
-        qualifiedIdentifier <=
+        qualified-identifier <=
             identifier ^(,'.' identifier)*
             ;
 
         syntax <=
-            ,'rules' ,'{' rules ,'}'
+            ,'rules' ,'{' rules ,';'? ,'}'
             ;
 
         lexical <=
-            ,'lexical' ,'{' rules ,'}'
+            ,'lexical' ,'{' rules ,';'? ,'}'
             ;
 
         rules <=
-            ^(rule ^(,';' rule)* ,';'?)?
+            ^(rule ^(,';' rule)*)?
             ;
 
         rule <= 
-            identifier ,'<=' expression
+            identifier ,'<=' ,'/'? expression
             ;
 
         expression <=
@@ -53,7 +53,7 @@
             ;
 
         choice <=
-            ,'/'? sequence ^(,'/' sequence)*
+            sequence ^(,'/' sequence)*
             ;
 
         sequence <=
@@ -75,9 +75,9 @@
             ;
 
         suffix <=
-            / (zero-or-one  <= primary '?')
-            / (zero-or-more <= primary '*')
-            / (one-or-more  <= primary '+')
+            / (zero-or-one  <= primary ,'?')
+            / (zero-or-more <= primary ,'*')
+            / (one-or-more  <= primary ,'+')
             / primary
             ;
 
@@ -87,7 +87,12 @@
             / character-class
             / any
             / epsilon
+            / inline
             / ,'(' expression ,')'
+            ;
+
+        inline <=
+            / ,'(' ^rule ,')'
             ;
 
         any <=
@@ -123,7 +128,7 @@
             ;
 
         string <=
-            '\'' character* '\''
+            ,'\'' character* ,'\''
             ;
 
         character <=
@@ -133,15 +138,15 @@
             ;
 
         escape <=
-            '\\' [0abefnrtv\-\]\\]
+            ,'\\' [0abefnrtv\-\]\\]
             ;
 
         unicode <=
-            '\\u{' hex-digit hex-digit? hex-digit? hex-digit? hex-digit? hex-digit? '}'
+            ,'\\u{' hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ,'}'
             ;
 
         character-class <=
-            '[' '^'? class-part* ']'
+            ,'[' '^'? class-part* ,']'
             ;
 
         class-part <=
@@ -150,7 +155,7 @@
             ;
 
         class-range <=
-            class-char '-' class-char
+            class-char ,'-' class-char
             ;
 
         class-char <=

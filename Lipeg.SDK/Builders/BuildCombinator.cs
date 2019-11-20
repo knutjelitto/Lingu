@@ -286,7 +286,7 @@ namespace Lipeg.SDK.Builders
                 base.VisitOption(option);
             }
 
-            protected override void VisitRule(Rule rule)
+            protected override void VisitRule(IRule rule)
             {
                 base.VisitRule(rule);
 

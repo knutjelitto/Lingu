@@ -8,15 +8,17 @@ namespace Lipeg.SDK.Tree
     public class InlineExpression : Expression
     {
 
-        private InlineExpression(ILocated located, Rule inlineRule)
+        private InlineExpression(ILocated located, IRule inlineRule)
             : base(located)
         {
             InlineRule = inlineRule;
+            Rule = inlineRule;
         }
 
-        public Rule InlineRule { get; }
+        public IRule InlineRule { get; }
+        public IRule Rule { get; set; }
 
-        public static InlineExpression From(ILocated located, Rule rule)
+        public static InlineExpression From(ILocated located, IRule rule)
         {
             return new InlineExpression(located, rule);
         }

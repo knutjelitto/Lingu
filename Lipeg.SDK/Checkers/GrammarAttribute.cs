@@ -9,15 +9,15 @@ namespace Lipeg.SDK.Checkers
 {
     internal class GrammarAttribute : IGrammarAttributes
     {
-        private readonly List<Rule> start = new List<Rule>();
-        private readonly List<Rule> spacing = new List<Rule>();
+        private readonly List<IRule> start = new List<IRule>();
+        private readonly List<IRule> spacing = new List<IRule>();
         private readonly List<IParser> parser = new List<IParser>();
 
-        public Rule Start => start.First();
-        public Rule Spacing => spacing.First();
+        public IRule Start => start.First();
+        public IRule Spacing => spacing.First();
         public IParser Parser => parser.First();
 
-        public bool SetStart(Rule rule)
+        public bool SetStart(IRule rule)
         {
             if (start.Count == 0)
             {
@@ -27,7 +27,7 @@ namespace Lipeg.SDK.Checkers
             return false;
         }
 
-        public bool SetSpacing(Rule rule)
+        public bool SetSpacing(IRule rule)
         {
             if (spacing.Count == 0)
             {

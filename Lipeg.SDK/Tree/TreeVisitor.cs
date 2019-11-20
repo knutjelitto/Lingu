@@ -178,7 +178,7 @@ namespace Lipeg.SDK.Tree
         {
         }
 
-        protected virtual void VisitRule(Rule rule)
+        protected virtual void VisitRule(IRule rule)
         {
             VisitExpression(rule.Expression);
         }

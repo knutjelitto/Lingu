@@ -24,11 +24,11 @@ namespace Lipeg.Boot
             return Grammar.From(identifier, options, rules, lexicals);
         }
 
-        private (IList<Option>, IList<Rule>, IList<Rule>) Content(INode node)
+        private (IList<Option>, IList<IRule>, IList<IRule>) Content(INode node)
         {
             var options = new List<Option>();
-            var rules = new List<Rule>();
-            var lexical = new List<Rule>();
+            var rules = new List<IRule>();
+            var lexical = new List<IRule>();
 
             foreach (var content in node)
             {
@@ -75,14 +75,14 @@ namespace Lipeg.Boot
             return SDK.Tree.Identifier.From(node, identifiers);
         }
 
-        private IEnumerable<Rule> Rules(INode node)
+        private IEnumerable<IRule> Rules(INode node)
         {
             Debug.Assert(node.Name == "rules" || node.Name == "lexical");
 
             return node.Select(Rule);
         }
 
-        private Rule Rule(INode node)
+        private IRule Rule(INode node)
         {
             var identifier = Identifier(node[0]);
             var expression = Expression(node[1]);

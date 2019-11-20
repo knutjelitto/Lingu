@@ -40,7 +40,7 @@ namespace Lipeg.SDK.Checkers
                 }
             }
 
-            private void SetNullable(Rule rule, bool nullable)
+            private void SetNullable(IRule rule, bool nullable)
             {
                 if (nullable && Semantic[rule].SetIsNullable(nullable))
                 {
@@ -48,7 +48,7 @@ namespace Lipeg.SDK.Checkers
                 }
             }
 
-            protected override void VisitRule(Rule rule)
+            protected override void VisitRule(IRule rule)
             {
                 base.VisitRule(rule);
                 SetNullable(rule, Semantic[rule.Expression].IsNullable);

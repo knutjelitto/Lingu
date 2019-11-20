@@ -16,6 +16,8 @@ namespace Lipeg.SDK.Tree
         public const string Drop = ",";
         public const string Fuse = "~";
 
+        public const string DefPlain = "<=";
+
         public const string Options = "options";
         public const string Syntax = "rules";
         public const string Lexical = "lexical";

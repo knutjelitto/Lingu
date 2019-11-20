@@ -37,7 +37,7 @@ namespace Lipeg.SDK.Checkers
                 }
             }
 
-            private void FindRule(Option option, Func<Rule, bool> setter)
+            private void FindRule(Option option, Func<IRule, bool> setter)
             {
                 if (option.QualifiedIdentifier.Parts.Count == 1)
                 {

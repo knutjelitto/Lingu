@@ -12,7 +12,7 @@ namespace Lipeg.SDK.Checkers
         {
             return semantic[expr];
         }
-        internal static IRuleAttributes Attr(this Rule rules, Semantic semantic)
+        internal static IRuleAttributes Attr(this IRule rules, Semantic semantic)
         {
             return semantic[rules];
         }

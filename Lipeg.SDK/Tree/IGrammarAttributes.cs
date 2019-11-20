@@ -4,12 +4,12 @@ namespace Lipeg.SDK.Tree
 {
     public interface IGrammarAttributes
     {
-        Rule Start { get; }
-        Rule Spacing { get; }
-        IParser Parser { get; }
+        IRule Start { get; }
+        bool SetStart(IRule rule);
+        IRule Spacing { get; }
+        bool SetSpacing(IRule rule);
 
-        bool SetStart(Rule rule);
-        bool SetSpacing(Rule rule);
+        IParser Parser { get; }
         bool SetParser(IParser parser);
     }
 }

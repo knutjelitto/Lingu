@@ -4,6 +4,7 @@ using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
 using Lipeg.SDK.Checkers;
 using Lipeg.SDK.Common;
+using System;
 
 namespace Lipeg.SDK.Dump
 {
@@ -67,7 +68,7 @@ namespace Lipeg.SDK.Dump
                 });
             }
 
-            protected override void VisitRule(Rule rule)
+            protected override void VisitRule(IRule rule)
             {
                 if (ruleCount > 0)
                 {
@@ -78,7 +79,7 @@ namespace Lipeg.SDK.Dump
                 Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}reachable from start");
                 Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}zeroable");
                 Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}behave lexical");
-                Writer.WriteLine($"{rule.Identifier} =>");
+                Writer.WriteLine($"{rule.Identifier} {OpSymbols.DefPlain}");
                 if (rule.Identifier.Name == "identifier")
                 {
                     Debug.Assert(true);
@@ -171,25 +172,19 @@ namespace Lipeg.SDK.Dump
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 Writer.Write($"{OpSymbols.Lift}");
-                LexGrouped(
-                    expression.Expression.Attr(Semantic).IsLexical,
-                    expression.Expression);
+                VisitExpression(expression.Expression);
             }
 
             protected override void VisitDropExpression(DropExpression expression)
             {
                 Writer.Write($"{OpSymbols.Drop}");
-                LexGrouped(
-                    expression.Expression.Attr(Semantic).IsLexical,
-                    expression.Expression);
+                VisitExpression(expression.Expression);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 Writer.Write($"{OpSymbols.Fuse}");
-                LexGrouped(
-                    expression.Expression.Attr(Semantic).IsLexical,
-                    expression.Expression);
+                VisitExpression(expression.Expression);
             }
 
             protected override void VisitOptionalExpression(OptionalExpression expression)
@@ -215,19 +210,49 @@ namespace Lipeg.SDK.Dump
                 Writer.Write($"{expression.Identifier.Name}");
             }
 
-            protected override void VisitClassCharExpression(ClassCharExpression expression)
+            protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Writer.Write($"{expression.Value.InClass()}");
+                Writer.Write($"{expression.Rule.Identifier.Name}");
             }
 
             protected override void VisitClassExpression(ClassExpression expression)
             {
-                Writer.Write("[");
-                foreach (var part in expression.Choices)
+                void Write()
                 {
-                    VisitExpression(part);
+                    Writer.Write("[");
+                    foreach (var choice in expression.Choices)
+                    {
+                        VisitExpression(choice);
+                    }
+                    Writer.Write("]");
                 }
-                Writer.Write("]");
+
+                LexSpaced(expression, Write);
+            }
+
+            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
+            {
+                void Write()
+                {
+                    Writer.Write($"'{CharRep.InText(expression.Value)}'");
+                }
+
+                LexSpaced(expression, Write);
+            }
+
+            protected override void VisitAnyExpression(AnyExpression expression)
+            {
+                void Write()
+                {
+                    Writer.Write($"{OpSymbols.Any}");
+                }
+
+                LexSpaced(expression, Write);
+            }
+
+            protected override void VisitClassCharExpression(ClassCharExpression expression)
+            {
+                Writer.Write($"{expression.Value.InClass()}");
             }
 
             protected override void VisitClassRangeExpression(ClassRangeExpression expression)
@@ -235,29 +260,21 @@ namespace Lipeg.SDK.Dump
                 Writer.Write($"{expression.Min.InClass()}-{expression.Max.InClass()}");
             }
 
-            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
-            {
-                Writer.Write($"'{CharRep.InText(expression.Value)}'");
-            }
-
-            protected override void VisitAnyExpression(AnyExpression expression)
-            {
-                Writer.Write($"{OpSymbols.Any}");
-            }
-
             private string Not(bool value)
             {
                 return value ? string.Empty : "! ";
             }
 
-            private void LexGrouped(bool grouped, Expression expression)
+            private void LexSpaced(Expression expression, Action write)
             {
-                if (grouped)
+                var strip = expression.Attr(Semantic).IsLexical && !expression.Attr(Semantic).Rule.Attr(Semantic).IsLexical;
+
+                if (strip)
                 {
-                    Writer.Write("( _ ");
+                    Writer.Write("(_ ");
                 }
-                VisitExpression(expression);
-                if (grouped)
+                write();
+                if (strip)
                 {
                     Writer.Write(")");
                 }

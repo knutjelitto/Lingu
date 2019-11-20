@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Lipeg.Runtime;
@@ -38,7 +37,7 @@ namespace Lipeg.SDK.Checkers
             }
         }
 
-        public void TryAdd(Rule rule)
+        public void TryAdd(IRule rule)
         {
             if (Semantic.Rules.TryGetValue(rule.Identifier.Name, out var already))
             {
@@ -62,9 +61,9 @@ namespace Lipeg.SDK.Checkers
             }
             public CheckCreateRules Check { get; }
 
-            private readonly Stack<Rule> parents = new Stack<Rule>();
+            private readonly Stack<IRule> parents = new Stack<IRule>();
 
-            public void Visit(Rule rule)
+            public void Visit(IRule rule)
             {
                 this.parents.Push(rule);
                 VisitRule(rule);
@@ -76,7 +75,6 @@ namespace Lipeg.SDK.Checkers
                 var parent = this.parents.Peek();
                 var rule = Rule.From(parent.Identifier.With(expression.InlineRule.Identifier), expression.InlineRule.Expression);
 
-                Console.WriteLine($"{rule.Identifier.Name}");
                 Check.TryAdd(rule);
                 rule.Attr(Semantic).SetIsLexical(parent.Attr(Semantic).IsLexical);
                 if (rule.Attr(Semantic).IsLexical)
@@ -87,6 +85,7 @@ namespace Lipeg.SDK.Checkers
                 {
                     Grammar.SyntaxRules.Add(rule);
                 }
+                expression.Rule = rule;
                 Visit(rule);
             }
         }

@@ -10,7 +10,7 @@ namespace Lipeg.SDK.Checkers
     public class Semantic
     {
         private Dictionary<Grammar, IGrammarAttributes> grammarAttributes = new Dictionary<Grammar, IGrammarAttributes>();
-        private Dictionary<Rule, IRuleAttributes> ruleAttributes = new Dictionary<Rule, IRuleAttributes>();
+        private Dictionary<IRule, IRuleAttributes> ruleAttributes = new Dictionary<IRule, IRuleAttributes>();
         private Dictionary<Expression, IExpressionAttributes> expressionAttributes = new Dictionary<Expression, IExpressionAttributes>();
 
         public Semantic(Grammar grammar, ICompileResult results)
@@ -18,13 +18,13 @@ namespace Lipeg.SDK.Checkers
             Grammar = grammar;
             Results = results;
 
-            Rules = new UniqueCollection<string, Rule>(r => r.Identifier.Name, StringComparer.OrdinalIgnoreCase);
+            Rules = new UniqueCollection<string, IRule>(r => r.Identifier.Name, StringComparer.OrdinalIgnoreCase);
         }
 
         public Grammar Grammar { get; }
         public ICompileResult Results { get; }
 
-        public UniqueCollection<string, Rule> Rules { get; }
+        public UniqueCollection<string, IRule> Rules { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1043:Use Integral Or String Argument For Indexers", Justification = "<Pending>")]
         public IGrammarAttributes this[Grammar grammar]
@@ -42,7 +42,7 @@ namespace Lipeg.SDK.Checkers
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1043:Use Integral Or String Argument For Indexers", Justification = "<Pending>")]
-        public IRuleAttributes this[Rule rule]
+        public IRuleAttributes this[IRule rule]
         {
             get
             {
