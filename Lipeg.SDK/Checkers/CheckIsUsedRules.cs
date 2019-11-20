@@ -6,9 +6,9 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check for rules that are used
     /// </summary>
-    public class CheckUsedRules : ACheckBase, ICheckPass
+    public class CheckIsUsedRules : ACheckBase, ICheckPass
     {
-        public CheckUsedRules(Semantic semantic)
+        public CheckIsUsedRules(Semantic semantic)
         : base(semantic)
         {
         }
@@ -21,7 +21,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!Semantic[rule].IsUsed)
                 {
-                    Results.AddError(new CheckError(ErrorSeverity.Warning, ErrorCode.UnusedRule, rule.Identifier));
+                    Results.AddError(new MessageWarning(MessageCode.UnusedRule, rule.Identifier));
                 }
             }
         }

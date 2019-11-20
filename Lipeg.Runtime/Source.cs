@@ -7,6 +7,8 @@ namespace Lipeg.Runtime
 {
     public class Source : ISource
     {
+        public static readonly ISource NoSource = new Source("<no-name>", "<no-content>");
+
         private static readonly string lineEndings = "\u000A\u000B\u000C\u000D\u0085\u2028\u2029";
         private static readonly string otherLineEndings = "\u000B\u000C\u0085\u2028\u2029";
 
@@ -40,7 +42,7 @@ namespace Lipeg.Runtime
             }
             catch (FileNotFoundException)
             {
-                result.AddError(new CompileError(ErrorSeverity.Fatal, ErrorCode.SourceFileNotFound, sourceFile));
+                result.AddError(new MessageError(MessageCode.SourceFileNotFound, sourceFile));
             }
 
             return null;

@@ -28,7 +28,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!Semantic.Rules.TryGetValue(expression.Identifier.Name, out var _))
                 {
-                    Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.UndefinedRule, expression.Identifier));
+                    Results.AddError(new MessageError(MessageCode.UndefinedRule, expression.Identifier));
                     return;
                 }
             }

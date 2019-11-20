@@ -13,14 +13,14 @@ namespace Lipeg.SDK.Checkers
 
             Build(semantic.Results, () => new BuildCombinator(semantic));
 
-            var parser = semantic[semantic[semantic.Grammar].Start].Parser;
+            var parser = semantic.Grammar.Attr(semantic).Start.Attr(semantic).Parser;
 
             if (parser == null)
             {
-                throw new InternalErrorException($"{parser} shouldn't be NULL here");
+                throw new InternalErrorException($"{parser} shouldn't be NULL here (should have a parser for start symbol)");
             }
 
-            semantic[semantic.Grammar].SetParser(parser);
+            semantic.Grammar.Attr(semantic).SetParser(parser);
         }
 
         private static void Build(ICompileResult results, Func<IBuildPass> pass)

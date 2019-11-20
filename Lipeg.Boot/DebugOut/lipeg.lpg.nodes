@@ -372,7 +372,7 @@ grammar [identifier, *]
                     sequence [not]
                         not [.]
                             . <>
-        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
             rule [identifier, choice]
                 identifier <identifier>
                 choice [sequence]
@@ -450,7 +450,7 @@ grammar [identifier, *]
                                 simpleEscape <'>
             rule [identifier, choice]
                 identifier <character>
-                choice [sequence, sequence, sequence]
+                choice [sequence, sequence, sequence, sequence]
                     sequence [not, .]
                         not [choice]
                             choice [sequence, sequence, sequence]
@@ -464,11 +464,13 @@ grammar [identifier, *]
                                     identifier <eol-char>
                         . <>
                     sequence [identifier]
-                        identifier <escape>
+                        identifier <any-escape>
                     sequence [identifier]
-                        identifier <unicode>
+                        identifier <unicode-escape>
+                    sequence [identifier]
+                        identifier <byte-escape>
             rule [identifier, choice]
-                identifier <escape>
+                identifier <any-escape>
                 choice [sequence]
                     sequence [drop, class]
                         drop [singleString]
@@ -502,14 +504,35 @@ grammar [identifier, *]
                                 single [simpleEscape]
                                     simpleEscape <\>
             rule [identifier, choice]
-                identifier <unicode>
+                identifier <unicode-escape>
                 choice [sequence]
-                    sequence [drop, identifier, lift, lift, lift, lift, lift, drop]
+                    sequence [drop, identifier, drop, lift, drop]
+                        drop [choice]
+                            choice [sequence]
+                                sequence [singleString, identifier]
+                                    singleString [simpleEscape, character, character]
+                                        simpleEscape <\>
+                                        character <u>
+                                        character <{>
+                                    identifier <_>
+                        identifier <unicode-number>
+                        drop [identifier]
+                            identifier <_>
+                        lift [quantified]
+                            quantified [choice, *]
+                                choice [sequence]
+                                    sequence [identifier, drop]
+                                        identifier <unicode-number>
+                                        drop [identifier]
+                                            identifier <_>
+                                * <>
                         drop [singleString]
-                            singleString [simpleEscape, character, character]
-                                simpleEscape <\>
-                                character <u>
-                                character <{>
+                            singleString [character]
+                                character <}>
+            rule [identifier, choice]
+                identifier <unicode-number>
+                choice [sequence]
+                    sequence [identifier, lift, lift, lift, lift, lift]
                         identifier <hex-digit>
                         lift [quantified]
                             quantified [identifier, ?]
@@ -531,9 +554,41 @@ grammar [identifier, *]
                             quantified [identifier, ?]
                                 identifier <hex-digit>
                                 ? <>
+            rule [identifier, choice]
+                identifier <byte-escape>
+                choice [sequence]
+                    sequence [drop, identifier, drop, lift, drop]
+                        drop [choice]
+                            choice [sequence]
+                                sequence [singleString, identifier]
+                                    singleString [simpleEscape, character, character]
+                                        simpleEscape <\>
+                                        character <x>
+                                        character <{>
+                                    identifier <_>
+                        identifier <byte-number>
+                        drop [identifier]
+                            identifier <_>
+                        lift [quantified]
+                            quantified [choice, *]
+                                choice [sequence]
+                                    sequence [identifier, drop]
+                                        identifier <byte-number>
+                                        drop [identifier]
+                                            identifier <_>
+                                * <>
                         drop [singleString]
                             singleString [character]
                                 character <}>
+            rule [identifier, choice]
+                identifier <byte-number>
+                choice [sequence]
+                    sequence [identifier, lift]
+                        identifier <hex-digit>
+                        lift [quantified]
+                            quantified [identifier, ?]
+                                identifier <hex-digit>
+                                ? <>
             rule [identifier, choice]
                 identifier <character-class>
                 choice [sequence]
@@ -569,7 +624,7 @@ grammar [identifier, *]
                         identifier <class-char>
             rule [identifier, choice]
                 identifier <class-char>
-                choice [sequence, sequence, sequence]
+                choice [sequence, sequence, sequence, sequence]
                     sequence [not, .]
                         not [choice]
                             choice [sequence, sequence, sequence]
@@ -583,9 +638,11 @@ grammar [identifier, *]
                                     identifier <eol-char>
                         . <>
                     sequence [identifier]
-                        identifier <escape>
+                        identifier <any-escape>
                     sequence [identifier]
-                        identifier <unicode>
+                        identifier <unicode-escape>
+                    sequence [identifier]
+                        identifier <byte-escape>
             rule [identifier, choice]
                 identifier <_>
                 choice [sequence]

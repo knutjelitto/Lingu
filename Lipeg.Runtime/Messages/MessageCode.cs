@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public enum ErrorCode
+    public enum MessageCode
     {
         SourceFileNotFound = 1,
         AlreadyDefinedOption = 101,

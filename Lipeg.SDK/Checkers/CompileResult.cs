@@ -8,26 +8,26 @@ namespace Lipeg.SDK.Checkers
 {
     public class CompileResult : ICompileResult
     {
-        private List<ICompileError> errors = new List<ICompileError>();
+        private List<IMessage> errors = new List<IMessage>();
         private Source? source;
 
         public CompileResult()
         {
         }
 
-        public IReadOnlyList<ICompileError> Errors => errors;
+        public IReadOnlyList<IMessage> Errors => errors;
 
-        public bool HasErrors => errors.Any(e => e.Severity == ErrorSeverity.Error || e.Severity == ErrorSeverity.Fatal);
+        public bool HasErrors => errors.Any(e => e.Severity == MessageSeverity.Error || e.Severity == MessageSeverity.Fatal);
         public bool HasAny => this.errors.Count > 0;
         public bool IsFatal { get; private set; }
         public bool ShouldStop => IsFatal || errors.Count > 4;
 
-        public void AddError(ICompileError error)
+        public void AddError(IMessage error)
         {
             errors.Add(error);
         }
 
-        public void AddFatal(ICompileError error)
+        public void AddFatal(IMessage error)
         {
             IsFatal = true;
             AddError(error);

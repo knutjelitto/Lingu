@@ -1,6 +1,6 @@
-﻿using Lipeg.Runtime;
+﻿using System.Collections.Generic;
+
 using Lipeg.SDK.Tree;
-using System.Collections.Generic;
 
 namespace Lipeg.SDK.Checkers
 {

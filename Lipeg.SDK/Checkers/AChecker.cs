@@ -13,9 +13,9 @@ namespace Lipeg.SDK.Checkers
             Check(semantic.Results, () => new CheckCreateRules(semantic));
             Check(semantic.Results, () => new CheckUndefinedRules(semantic));
             Check(semantic.Results, () => new CheckOptions(semantic));
-            Check(semantic.Results, () => new CheckUsedRules(semantic));
-            Check(semantic.Results, () => new CheckReachableRules(semantic));
-            Check(semantic.Results, () => new CheckNullable(semantic));
+            Check(semantic.Results, () => new CheckIsUsedRules(semantic));
+            Check(semantic.Results, () => new CheckIsReachableRules(semantic));
+            Check(semantic.Results, () => new CheckIsNullable(semantic));
             Check(semantic.Results, () => new CheckManySanity(semantic));
             Check(semantic.Results, () => new CheckIsLexical(semantic));
             Check(semantic.Results, () => new CheckParentRules(semantic));

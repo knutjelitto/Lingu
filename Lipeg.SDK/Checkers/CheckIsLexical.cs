@@ -6,7 +6,7 @@ using Lipeg.SDK.Tree;
 namespace Lipeg.SDK.Checkers
 {
     /// <summary>
-    /// Check which rules are terminal
+    /// Check which rules are ``terminal´´ (sole lexical)
     /// </summary>
     public class CheckIsLexical : ACheckBase, ICheckPass
     {

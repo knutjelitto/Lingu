@@ -6,10 +6,10 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check for rules that are reached from start symbol
     /// </summary>
-    public class CheckReachableRules : ACheckBase
+    public class CheckIsReachableRules : ACheckBase
         , ICheckPass
     {
-        public CheckReachableRules(Semantic semantic)
+        public CheckIsReachableRules(Semantic semantic)
         : base(semantic)
         {
         }
@@ -29,7 +29,7 @@ namespace Lipeg.SDK.Checkers
             {
                 if (!Semantic[rule].IsReachable)
                 {
-                    Results.AddError(new CheckError(ErrorSeverity.Warning, ErrorCode.UnreachableRule, rule.Identifier));
+                    Results.AddError(new MessageWarning(MessageCode.UnreachableRule, rule.Identifier));
                 }
             }
 

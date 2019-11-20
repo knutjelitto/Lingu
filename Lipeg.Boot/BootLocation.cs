@@ -16,12 +16,12 @@ namespace Lipeg.Boot
         public int Start { get; }
         public int End { get; }
 
-        public static ILocation From(ISource source, Cursor start)
+        public static ILocation From(ISource source, Pegasus.Common.Cursor start)
         {
             return new BootLocation(source, start.Location, start.Location);
         }
 
-        public static ILocation From(ISource source, Cursor start, Cursor end)
+        public static ILocation From(ISource source, Pegasus.Common.Cursor start, Pegasus.Common.Cursor end)
         {
             return new BootLocation(source, start.Location, end.Location);
         }

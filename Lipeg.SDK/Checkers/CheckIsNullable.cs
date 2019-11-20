@@ -7,9 +7,9 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all rules are used
     /// </summary>
-    public class CheckNullable : ACheckBase, ICheckPass
+    public class CheckIsNullable : ACheckBase, ICheckPass
     {
-        public CheckNullable(Semantic semantic)
+        public CheckIsNullable(Semantic semantic)
         : base(semantic)
         {
         }

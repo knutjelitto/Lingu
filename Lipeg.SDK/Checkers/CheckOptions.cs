@@ -32,7 +32,7 @@ namespace Lipeg.SDK.Checkers
                         FindRule(option, rule => Semantic[Grammar].SetSpacing(rule));
                         break;
                     default:
-                        Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.UnknownOption, option.Identifier));
+                        Results.AddError(new MessageError(MessageCode.UnknownOption, option.Identifier));
                         break;
                 }
             }
@@ -49,7 +49,7 @@ namespace Lipeg.SDK.Checkers
 
                         if (!setter(rule))
                         {
-                            Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.AlreadyDefinedOption, identifier));
+                            Results.AddError(new MessageError(MessageCode.AlreadyDefinedOption, identifier));
                         }
                         else
                         {
@@ -57,10 +57,10 @@ namespace Lipeg.SDK.Checkers
                             return;
                         }
                     }
-                    Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.UndefinedOptionValue, identifier));
+                    Results.AddError(new MessageError(MessageCode.UndefinedOptionValue, identifier));
                     return;
                 }
-                Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.IllegalOptionValue, option.QualifiedIdentifier));
+                Results.AddError(new MessageError(MessageCode.IllegalOptionValue, option.QualifiedIdentifier));
             }
         }
     }

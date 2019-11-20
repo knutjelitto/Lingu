@@ -12,8 +12,8 @@ namespace Lipeg.Runtime
         bool ShouldStop { get; }
         bool IsFatal { get; }
 
-        void AddError(ICompileError error);
-        IReadOnlyList<ICompileError> Errors { get; }
+        void AddError(IMessage error);
+        IReadOnlyList<IMessage> Errors { get; }
 
         bool Report(TextWriter writer);
     }

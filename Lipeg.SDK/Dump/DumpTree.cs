@@ -75,10 +75,11 @@ namespace Lipeg.SDK.Dump
                     Writer.WriteLine();
                 }
 
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsUsed)}used somewhere");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}reachable from start");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}zeroable");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}behave lexical");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsUsed)}is used");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}is reachable");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}is nullable");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}is lexical");
+                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsSyntax)}is syntax");
                 Writer.WriteLine($"{rule.Identifier} {OpSymbols.DefPlain}");
                 if (rule.Identifier.Name == "identifier")
                 {

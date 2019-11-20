@@ -43,8 +43,8 @@ namespace Lipeg.SDK.Checkers
             {
                 if (already == null) throw new InternalErrorException($"{nameof(already)} really shouldn't be NULL");
 
-                Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.AlreadyDefinedRule, already.Identifier));
-                Results.AddError(new CheckError(ErrorSeverity.Error, ErrorCode.RedefinedRule, rule.Identifier));
+                Results.AddError(new MessageError(MessageCode.AlreadyDefinedRule, already.Identifier));
+                Results.AddError(new MessageError(MessageCode.RedefinedRule, rule.Identifier));
             }
             else
             {

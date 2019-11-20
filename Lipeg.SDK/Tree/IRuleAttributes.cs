@@ -8,6 +8,7 @@ namespace Lipeg.SDK.Tree
         bool SetIsNullable(bool value);
         bool IsLexical { get; }
         bool SetIsLexical(bool value);
+        bool IsSyntax => !IsLexical;
 
         bool IsUsed { get; }
         bool SetIsUsed(bool value);

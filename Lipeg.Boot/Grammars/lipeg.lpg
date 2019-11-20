@@ -133,16 +133,30 @@
 
         character <=
             / !('\'' / '\\' / eol-char) .
-            / escape
-            / unicode
+            / any-escape
+            / unicode-escape
+            / byte-escape
             ;
 
-        escape <=
+        any-escape <=
             ,'\\' [0abefnrtv\-\]\\]
             ;
 
-        unicode <=
-            ,'\\u{' hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ,'}'
+
+        unicode-escape <=
+            ,('\\u{' _) unicode-number ,_ ^(unicode-number ,_)* ,'}'
+            ;
+
+        unicode-number <=
+            hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?
+            ;
+        
+        byte-escape <=
+            ,('\\x{' _) byte-number ,_ ^(byte-number ,_)* ,'}'
+            ;
+
+        byte-number <=
+            hex-digit ^hex-digit?
             ;
 
         character-class <=
@@ -160,8 +174,9 @@
 
         class-char <=
             / !(']' / '\\' / eol-char) .
-            / escape
-            / unicode
+            / any-escape
+            / unicode-escape
+            / byte-escape
             ;
 
         _ <= 

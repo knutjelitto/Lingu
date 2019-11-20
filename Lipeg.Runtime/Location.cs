@@ -6,6 +6,7 @@ namespace Lipeg.Runtime
 {
     public class Location : ILocation
     {
+        public static readonly ILocation NoLocation = new Location(Runtime.Source.NoSource, 0, 0);
         private Location(ISource source, int start, int end)
         {
             Source = source;

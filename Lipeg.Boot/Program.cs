@@ -42,7 +42,7 @@ namespace Lipeg.Boot
 
                 var grammarBuilder = new GrammarBuilder();
 
-                var grammar = grammarBuilder.Build(parseTree);
+                SDK.Tree.Grammar grammar = grammarBuilder.Build(parseTree);
 
                 var semantic = new Semantic(grammar, results);
 
@@ -53,6 +53,11 @@ namespace Lipeg.Boot
                     Builder.Build(semantic);
 
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".tree"), new DumpTree(), semantic);
+
+                    var combiParser = semantic.Grammar.Attr(semantic).Parser;
+
+                    combiParser.Parse(DCursor.Start(source));
+
                 }
 
                 if (results.HasAny)

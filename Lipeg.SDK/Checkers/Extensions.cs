@@ -1,20 +1,27 @@
 ﻿using Lipeg.SDK.Tree;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lipeg.SDK.Checkers
 {
     public static class Extensions
     {
-        internal static IExpressionAttributes Attr(this Expression expr, Semantic semantic)
+        public static IExpressionAttributes Attr(this Expression expr, Semantic semantic)
         {
+            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
+
             return semantic[expr];
         }
-        internal static IRuleAttributes Attr(this IRule rules, Semantic semantic)
+        public static IRuleAttributes Attr(this IRule rules, Semantic semantic)
         {
+            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
+
             return semantic[rules];
+        }
+        public static IGrammarAttributes Attr(this Grammar grammar, Semantic semantic)
+        {
+            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
+
+            return semantic[grammar];
         }
     }
 }
