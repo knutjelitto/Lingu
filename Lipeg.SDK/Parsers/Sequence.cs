@@ -2,20 +2,19 @@
 using System.Linq;
 
 using Lipeg.Runtime;
+using Lipeg.SDK.Checkers;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Sequence : IParser
+    public class Sequence : Multi
     {
         public Sequence(IReadOnlyList<IParser> parsers)
+            : base(OpSymbols.Sequence, parsers)
         {
-            Parsers = parsers;
         }
 
-        private IReadOnlyList<IParser> Parsers { get; }
-
-        public IResult Parse(ICursor cursor)
+        public override IResult Parse(ICursor cursor)
         {
             var current = cursor;
             var nodes = new List<INode>();

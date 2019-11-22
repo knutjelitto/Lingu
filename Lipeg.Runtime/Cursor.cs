@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Lipeg.Runtime
@@ -21,12 +22,18 @@ namespace Lipeg.Runtime
 
         public ICursor Advance(int count)
         {
-            return new DCursor(this.source, this.offset + 1);
+            Debug.Assert(count >= 0);
+            return new DCursor(this.source, this.offset + count);
         }
 
         public static ICursor Start(ISource source)
         {
             return new DCursor(source, 0);
+        }
+
+        public override string ToString()
+        {
+            return source.GetText(Offset, 20) + "\u2026";
         }
     }
 }

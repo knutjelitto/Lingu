@@ -23,3 +23,9 @@
     Justification = "Scheiß drauf", 
     Scope = "module"
 )]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Naming", 
+    "CA1710:Identifiers should have correct suffix", 
+    Justification = "<Pending>", 
+    Scope = "module"
+ )]

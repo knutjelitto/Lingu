@@ -1,17 +1,16 @@
 ﻿using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Lift : IParser
+    public class Lift : Single
     {
         public Lift(IParser parser)
+            : base(OpSymbols.Lift, parser)
         {
-            Parser = parser;
         }
 
-        public IParser Parser { get; }
-
-        public IResult Parse(ICursor cursor)
+        public override IResult Parse(ICursor cursor)
         {
             return Parser.Parse(cursor).SetLift();
         }

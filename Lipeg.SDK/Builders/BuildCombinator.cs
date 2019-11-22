@@ -98,7 +98,7 @@ namespace Lipeg.SDK.Builders
                         return Result.Fail(cursor);
                     });
 
-                Push(new Predicate(matcher));
+                Push(new PredicateParser(OpSymbols.ClassChar, matcher));
             }
 
             protected override void VisitClassExpression(ClassExpression expression)
@@ -125,7 +125,7 @@ namespace Lipeg.SDK.Builders
                         return Result.Fail(cursor);
                     });
 
-                Push(new Predicate(matcher));
+                Push(new PredicateParser(OpSymbols.ClassRange, matcher));
             }
 
             protected override void VisitDropExpression(DropExpression expression)
@@ -176,7 +176,7 @@ namespace Lipeg.SDK.Builders
                         return Result.Fail(cursor);
                     });
 
-                Push(new Predicate(matcher));
+                Push(new PredicateParser(OpSymbols.And, matcher));
             }
 
             protected override void VisitNotExpression(NotExpression expression)
@@ -222,7 +222,7 @@ namespace Lipeg.SDK.Builders
                 var matcher = new Func<ICursor, IResult>(
                     (cursor) =>
                     {
-                        if (cursor.Source.Part(cursor.Offset, expression.Value.Length) == expression.Value)
+                        if (cursor.Source.Part(cursor.Offset, expression.Value.Length).ToString() == expression.Value)
                         {
                             var next = cursor.Advance(expression.Value.Length);
                             var location = Location.From(cursor, next);
@@ -231,7 +231,7 @@ namespace Lipeg.SDK.Builders
                         return Result.Fail(cursor);
                     });
 
-                Push(new Predicate(matcher));
+                Push(new PredicateParser(OpSymbols.String, matcher));
             }
 
             protected override void VisitAnyExpression(AnyExpression expression)
@@ -251,7 +251,7 @@ namespace Lipeg.SDK.Builders
                         return Result.Fail(cursor);
                     });
 
-                Push(new Predicate(matcher));
+                Push(new PredicateParser(OpSymbols.Any, matcher));
             }
 
             // >===>

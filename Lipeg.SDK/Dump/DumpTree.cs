@@ -39,7 +39,7 @@ namespace Lipeg.SDK.Dump
 
             public override void VisitGrammarOptions()
             {
-                Writer.Block($"{OpSymbols.Options}", () =>
+                Writer.Block($"{OpSymbols.Opts}", () =>
                 {
                     base.VisitGrammarOptions();
                 });

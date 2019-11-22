@@ -7,16 +7,14 @@ using Lipeg.SDK.Tree;
 namespace Lipeg.SDK.Parsers
 {
     [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Scheiß drauf")]
-    public class Option : IParser
+    public class Option : Single
     {
         public Option(IParser parser)
+            : base(OpSymbols.Opt, parser)
         {
-            Parser = parser;
         }
 
-        public IParser Parser { get; }
-
-        public IResult Parse(ICursor cursor)
+        public override IResult Parse(ICursor cursor)
         {
             var result = Parser.Parse(cursor);
             if (result.IsSuccess)

@@ -7,7 +7,7 @@ namespace Lipeg.SDK.Dump
 {
     public static class Dumper
     {
-        public static void Dump<T>(FileRef file, IDump<T> dump, T subject )
+        public static void Dump<T>(FileRef file, IDump<T> dump, T subject)
         {
             if (dump == null) throw new ArgumentNullException(nameof(dump));
 

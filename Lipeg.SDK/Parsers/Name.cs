@@ -1,20 +1,14 @@
 ﻿using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 using System;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Name : IParser
+    public class Name : Reference
     {
         public Name(Func<IParser> parser)
+            : base(OpSymbols.Ref, parser)
         {
-            Parser = parser;
-        }
-
-        public Func<IParser> Parser { get; }
-
-        public IResult Parse(ICursor cursor)
-        {
-            return Parser().Parse(cursor);
         }
     }
 }

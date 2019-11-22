@@ -56,7 +56,10 @@ namespace Lipeg.Boot
 
                     var combiParser = semantic.Grammar.Attr(semantic).Parser;
 
-                    combiParser.Parse(DCursor.Start(source));
+                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParser(), semantic);
+
+                    var start = DCursor.Start(source);
+                    combiParser.Parse(start);
 
                 }
 

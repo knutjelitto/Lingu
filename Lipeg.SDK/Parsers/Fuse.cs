@@ -1,17 +1,16 @@
 ﻿using Lipeg.Runtime;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Fuse : IParser
+    public class Fuse : Single
     {
         public Fuse(IParser parser)
+            : base(OpSymbols.Fuse, parser)
         {
-            Parser = parser;
         }
 
-        public IParser Parser { get; }
-
-        public IResult Parse(ICursor cursor)
+        public override IResult Parse(ICursor cursor)
         {
             return Parser.Parse(cursor).SetFuse();
         }
