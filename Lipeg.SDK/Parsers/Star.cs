@@ -5,16 +5,14 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Star : IParser
+    public class Star : Single
     {
         public Star(IParser parser)
+            : base(OpSymbols.Star, parser)
         {
-            Parser = parser;
         }
 
-        public IParser Parser { get; }
-
-        public IResult Parse(ICursor cursor)
+        public override IResult Parse(ICursor cursor)
         {
             var nodes = new List<INode>();
             var current = cursor;

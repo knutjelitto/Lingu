@@ -196,7 +196,7 @@ namespace Lipeg.SDK.Builders
                         return Result.Fail(cursor);
                     });
 
-                Push(new Predicate(matcher));
+                Push(new PredicateParser(OpSymbols.Not, matcher));
             }
 
             protected override void VisitOptionalExpression(OptionalExpression optional)
