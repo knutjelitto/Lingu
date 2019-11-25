@@ -20,7 +20,7 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier <grammar>
                 choice [sequence]
-                    sequence [drop, drop, lift, drop]
+                    sequence [drop, identifier, drop, lift, drop]
                         drop [singleString]
                             singleString [character, character, character, character, character, character, character]
                                 character <g>
@@ -30,6 +30,7 @@ grammar [identifier, *]
                                 character <m>
                                 character <a>
                                 character <r>
+                        identifier <identifier>
                         drop [singleString]
                             singleString [character]
                                 character <{>

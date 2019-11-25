@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Lipeg.Runtime;
@@ -24,7 +25,12 @@ namespace Lipeg.SDK.Parsers
         {
             if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
-            if (cursor.Source.Part(cursor.Offset, Characters.Length).ToString() == Characters)
+            if (cursor.StartsWith("options") && Characters == "options")
+            {
+                Debug.Assert(true);
+            }
+
+            if (cursor.StartsWith(Characters))
             {
                 var next = cursor.Advance(Characters.Length);
                 var location = Location.From(cursor, next);
@@ -37,7 +43,12 @@ namespace Lipeg.SDK.Parsers
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"'{CharRep.InText(Characters)}'");
+            writer.Write($"{this}");
+        }
+
+        public override string ToString()
+        {
+            return $"'{CharRep.InText(Characters)}'";
         }
     }
 }

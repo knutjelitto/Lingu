@@ -28,12 +28,12 @@ namespace Lipeg.SDK.Builders
         private class Visitor : TreeVisitor
         {
             private readonly List<IParser> parsers = new List<IParser>();
-            private readonly IParser spacer;
+            private readonly Func<IParser> spacer;
 
             public Visitor(Semantic semantic)
                 : base(semantic)
             {
-                spacer = new Space(() => Grammar.Attr(Semantic).Spacing.Attr(Semantic).Parser);
+                spacer = () => Grammar.Attr(Semantic).Spacing.Attr(Semantic).Parser;
             }
 
             public void Visit()
@@ -63,20 +63,32 @@ namespace Lipeg.SDK.Builders
                 parsers.Add(parser);
             }
 
+            private IParser Peek()
+            {
+                return parsers[parsers.Count - 1];
+            }
+
             public override void VisitExpression(Expression expression)
             {
                 if (expression == null) throw new ArgumentNullException(nameof(expression));
 
                 base.VisitExpression(expression);
 
-                if (expression.Attr(Semantic).IsWithSpacing)
+                if (expression.Attr(Semantic).IsWithSpacing && !(Peek() is Space))
                 {
-                    Push(new Sequence(spacer, Pop()));
+                    Push(new Space(spacer, Pop()));
                 }
             }
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
+                if (expression.Choices.Count == 1)
+                {
+                    VisitExpression(expression.Choices[0]);
+                    
+                    return;
+                }
+
                 var start = parsers.Count;
 
                 base.VisitChoiceExpression(expression);
@@ -87,12 +99,19 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
+                if (expression.Sequence.Count == 1)
+                {
+                    VisitExpression(expression.Sequence[0]);
+
+                    return;
+                }
+
                 var start = parsers.Count;
 
                 base.VisitSequenceExpression(expression);
 
                 var parser = new Sequence(Pop(start));
-                parsers.Add(parser);
+                Push(parser);
             }
 
             protected override void VisitClassCharExpression(ClassCharExpression expression)

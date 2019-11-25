@@ -37,7 +37,12 @@ namespace Lipeg.SDK.Parsers
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"'{CharRep.Convert(Min)}-{CharRep.Convert(Max)}'");
+            writer.Write($"{this}");
+        }
+
+        public override string ToString()
+        {
+            return $"'{CharRep.Convert(Min)}-{CharRep.Convert(Max)}'";
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
-
+using System.Diagnostics;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.Boot
 {
@@ -11,20 +12,21 @@ namespace Lipeg.Boot
     {
         internal static void Main()
         {
-            RamboBuild("lipeg.lpg");
+            RamboBuild("lipeg.lpg", "test1.lpg");
             GC.Collect(2, GCCollectionMode.Forced);
 
             Console.Write("(almost) any key ... ");
             Console.ReadKey(true);
         }
 
-        private static void RamboBuild(string grammarFilename)
+        private static void RamboBuild(string grammarFilename, string testFilename)
         {
             var projectDir = DirRef.ProjectDir();
             var grammarDir = projectDir.Dir("Grammars");
             var debugDir = projectDir.Dir("DebugOut");
 
             var grammarFile = grammarDir.File(grammarFilename);
+            var testFile = grammarDir.File(testFilename);
 
             Environment.CurrentDirectory = debugDir;
 
@@ -42,7 +44,7 @@ namespace Lipeg.Boot
 
                 var grammarBuilder = new GrammarBuilder();
 
-                SDK.Tree.Grammar grammar = grammarBuilder.Build(parseTree);
+                var grammar = grammarBuilder.Build(parseTree);
 
                 var semantic = new Semantic(grammar, results);
 
@@ -57,6 +59,9 @@ namespace Lipeg.Boot
                     var combiParser = semantic.Grammar.Attr(semantic).Parser;
 
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParser(), semantic);
+
+                    source = Source.FromFile(results, testFile);
+                    Debug.Assert(source != null);
 
                     var start = DCursor.Start(source);
                     

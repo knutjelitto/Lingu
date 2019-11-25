@@ -2,43 +2,43 @@
     (&& grammar eof))
 
 (grammar
-    (&& (, (&& ␣ 'grammar')) (, (&& ␣ '{')) (^ (* (|| options syntax lexical))) (, (&& ␣ '}'))))
+    (&& (, [␣ 'grammar']) [␣ identifier] (, [␣ '{']) (^ (* (|| options syntax lexical))) (, [␣ '}'])))
 
 (options
-    (&& (, (&& ␣ 'options')) (, (&& ␣ '{')) (^ (* option)) (, (&& ␣ '}'))))
+    (&& (, [␣ 'options']) (, [␣ '{']) (^ (* option)) (, [␣ '}'])))
 
 (option
-    (&& ␣ (&& ␣ (&& (&& ␣ identifier) (, (&& ␣ '=')) option-value (, (&& ␣ ';'))))))
+    [␣ (&& [␣ identifier] (, [␣ '=']) option-value (, [␣ ';']))])
 
 (option-value
     qualified-identifier)
 
 (qualified-identifier
-    (&& ␣ (&& ␣ (&& (&& ␣ identifier) (^ (* (&& (, (&& ␣ '.')) (&& ␣ identifier))))))))
+    [␣ (&& [␣ identifier] (^ (* (&& (, [␣ '.']) [␣ identifier]))))])
 
 (syntax
-    (&& (, (&& ␣ 'rules')) (, (&& ␣ '{')) rules (, (&& ␣ (? (&& ␣ ';')))) (, (&& ␣ '}'))))
+    (&& (, [␣ 'rules']) (, [␣ '{']) rules (, [␣ (? [␣ ';'])]) (, [␣ '}'])))
 
 (lexical
-    (&& (, (&& ␣ 'lexical')) (, (&& ␣ '{')) rules (, (&& ␣ (? (&& ␣ ';')))) (, (&& ␣ '}'))))
+    (&& (, [␣ 'lexical']) (, [␣ '{']) rules (, [␣ (? [␣ ';'])]) (, [␣ '}'])))
 
 (rules
-    (^ (? (&& rule (^ (* (&& (, (&& ␣ ';')) rule)))))))
+    (^ (? (&& rule (^ (* (&& (, [␣ ';']) rule)))))))
 
 (rule
-    (&& ␣ (&& ␣ (&& (&& ␣ identifier) (, (&& ␣ '<=')) (, (&& ␣ (? (&& ␣ '/')))) expression))))
+    [␣ (&& [␣ identifier] (, [␣ '<=']) (, [␣ (? [␣ '/'])]) expression)])
 
 (expression
     choice)
 
 (choice
-    (&& sequence (^ (* (&& (, (&& ␣ '/')) sequence)))))
+    (&& sequence (^ (* (&& (, [␣ '/']) sequence)))))
 
 (sequence
     (^ (+ aliased)))
 
 (aliased
-    (|| (&& prefix (&& ␣ ':') (&& ␣ identifier))
+    (|| (&& prefix [␣ ':'] [␣ identifier])
         prefix))
 
 (prefix
@@ -56,61 +56,66 @@
         primary))
 
 (primary
-    (|| (&& ␣ (&& ␣ identifier))
-        (&& ␣ (&& ␣ string))
-        (&& ␣ (&& ␣ character-class))
+    (|| [␣ identifier]
+        [␣ string]
+        [␣ character-class]
         any
         epsilon
         inline
-        (&& (, (&& ␣ '(')) expression (, (&& ␣ ')')))))
+        (&& (, [␣ '(']) expression (, [␣ ')']))))
 
 (inline
-    (&& (, (&& ␣ '(')) (^ rule) (, (&& ␣ ')'))))
+    (&& (, [␣ '(']) (^ rule) (, [␣ ')'])))
 
 (any
-    (, (&& ␣ '.')))
+    (, [␣ '.']))
 
 (epsilon
-    (&& ␣ (|| (&& ␣ (&& ␣ 'epsilon')) (&& ␣ (&& ␣ '\u{03B5}')))))
+    [␣ (|| [␣ 'epsilon'] [␣ '\u{03B5}'])])
 
 (eof
-    (&& ␣ (&& ␣ (&& ␣ (! (&& ␣ {Name}))))))
+    [␣ (! [␣ {Name}])])
 
 (prefix.and
-    (&& (, (&& ␣ '&')) suffix))
+    (&& (, [␣ '&']) suffix))
 
 (prefix.not
-    (&& (, (&& ␣ '!')) suffix))
+    (&& (, [␣ '!']) suffix))
 
 (prefix.drop
-    (&& (, (&& ␣ ',')) suffix))
+    (&& (, [␣ ',']) suffix))
 
 (prefix.fuse
-    (&& (, (&& ␣ '~')) suffix))
+    (&& (, [␣ '~']) suffix))
 
 (prefix.lift
-    (&& (, (&& ␣ '^')) suffix))
+    (&& (, [␣ '^']) suffix))
 
 (suffix.zero-or-one
-    (&& primary (, (&& ␣ '?'))))
+    (&& primary (, [␣ '?'])))
 
 (suffix.zero-or-more
-    (&& primary (, (&& ␣ '*'))))
+    (&& primary (, [␣ '*'])))
 
 (suffix.one-or-more
-    (&& primary (, (&& ␣ '+'))))
+    (&& primary (, [␣ '+'])))
 
 (identifier
     (&& letter (* letter-or-digit) (* (&& '-' (+ letter-or-digit)))))
 
 (letter
-    (|| 'a-z' 'A-Z'))
+    (|| 'a-z'
+        'A-Z'))
 
 (letter-or-digit
-    (|| 'a-z' 'A-Z' '0-9'))
+    (|| 'a-z'
+        'A-Z'
+        '0-9'))
 
 (hex-digit
-    (|| '0-9' 'a-f' 'A-F'))
+    (|| '0-9'
+        'a-f'
+        'A-F'))
 
 (string
     (&& (, '\'') (* character) (, '\'')))
@@ -173,7 +178,21 @@
         '\u{2029}'))
 
 (eol-char
-    (|| '\n' '\r' '\u{2028}' '\u{2029}'))
+    (|| '\n'
+        '\r'
+        '\u{2028}'
+        '\u{2029}'))
 
 (whitespace
-    (|| ' ' '\t' '\v' '\f' '\u{00A0}' '\u{FEFF}' '\u{1680}' '\u{180E}' '\u{2000}-\u{200A}' '\u{202F}' '\u{205F}' '\u{3000}'))
+    (|| ' '
+        '\t'
+        '\v'
+        '\f'
+        '\u{00A0}'
+        '\u{FEFF}'
+        '\u{1680}'
+        '\u{180E}'
+        '\u{2000}-\u{200A}'
+        '\u{202F}'
+        '\u{205F}'
+        '\u{3000}'))

@@ -13,7 +13,7 @@
             ;
 
         grammar <=
-            ,'grammar' ,'{' ^(options / syntax / lexical)* ,'}'
+            ,'grammar' identifier ,'{' ^(options / syntax / lexical)* ,'}'
             ;
 
         options <=

@@ -19,5 +19,10 @@ namespace Lipeg.SDK.Parsers
         public abstract void Dump(int level, IWriter writer);
 
         public abstract IResult Parse(ICursor cursor);
+
+        public override string ToString()
+        {
+            return $"({Name} " + String.Join(" ", Parsers) + ")";
+        }
     }
 }

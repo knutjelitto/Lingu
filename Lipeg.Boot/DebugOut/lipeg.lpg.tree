@@ -22,7 +22,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         grammar <=
-            ,(_ 'grammar') ,(_ '{') ^(options / syntax / lexical)* ,(_ '}')
+            ,(_ 'grammar') identifier ,(_ '{') ^(options / syntax / lexical)* ,(_ '}')
             ;
         
         // is used

@@ -11,5 +11,10 @@ namespace Lipeg.Runtime
         ICursor Advance(int count);
         int Current => Source[Offset];
         bool AtEnd => Source.AtEnd(Offset);
+
+        bool StartsWith(string prefix)
+        {
+            return Source.Part(Offset, prefix.Length).ToString() == prefix;
+        }
     }
 }

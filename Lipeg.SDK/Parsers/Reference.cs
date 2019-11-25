@@ -30,7 +30,12 @@ namespace Lipeg.SDK.Parsers
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"{Identifier.Name}");
+            writer.Write($"{this}");
+        }
+
+        public override string ToString()
+        {
+            return $"{Identifier.Name}";
         }
     }
 }

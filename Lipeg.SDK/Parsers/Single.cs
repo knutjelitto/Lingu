@@ -27,5 +27,10 @@ namespace Lipeg.SDK.Parsers
             Parser.Dump(level + 1, writer);
             writer.Write(")");
         }
+
+        public override string ToString()
+        {
+            return $"({Name} {Parser})";
+        }
     }
 }

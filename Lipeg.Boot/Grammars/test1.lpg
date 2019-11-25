@@ -1,0 +1,8 @@
+﻿grammar lipeg
+{
+    options
+    {
+        start = start;
+        spacing = _;
+    }
+}

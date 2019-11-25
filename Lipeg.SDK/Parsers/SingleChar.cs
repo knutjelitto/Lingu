@@ -35,7 +35,12 @@ namespace Lipeg.SDK.Parsers
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"'{CharRep.Convert(Character)}'");
+            writer.Write($"{this}");
+        }
+
+        public override string ToString()
+        {
+            return $"'{CharRep.Convert(Character)}'";
         }
     }
 }
