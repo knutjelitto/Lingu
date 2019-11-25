@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
 using Lipeg.Runtime;
+using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
@@ -23,6 +26,53 @@ namespace Lipeg.SDK.Parsers
             }
 
             return Result.Fail(cursor);
+        }
+
+        public override void Dump(int level, IWriter writer)
+        {
+            if (writer == null) throw new ArgumentNullException(nameof(writer));
+
+            if (Parsers.Count > 1)
+            {
+                if (level == 0)
+                {
+                    writer.Write($"({Name} ");
+                    writer.Indent(() =>
+                    {
+                        var more = false;
+                        foreach (var child in Parsers)
+                        {
+                            if (more)
+                            {
+                                writer.WriteLine();
+                            }
+                            child.Dump(level + 1, writer);
+                            more = true;
+                        }
+                    });
+                    writer.Write(")");
+                }
+                else
+                {
+                    var more = false;
+
+                    writer.Write($"({Name} ");
+                    foreach (var child in Parsers)
+                    {
+                        if (more)
+                        {
+                            writer.Write(" ");
+                        }
+                        child.Dump(level + 1, writer);
+                        more = true;
+                    }
+                    writer.Write(")");
+                }
+            }
+            else
+            {
+                Parsers[0].Dump(level + 1, writer);
+            }
         }
     }
 }

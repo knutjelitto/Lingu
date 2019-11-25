@@ -59,7 +59,8 @@ namespace Lipeg.Boot
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParser(), semantic);
 
                     var start = DCursor.Start(source);
-                    combiParser.Parse(start);
+                    
+                    var result = combiParser.Parse(start);
 
                 }
 

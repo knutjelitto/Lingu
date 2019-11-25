@@ -6,8 +6,8 @@ namespace Lipeg.SDK.Parsers
 {
     public class Name : Reference
     {
-        public Name(Func<IParser> parser)
-            : base(OpSymbols.Ref, parser)
+        public Name(Func<IParser> parser, Identifier identifier)
+            : base(OpSymbols.Ref, identifier, parser)
         {
         }
     }

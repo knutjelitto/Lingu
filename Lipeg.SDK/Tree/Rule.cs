@@ -10,5 +10,10 @@
         public Identifier Identifier { get; private set; }
         public Expression Expression { get; }
         public static IRule From(Identifier identifier, Expression expression) => new Rule(identifier, expression);
+
+        public override string ToString()
+        {
+            return Identifier.Name;
+        }
     }
 }

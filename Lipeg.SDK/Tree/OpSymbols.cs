@@ -6,8 +6,8 @@ namespace Lipeg.SDK.Tree
 {
     public static class OpSymbols
     {
-        public const string Choice = "/";
-        public const string Sequence = "‗";
+        public const string Choice = "||";
+        public const string Sequence = "&&";
 
         public const string Any = ".";
         public const string Option = "?";
@@ -19,11 +19,13 @@ namespace Lipeg.SDK.Tree
         public const string Drop = ",";
         public const string Fuse = "~";
 
+        public const string Spacing = "␣";
+
 #pragma warning disable CA1720 // Identifier contains type name
-        public const string String = "st";
+        public const string String = "string";
 #pragma warning restore CA1720 // Identifier contains type name
-        public const string ClassChar = "cc";
-        public const string ClassRange = "cr";
+        public const string ClassChar = "char";
+        public const string ClassRange = "range";
 
         public const string Ref = "ref";
 

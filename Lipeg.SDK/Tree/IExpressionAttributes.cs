@@ -6,7 +6,6 @@
         bool SetIsNullable(bool value);
         bool IsLexical { get; }
         bool SetIsLexical(bool value);
-
         bool IsWithSpacing { get; }
         bool SetIsWithSpacing(bool value);
         IRule Rule { get; }

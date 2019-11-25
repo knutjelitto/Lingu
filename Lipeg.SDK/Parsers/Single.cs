@@ -3,14 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Lipeg.Runtime;
+using Lipeg.SDK.Output;
 
 namespace Lipeg.SDK.Parsers
 {
-#pragma warning disable CA1716 // Identifiers should not match keywords
-#pragma warning disable CA1720 // Identifier contains type name
     public abstract class Single : IParser
-#pragma warning restore CA1720 // Identifier contains type name
-#pragma warning restore CA1716 // Identifiers should not match keywords
     {
         protected Single(string name, IParser parser)
         {
@@ -19,8 +16,16 @@ namespace Lipeg.SDK.Parsers
         }
         public string Name { get; }
         public IParser Parser { get; }
+
         public abstract IResult Parse(ICursor cursor);
-        public IEnumerator<IParser> GetEnumerator() => Enumerable.Repeat(Parser, 1).GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public void Dump(int level, IWriter writer)
+        {
+            if (writer == null) throw new ArgumentNullException(nameof(writer));
+
+            writer.Write($"({Name} ");
+            Parser.Dump(level + 1, writer);
+            writer.Write(")");
+        }
     }
 }

@@ -6,11 +6,10 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Scheiß drauf")]
     public class Option : Single
     {
         public Option(IParser parser)
-            : base(OpSymbols.Opt, parser)
+            : base(OpSymbols.Option, parser)
         {
         }
 

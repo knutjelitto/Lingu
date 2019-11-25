@@ -27,11 +27,13 @@ namespace Lipeg.SDK.Builders
 
         private class Visitor : TreeVisitor
         {
-            private List<IParser> parsers = new List<IParser>();
+            private readonly List<IParser> parsers = new List<IParser>();
+            private readonly IParser spacer;
 
             public Visitor(Semantic semantic)
                 : base(semantic)
             {
+                spacer = new Space(() => Grammar.Attr(Semantic).Spacing.Attr(Semantic).Parser);
             }
 
             public void Visit()
@@ -61,6 +63,18 @@ namespace Lipeg.SDK.Builders
                 parsers.Add(parser);
             }
 
+            public override void VisitExpression(Expression expression)
+            {
+                if (expression == null) throw new ArgumentNullException(nameof(expression));
+
+                base.VisitExpression(expression);
+
+                if (expression.Attr(Semantic).IsWithSpacing)
+                {
+                    Push(new Sequence(spacer, Pop()));
+                }
+            }
+
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
                 var start = parsers.Count;
@@ -83,22 +97,7 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitClassCharExpression(ClassCharExpression expression)
             {
-                base.VisitClassCharExpression(expression);
-
-                var matcher = new Func<ICursor, IResult>(
-                    (cursor) =>
-                    {
-                        if (cursor.Current == expression.Value)
-                        {
-                            var next = cursor.Advance(1);
-                            var location = Location.From(cursor, next);
-                            return Result.Success(next, LeafNode.From(location, NodeSymbols.Any, ((char)cursor.Current).ToString(CultureInfo.InvariantCulture)));
-                        }
-
-                        return Result.Fail(cursor);
-                    });
-
-                Push(new PredicateParser(OpSymbols.ClassChar, matcher));
+                Push(new SingleChar(expression.Value));
             }
 
             protected override void VisitClassExpression(ClassExpression expression)
@@ -113,19 +112,7 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitClassRangeExpression(ClassRangeExpression expression)
             {
-                var matcher = new Func<ICursor, IResult>(
-                    (cursor) =>
-                    {
-                        if (expression.Min <= cursor.Current && cursor.Current <= expression.Max)
-                        {
-                            var next = cursor.Advance(1);
-                            var location = Location.From(cursor, next);
-                            return Result.Success(next, LeafNode.From(location, NodeSymbols.CharacterLiteral, ((char)cursor.Current).ToString(CultureInfo.InvariantCulture)));
-                        }
-                        return Result.Fail(cursor);
-                    });
-
-                Push(new PredicateParser(OpSymbols.ClassRange, matcher));
+                Push(new CharRange(expression.Min, expression.Max));
             }
 
             protected override void VisitDropExpression(DropExpression expression)
@@ -151,12 +138,12 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                Push(new Name(() => Semantic[Semantic.Rules[expression.Identifier.Name]].Parser));
+                Push(new Name(() => Semantic[Semantic.Rules[expression.Identifier.Name]].Parser, expression.Identifier));
             }
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Push(new Name(() => Semantic[Semantic.Rules[expression.InlineRule.Identifier.Name]].Parser));
+                Push(new Name(() => Semantic[Semantic.Rules[expression.Rule.Identifier.Name]].Parser, expression.Rule.Identifier));
             }
 
             protected override void VisitAndExpression(AndExpression expression)
@@ -165,18 +152,7 @@ namespace Lipeg.SDK.Builders
 
                 var inner = Pop();
 
-                var matcher = new Func<ICursor, IResult>(
-                    (cursor) =>
-                    {
-                        var result = inner.Parse(cursor);
-                        if (result.IsSuccess)
-                        {
-                            return Result.Success(cursor, LeafNode.From(Location.From(cursor), NodeSymbols.And));
-                        }
-                        return Result.Fail(cursor);
-                    });
-
-                Push(new PredicateParser(OpSymbols.And, matcher));
+                Push(new And(inner));
             }
 
             protected override void VisitNotExpression(NotExpression expression)
@@ -185,18 +161,7 @@ namespace Lipeg.SDK.Builders
 
                 var inner = Pop();
 
-                var matcher = new Func<ICursor, IResult>(
-                    (cursor) =>
-                    {
-                        var result = inner.Parse(cursor);
-                        if (result.IsFail)
-                        {
-                            return Result.Success(cursor, LeafNode.From(Location.From(cursor), NodeSymbols.Not));
-                        }
-                        return Result.Fail(cursor);
-                    });
-
-                Push(new PredicateParser(OpSymbols.Not, matcher));
+                Push(new Not(inner));
             }
 
             protected override void VisitOptionalExpression(OptionalExpression optional)
@@ -219,39 +184,12 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
             {
-                var matcher = new Func<ICursor, IResult>(
-                    (cursor) =>
-                    {
-                        if (cursor.Source.Part(cursor.Offset, expression.Value.Length).ToString() == expression.Value)
-                        {
-                            var next = cursor.Advance(expression.Value.Length);
-                            var location = Location.From(cursor, next);
-                            return Result.Success(next, LeafNode.From(location, NodeSymbols.StringLiteral, expression.Value));
-                        }
-                        return Result.Fail(cursor);
-                    });
-
-                Push(new PredicateParser(OpSymbols.String, matcher));
+                Push(new CharSequence(expression.Value));
             }
 
             protected override void VisitAnyExpression(AnyExpression expression)
             {
-                base.VisitAnyExpression(expression);
-
-                var matcher = new Func<ICursor, IResult>(
-                    (cursor) =>
-                    {
-                        if (!cursor.AtEnd)
-                        {
-                            var next = cursor.Advance(1);
-                            var location = Location.From(cursor, next);
-                            return Result.Success(next, LeafNode.From(location, NodeSymbols.Any, ((char)cursor.Current).ToString(CultureInfo.InvariantCulture)));
-                        }
-
-                        return Result.Fail(cursor);
-                    });
-
-                Push(new PredicateParser(OpSymbols.Any, matcher));
+                Push(new Any());
             }
 
             // >===>
@@ -292,7 +230,7 @@ namespace Lipeg.SDK.Builders
 
                 Debug.Assert(parsers.Count == 1);
 
-                Semantic[rule].SetParser(Pop());
+                rule.Attr(Semantic).SetParser(Pop());
             }
         }
     }

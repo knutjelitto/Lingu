@@ -15,8 +15,7 @@
     "CA1303:Do not pass literals as localized parameters",
     Justification = "Scheiß drauf",
     Scope = "module"
- )]
-
+)]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Design", 
     "CA1065:Do not raise exceptions in unexpected locations", 
@@ -25,7 +24,18 @@
 )]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Naming", 
-    "CA1710:Identifiers should have correct suffix", 
-    Justification = "<Pending>", 
+    "CA1710:Identifiers should have correct suffix",
+    Justification = "Scheiß drauf",
     Scope = "module"
- )]
+)]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Naming", 
+    "CA1716:Identifiers should not match keywords",
+    Justification = "Scheiß drauf",
+    Scope = "module"
+)]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Naming", "CA1720:Identifier contains type name",
+    Justification = "Scheiß drauf",
+    Scope = "module"
+)]

@@ -1,6 +1,8 @@
-﻿using Lipeg.Runtime;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+
+using Lipeg.Runtime;
+using Lipeg.SDK.Output;
 
 namespace Lipeg.SDK.Parsers
 {
@@ -13,9 +15,9 @@ namespace Lipeg.SDK.Parsers
         }
         public string Name { get; }
         public IReadOnlyList<IParser> Parsers { get; }
-        public abstract IResult Parse(ICursor cursor);
 
-        public IEnumerator<IParser> GetEnumerator() => Parsers.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public abstract void Dump(int level, IWriter writer);
+
+        public abstract IResult Parse(ICursor cursor);
     }
 }

@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 
 using Lipeg.SDK.Output;
 using Lipeg.Runtime;
 using Lipeg.SDK.Checkers;
-using System.Diagnostics;
 using Lipeg.SDK.Parsers;
 using Lipeg.SDK.Tree;
 
@@ -33,41 +31,28 @@ namespace Lipeg.SDK.Dump
             public Grammar Grammar => Semantic.Grammar;
             public IWriter Writer { get; }
 
+            private int Level { get; set; }
+
             public void Dump()
             {
+                var more = false;
                 foreach (var rule in Grammar.Rules)
                 {
                     var parser = rule.Attr(Semantic).Parser;
 
-                    Writer.WriteLine($"{rule.Identifier.Name}(");
+                    if (more)
+                    {
+                        Writer.WriteLine();
+                    }
+                    Writer.WriteLine($"({rule.Identifier.Name}");
                     Writer.Indent(() =>
                     {
-                        Do(parser);
+                        parser.Dump(0, Writer);
                     });
                     Writer.WriteLine(")");
+                    more = true;
                 }
             }
-
-            private void Do(IParser parser)
-            {
-                Dump((dynamic)parser);
-            }
-
-            private void Dump(IParser parser)
-            {
-                throw new NotImplementedException();
-            }
-
-            private void Dump(Choice choice)
-            {
-                if (choice.Parsers.Count > 1)
-                {
-
-                }
-                Writer.Write($"({choice.Name})");
-
-            }
-
         }
     }
 }

@@ -39,6 +39,10 @@ namespace Lipeg.SDK.Checkers
             {
                 base.VisitExpression(expression);
                 expression.Attr(Semantic).SetRule(Rule);
+                if (Rule.Attr(Semantic).IsSyntax && expression.Attr(Semantic).IsLexical)
+                {
+                    expression.Attr(Semantic).SetIsWithSpacing(true);
+                }
             }
         }
     }
