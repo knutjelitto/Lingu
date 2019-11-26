@@ -8,23 +8,28 @@ namespace Lipeg.Runtime
 {
     public class InternalNode : INode
     {
-        private InternalNode(ILocation location, string name, IReadOnlyList<INode> children)
+        private InternalNode(ILocated located, string name, IReadOnlyList<INode> children)
         {
-            Location = location;
+            Location = located.Location;
             Name = name;
             Children = children;
         }
 
         public ILocation Location { get; }
-        public string Name { get; set; }
+        public string Name { get; private set; }
         private IReadOnlyList<INode> Children { get; }
-        public static INode From(ILocation location, string name, params INode[] children) => new InternalNode(location, name, children);
-        public static INode From(ILocation location, string name, IReadOnlyList<INode> children) => new InternalNode(location, name, children);
+        public static INode From(ILocated located, string name, params INode[] children) => new InternalNode(located, name, children);
+        public static INode From(ILocated located, string name, IReadOnlyList<INode> children) => new InternalNode(located, name, children);
         public IEnumerator<INode> GetEnumerator() => Children.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => Children.Count;
         public INode this[int index] => Children[index];
 
-        public override string ToString() => $"{Name}[{String.Join(",", Children)}]";
+        public override string ToString() => $"{Name}[{string.Join(",", Children)}]";
+
+        public void WithName(string name)
+        {
+            Name = name;
+        }
     }
 }

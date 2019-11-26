@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface ILocation
+    public interface ILocation : ILocated
     {
         ISource Source { get; }
         int Start { get; }

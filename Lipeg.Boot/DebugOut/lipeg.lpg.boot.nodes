@@ -1,0 +1,2203 @@
+<sequence> [<sequence>, <not>]
+    <sequence> [<sequence>, <sequence>, <sequence>, <sequence>]
+        <sequence> [<character>, <character>, <character>, <character>, <character>]
+            <character>='l'
+            <character>='i'
+            <character>='p'
+            <character>='e'
+            <character>='g'
+        <sequence> [<sequence>, <sequence>]
+            <sequence> [<sequence>, <sequence>]
+                <sequence> [<character>, <character>, <character>, <character>, <character>]
+                    <character>='s'
+                    <character>='t'
+                    <character>='a'
+                    <character>='r'
+                    <character>='t'
+                <sequence> [<sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>]
+                        <character>='s'
+                        <character>='t'
+                        <character>='a'
+                        <character>='r'
+                        <character>='t'
+            <sequence> [<sequence>, <sequence>]
+                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                    <character>='s'
+                    <character>='p'
+                    <character>='a'
+                    <character>='c'
+                    <character>='i'
+                    <character>='n'
+                    <character>='g'
+                <sequence> [<string>]
+                    <string>='_'
+        <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+            <sequence> [<sequence>, <sequence>, <sequence>]
+                <sequence> [<character>, <character>, <character>, <character>, <character>]
+                    <character>='s'
+                    <character>='t'
+                    <character>='a'
+                    <character>='r'
+                    <character>='t'
+                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                    <character>='g'
+                    <character>='r'
+                    <character>='a'
+                    <character>='m'
+                    <character>='m'
+                    <character>='a'
+                    <character>='r'
+                <sequence> [<character>, <character>, <character>]
+                    <character>='e'
+                    <character>='o'
+                    <character>='f'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='g'
+                        <character>='r'
+                        <character>='a'
+                        <character>='m'
+                        <character>='m'
+                        <character>='a'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='g'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='r'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='a'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='m'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='m'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='a'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='r'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='i'
+                        <character>='d'
+                        <character>='e'
+                        <character>='n'
+                        <character>='t'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='{'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<sequence>, <sequence>, <sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                    <character>='o'
+                                    <character>='p'
+                                    <character>='t'
+                                    <character>='i'
+                                    <character>='o'
+                                    <character>='n'
+                                    <character>='s'
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                        <character>='s'
+                                        <character>='y'
+                                        <character>='n'
+                                        <character>='t'
+                                        <character>='a'
+                                        <character>='x'
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                        <character>='l'
+                                        <character>='e'
+                                        <character>='x'
+                                        <character>='i'
+                                        <character>='c'
+                                        <character>='a'
+                                        <character>='l'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='o'
+                        <character>='p'
+                        <character>='t'
+                        <character>='i'
+                        <character>='o'
+                        <character>='n'
+                        <character>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='o'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='p'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='t'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='i'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='o'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='n'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='{'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='o'
+                                <character>='p'
+                                <character>='t'
+                                <character>='i'
+                                <character>='o'
+                                <character>='n'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='o'
+                        <character>='p'
+                        <character>='t'
+                        <character>='i'
+                        <character>='o'
+                        <character>='n'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='i'
+                        <character>='d'
+                        <character>='e'
+                        <character>='n'
+                        <character>='t'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='='
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='o'
+                        <character>='p'
+                        <character>='t'
+                        <character>='i'
+                        <character>='o'
+                        <character>='n'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='v'
+                            <character>='a'
+                            <character>='l'
+                            <character>='u'
+                            <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>=';'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='o'
+                        <character>='p'
+                        <character>='t'
+                        <character>='i'
+                        <character>='o'
+                        <character>='n'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='v'
+                            <character>='a'
+                            <character>='l'
+                            <character>='u'
+                            <character>='e'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='q'
+                        <character>='u'
+                        <character>='a'
+                        <character>='l'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='d'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='i'
+                            <character>='d'
+                            <character>='e'
+                            <character>='n'
+                            <character>='t'
+                            <character>='i'
+                            <character>='f'
+                            <character>='i'
+                            <character>='e'
+                            <character>='r'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='q'
+                        <character>='u'
+                        <character>='a'
+                        <character>='l'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='d'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='i'
+                            <character>='d'
+                            <character>='e'
+                            <character>='n'
+                            <character>='t'
+                            <character>='i'
+                            <character>='f'
+                            <character>='i'
+                            <character>='e'
+                            <character>='r'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='i'
+                        <character>='d'
+                        <character>='e'
+                        <character>='n'
+                        <character>='t'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<sequence>]
+                                    <sequence> [<*>]
+                                        <*> [<sequence>]
+                                            <sequence> [<not>, <any>]
+                                                <not>=''
+                                                <any>='.'
+                                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                    <character>='i'
+                                    <character>='d'
+                                    <character>='e'
+                                    <character>='n'
+                                    <character>='t'
+                                    <character>='i'
+                                    <character>='f'
+                                    <character>='i'
+                                    <character>='e'
+                                    <character>='r'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='s'
+                        <character>='y'
+                        <character>='n'
+                        <character>='t'
+                        <character>='a'
+                        <character>='x'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='r'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='u'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='l'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='e'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='{'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>]
+                        <character>='r'
+                        <character>='u'
+                        <character>='l'
+                        <character>='e'
+                        <character>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>=';'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='l'
+                        <character>='e'
+                        <character>='x'
+                        <character>='i'
+                        <character>='c'
+                        <character>='a'
+                        <character>='l'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='l'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='e'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='x'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='i'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='c'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='a'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='l'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='{'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>]
+                        <character>='r'
+                        <character>='u'
+                        <character>='l'
+                        <character>='e'
+                        <character>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>=';'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>]
+                        <character>='r'
+                        <character>='u'
+                        <character>='l'
+                        <character>='e'
+                        <character>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>]
+                                    <character>='r'
+                                    <character>='u'
+                                    <character>='l'
+                                    <character>='e'
+                                <sequence> [<sequence>]
+                                    <sequence> [<sequence>]
+                                        <sequence> [<sequence>, <sequence>]
+                                            <sequence> [<sequence>]
+                                                <sequence> [<*>]
+                                                    <*> [<sequence>]
+                                                        <sequence> [<not>, <any>]
+                                                            <not>=''
+                                                            <any>=';'
+                                            <sequence> [<character>, <character>, <character>, <character>]
+                                                <character>='r'
+                                                <character>='u'
+                                                <character>='l'
+                                                <character>='e'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>]
+                        <character>='r'
+                        <character>='u'
+                        <character>='l'
+                        <character>='e'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='i'
+                        <character>='d'
+                        <character>='e'
+                        <character>='n'
+                        <character>='t'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='<'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='='
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='/'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='e'
+                        <character>='x'
+                        <character>='p'
+                        <character>='r'
+                        <character>='e'
+                        <character>='s'
+                        <character>='s'
+                        <character>='i'
+                        <character>='o'
+                        <character>='n'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='e'
+                        <character>='x'
+                        <character>='p'
+                        <character>='r'
+                        <character>='e'
+                        <character>='s'
+                        <character>='s'
+                        <character>='i'
+                        <character>='o'
+                        <character>='n'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='c'
+                            <character>='h'
+                            <character>='o'
+                            <character>='i'
+                            <character>='c'
+                            <character>='e'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='c'
+                        <character>='h'
+                        <character>='o'
+                        <character>='i'
+                        <character>='c'
+                        <character>='e'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='s'
+                        <character>='e'
+                        <character>='q'
+                        <character>='u'
+                        <character>='e'
+                        <character>='n'
+                        <character>='c'
+                        <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<sequence>]
+                                    <sequence> [<*>]
+                                        <*> [<sequence>]
+                                            <sequence> [<not>, <any>]
+                                                <not>=''
+                                                <any>='/'
+                                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                    <character>='s'
+                                    <character>='e'
+                                    <character>='q'
+                                    <character>='u'
+                                    <character>='e'
+                                    <character>='n'
+                                    <character>='c'
+                                    <character>='e'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='s'
+                        <character>='e'
+                        <character>='q'
+                        <character>='u'
+                        <character>='e'
+                        <character>='n'
+                        <character>='c'
+                        <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='p'
+                                <character>='r'
+                                <character>='e'
+                                <character>='f'
+                                <character>='i'
+                                <character>='x'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='p'
+                        <character>='r'
+                        <character>='e'
+                        <character>='f'
+                        <character>='i'
+                        <character>='x'
+                    <sequence> [<sequence>, <sequence>, <sequence>]
+                        <sequence> [<character>, <character>, <character>]
+                            <character>='a'
+                            <character>='n'
+                            <character>='d'
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='&'
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='s'
+                            <character>='u'
+                            <character>='f'
+                            <character>='f'
+                            <character>='i'
+                            <character>='x'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>]
+                                <character>='n'
+                                <character>='o'
+                                <character>='t'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='!'
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='s'
+                                <character>='u'
+                                <character>='f'
+                                <character>='f'
+                                <character>='i'
+                                <character>='x'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>]
+                                <character>='d'
+                                <character>='r'
+                                <character>='o'
+                                <character>='p'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>=','
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='s'
+                                <character>='u'
+                                <character>='f'
+                                <character>='f'
+                                <character>='i'
+                                <character>='x'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>]
+                                <character>='f'
+                                <character>='u'
+                                <character>='s'
+                                <character>='e'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='~'
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='s'
+                                <character>='u'
+                                <character>='f'
+                                <character>='f'
+                                <character>='i'
+                                <character>='x'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>]
+                                <character>='l'
+                                <character>='i'
+                                <character>='f'
+                                <character>='t'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='^'
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='s'
+                                <character>='u'
+                                <character>='f'
+                                <character>='f'
+                                <character>='i'
+                                <character>='x'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='s'
+                            <character>='u'
+                            <character>='f'
+                            <character>='f'
+                            <character>='i'
+                            <character>='x'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='s'
+                        <character>='u'
+                        <character>='f'
+                        <character>='f'
+                        <character>='i'
+                        <character>='x'
+                    <sequence> [<sequence>, <sequence>, <sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                            <character>='z'
+                            <character>='e'
+                            <character>='r'
+                            <character>='o'
+                            <sequence> [<string>, <character>, <character>]
+                                <string>='-'
+                                <character>='o'
+                                <character>='r'
+                            <sequence> [<string>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='o'
+                                <character>='n'
+                                <character>='e'
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='p'
+                            <character>='r'
+                            <character>='i'
+                            <character>='m'
+                            <character>='a'
+                            <character>='r'
+                            <character>='y'
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='?'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                                <character>='z'
+                                <character>='e'
+                                <character>='r'
+                                <character>='o'
+                                <sequence> [<string>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='o'
+                                    <character>='r'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='m'
+                                    <character>='o'
+                                    <character>='r'
+                                    <character>='e'
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='p'
+                                <character>='r'
+                                <character>='i'
+                                <character>='m'
+                                <character>='a'
+                                <character>='r'
+                                <character>='y'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='*'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>, <sequence>]
+                                <character>='o'
+                                <character>='n'
+                                <character>='e'
+                                <sequence> [<string>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='o'
+                                    <character>='r'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='m'
+                                    <character>='o'
+                                    <character>='r'
+                                    <character>='e'
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='p'
+                                <character>='r'
+                                <character>='i'
+                                <character>='m'
+                                <character>='a'
+                                <character>='r'
+                                <character>='y'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='+'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='p'
+                            <character>='r'
+                            <character>='i'
+                            <character>='m'
+                            <character>='a'
+                            <character>='r'
+                            <character>='y'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='p'
+                        <character>='r'
+                        <character>='i'
+                        <character>='m'
+                        <character>='a'
+                        <character>='r'
+                        <character>='y'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='i'
+                        <character>='d'
+                        <character>='e'
+                        <character>='n'
+                        <character>='t'
+                        <character>='i'
+                        <character>='f'
+                        <character>='i'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='s'
+                            <character>='t'
+                            <character>='r'
+                            <character>='i'
+                            <character>='n'
+                            <character>='g'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                            <character>='c'
+                            <character>='h'
+                            <character>='a'
+                            <character>='r'
+                            <character>='a'
+                            <character>='c'
+                            <character>='t'
+                            <character>='e'
+                            <character>='r'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='c'
+                                <character>='l'
+                                <character>='a'
+                                <character>='s'
+                                <character>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>]
+                            <character>='a'
+                            <character>='n'
+                            <character>='y'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='e'
+                            <character>='p'
+                            <character>='s'
+                            <character>='i'
+                            <character>='l'
+                            <character>='o'
+                            <character>='n'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='i'
+                            <character>='n'
+                            <character>='l'
+                            <character>='i'
+                            <character>='n'
+                            <character>='e'
+                    <sequence> [<sequence>, <sequence>, <sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='('
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='e'
+                            <character>='x'
+                            <character>='p'
+                            <character>='r'
+                            <character>='e'
+                            <character>='s'
+                            <character>='s'
+                            <character>='i'
+                            <character>='o'
+                            <character>='n'
+                        <sequence> [<sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>=')'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='i'
+                        <character>='n'
+                        <character>='l'
+                        <character>='i'
+                        <character>='n'
+                        <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='('
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>]
+                            <character>='r'
+                            <character>='u'
+                            <character>='l'
+                            <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>=')'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>]
+                        <character>='a'
+                        <character>='n'
+                        <character>='y'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='.'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='e'
+                        <character>='p'
+                        <character>='s'
+                        <character>='i'
+                        <character>='l'
+                        <character>='o'
+                        <character>='n'
+                    <sequence> [<*>]
+                        <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='e'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='p'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='s'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='i'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='l'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='o'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='n'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='\u{03B5}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>]
+                        <character>='e'
+                        <character>='o'
+                        <character>='f'
+                    <sequence> []
+        <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+            <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                    <character>='i'
+                    <character>='d'
+                    <character>='e'
+                    <character>='n'
+                    <character>='t'
+                    <character>='i'
+                    <character>='f'
+                    <character>='i'
+                    <character>='e'
+                    <character>='r'
+                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                    <character>='l'
+                    <character>='e'
+                    <character>='t'
+                    <character>='t'
+                    <character>='e'
+                    <character>='r'
+                <sequence> [<sequence>]
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                            <character>='l'
+                            <character>='e'
+                            <character>='t'
+                            <character>='t'
+                            <character>='e'
+                            <character>='r'
+                            <sequence> [<string>, <character>, <character>]
+                                <string>='-'
+                                <character>='o'
+                                <character>='r'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='d'
+                                <character>='i'
+                                <character>='g'
+                                <character>='i'
+                                <character>='t'
+                <sequence> [<sequence>]
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='-'
+                            <sequence> [<sequence>]
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                                        <character>='l'
+                                        <character>='e'
+                                        <character>='t'
+                                        <character>='t'
+                                        <character>='e'
+                                        <character>='r'
+                                        <sequence> [<string>, <character>, <character>]
+                                            <string>='-'
+                                            <character>='o'
+                                            <character>='r'
+                                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                            <string>='-'
+                                            <character>='d'
+                                            <character>='i'
+                                            <character>='g'
+                                            <character>='i'
+                                            <character>='t'
+                <sequence> [<sequence>]
+                    <sequence> [<*>]
+                        <*> [<sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='_'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='l'
+                        <character>='e'
+                        <character>='t'
+                        <character>='t'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<?>, <*>]
+                        <?>=''
+                        <*> [<sequence>, <sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='a'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='z'
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='A'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='Z'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                        <character>='l'
+                        <character>='e'
+                        <character>='t'
+                        <character>='t'
+                        <character>='e'
+                        <character>='r'
+                        <sequence> [<string>, <character>, <character>]
+                            <string>='-'
+                            <character>='o'
+                            <character>='r'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='d'
+                            <character>='i'
+                            <character>='g'
+                            <character>='i'
+                            <character>='t'
+                    <sequence> [<?>, <*>]
+                        <?>=''
+                        <*> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='a'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='z'
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='A'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='Z'
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='0'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='9'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <sequence>]
+                        <character>='h'
+                        <character>='e'
+                        <character>='x'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='d'
+                            <character>='i'
+                            <character>='g'
+                            <character>='i'
+                            <character>='t'
+                    <sequence> [<?>, <*>]
+                        <?>=''
+                        <*> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='0'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='9'
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='a'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='f'
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='A'
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='F'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='s'
+                        <character>='t'
+                        <character>='r'
+                        <character>='i'
+                        <character>='n'
+                        <character>='g'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<any>]
+                                    <any>='\''
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <character>='c'
+                            <character>='h'
+                            <character>='a'
+                            <character>='r'
+                            <character>='a'
+                            <character>='c'
+                            <character>='t'
+                            <character>='e'
+                            <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<any>]
+                                    <any>='\''
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <string>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='c'
+                        <character>='h'
+                        <character>='a'
+                        <character>='r'
+                        <character>='a'
+                        <character>='c'
+                        <character>='t'
+                        <character>='e'
+                        <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<any>]
+                                        <any>='\''
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<any>]
+                                            <any>='\\'
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <sequence>]
+                                    <character>='e'
+                                    <character>='o'
+                                    <character>='l'
+                                    <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                        <string>='-'
+                                        <character>='c'
+                                        <character>='h'
+                                        <character>='a'
+                                        <character>='r'
+                    <string>='.'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <sequence>]
+                            <character>='a'
+                            <character>='n'
+                            <character>='y'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='e'
+                                <character>='s'
+                                <character>='c'
+                                <character>='a'
+                                <character>='p'
+                                <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                            <character>='u'
+                            <character>='n'
+                            <character>='i'
+                            <character>='c'
+                            <character>='o'
+                            <character>='d'
+                            <character>='e'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='e'
+                                <character>='s'
+                                <character>='c'
+                                <character>='a'
+                                <character>='p'
+                                <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <sequence>]
+                            <character>='b'
+                            <character>='y'
+                            <character>='t'
+                            <character>='e'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='e'
+                                <character>='s'
+                                <character>='c'
+                                <character>='a'
+                                <character>='p'
+                                <character>='e'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <sequence>]
+                        <character>='a'
+                        <character>='n'
+                        <character>='y'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='e'
+                            <character>='s'
+                            <character>='c'
+                            <character>='a'
+                            <character>='p'
+                            <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<any>]
+                                    <any>='\\'
+                    <sequence> [<?>, <*>]
+                        <?>=''
+                        <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='0'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='a'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='b'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='e'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='f'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='n'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='r'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='t'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='v'
+                            <sequence> [<any>]
+                                <any>='-'
+                            <sequence> [<any>]
+                                <any>=']'
+                            <sequence> [<any>]
+                                <any>='\\'
+                            <sequence> [<any>]
+                                <any>='\''
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='u'
+                        <character>='n'
+                        <character>='i'
+                        <character>='c'
+                        <character>='o'
+                        <character>='d'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='e'
+                            <character>='s'
+                            <character>='c'
+                            <character>='a'
+                            <character>='p'
+                            <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <string>]
+                            <sequence> [<*>]
+                                <*> [<sequence>, <sequence>, <sequence>]
+                                    <sequence> [<any>]
+                                        <any>='\\'
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='u'
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='{'
+                            <string>='_'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='u'
+                        <character>='n'
+                        <character>='i'
+                        <character>='c'
+                        <character>='o'
+                        <character>='d'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='n'
+                            <character>='u'
+                            <character>='m'
+                            <character>='b'
+                            <character>='e'
+                            <character>='r'
+                    <sequence> [<string>]
+                        <string>='_'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                                    <character>='u'
+                                    <character>='n'
+                                    <character>='i'
+                                    <character>='c'
+                                    <character>='o'
+                                    <character>='d'
+                                    <character>='e'
+                                    <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                        <string>='-'
+                                        <character>='n'
+                                        <character>='u'
+                                        <character>='m'
+                                        <character>='b'
+                                        <character>='e'
+                                        <character>='r'
+                                <sequence> [<string>]
+                                    <string>='_'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='u'
+                        <character>='n'
+                        <character>='i'
+                        <character>='c'
+                        <character>='o'
+                        <character>='d'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='n'
+                            <character>='u'
+                            <character>='m'
+                            <character>='b'
+                            <character>='e'
+                            <character>='r'
+                    <sequence> [<character>, <character>, <character>, <sequence>]
+                        <character>='h'
+                        <character>='e'
+                        <character>='x'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='d'
+                            <character>='i'
+                            <character>='g'
+                            <character>='i'
+                            <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>]
+                                <character>='h'
+                                <character>='e'
+                                <character>='x'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='d'
+                                    <character>='i'
+                                    <character>='g'
+                                    <character>='i'
+                                    <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>]
+                                <character>='h'
+                                <character>='e'
+                                <character>='x'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='d'
+                                    <character>='i'
+                                    <character>='g'
+                                    <character>='i'
+                                    <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>]
+                                <character>='h'
+                                <character>='e'
+                                <character>='x'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='d'
+                                    <character>='i'
+                                    <character>='g'
+                                    <character>='i'
+                                    <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>]
+                                <character>='h'
+                                <character>='e'
+                                <character>='x'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='d'
+                                    <character>='i'
+                                    <character>='g'
+                                    <character>='i'
+                                    <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>]
+                                <character>='h'
+                                <character>='e'
+                                <character>='x'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='d'
+                                    <character>='i'
+                                    <character>='g'
+                                    <character>='i'
+                                    <character>='t'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <sequence>]
+                        <character>='b'
+                        <character>='y'
+                        <character>='t'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='e'
+                            <character>='s'
+                            <character>='c'
+                            <character>='a'
+                            <character>='p'
+                            <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <string>]
+                            <sequence> [<*>]
+                                <*> [<sequence>, <sequence>, <sequence>]
+                                    <sequence> [<any>]
+                                        <any>='\\'
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='x'
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>='{'
+                            <string>='_'
+                    <sequence> [<character>, <character>, <character>, <character>, <sequence>]
+                        <character>='b'
+                        <character>='y'
+                        <character>='t'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='n'
+                            <character>='u'
+                            <character>='m'
+                            <character>='b'
+                            <character>='e'
+                            <character>='r'
+                    <sequence> [<string>]
+                        <string>='_'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <sequence>]
+                                    <character>='b'
+                                    <character>='y'
+                                    <character>='t'
+                                    <character>='e'
+                                    <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                        <string>='-'
+                                        <character>='n'
+                                        <character>='u'
+                                        <character>='m'
+                                        <character>='b'
+                                        <character>='e'
+                                        <character>='r'
+                                <sequence> [<string>]
+                                    <string>='_'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='}'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <sequence>]
+                        <character>='b'
+                        <character>='y'
+                        <character>='t'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='n'
+                            <character>='u'
+                            <character>='m'
+                            <character>='b'
+                            <character>='e'
+                            <character>='r'
+                    <sequence> [<character>, <character>, <character>, <sequence>]
+                        <character>='h'
+                        <character>='e'
+                        <character>='x'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='d'
+                            <character>='i'
+                            <character>='g'
+                            <character>='i'
+                            <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>]
+                            <sequence> [<character>, <character>, <character>, <sequence>]
+                                <character>='h'
+                                <character>='e'
+                                <character>='x'
+                                <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                                    <string>='-'
+                                    <character>='d'
+                                    <character>='i'
+                                    <character>='g'
+                                    <character>='i'
+                                    <character>='t'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='h'
+                        <character>='a'
+                        <character>='r'
+                        <character>='a'
+                        <character>='c'
+                        <character>='t'
+                        <character>='e'
+                        <character>='r'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='l'
+                            <character>='a'
+                            <character>='s'
+                            <character>='s'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='['
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='^'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                            <character>='c'
+                            <character>='l'
+                            <character>='a'
+                            <character>='s'
+                            <character>='s'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='p'
+                                <character>='a'
+                                <character>='r'
+                                <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>=']'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='l'
+                        <character>='a'
+                        <character>='s'
+                        <character>='s'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='p'
+                            <character>='a'
+                            <character>='r'
+                            <character>='t'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='l'
+                        <character>='a'
+                        <character>='s'
+                        <character>='s'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='r'
+                            <character>='a'
+                            <character>='n'
+                            <character>='g'
+                            <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                            <character>='c'
+                            <character>='l'
+                            <character>='a'
+                            <character>='s'
+                            <character>='s'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='c'
+                                <character>='h'
+                                <character>='a'
+                                <character>='r'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='l'
+                        <character>='a'
+                        <character>='s'
+                        <character>='s'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='r'
+                            <character>='a'
+                            <character>='n'
+                            <character>='g'
+                            <character>='e'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='l'
+                        <character>='a'
+                        <character>='s'
+                        <character>='s'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='h'
+                            <character>='a'
+                            <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<not>, <any>]
+                                    <not>=''
+                                    <any>='-'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='l'
+                        <character>='a'
+                        <character>='s'
+                        <character>='s'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='h'
+                            <character>='a'
+                            <character>='r'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <string>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>]
+                        <character>='c'
+                        <character>='l'
+                        <character>='a'
+                        <character>='s'
+                        <character>='s'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='h'
+                            <character>='a'
+                            <character>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<*>]
+                                <*> [<sequence>]
+                                    <sequence> [<not>, <any>]
+                                        <not>=''
+                                        <any>=']'
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>]
+                                        <sequence> [<any>]
+                                            <any>='\\'
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <sequence>]
+                                    <character>='e'
+                                    <character>='o'
+                                    <character>='l'
+                                    <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                        <string>='-'
+                                        <character>='c'
+                                        <character>='h'
+                                        <character>='a'
+                                        <character>='r'
+                    <string>='.'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <sequence>]
+                            <character>='a'
+                            <character>='n'
+                            <character>='y'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='e'
+                                <character>='s'
+                                <character>='c'
+                                <character>='a'
+                                <character>='p'
+                                <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <sequence>]
+                            <character>='u'
+                            <character>='n'
+                            <character>='i'
+                            <character>='c'
+                            <character>='o'
+                            <character>='d'
+                            <character>='e'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='e'
+                                <character>='s'
+                                <character>='c'
+                                <character>='a'
+                                <character>='p'
+                                <character>='e'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <sequence>]
+                            <character>='b'
+                            <character>='y'
+                            <character>='t'
+                            <character>='e'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='e'
+                                <character>='s'
+                                <character>='c'
+                                <character>='a'
+                                <character>='p'
+                                <character>='e'
+            <sequence> [<sequence>]
+                <sequence> [<string>, <sequence>]
+                    <string>='_'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <sequence>, <sequence>]
+                            <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <character>='w'
+                                <character>='h'
+                                <character>='i'
+                                <character>='t'
+                                <character>='e'
+                                <character>='s'
+                                <character>='p'
+                                <character>='a'
+                                <character>='c'
+                                <character>='e'
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                    <character>='n'
+                                    <character>='e'
+                                    <character>='w'
+                                    <character>='l'
+                                    <character>='i'
+                                    <character>='n'
+                                    <character>='e'
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                    <character>='c'
+                                    <character>='o'
+                                    <character>='m'
+                                    <character>='m'
+                                    <character>='e'
+                                    <character>='n'
+                                    <character>='t'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='c'
+                        <character>='o'
+                        <character>='m'
+                        <character>='m'
+                        <character>='e'
+                        <character>='n'
+                        <character>='t'
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                        <character>='s'
+                        <character>='i'
+                        <character>='n'
+                        <character>='g'
+                        <character>='l'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='l'
+                            <character>='i'
+                            <character>='n'
+                            <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='o'
+                            <character>='m'
+                            <character>='m'
+                            <character>='e'
+                            <character>='n'
+                            <character>='t'
+                    <sequence> [<sequence>]
+                        <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                            <character>='m'
+                            <character>='u'
+                            <character>='l'
+                            <character>='t'
+                            <character>='i'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='l'
+                                <character>='i'
+                                <character>='n'
+                                <character>='e'
+                            <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                                <string>='-'
+                                <character>='c'
+                                <character>='o'
+                                <character>='m'
+                                <character>='m'
+                                <character>='e'
+                                <character>='n'
+                                <character>='t'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                        <character>='s'
+                        <character>='i'
+                        <character>='n'
+                        <character>='g'
+                        <character>='l'
+                        <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='l'
+                            <character>='i'
+                            <character>='n'
+                            <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='o'
+                            <character>='m'
+                            <character>='m'
+                            <character>='e'
+                            <character>='n'
+                            <character>='t'
+                    <sequence> [<*>]
+                        <*> [<sequence>, <sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='/'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='/'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <string>]
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <sequence>]
+                                    <character>='e'
+                                    <character>='o'
+                                    <character>='l'
+                                    <sequence> [<string>, <character>, <character>, <character>, <character>]
+                                        <string>='-'
+                                        <character>='c'
+                                        <character>='h'
+                                        <character>='a'
+                                        <character>='r'
+                            <string>='.'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <sequence>, <sequence>]
+                        <character>='m'
+                        <character>='u'
+                        <character>='l'
+                        <character>='t'
+                        <character>='i'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='l'
+                            <character>='i'
+                            <character>='n'
+                            <character>='e'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='o'
+                            <character>='m'
+                            <character>='m'
+                            <character>='e'
+                            <character>='n'
+                            <character>='t'
+                    <sequence> [<*>]
+                        <*> [<sequence>, <sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='/'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='*'
+                    <sequence> [<sequence>]
+                        <sequence> [<sequence>, <string>]
+                            <sequence> [<sequence>]
+                                <sequence> [<*>]
+                                    <*> [<sequence>, <sequence>]
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='*'
+                                        <sequence> [<not>, <any>]
+                                            <not>=''
+                                            <any>='/'
+                            <string>='.'
+                    <sequence> [<*>]
+                        <*> [<sequence>, <sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='*'
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>='/'
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='n'
+                        <character>='e'
+                        <character>='w'
+                        <character>='l'
+                        <character>='i'
+                        <character>='n'
+                        <character>='e'
+                    <sequence> [<*>]
+                        <*> [<sequence>]
+                            <sequence> [<any>]
+                                <any>='n'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>, <sequence>]
+                                <sequence> [<any>]
+                                    <any>='r'
+                                <sequence> [<any>]
+                                    <any>='n'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<any>]
+                                    <any>='r'
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                        <character>='2'
+                                        <character>='0'
+                                        <character>='2'
+                                        <character>='8'
+                                        <?>=''
+                                        <?>=''
+                    <sequence> [<sequence>]
+                        <sequence> [<*>]
+                            <*> [<sequence>]
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                        <character>='2'
+                                        <character>='0'
+                                        <character>='2'
+                                        <character>='9'
+                                        <?>=''
+                                        <?>=''
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <sequence>]
+                        <character>='e'
+                        <character>='o'
+                        <character>='l'
+                        <sequence> [<string>, <character>, <character>, <character>, <character>]
+                            <string>='-'
+                            <character>='c'
+                            <character>='h'
+                            <character>='a'
+                            <character>='r'
+                    <sequence> [<?>, <*>]
+                        <?>=''
+                        <*> [<sequence>, <sequence>, <sequence>, <sequence>]
+                            <sequence> [<any>]
+                                <any>='n'
+                            <sequence> [<any>]
+                                <any>='r'
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='2'
+                                    <character>='0'
+                                    <character>='2'
+                                    <character>='8'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='2'
+                                    <character>='0'
+                                    <character>='2'
+                                    <character>='9'
+                                    <?>=''
+                                    <?>=''
+            <sequence> [<sequence>]
+                <sequence> [<sequence>, <sequence>]
+                    <sequence> [<character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>, <character>]
+                        <character>='w'
+                        <character>='h'
+                        <character>='i'
+                        <character>='t'
+                        <character>='e'
+                        <character>='s'
+                        <character>='p'
+                        <character>='a'
+                        <character>='c'
+                        <character>='e'
+                    <sequence> [<?>, <*>]
+                        <?>=''
+                        <*> [<sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
+                            <sequence> [<not>, <any>]
+                                <not>=''
+                                <any>=' '
+                            <sequence> [<any>]
+                                <any>='t'
+                            <sequence> [<any>]
+                                <any>='v'
+                            <sequence> [<any>]
+                                <any>='f'
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='0'
+                                    <character>='0'
+                                    <character>='A'
+                                    <character>='0'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='F'
+                                    <character>='E'
+                                    <character>='F'
+                                    <character>='F'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='1'
+                                    <character>='6'
+                                    <character>='8'
+                                    <character>='0'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='1'
+                                    <character>='8'
+                                    <character>='0'
+                                    <character>='E'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>, <sequence>]
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                        <character>='2'
+                                        <character>='0'
+                                        <character>='0'
+                                        <character>='0'
+                                        <?>=''
+                                        <?>=''
+                                <sequence> [<sequence>]
+                                    <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                        <character>='2'
+                                        <character>='0'
+                                        <character>='0'
+                                        <character>='A'
+                                        <?>=''
+                                        <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='2'
+                                    <character>='0'
+                                    <character>='2'
+                                    <character>='F'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='2'
+                                    <character>='0'
+                                    <character>='5'
+                                    <character>='F'
+                                    <?>=''
+                                    <?>=''
+                            <sequence> [<sequence>]
+                                <sequence> [<character>, <character>, <character>, <character>, <?>, <?>]
+                                    <character>='3'
+                                    <character>='0'
+                                    <character>='0'
+                                    <character>='0'
+                                    <?>=''
+                                    <?>=''
+    <not>=''

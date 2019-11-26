@@ -49,7 +49,7 @@
             ;
 
         expression <=
-            choice
+            ^choice
             ;
 
         choice <=
@@ -57,12 +57,7 @@
             ;
 
         sequence <=
-            ^aliased+
-            ;
-
-        aliased <=
-            / prefix ':' identifier
-            / prefix
+            ^prefix+
             ;
 
         prefix <=
@@ -112,7 +107,7 @@
     lexical
     {
         identifier <=
-            / letter letter-or-digit* ('-' letter-or-digit+)*
+            / letter ^letter-or-digit* ^('-' ^letter-or-digit+)*
             / '_'
             ;
 

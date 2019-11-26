@@ -29,17 +29,13 @@
     [␣ (&& [␣ identifier] (, [␣ '<=']) (, [␣ (? [␣ '/'])]) expression)])
 
 (expression
-    choice)
+    (^ choice))
 
 (choice
     (&& sequence (^ (* (&& (, [␣ '/']) sequence)))))
 
 (sequence
-    (^ (+ aliased)))
-
-(aliased
-    (|| (&& prefix [␣ ':'] [␣ identifier])
-        prefix))
+    (^ (+ prefix)))
 
 (prefix
     (|| prefix.and
@@ -101,7 +97,7 @@
     (&& primary (, [␣ '+'])))
 
 (identifier
-    (|| (&& letter (* letter-or-digit) (* (&& '-' (+ letter-or-digit))))
+    (|| (&& letter (^ (* letter-or-digit)) (^ (* (&& '-' (^ (+ letter-or-digit))))))
         '_'))
 
 (letter

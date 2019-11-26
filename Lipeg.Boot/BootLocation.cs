@@ -15,6 +15,7 @@ namespace Lipeg.Boot
         public ISource Source { get; }
         public int Start { get; }
         public int End { get; }
+        public ILocation Location => this;
 
         public static ILocation From(ISource source, Pegasus.Common.Cursor start)
         {

@@ -26,12 +26,15 @@ namespace Lipeg.SDK.Parsers
             foreach (var parser in Parsers)
             {
                 var result = parser.Parse(current);
+                if (result == null) throw new InternalErrorException("can't be");
+
                 if (result.IsFail)
                 {
                     return Result.Fail(cursor);
                 }
                 if (!result.IsDrop)
                 {
+                    if (result == null) throw new InternalErrorException("can't be");
                     if (result.IsLift && result.Node is InternalNode lifted)
                     {
                         Debug.Assert(true);
@@ -39,11 +42,18 @@ namespace Lipeg.SDK.Parsers
                     }
                     else
                     {
+                        if (result.Node == null) throw new InternalErrorException("can't be");
                         nodes.Add(result.Node);
                     }
                 }
                 current = result.Next;
             }
+
+            //if (nodes.Count == 1)
+            //{
+            //    var node = nodes[0];
+            //    return Result.Success(current, node);
+            //}
 
             return Result.Success(
                 current, 

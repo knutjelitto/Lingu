@@ -54,11 +54,11 @@ namespace Lipeg.Boot
                 {
                     Builder.Build(semantic);
 
-                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".tree"), new DumpTree(), semantic);
+                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".ast"), new DumpAst(), semantic);
 
                     var combiParser = semantic.Grammar.Attr(semantic).Parser;
 
-                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParser(), semantic);
+                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParsers(), semantic);
 
                     source = Source.FromFile(results, testFile);
                     Debug.Assert(source != null);
@@ -68,6 +68,11 @@ namespace Lipeg.Boot
                     var result = combiParser.Parse(start);
 
                     Console.WriteLine($"{result}");
+
+                    if (result.IsSuccess)
+                    {
+                        Dumper.Dump(debugDir.File(testFile.FileName).Add(".boot.nodes"), new DumpNodes(), result.Node);
+                    }
                 }
 
                 if (results.HasAny)

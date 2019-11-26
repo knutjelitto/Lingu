@@ -103,7 +103,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         expression <=
-            choice
+            ^choice
             ;
         
         // is used
@@ -121,17 +121,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         sequence <=
-            ^aliased+
-            ;
-        
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
-        aliased <=
-            / prefix (_ ':') identifier
-            / prefix
+            ^prefix+
             ;
         
         // is used
@@ -292,7 +282,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         identifier <=
-            / letter letter-or-digit* ('-' letter-or-digit+)*
+            / letter ^letter-or-digit* ^('-' ^letter-or-digit+)*
             / '_'
             ;
         

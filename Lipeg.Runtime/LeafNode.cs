@@ -22,7 +22,7 @@ namespace Lipeg.Runtime
         }
 
         public ILocation Location { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
         public string Value { get; }
 
         public static INode From(ILocation location, string name) => new LeafNode(location, name);
@@ -41,6 +41,11 @@ namespace Lipeg.Runtime
             }
 
             return $"{Name}={Value}";
+        }
+
+        public void WithName(string name)
+        {
+            Name = name;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Lipeg.Runtime
         public ISource Source { get; }
         public int Start { get; }
         public int End { get; }
+        ILocation ILocated.Location => this;
 
         public static ILocation From(ILocation start, ILocation end)
         {

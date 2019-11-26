@@ -1,19 +1,17 @@
-﻿using Lipeg.Runtime;
+﻿using System;
+using System.Diagnostics;
+
+using Lipeg.Runtime;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Lipeg.SDK.Parsers
 {
     public class Reference : IParser
     {
-        protected Reference(string name, Identifier identifier, Func<IParser> parser)
+        protected Reference(string kind, Identifier identifier, Func<IParser> parser)
         {
-            Kind = name;
+            Kind = kind;
             Identifier = identifier;
             Parser = parser;
         }
@@ -26,7 +24,19 @@ namespace Lipeg.SDK.Parsers
         {
             if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
-            return Parser().Parse(cursor);
+            var result = Parser().Parse(cursor);
+
+            if (result.IsSuccess)
+            {
+                if (result?.Node?.Name == "qualified-identifier")
+                {
+                    Debug.Assert(true);
+                }
+                if (result?.Node == null) throw new InternalErrorException("can't be");
+                result.Node.WithName(Identifier.Name);
+            }
+
+            return result;
         }
 
         public void Dump(int level, IWriter writer)

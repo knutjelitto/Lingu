@@ -8,7 +8,7 @@ using System;
 
 namespace Lipeg.SDK.Dump
 {
-    public class DumpTree : IDump<Semantic>
+    public class DumpAst : IDump<Semantic>
     {
         public void Dump(IWriter writer, Semantic semantic)
         {

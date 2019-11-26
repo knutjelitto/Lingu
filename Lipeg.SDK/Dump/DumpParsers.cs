@@ -1,15 +1,12 @@
 using System;
-using System.Diagnostics;
 
 using Lipeg.SDK.Output;
-using Lipeg.Runtime;
 using Lipeg.SDK.Checkers;
-using Lipeg.SDK.Parsers;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Dump
 {
-    public class DumpParser : IDump<Semantic>
+    public class DumpParsers : IDump<Semantic>
     {
         public void Dump(IWriter writer, Semantic semantic)
         {
@@ -30,8 +27,6 @@ namespace Lipeg.SDK.Dump
             public Semantic Semantic { get; }
             public Grammar Grammar => Semantic.Grammar;
             public IWriter Writer { get; }
-
-            private int Level { get; set; }
 
             public void Dump()
             {
