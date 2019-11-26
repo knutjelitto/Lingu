@@ -10,6 +10,6 @@ namespace Lipeg.Runtime
         string GetText(int start, int length);
         bool AtEnd(int offset);
 
-        ReadOnlySpan<char> Part(int offset, int lenght);
+        bool StartsWith(int offset, string start);
     }
 }

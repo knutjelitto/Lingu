@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 
 using Lipeg.Runtime;
@@ -14,15 +15,19 @@ namespace Lipeg.SDK.Parsers
         {
             Character = @character;
         }
-        public string Name => OpSymbols.ClassChar;
+        public string Kind => OpSymbols.ClassChar;
         public int Character { get; }
 
         public IResult Parse(ICursor cursor)
         {
             if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
-            if (cursor.Current == Character)
+            if (!cursor.AtEnd && cursor.Current == Character)
             {
+                if ((char)Character == '\'')
+                {
+                    Debug.Assert(true);
+                }
                 var next = cursor.Advance(1);
                 var location = Location.From(cursor, next);
                 return Result.Success(next, LeafNode.From(location, NodeSymbols.Any, ((char)cursor.Current).ToString(CultureInfo.InvariantCulture)));

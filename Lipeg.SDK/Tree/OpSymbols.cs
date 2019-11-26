@@ -22,7 +22,7 @@ namespace Lipeg.SDK.Tree
         public const string Spacing = "␣";
 
 #pragma warning disable CA1720 // Identifier contains type name
-        public const string String = "string";
+        public const string CharSequence = "string";
 #pragma warning restore CA1720 // Identifier contains type name
         public const string ClassChar = "char";
         public const string ClassRange = "range";

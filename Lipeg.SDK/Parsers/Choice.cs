@@ -36,7 +36,7 @@ namespace Lipeg.SDK.Parsers
             {
                 if (level == 0)
                 {
-                    writer.Write($"({Name} ");
+                    writer.Write($"({Kind} ");
                     writer.Indent(() =>
                     {
                         var more = false;
@@ -56,7 +56,7 @@ namespace Lipeg.SDK.Parsers
                 {
                     var more = false;
 
-                    writer.Write($"({Name} ");
+                    writer.Write($"({Kind} ");
                     foreach (var child in Parsers)
                     {
                         if (more)

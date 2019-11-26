@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using Lipeg.Runtime;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
@@ -30,7 +30,18 @@ namespace Lipeg.SDK.Parsers
                 {
                     return Result.Fail(cursor);
                 }
-                nodes.Add(result.Node);
+                if (!result.IsDrop)
+                {
+                    if (result.IsLift && result.Node is InternalNode lifted)
+                    {
+                        Debug.Assert(true);
+                        nodes.AddRange(lifted);
+                    }
+                    else
+                    {
+                        nodes.Add(result.Node);
+                    }
+                }
                 current = result.Next;
             }
 
@@ -45,7 +56,7 @@ namespace Lipeg.SDK.Parsers
 
             if (Parsers.Count > 1)
             {
-                writer.Write($"({Name} ");
+                writer.Write($"({Kind} ");
                 var more = false;
                 foreach (var child in Parsers)
                 {

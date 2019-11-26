@@ -12,7 +12,7 @@ namespace Lipeg.SDK.Parsers
         public Any()
         {
         }
-        public string Name => OpSymbols.Any;
+        public string Kind => OpSymbols.Any;
 
         public IResult Parse(ICursor cursor)
         {

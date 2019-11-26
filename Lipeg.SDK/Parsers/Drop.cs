@@ -1,5 +1,6 @@
 ﻿using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
+using System.Diagnostics;
 
 namespace Lipeg.SDK.Parsers
 {
@@ -12,7 +13,9 @@ namespace Lipeg.SDK.Parsers
 
         public override IResult Parse(ICursor cursor)
         {
-            return Parser.Parse(cursor).SetDrop();
+            var result = Parser.Parse(cursor).SetDrop();
+
+            return result;
         }
     }
 }

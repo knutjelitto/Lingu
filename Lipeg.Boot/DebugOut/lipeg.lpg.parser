@@ -101,7 +101,8 @@
     (&& primary (, [␣ '+'])))
 
 (identifier
-    (&& letter (* letter-or-digit) (* (&& '-' (+ letter-or-digit)))))
+    (|| (&& letter (* letter-or-digit) (* (&& '-' (+ letter-or-digit))))
+        '_'))
 
 (letter
     (|| 'a-z'
@@ -127,7 +128,7 @@
         byte-escape))
 
 (any-escape
-    (&& (, '\\') (|| '0' 'a' 'b' 'e' 'f' 'n' 'r' 't' 'v' '-' ']' '\\')))
+    (&& (, '\\') (|| '0' 'a' 'b' 'e' 'f' 'n' 'r' 't' 'v' '-' ']' '\\' '\'')))
 
 (unicode-escape
     (&& (, (&& '\\u{' _)) unicode-number (, _) (^ (* (&& unicode-number (, _)))) (, '}')))

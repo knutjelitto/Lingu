@@ -14,7 +14,7 @@ namespace Lipeg.SDK.Parsers
             AndThen = andThen;
         }
 
-        public string Name => OpSymbols.Spacing;
+        public string Kind => OpSymbols.Spacing;
 
         public Func<IParser> Spacer { get; }
         public IParser AndThen { get; }
@@ -35,14 +35,14 @@ namespace Lipeg.SDK.Parsers
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"[{Name} ");
+            writer.Write($"[{Kind} ");
             AndThen.Dump(level+1, writer);
             writer.Write($"]");
         }
 
         public override string ToString()
         {
-            return $"[{Name} {AndThen}]";
+            return $"[{Kind} {AndThen}]";
         }
     }
 }

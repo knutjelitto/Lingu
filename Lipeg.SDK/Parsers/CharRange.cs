@@ -16,7 +16,7 @@ namespace Lipeg.SDK.Parsers
             Max = max;
         }
 
-        public string Name => OpSymbols.ClassRange;
+        public string Kind => OpSymbols.ClassRange;
         public int Min { get; }
         public int Max { get; }
 
@@ -24,7 +24,7 @@ namespace Lipeg.SDK.Parsers
         {
             if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
-            if (Min <= cursor.Current && cursor.Current <= Max)
+            if (!cursor.AtEnd && Min <= cursor.Current && cursor.Current <= Max)
             {
                 var next = cursor.Advance(1);
                 var location = Location.From(cursor, next);

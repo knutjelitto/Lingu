@@ -14,24 +14,29 @@ namespace Lipeg.SDK.Parsers
     {
         public CharSequence(string characters)
         {
-            Name = OpSymbols.String;
+            Kind = OpSymbols.CharSequence;
             Characters = characters;
         }
 
-        public string Name { get; }
+        public string Kind { get; }
         public string Characters { get; }
 
         public IResult Parse(ICursor cursor)
         {
             if (cursor == null) throw new ArgumentNullException(nameof(cursor));
 
-            if (cursor.StartsWith("options") && Characters == "options")
-            {
-                Debug.Assert(true);
-            }
+            //if (Characters == "start" && cursor.StartsWith("start"))
+            //{
+            //    Debug.Assert(true);
+            //}
 
             if (cursor.StartsWith(Characters))
             {
+                if (Characters == "'")
+                {
+                    Debug.Assert(true);
+                }
+
                 var next = cursor.Advance(Characters.Length);
                 var location = Location.From(cursor, next);
                 return Result.Success(next, LeafNode.From(location, NodeSymbols.StringLiteral, Characters));

@@ -58,6 +58,11 @@ namespace Lipeg.SDK.Parsers
                 : base(next, true)
             {
             }
+
+            public override string ToString()
+            {
+                return $"[FAIL//{Next}]";
+            }
         }
 
         private class SuccessResult : Result, ISuccess
@@ -69,6 +74,11 @@ namespace Lipeg.SDK.Parsers
             }
 
             public override INode Node { get; }
+
+            public override string ToString()
+            {
+                return $"[OK/{Node}/{Next}]";
+            }
         }
     }
 }

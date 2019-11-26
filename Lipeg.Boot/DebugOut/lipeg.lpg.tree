@@ -292,7 +292,8 @@ grammar lipeg
         // is lexical
         // ! is syntax
         identifier <=
-            letter letter-or-digit* ('-' letter-or-digit+)*
+            / letter letter-or-digit* ('-' letter-or-digit+)*
+            / '_'
             ;
         
         // is used
@@ -349,7 +350,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         any-escape <=
-            ,'\\' [0abefnrtv\-\]\\]
+            ,'\\' [0abefnrtv\-\]\\\']
             ;
         
         // is used

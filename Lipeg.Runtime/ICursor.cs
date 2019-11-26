@@ -14,7 +14,7 @@ namespace Lipeg.Runtime
 
         bool StartsWith(string prefix)
         {
-            return Source.Part(Offset, prefix.Length).ToString() == prefix;
+            return Source.StartsWith(Offset, prefix);
         }
     }
 }

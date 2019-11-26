@@ -53,9 +53,16 @@ namespace Lipeg.Runtime
             return new Source("<noname>", content);
         }
 
-        public ReadOnlySpan<char> Part(int offset, int length)
+        public bool StartsWith(int offset, string prefix)
         {
-            return Content.AsSpan(offset, length);
+            var length = prefix.Length;
+
+            if (offset + length <= Length)
+            {
+                return Content.AsSpan(offset, length).ToString() == prefix;
+            }
+
+            return false;
         }
 
         public (int lineNo, int colNo) GetLineCol(int index)
@@ -110,7 +117,8 @@ namespace Lipeg.Runtime
 
         public string GetText(int start, int length)
         {
-            return new string(Content.AsSpan(start, length));
+            var end = Math.Min(Length, start + length);
+            return new string(Content.AsSpan(start, Length - end));
         }
 
         private List<int> FindLines()

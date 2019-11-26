@@ -4,6 +4,7 @@ using Lipeg.SDK.Tree;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Lipeg.SDK.Parsers
@@ -12,17 +13,19 @@ namespace Lipeg.SDK.Parsers
     {
         protected Reference(string name, Identifier identifier, Func<IParser> parser)
         {
-            Name = name;
+            Kind = name;
             Identifier = identifier;
             Parser = parser;
         }
 
-        public string Name { get; }
+        public string Kind { get; }
         public Identifier Identifier { get; }
         public Func<IParser> Parser { get; }
 
         public IResult Parse(ICursor cursor)
         {
+            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
+
             return Parser().Parse(cursor);
         }
 

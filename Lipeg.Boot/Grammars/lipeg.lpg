@@ -113,6 +113,7 @@
     {
         identifier <=
             / letter letter-or-digit* ('-' letter-or-digit+)*
+            / '_'
             ;
 
         letter <=
@@ -139,7 +140,7 @@
             ;
 
         any-escape <=
-            ,'\\' [0abefnrtv\-\]\\]
+            ,'\\' [0abefnrtv\-\]\\\']
             ;
 
 

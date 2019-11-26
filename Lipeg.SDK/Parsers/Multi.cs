@@ -10,10 +10,10 @@ namespace Lipeg.SDK.Parsers
     {
         protected Multi(string name, IReadOnlyList<IParser> parsers)
         {
-            Name = name;
+            Kind = name;
             Parsers = parsers;
         }
-        public string Name { get; }
+        public string Kind { get; }
         public IReadOnlyList<IParser> Parsers { get; }
 
         public abstract void Dump(int level, IWriter writer);
@@ -22,7 +22,7 @@ namespace Lipeg.SDK.Parsers
 
         public override string ToString()
         {
-            return $"({Name} " + String.Join(" ", Parsers) + ")";
+            return $"({Kind} " + String.Join(" ", Parsers) + ")";
         }
     }
 }

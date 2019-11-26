@@ -12,7 +12,7 @@ namespace Lipeg.Boot
     {
         internal static void Main()
         {
-            RamboBuild("lipeg.lpg", "test1.lpg");
+            RamboBuild("lipeg.lpg", "lipeg.lpg");
             GC.Collect(2, GCCollectionMode.Forced);
 
             Console.Write("(almost) any key ... ");
@@ -67,6 +67,7 @@ namespace Lipeg.Boot
                     
                     var result = combiParser.Parse(start);
 
+                    Console.WriteLine($"{result}");
                 }
 
                 if (results.HasAny)

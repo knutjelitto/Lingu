@@ -20,7 +20,7 @@ namespace Lipeg.Boot
             this.source = source;
         }
 
-        protected INode N(Pegasus.Common.Cursor start, Pegasus.Common.Cursor end, string name, params INode[] children)
+        protected INode N(Cursor start, Cursor end, string name, params INode[] children)
         {
             var loc = Loc(start, end);
 
@@ -37,7 +37,7 @@ namespace Lipeg.Boot
         /// <param name="name"></param>
         /// <param name="children"></param>
         /// <returns></returns>
-        protected INode NE(Pegasus.Common.Cursor start, Pegasus.Common.Cursor end, string name, params INode[] children)
+        protected INode NE(Cursor start, Cursor end, string name, params INode[] children)
         {
             var loc = Loc(start, end);
 
@@ -53,12 +53,12 @@ namespace Lipeg.Boot
                 : InternalNode.From(loc, name, childs);
         }
 
-        protected INode N(Pegasus.Common.Cursor start, Pegasus.Common.Cursor end, string name, string value)
+        protected INode N(Cursor start, Cursor end, string name, string value)
         {
             return LeafNode.From(Loc(start, end), name, value);
         }
 
-        protected INode NP(Pegasus.Common.Cursor start, Pegasus.Common.Cursor end, IList<INode> children)
+        protected INode NP(Cursor start, Cursor end, IList<INode> children)
         {
             return InternalNode.From(Loc(start, end), "+", children.ToArray());
         }
@@ -68,7 +68,7 @@ namespace Lipeg.Boot
             return string.Join(string.Empty, children);
         }
 
-        protected INode NS(Pegasus.Common.Cursor start, Pegasus.Common.Cursor end, IList<INode> children)
+        protected INode NS(Cursor start, Cursor end, IList<INode> children)
         {
             return InternalNode.From(Loc(start, end), "*", children.ToArray());
         }
@@ -78,7 +78,7 @@ namespace Lipeg.Boot
             return children.FirstOrDefault() ?? string.Empty;
         }
 
-        private ILocation Loc(Pegasus.Common.Cursor start, Pegasus.Common.Cursor end)
+        private ILocation Loc(Cursor start, Cursor end)
         {
             return BootLocation.From(source, start, end);
         }

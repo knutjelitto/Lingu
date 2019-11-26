@@ -11,10 +11,10 @@ namespace Lipeg.SDK.Parsers
     {
         protected Single(string name, IParser parser)
         {
-            Name = name;
+            Kind = name;
             Parser = parser;
         }
-        public string Name { get; }
+        public string Kind { get; }
         public IParser Parser { get; }
 
         public abstract IResult Parse(ICursor cursor);
@@ -23,14 +23,14 @@ namespace Lipeg.SDK.Parsers
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"({Name} ");
+            writer.Write($"({Kind} ");
             Parser.Dump(level + 1, writer);
             writer.Write(")");
         }
 
         public override string ToString()
         {
-            return $"({Name} {Parser})";
+            return $"({Kind} {Parser})";
         }
     }
 }

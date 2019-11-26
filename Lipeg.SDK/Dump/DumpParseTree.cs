@@ -4,6 +4,7 @@ using System.Linq;
 
 using Lipeg.SDK.Output;
 using Lipeg.Runtime;
+using Lipeg.SDK.Common;
 
 namespace Lipeg.SDK.Dump
 {
@@ -26,7 +27,7 @@ namespace Lipeg.SDK.Dump
         {
             if (node is ILeafNode leaf)
             {
-                return $"{node.Name} <{leaf.Value}>";
+                return $"{leaf.Name}='{CharRep.InText(leaf.Value)}'";
             }
             return $"{node.Name} [{string.Join(", ", node.Select(c => c.Name))}]";
         }
