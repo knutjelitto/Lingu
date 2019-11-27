@@ -282,8 +282,8 @@ grammar lipeg
         // is lexical
         // ! is syntax
         identifier <=
-            / letter ^letter-or-digit* ^('-' ^letter-or-digit+)*
-            / '_'
+            / ^~(letter ^letter-or-digit* ^('-' ^letter-or-digit+)*)
+            / ^~'_'
             ;
         
         // is used

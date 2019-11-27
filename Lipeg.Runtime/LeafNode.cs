@@ -7,16 +7,16 @@ namespace Lipeg.Runtime
     {
         private static readonly List<LeafNode> Empty = new List<LeafNode>();
 
-        private LeafNode(ILocation location, string name)
+        private LeafNode(ILocated located, string name)
         {
-            Location = location;
+            Location = located.Location;
             Name = name;
             Value = string.Empty;
         }
 
-        private LeafNode(ILocation location, string name, string value)
+        private LeafNode(ILocated located, string name, string value)
         {
-            Location = location;
+            Location = located.Location;
             Name = name;
             Value = value;
         }
@@ -25,8 +25,8 @@ namespace Lipeg.Runtime
         public string Name { get; private set; }
         public string Value { get; }
 
-        public static INode From(ILocation location, string name) => new LeafNode(location, name);
-        public static INode From(ILocation location, string name, string value) => new LeafNode(location, name, value);
+        public static INode From(ILocated located, string name) => new LeafNode(located, name);
+        public static INode From(ILocated located, string name, string value) => new LeafNode(located, name, value);
         
         public IEnumerator<INode> GetEnumerator() => Empty.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -46,6 +46,11 @@ namespace Lipeg.Runtime
         public void WithName(string name)
         {
             Name = name;
+        }
+
+        public string Fuse()
+        {
+            return Value;
         }
     }
 }

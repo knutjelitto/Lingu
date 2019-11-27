@@ -368,26 +368,38 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier='identifier'
                 choice [sequence, sequence]
-                    sequence [identifier, lift, lift]
-                        identifier='letter'
-                        lift [quantified]
-                            quantified [identifier, *]
-                                identifier='letter-or-digit'
-                                *=''
-                        lift [quantified]
-                            quantified [choice, *]
-                                choice [sequence]
-                                    sequence [singleString, lift]
-                                        singleString [character]
-                                            character='-'
-                                        lift [quantified]
-                                            quantified [identifier, +]
-                                                identifier='letter-or-digit'
-                                                +=''
-                                *=''
-                    sequence [singleString]
-                        singleString [character]
-                            character='_'
+                    sequence [lift]
+                        lift [choice]
+                            choice [sequence]
+                                sequence [fuse]
+                                    fuse [choice]
+                                        choice [sequence]
+                                            sequence [identifier, lift, lift]
+                                                identifier='letter'
+                                                lift [quantified]
+                                                    quantified [identifier, *]
+                                                        identifier='letter-or-digit'
+                                                        *=''
+                                                lift [quantified]
+                                                    quantified [choice, *]
+                                                        choice [sequence]
+                                                            sequence [singleString, lift]
+                                                                singleString [character]
+                                                                    character='-'
+                                                                lift [quantified]
+                                                                    quantified [identifier, +]
+                                                                        identifier='letter-or-digit'
+                                                                        +=''
+                                                        *=''
+                    sequence [lift]
+                        lift [choice]
+                            choice [sequence]
+                                sequence [fuse]
+                                    fuse [choice]
+                                        choice [sequence]
+                                            sequence [singleString]
+                                                singleString [character]
+                                                    character='_'
             rule [identifier, choice]
                 identifier='letter'
                 choice [sequence]

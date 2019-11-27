@@ -14,11 +14,6 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public Sequence(params IParser[] parsers)
-            : base(OpSymbols.Sequence, parsers)
-        {
-        }
-
         public override IResult Parse(ICursor cursor)
         {
             var current = cursor;
@@ -34,11 +29,24 @@ namespace Lipeg.SDK.Parsers
                 }
                 if (!result.IsDrop)
                 {
-                    if (result == null) throw new InternalErrorException("can't be");
-                    if (result.IsLift && result.Node is InternalNode lifted)
+                    if (result.IsFuse)
                     {
-                        Debug.Assert(true);
-                        nodes.AddRange(lifted);
+                        var value = result.Node.Fuse();
+                        result.SetNode(LeafNode.From(result.Node, NodeSymbols.Fusion, value));
+                    }
+                    if (result.IsLift)
+                    {
+                        if (result.Node is InternalNode lifted)
+                        {
+                            nodes.AddRange(lifted);
+                        }
+                        else
+                        {
+                            /*
+                             * Do nothing if leaf node
+                             */
+                            nodes.Add(result.Node);
+                        }
                     }
                     else
                     {

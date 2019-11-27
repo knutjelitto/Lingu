@@ -31,5 +31,10 @@ namespace Lipeg.Runtime
         {
             Name = name;
         }
+
+        public string Fuse()
+        {
+            return String.Join(string.Empty, Children.Select(c => c.Fuse()));
+        }
     }
 }

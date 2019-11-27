@@ -82,12 +82,14 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
+#if false
                 if (expression.Choices.Count == 1)
                 {
                     VisitExpression(expression.Choices[0]);
                     
                     return;
                 }
+#endif
 
                 var start = parsers.Count;
 
@@ -99,12 +101,14 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
+#if false
                 if (expression.Sequence.Count == 1)
                 {
                     VisitExpression(expression.Sequence[0]);
 
                     return;
                 }
+#endif
 
                 var start = parsers.Count;
 

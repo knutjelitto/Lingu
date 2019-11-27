@@ -12,5 +12,6 @@
         public const string Option = "<?>";
         public const string Star = "<*>";
         public const string Plus = "<+>";
+        public const string Fusion = "<~>";
     }
 }

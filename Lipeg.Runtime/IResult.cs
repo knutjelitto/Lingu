@@ -13,5 +13,6 @@
         IResult SetDrop();
         IResult SetLift();
         IResult SetFuse();
+        void SetNode(INode node);
     }
 }

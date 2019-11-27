@@ -8,13 +8,13 @@
     (&& (, [␣ 'options']) (, [␣ '{']) (^ (* option)) (, [␣ '}'])))
 
 (option
-    [␣ (&& [␣ identifier] (, [␣ '=']) option-value (, [␣ ';']))])
+    [␣ [␣ (&& [␣ identifier] (, [␣ '=']) option-value (, [␣ ';']))]])
 
 (option-value
     qualified-identifier)
 
 (qualified-identifier
-    [␣ (&& [␣ identifier] (^ (* (&& (, [␣ '.']) [␣ identifier]))))])
+    [␣ [␣ (&& [␣ identifier] (^ (* (&& (, [␣ '.']) [␣ identifier]))))]])
 
 (syntax
     (&& (, [␣ 'rules']) (, [␣ '{']) rules (, [␣ (? [␣ ';'])]) (, [␣ '}'])))
@@ -26,7 +26,7 @@
     (^ (? (&& rule (^ (* (&& (, [␣ ';']) rule)))))))
 
 (rule
-    [␣ (&& [␣ identifier] (, [␣ '<=']) (, [␣ (? [␣ '/'])]) expression)])
+    [␣ [␣ (&& [␣ identifier] (, [␣ '<=']) (, [␣ (? [␣ '/'])]) expression)]])
 
 (expression
     (^ choice))
@@ -52,9 +52,9 @@
         primary))
 
 (primary
-    (|| [␣ identifier]
-        [␣ string]
-        [␣ character-class]
+    (|| [␣ [␣ identifier]]
+        [␣ [␣ string]]
+        [␣ [␣ character-class]]
         any
         epsilon
         inline
@@ -67,10 +67,10 @@
     (, [␣ '.']))
 
 (epsilon
-    [␣ (|| [␣ 'epsilon'] [␣ '\u{03B5}'])])
+    [␣ (|| [␣ [␣ 'epsilon']] [␣ [␣ '\u{03B5}']])])
 
 (eof
-    [␣ (! [␣ {Name}])])
+    [␣ [␣ [␣ (! [␣ {Name}])]]])
 
 (prefix.and
     (&& (, [␣ '&']) suffix))
@@ -97,22 +97,17 @@
     (&& primary (, [␣ '+'])))
 
 (identifier
-    (|| (&& letter (^ (* letter-or-digit)) (^ (* (&& '-' (^ (+ letter-or-digit))))))
-        '_'))
+    (|| (^ (~ (&& letter (^ (* letter-or-digit)) (^ (* (&& '-' (^ (+ letter-or-digit))))))))
+        (^ (~ '_'))))
 
 (letter
-    (|| 'a-z'
-        'A-Z'))
+    (|| 'a-z' 'A-Z'))
 
 (letter-or-digit
-    (|| 'a-z'
-        'A-Z'
-        '0-9'))
+    (|| 'a-z' 'A-Z' '0-9'))
 
 (hex-digit
-    (|| '0-9'
-        'a-f'
-        'A-F'))
+    (|| '0-9' 'a-f' 'A-F'))
 
 (string
     (&& (, '\'') (* character) (, '\'')))
@@ -175,21 +170,7 @@
         '\u{2029}'))
 
 (eol-char
-    (|| '\n'
-        '\r'
-        '\u{2028}'
-        '\u{2029}'))
+    (|| '\n' '\r' '\u{2028}' '\u{2029}'))
 
 (whitespace
-    (|| ' '
-        '\t'
-        '\v'
-        '\f'
-        '\u{00A0}'
-        '\u{FEFF}'
-        '\u{1680}'
-        '\u{180E}'
-        '\u{2000}-\u{200A}'
-        '\u{202F}'
-        '\u{205F}'
-        '\u{3000}'))
+    (|| ' ' '\t' '\v' '\f' '\u{00A0}' '\u{FEFF}' '\u{1680}' '\u{180E}' '\u{2000}-\u{200A}' '\u{202F}' '\u{205F}' '\u{3000}'))

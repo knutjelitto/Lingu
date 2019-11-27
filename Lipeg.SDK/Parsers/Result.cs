@@ -22,6 +22,7 @@ namespace Lipeg.SDK.Parsers
         public bool IsFuse { get; private set; }
 
         public virtual INode Node => throw new InvalidOperationException();
+        public virtual void SetNode(INode node) => throw new InvalidOperationException();
 
 
         public static IResult Fail(ICursor next)
@@ -67,13 +68,16 @@ namespace Lipeg.SDK.Parsers
 
         private class SuccessResult : Result, ISuccess
         {
+            private INode node;
+
             public SuccessResult(ICursor next, INode node)
                 : base(next, false)
             {
-                Node = node;
+                this.node = node;
             }
 
-            public override INode Node { get; }
+            public override INode Node => this.node;
+            public override void SetNode(INode node_) => this.node = node_;
 
             public override string ToString()
             {

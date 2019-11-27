@@ -18,9 +18,9 @@ namespace Lipeg.SDK.Parsers
             var result = Parser.Parse(cursor);
             if (result.IsSuccess)
             {
-                return result;
+                return Result.Success(result.Next, InternalNode.From(Location.From(cursor), NodeSymbols.Option, result.Node));
             }
-            return Result.Success(cursor, LeafNode.From(Location.From(cursor), NodeSymbols.Option));
+            return Result.Success(cursor, InternalNode.From(Location.From(cursor), NodeSymbols.Option));
         }
     }
 }

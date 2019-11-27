@@ -8,5 +8,6 @@ namespace Lipeg.Runtime
     { 
         string Name { get; }
         void WithName(string name);
+        string Fuse();
     }
 }
