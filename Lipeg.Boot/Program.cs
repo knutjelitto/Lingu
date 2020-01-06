@@ -4,7 +4,7 @@ using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
-using Lipeg.SDK.Tree;
+using System.Linq;
 
 namespace Lipeg.Boot
 {
@@ -40,7 +40,7 @@ namespace Lipeg.Boot
 
                 var parseTree = parser.Parse(source.ToString(), grammarFile);
 
-                Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".nodes"), new DumpNodes(), parseTree);
+                Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".nodes"), new DumpNodes(), Enumerable.Repeat(parseTree, 1));
 
                 var grammarBuilder = new GrammarBuilder();
 
@@ -52,7 +52,7 @@ namespace Lipeg.Boot
 
                 if (!results.HasErrors)
                 {
-                    Builder.Build(semantic);
+                    Builder.BuildParser(semantic);
 
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".ast"), new DumpAst(), semantic);
 
@@ -63,7 +63,7 @@ namespace Lipeg.Boot
                     source = Source.FromFile(results, testFile);
                     Debug.Assert(source != null);
 
-                    var start = DCursor.Start(source);
+                    var start = DContext.Start(source);
                     
                     var result = combiParser.Parse(start);
 
@@ -71,7 +71,12 @@ namespace Lipeg.Boot
 
                     if (result.IsSuccess)
                     {
-                        Dumper.Dump(debugDir.File(testFile.FileName).Add(".boot.nodes"), new DumpNodes(), result.Node);
+                        Builder.BuildAst(results, result.Nodes[0]);
+                        Dumper.Dump(debugDir.File(testFile.FileName).Add(".boot.nodes"), new DumpNodes(), result.Nodes);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"farthest:{SDK.Parsers.Result.FarthestFail}");
                     }
                 }
 

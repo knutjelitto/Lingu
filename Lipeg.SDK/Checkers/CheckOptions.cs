@@ -39,13 +39,13 @@ namespace Lipeg.SDK.Checkers
 
             private void FindRule(Option option, Func<IRule, bool> setter)
             {
-                if (option.QualifiedIdentifier.Parts.Count == 1)
+                if (option.OptionValue.QualifiedIdentifier.Parts.Count == 1)
                 {
-                    var identifier = option.QualifiedIdentifier.Parts[0];
+                    var identifier = option.OptionValue.QualifiedIdentifier.Parts[0];
 
                     if (Semantic.Rules.TryGetValue(identifier.Name, out var rule))
                     {
-                        if (rule == null) throw new InternalErrorException($"{nameof(rule)} really shouldn't be NULL");
+                        if (rule == null) throw new InternalNullException();
 
                         if (!setter(rule))
                         {
@@ -60,7 +60,7 @@ namespace Lipeg.SDK.Checkers
                     Results.AddError(new MessageError(MessageCode.UndefinedOptionValue, identifier));
                     return;
                 }
-                Results.AddError(new MessageError(MessageCode.IllegalOptionValue, option.QualifiedIdentifier));
+                Results.AddError(new MessageError(MessageCode.IllegalOptionValue, option.OptionValue.QualifiedIdentifier));
             }
         }
     }

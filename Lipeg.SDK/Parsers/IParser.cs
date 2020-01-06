@@ -6,7 +6,7 @@ namespace Lipeg.Runtime
     public interface IParser
     {
         string Kind { get; }
-        IResult Parse(ICursor cursor);
+        IResult Parse(IContext context);
         void Dump(int level, IWriter writer);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Diagnostics;
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
@@ -12,16 +12,17 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
             var nodes = new List<INode>();
-            var current = cursor;
+            var current = context;
             do
             {
+                if (current == null) throw new InternalNullException();
                 var result = Parser.Parse(current);
-                if (!result.IsFail)
+                if (result.IsSuccess)
                 {
-                    nodes.Add(result.Node);
+                    nodes.AddRange(result.Nodes);
                     current = result.Next;
                 }
                 else
@@ -30,8 +31,11 @@ namespace Lipeg.SDK.Parsers
                 }
             }
             while (true);
-            
-            return Result.Success(current, InternalNode.From(Location.From(cursor, current), NodeSymbols.Star, nodes));
+
+            var location = Location.From(context, current);
+            var node = NodeList.From(location, NodeSymbols.Star, nodes);
+
+            return Result.Success(location, current, node);
         }
     }
 }

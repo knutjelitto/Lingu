@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection.Metadata;
+
 using Lipeg.Runtime;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
@@ -19,30 +19,30 @@ namespace Lipeg.SDK.Parsers
         public Func<IParser> Spacer { get; }
         public IParser AndThen { get; }
 
-        public IResult Parse(ICursor cursor)
+        public IResult Parse(IContext context)
         {
-            var result = Spacer().Parse(cursor);
+            var result = Spacer().Parse(context);
             if (result is ISuccess)
             {
                 result = AndThen.Parse(result.Next);
                 return result;
             }
 
-            return Result.Fail(cursor);
+            return Result.Fail(context);
         }
 
         public void Dump(int level, IWriter writer)
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
 
-            writer.Write($"[{Kind} ");
-            AndThen.Dump(level+1, writer);
+            writer.Write($"[");
+            AndThen.Dump(level + 1, writer);
             writer.Write($"]");
         }
 
         public override string ToString()
         {
-            return $"[{Kind} {AndThen}]";
+            return $"[{AndThen}]";
         }
     }
 }

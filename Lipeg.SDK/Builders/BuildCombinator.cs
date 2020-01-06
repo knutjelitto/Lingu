@@ -68,6 +68,15 @@ namespace Lipeg.SDK.Builders
                 return parsers[parsers.Count - 1];
             }
 
+            protected override void VisitRule(IRule rule)
+            {
+                base.VisitRule(rule);
+
+                Debug.Assert(parsers.Count == 1);
+
+                rule.Attr(Semantic).SetParser(Pop());
+            }
+
             public override void VisitExpression(Expression expression)
             {
                 if (expression == null) throw new ArgumentNullException(nameof(expression));
@@ -82,15 +91,6 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
-#if false
-                if (expression.Choices.Count == 1)
-                {
-                    VisitExpression(expression.Choices[0]);
-                    
-                    return;
-                }
-#endif
-
                 var start = parsers.Count;
 
                 base.VisitChoiceExpression(expression);
@@ -101,15 +101,6 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
-#if false
-                if (expression.Sequence.Count == 1)
-                {
-                    VisitExpression(expression.Sequence[0]);
-
-                    return;
-                }
-#endif
-
                 var start = parsers.Count;
 
                 base.VisitSequenceExpression(expression);
@@ -141,8 +132,8 @@ namespace Lipeg.SDK.Builders
             protected override void VisitDropExpression(DropExpression expression)
             {
                 base.VisitDropExpression(expression);
-                
-                Push(new Drop(Pop()));
+
+                Push(Drop.From(Pop()));
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
@@ -190,7 +181,7 @@ namespace Lipeg.SDK.Builders
             protected override void VisitOptionalExpression(OptionalExpression optional)
             {
                 VisitExpression(optional.Expression);
-                Push(new Parsers.Option(Pop()));
+                Push(new Parsers.Optional(Pop()));
             }
 
             protected override void VisitPlusExpression(PlusExpression plus)
@@ -245,15 +236,6 @@ namespace Lipeg.SDK.Builders
             protected override void VisitOption(Tree.Option option)
             {
                 base.VisitOption(option);
-            }
-
-            protected override void VisitRule(IRule rule)
-            {
-                base.VisitRule(rule);
-
-                Debug.Assert(parsers.Count == 1);
-
-                rule.Attr(Semantic).SetParser(Pop());
             }
         }
     }

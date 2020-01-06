@@ -18,7 +18,7 @@ namespace Lipeg.SDK.Parsers
 
         public abstract void Dump(int level, IWriter writer);
 
-        public abstract IResult Parse(ICursor cursor);
+        public abstract IResult Parse(IContext context);
 
         public override string ToString()
         {

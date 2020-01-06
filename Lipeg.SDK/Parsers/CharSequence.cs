@@ -21,27 +21,19 @@ namespace Lipeg.SDK.Parsers
         public string Kind { get; }
         public string Characters { get; }
 
-        public IResult Parse(ICursor cursor)
+        public IResult Parse(IContext context)
         {
-            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
-            //if (Characters == "start" && cursor.StartsWith("start"))
-            //{
-            //    Debug.Assert(true);
-            //}
-
-            if (cursor.StartsWith(Characters))
+            if (context.StartsWith(Characters))
             {
-                if (Characters == "'")
-                {
-                    Debug.Assert(true);
-                }
-
-                var next = cursor.Advance(Characters.Length);
-                var location = Location.From(cursor, next);
-                return Result.Success(next, LeafNode.From(location, NodeSymbols.StringLiteral, Characters));
+                var next = context.Advance(Characters.Length);
+                var location = Location.From(context, next);
+                var node = Leaf.From(location, NodeSymbols.StringLiteral, Characters);
+                return Result.Success(location, next, node);
             }
-            return Result.Fail(cursor);
+
+            return Result.Fail(context);
         }
 
         public void Dump(int level, IWriter writer)

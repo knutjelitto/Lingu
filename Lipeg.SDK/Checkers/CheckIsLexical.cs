@@ -108,7 +108,7 @@ namespace Lipeg.SDK.Checkers
                 base.VisitNameExpression(expression);
                 if (Semantic.Rules.TryGetValue(expression.Identifier.Name, out var rule))
                 {
-                    if (rule == null) throw new InternalErrorException($"`{nameof(rule)}` can't be NULL");
+                    if (rule == null) throw new InternalNullException();
 
                     SetIsLexical(expression, rule.Attr(Semantic).IsLexical);
                 }

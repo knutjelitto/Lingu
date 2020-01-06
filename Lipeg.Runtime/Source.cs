@@ -118,7 +118,7 @@ namespace Lipeg.Runtime
         public string GetText(int start, int length)
         {
             var end = Math.Min(Length, start + length);
-            return new string(Content.AsSpan(start, Length - end));
+            return new string(Content.AsSpan(start, end - start));
         }
 
         private List<int> FindLines()

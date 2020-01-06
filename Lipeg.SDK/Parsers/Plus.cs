@@ -12,17 +12,17 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
             var nodes = new List<INode>();
-            var current = cursor;
+            var next = context;
             while (true)
             {
-                var result = Parser.Parse(current);
-                if (!result.IsFail)
+                var result = Parser.Parse(next);
+                if (result.IsSuccess)
                 {
-                    nodes.Add(result.Node);
-                    current = result.Next;
+                    nodes.AddRange(result.Nodes);
+                    next = result.Next;
                 }
                 else
                 {
@@ -32,9 +32,12 @@ namespace Lipeg.SDK.Parsers
 
             if (nodes.Count > 0)
             {
-                return Result.Success(current, InternalNode.From(Location.From(cursor, current), NodeSymbols.Plus, nodes));
+                var location = Location.From(context, next);
+                var node = NodeList.From(location, NodeSymbols.Plus, nodes.ToArray());
+                return Result.Success(location, next, node);
             }
-            return Result.Fail(cursor);
+
+            return Result.Fail(context);
         }
     }
 }

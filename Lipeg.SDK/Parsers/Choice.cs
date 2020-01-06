@@ -14,18 +14,18 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
             foreach (var parser in Parsers)
             {
-                var result = parser.Parse(cursor);
+                var result = parser.Parse(context);
                 if (result.IsSuccess)
                 {
                     return result;
                 }
             }
 
-            return Result.Fail(cursor);
+            return Result.Fail(context);
         }
 
         public override void Dump(int level, IWriter writer)

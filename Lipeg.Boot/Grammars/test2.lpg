@@ -1,9 +1,7 @@
 ﻿grammar lipeg
 {
-    lexical
+    rules
     {
-        string <=
-            ,'\'' character* ,'\''
-            ;
+        x <= 'y';
     }
 }

@@ -46,7 +46,7 @@ namespace Lipeg.SDK.Output
             }
         }
 
-        public void Indend(string head, Action body)
+        public void Indent(string head, Action body)
         {
             if (body == null) throw new ArgumentNullException(nameof(body));
 

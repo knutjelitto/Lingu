@@ -33,9 +33,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
-    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
-  </ItemGroup>
-
 </Project>

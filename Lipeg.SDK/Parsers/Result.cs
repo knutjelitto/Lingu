@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 using Lipeg.Runtime;
 
@@ -8,56 +8,52 @@ namespace Lipeg.SDK.Parsers
 {
     public class Result : IResult
     {
-        private Result(ICursor next, bool isFail)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
+        public static Result? FarthestFail = null;
+
+        private Result(ILocated located, IContext next, bool isSuccess, IEnumerable<INode> nodes)
         {
+            Location = located.Location;
             Next = next;
-            IsFail = isFail;
+            IsSuccess = isSuccess;
+            Nodes = nodes.ToList();
         }
 
-        public ICursor Next { get; }
+        public ILocation Location { get; }
+        public IContext Next { get; }
+        public bool IsSuccess { get; }
 
-        public bool IsFail { get; }
-        public bool IsDrop { get; private set; }
-        public bool IsLift { get; private set; }
-        public bool IsFuse { get; private set; }
-
-        public virtual INode Node => throw new InvalidOperationException();
-        public virtual void SetNode(INode node) => throw new InvalidOperationException();
+        public IReadOnlyList<INode> Nodes { get; }
 
 
-        public static IResult Fail(ICursor next)
+        public static IResult Fail(ILocated located, IContext next)
         {
-            return new FailResult(next);
+            if (located == null) throw new InternalNullException();
+            return new FailResult(located, next);
         }
 
-        public static IResult Success(ICursor next, INode node)
+        public static IResult Fail(IContext context)
         {
-            return new SuccessResult(next, node);
+            return new FailResult(Runtime.Location.From(context, context), context);
         }
 
-        public IResult SetDrop()
+        public static IResult Success(ILocated located, IContext next, params INode[] nodes)
         {
-            IsDrop = true;
-            return this;
-        }
-
-        public IResult SetFuse()
-        {
-            IsFuse = true;
-            return this;
-        }
-
-        public IResult SetLift()
-        {
-            IsLift = true;
-            return this;
+            return new SuccessResult(located, next, nodes);
         }
 
         private class FailResult : Result, IFail
         {
-            public FailResult(ICursor next)
-                : base(next, true)
+            private static IEnumerable<INode> Empty = Enumerable.Empty<INode>();
+
+            public FailResult(ILocated located, IContext next)
+                : base(located, next, false, Empty)
             {
+                if (FarthestFail == null || located.Location.Start > FarthestFail.Location.Start)
+                {
+                    FarthestFail = this;
+                }
             }
 
             public override string ToString()
@@ -68,20 +64,14 @@ namespace Lipeg.SDK.Parsers
 
         private class SuccessResult : Result, ISuccess
         {
-            private INode node;
-
-            public SuccessResult(ICursor next, INode node)
-                : base(next, false)
+            public SuccessResult(ILocated located, IContext next, IEnumerable<INode> nodes)
+                : base(located, next, true, nodes)
             {
-                this.node = node;
             }
-
-            public override INode Node => this.node;
-            public override void SetNode(INode node_) => this.node = node_;
-
             public override string ToString()
             {
-                return $"[OK/{Node}/{Next}]";
+                var nodes = string.Join(",", Nodes);
+                return $"[OK/({nodes})/{Next}]";
             }
         }
     }

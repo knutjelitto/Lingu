@@ -30,8 +30,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
-  </ItemGroup>
-
 </Project>

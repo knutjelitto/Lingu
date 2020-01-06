@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Lipeg.Runtime
+﻿namespace Lipeg.Runtime
 {
-    public interface ICursor
+    public interface IContext
     {
         ISource Source { get; }
         int Offset { get; }
-        ICursor Advance(int count);
+        IContext Advance(int count);
         int Current => Source[Offset];
         bool AtEnd => Source.AtEnd(Offset);
 

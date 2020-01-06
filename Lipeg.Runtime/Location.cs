@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Lipeg.Runtime
@@ -24,12 +25,13 @@ namespace Lipeg.Runtime
             return new Location(start.Source, start.Start, end.End);
         }
 
-        public static ILocation From(ICursor start, ICursor end)
+        public static ILocation From(IContext start, IContext end)
         {
+            Debug.Assert(start.Source == end.Source);
             return new Location(start.Source, start.Offset, end.Offset);
         }
 
-        public static ILocation From(ICursor both)
+        public static ILocation From(IContext both)
         {
             return new Location(both.Source, both.Offset, both.Offset);
         }

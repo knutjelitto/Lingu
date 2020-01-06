@@ -25,8 +25,8 @@ namespace Lipeg.Boot
             var loc = Loc(start, end);
 
             return children.Length == 0
-                ? LeafNode.From(loc, name)
-                : InternalNode.From(loc, name, children);
+                ? Leaf.From(loc, name)
+                : NodeList.From(loc, name, children);
         }
 
         /// <summary>
@@ -49,18 +49,18 @@ namespace Lipeg.Boot
             }
 
             return children.Length == 0
-                ? LeafNode.From(loc, name)
-                : InternalNode.From(loc, name, childs);
+                ? Leaf.From(loc, name)
+                : NodeList.From(loc, name, childs);
         }
 
         protected INode N(Cursor start, Cursor end, string name, string value)
         {
-            return LeafNode.From(Loc(start, end), name, value);
+            return Leaf.From(Loc(start, end), name, value);
         }
 
         protected INode NP(Cursor start, Cursor end, IList<INode> children)
         {
-            return InternalNode.From(Loc(start, end), "+", children.ToArray());
+            return NodeList.From(Loc(start, end), "+", children.ToArray());
         }
 
         protected static string Flat(IList<string> children)
@@ -70,7 +70,7 @@ namespace Lipeg.Boot
 
         protected INode NS(Cursor start, Cursor end, IList<INode> children)
         {
-            return InternalNode.From(Loc(start, end), "*", children.ToArray());
+            return NodeList.From(Loc(start, end), "*", children.ToArray());
         }
 
         protected static string NO(IList<string> children)

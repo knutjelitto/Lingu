@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using Lingu.Tree;
+
 using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
@@ -30,7 +30,7 @@ namespace Lipeg.Boot
             var rules = new List<IRule>();
             var lexical = new List<IRule>();
 
-            foreach (var content in node)
+            foreach (var content in node.Children)
             {
                 switch (content.Name)
                 {
@@ -53,24 +53,24 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "options");
 
-            return node.Select(Option);
+            return node.Children.Select(Option);
         }
 
         private Option Option(INode node)
         {
-            return SDK.Tree.Option.From(Identifier(node[0]), QualifiedIdentifier(node[1]));
+            return SDK.Tree.Option.From(Identifier(node[0]), OptionValue.From(QualifiedIdentifier(node[1])));
         }
 
         private Identifier Identifier(INode node)
         {
-            return SDK.Tree.Identifier.From(node, ((ILeafNode) node).Value);
+            return SDK.Tree.Identifier.From(node, ((ILeaf) node).Value);
         }
 
         private Identifier QualifiedIdentifier(INode node)
         {
             Debug.Assert(node.Name == "qualifiedIdentifier");
 
-            var identifiers = node.Select(Identifier).ToPlusList();
+            var identifiers = node.Children.Select(Identifier).ToPlusList();
 
             return SDK.Tree.Identifier.From(node, identifiers);
         }
@@ -79,7 +79,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "rules" || node.Name == "lexical");
 
-            return node.Select(Rule);
+            return node.Children.Select(Rule);
         }
 
         private IRule Rule(INode node)
@@ -94,16 +94,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "choice");
 
-            var choices = node.Select(Sequence).ToPlusList();
-
-#if false
-            if (choices.Count == 1)
-            {
-                return choices[0];
-            }
-
-            Debug.Assert(choices.Count > 1);
-#endif
+            var choices = node.Children.Select(Sequence).ToPlusList();
 
             return ChoiceExpression.From(node, choices);
         }
@@ -112,16 +103,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var prefixes = node.Select(Prefix).ToPlusList();
-
-#if false
-            if (prefixes.Count == 1)
-            {
-                return prefixes[0];
-            }
-
-            Debug.Assert(prefixes.Count > 1);
-#endif
+            var prefixes = node.Children.Select(Prefix).ToPlusList();
 
             return SequenceExpression.From(node, prefixes);
         }
@@ -211,7 +193,7 @@ namespace Lipeg.Boot
             Debug.Assert(node.Name == "singleString" || node.Name == "doubleString");
             //Debug.Assert(node[0].Name == "*");
 
-            var characters = string.Join(string.Empty, node.Select(c => Character(c)));
+            var characters = string.Join(string.Empty, node.Children.Select(c => Character(c)));
 
             return SDK.Tree.StringLiteralExpression.From(node, characters);
         }
@@ -221,7 +203,7 @@ namespace Lipeg.Boot
             Debug.Assert(node.Name == "class" && node.Count == 2);
 
             var invert = node[0].Count == 1;
-            var ranges = node[1].Select(SingleOrRange).ToArray();
+            var ranges = node[1].Children.Select(SingleOrRange).ToArray();
 
             return ClassExpression.From(node, invert, ranges);
         }
@@ -252,7 +234,7 @@ namespace Lipeg.Boot
 
         private string Character(INode node)
         {
-            var leaf = (ILeafNode) node;
+            var leaf = (ILeaf) node;
 
             return leaf.Name switch
             {

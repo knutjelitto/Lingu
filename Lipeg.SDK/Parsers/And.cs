@@ -14,14 +14,17 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
-            var result = Parser.Parse(cursor);
+            var result = Parser.Parse(context);
+
             if (result.IsSuccess)
             {
-                return Result.Success(cursor, LeafNode.From(Location.From(cursor), NodeSymbols.And));
+                // drop parse result
+                return Result.Success(result, context);
             }
-            return Result.Fail(cursor);
+
+            return result;
         }
     }
 }

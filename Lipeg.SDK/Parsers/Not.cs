@@ -3,6 +3,7 @@ using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Lipeg.SDK.Parsers
@@ -14,14 +15,25 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
-            var result = Parser.Parse(cursor);
-            if (result.IsFail)
+            if (context == null) throw new InternalNullException();
+
+            if (context.StartsWith("'"))
             {
-                return Result.Success(cursor, LeafNode.From(Location.From(cursor), NodeSymbols.Not));
+                Debug.Assert(true);
             }
-            return Result.Fail(cursor);
+
+            var result = Parser.Parse(context);
+
+
+            if (!result.IsSuccess)
+            {
+                // drop parse result
+                return Result.Success(result, context);
+            }
+
+            return Result.Fail(context);
         }
     }
 }

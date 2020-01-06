@@ -20,17 +20,18 @@ namespace Lipeg.SDK.Parsers
         public int Min { get; }
         public int Max { get; }
 
-        public IResult Parse(ICursor cursor)
+        public IResult Parse(IContext context)
         {
-            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
-            if (!cursor.AtEnd && Min <= cursor.Current && cursor.Current <= Max)
+            if (!context.AtEnd && Min <= context.Current && context.Current <= Max)
             {
-                var next = cursor.Advance(1);
-                var location = Location.From(cursor, next);
-                return Result.Success(next, LeafNode.From(location, NodeSymbols.CharacterLiteral, ((char)cursor.Current).ToString(CultureInfo.InvariantCulture)));
+                var next = context.Advance(1);
+                var location = Location.From(context, next);
+                var node = Leaf.From(location, NodeSymbols.CharacterLiteral, ((char)context.Current).ToString(CultureInfo.InvariantCulture));
+                return Result.Success(location, next, node);
             }
-            return Result.Fail(cursor);
+            return Result.Fail(context);
         }
 
         public void Dump(int level, IWriter writer)

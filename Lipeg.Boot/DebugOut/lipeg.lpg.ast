@@ -13,8 +13,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         start <=
-            grammar eof
-            ;
+            grammar eof;
         
         // is used
         // is reachable
@@ -22,8 +21,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         grammar <=
-            ,(_ 'grammar') identifier ,(_ '{') ^(options / syntax / lexical)* ,(_ '}')
-            ;
+            ,(_ 'grammar') identifier ,(_ '{') ^(options / syntax / lexical)* ,(_ '}');
         
         // is used
         // is reachable
@@ -31,8 +29,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         options <=
-            ,(_ 'options') ,(_ '{') ^option* ,(_ '}')
-            ;
+            ,(_ 'options') ,(_ '{') ^option* ,(_ '}');
         
         // is used
         // is reachable
@@ -40,8 +37,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         option <=
-            identifier ,(_ '=') option-value ,(_ ';')
-            ;
+            identifier ,(_ '=') option-value ,(_ ';');
         
         // is used
         // is reachable
@@ -49,8 +45,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         option-value <=
-            qualified-identifier
-            ;
+            qualified-identifier;
         
         // is used
         // is reachable
@@ -58,8 +53,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         qualified-identifier <=
-            identifier ^(,(_ '.') identifier)*
-            ;
+            identifier ^(,(_ '.') identifier)*;
         
         // is used
         // is reachable
@@ -67,8 +61,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         syntax <=
-            ,(_ 'rules') ,(_ '{') rules ,(_ ';')? ,(_ '}')
-            ;
+            ,(_ 'rules') ,(_ '{') ^rules ,(_ ';')? ,(_ '}');
         
         // is used
         // is reachable
@@ -76,8 +69,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         lexical <=
-            ,(_ 'lexical') ,(_ '{') rules ,(_ ';')? ,(_ '}')
-            ;
+            ,(_ 'lexical') ,(_ '{') ^rules ,(_ ';')? ,(_ '}');
         
         // is used
         // is reachable
@@ -85,8 +77,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         rules <=
-            ^(rule ^(,(_ ';') rule)*)?
-            ;
+            ^(rule ^(,(_ ';') rule)*)?;
         
         // is used
         // is reachable
@@ -94,8 +85,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         rule <=
-            identifier ,(_ '<=') ,(_ '/')? expression
-            ;
+            identifier ,(_ '<=') ,(_ '/')? ^expression;
         
         // is used
         // is reachable
@@ -103,7 +93,8 @@ grammar lipeg
         // ! is lexical
         // is syntax
         expression <=
-            ^choice
+            / choice
+            / sequence
             ;
         
         // is used
@@ -112,8 +103,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         choice <=
-            sequence ^(,(_ '/') sequence)*
-            ;
+            sequence ^(,(_ '/') sequence)+;
         
         // is used
         // is reachable
@@ -121,8 +111,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         sequence <=
-            ^prefix+
-            ;
+            ^^prefix+;
         
         // is used
         // is reachable
@@ -135,7 +124,7 @@ grammar lipeg
             / prefix.drop
             / prefix.fuse
             / prefix.lift
-            / suffix
+            / ^suffix
             ;
         
         // is used
@@ -147,7 +136,7 @@ grammar lipeg
             / suffix.zero-or-one
             / suffix.zero-or-more
             / suffix.one-or-more
-            / primary
+            / ^primary
             ;
         
         // is used
@@ -157,12 +146,13 @@ grammar lipeg
         // is syntax
         primary <=
             / identifier
+            / verbatim-string
             / string
             / character-class
             / any
             / epsilon
             / inline
-            / ,(_ '(') expression ,(_ ')')
+            / ,(_ '(') ^expression ,(_ ')')
             ;
         
         // is used
@@ -171,8 +161,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         inline <=
-            ,(_ '(') ^rule ,(_ ')')
-            ;
+            ,(_ '(') ^rule ,(_ ')');
         
         // is used
         // is reachable
@@ -180,8 +169,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         any <=
-            ,(_ '.')
-            ;
+            ,(_ '.');
         
         // is used
         // is reachable
@@ -199,8 +187,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         eof <=
-            !(_ .)
-            ;
+            !(_ .);
         
         // is used
         // is reachable
@@ -208,8 +195,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         prefix.and <=
-            ,(_ '&') suffix
-            ;
+            ,(_ '&') ^suffix;
         
         // is used
         // is reachable
@@ -217,8 +203,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         prefix.not <=
-            ,(_ '!') suffix
-            ;
+            ,(_ '!') ^suffix;
         
         // is used
         // is reachable
@@ -226,8 +211,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         prefix.drop <=
-            ,(_ ',') suffix
-            ;
+            ,(_ ',') ^suffix;
         
         // is used
         // is reachable
@@ -235,8 +219,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         prefix.fuse <=
-            ,(_ '~') suffix
-            ;
+            ,(_ '~') ^suffix;
         
         // is used
         // is reachable
@@ -244,8 +227,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         prefix.lift <=
-            ,(_ '^') suffix
-            ;
+            ,(_ '^') ^suffix;
         
         // is used
         // is reachable
@@ -253,8 +235,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         suffix.zero-or-one <=
-            primary ,(_ '?')
-            ;
+            ^primary ,(_ '?');
         
         // is used
         // is reachable
@@ -262,8 +243,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         suffix.zero-or-more <=
-            primary ,(_ '*')
-            ;
+            ^primary ,(_ '*');
         
         // is used
         // is reachable
@@ -271,8 +251,7 @@ grammar lipeg
         // ! is lexical
         // is syntax
         suffix.one-or-more <=
-            primary ,(_ '+')
-            ;
+            ^primary ,(_ '+');
     }
     lexical
     {
@@ -282,8 +261,8 @@ grammar lipeg
         // is lexical
         // ! is syntax
         identifier <=
-            / ^~(letter ^letter-or-digit* ^('-' ^letter-or-digit+)*)
-            / ^~'_'
+            / ~(letter ^letter-or-digit* ^('-' ^letter-or-digit+)*)
+            / ~'_'
             ;
         
         // is used
@@ -292,8 +271,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         letter <=
-            [a-zA-Z]
-            ;
+            [a-zA-Z];
         
         // is used
         // is reachable
@@ -301,8 +279,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         letter-or-digit <=
-            [a-zA-Z0-9]
-            ;
+            [a-zA-Z0-9];
         
         // is used
         // is reachable
@@ -310,8 +287,23 @@ grammar lipeg
         // is lexical
         // ! is syntax
         hex-digit <=
-            [0-9a-fA-F]
-            ;
+            [0-9a-fA-F];
+        
+        // is used
+        // is reachable
+        // ! is nullable
+        // is lexical
+        // ! is syntax
+        verbatim-string <=
+            ~(,'\'' ^verbatim-character* ,'\'');
+        
+        // is used
+        // is reachable
+        // ! is nullable
+        // is lexical
+        // ! is syntax
+        verbatim-character <=
+            !('\'' / '\\' / eol-char) .;
         
         // is used
         // is reachable
@@ -319,8 +311,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         string <=
-            ,'\'' character* ,'\''
-            ;
+            ,'\'' ^character* ,'\'';
         
         // is used
         // is reachable
@@ -329,8 +320,8 @@ grammar lipeg
         // ! is syntax
         character <=
             / !('\'' / '\\' / eol-char) .
-            / any-escape
-            / unicode-escape
+            / escape
+            / ^unicode-escape
             / byte-escape
             ;
         
@@ -339,9 +330,8 @@ grammar lipeg
         // ! is nullable
         // is lexical
         // ! is syntax
-        any-escape <=
-            ,'\\' [0abefnrtv\-\]\\\']
-            ;
+        escape <=
+            ~(,'\\' [0abefnrtv\-\]\\\']);
         
         // is used
         // is reachable
@@ -349,8 +339,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         unicode-escape <=
-            ,('\\u{' _) unicode-number ,_ ^(unicode-number ,_)* ,'}'
-            ;
+            ,('\\u{' _) unicode-number ,_ ^(unicode-number ,_)* ,'}';
         
         // is used
         // is reachable
@@ -358,8 +347,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         unicode-number <=
-            hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?
-            ;
+            ~(hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?);
         
         // is used
         // is reachable
@@ -367,8 +355,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         byte-escape <=
-            ,('\\x{' _) byte-number ,_ ^(byte-number ,_)* ,'}'
-            ;
+            ,('\\x{' _) byte-number ,_ ^(byte-number ,_)* ,'}';
         
         // is used
         // is reachable
@@ -376,8 +363,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         byte-number <=
-            hex-digit ^hex-digit?
-            ;
+            hex-digit ^hex-digit?;
         
         // is used
         // is reachable
@@ -385,8 +371,15 @@ grammar lipeg
         // is lexical
         // ! is syntax
         character-class <=
-            ,'[' '^'? class-part* ,']'
-            ;
+            ,'[' not ^^class-part* ,']';
+        
+        // is used
+        // is reachable
+        // ! is nullable
+        // is lexical
+        // ! is syntax
+        not <=
+            ^'^'?;
         
         // is used
         // is reachable
@@ -394,8 +387,8 @@ grammar lipeg
         // is lexical
         // ! is syntax
         class-part <=
-            / class-range
-            / class-char
+            / range
+            / ^class-char
             ;
         
         // is used
@@ -403,9 +396,8 @@ grammar lipeg
         // ! is nullable
         // is lexical
         // ! is syntax
-        class-range <=
-            class-char ,'-' class-char
-            ;
+        range <=
+            ^class-char ,'-' ^class-char;
         
         // is used
         // is reachable
@@ -413,9 +405,9 @@ grammar lipeg
         // is lexical
         // ! is syntax
         class-char <=
-            / !(']' / '\\' / eol-char) .
-            / any-escape
-            / unicode-escape
+            / class-verbatim
+            / escape
+            / ^unicode-escape
             / byte-escape
             ;
         
@@ -424,9 +416,16 @@ grammar lipeg
         // ! is nullable
         // is lexical
         // ! is syntax
+        class-verbatim <=
+            ~(!(']' / '\\' / eol-char) .);
+        
+        // is used
+        // is reachable
+        // ! is nullable
+        // is lexical
+        // ! is syntax
         _ <=
-            (whitespace / newline / comment)*
-            ;
+            (whitespace / newline / comment)*;
         
         // is used
         // is reachable
@@ -444,8 +443,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         single-line-comment <=
-            '//' (!eol-char .)*
-            ;
+            '//' (!eol-char .)*;
         
         // is used
         // is reachable
@@ -453,8 +451,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         multi-line-comment <=
-            '/*' (!'*/' .)* '*/'
-            ;
+            '/*' (!'*/' .)* '*/';
         
         // is used
         // is reachable
@@ -475,8 +472,7 @@ grammar lipeg
         // is lexical
         // ! is syntax
         eol-char <=
-            [\n\r\u{2028}\u{2029}]
-            ;
+            [\n\r\u{2028}\u{2029}];
         
         // is used
         // is reachable
@@ -484,7 +480,6 @@ grammar lipeg
         // is lexical
         // ! is syntax
         whitespace <=
-            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
-            ;
+            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}];
     }
 }

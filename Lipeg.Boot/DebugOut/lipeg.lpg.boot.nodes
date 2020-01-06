@@ -1,1974 +1,664 @@
-<sequence> [grammar, eof]
-    grammar [identifier, <sequence>, <sequence>, <sequence>]
-        identifier [<~>]
-            <~>='lipeg'
-        <sequence> [options]
-            options [option, option]
-                option [identifier, option-value]
-                    identifier [<~>]
-                        <~>='start'
-                    option-value [qualified-identifier]
-                        qualified-identifier [identifier]
-                            identifier [<~>]
-                                <~>='start'
-                option [identifier, option-value]
-                    identifier [<~>]
-                        <~>='spacing'
-                    option-value [qualified-identifier]
-                        qualified-identifier [identifier]
-                            identifier [<~>]
-                                <~>='_'
-        <sequence> [syntax]
-            syntax [rules]
-                rules [<sequence>]
-                    <sequence> [rule, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
-                        rule [identifier, expression]
-                            identifier [<~>]
-                                <~>='start'
-                            expression [sequence]
-                                sequence [prefix, prefix]
-                                    prefix [suffix]
-                                        suffix [primary]
-                                            primary [identifier]
-                                                identifier [<~>]
-                                                    <~>='grammar'
-                                    prefix [suffix]
-                                        suffix [primary]
-                                            primary [identifier]
-                                                identifier [<~>]
-                                                    <~>='eof'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='grammar'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character, character, character, character, character, character, character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='g'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='r'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='a'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='m'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='m'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='a'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='r'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='identifier'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='{'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-more]
-                                                    suffix.zero-or-more [primary]
-                                                        primary [expression]
-                                                            expression [sequence, <sequence>, <sequence>]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='options'
-                                                                <sequence> [sequence]
-                                                                    sequence [prefix]
-                                                                        prefix [suffix]
-                                                                            suffix [primary]
-                                                                                primary [identifier]
-                                                                                    identifier [<~>]
-                                                                                        <~>='syntax'
-                                                                <sequence> [sequence]
-                                                                    sequence [prefix]
-                                                                        prefix [suffix]
-                                                                            suffix [primary]
-                                                                                primary [identifier]
-                                                                                    identifier [<~>]
-                                                                                        <~>='lexical'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='options'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character, character, character, character, character, character, character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='o'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='p'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='t'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='i'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='o'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='n'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='s'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='{'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-more]
-                                                    suffix.zero-or-more [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='option'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='option'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='identifier'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='='
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='option-value'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>=';'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='option-value'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='qualified-identifier'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='qualified-identifier'
-                                expression [sequence]
-                                    sequence [prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='identifier'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-more]
-                                                    suffix.zero-or-more [primary]
-                                                        primary [expression]
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='.'
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='identifier'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='syntax'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character, character, character, character, character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='r'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='u'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='l'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='e'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='s'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='{'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='rules'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [string]
-                                                            string [<*>]
-                                                                <*> [character]
-                                                                    character [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>=';'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='lexical'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character, character, character, character, character, character, character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='l'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='e'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='x'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='i'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='c'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='a'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='l'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='{'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='rules'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [string]
-                                                            string [<*>]
-                                                                <*> [character]
-                                                                    character [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>=';'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='rules'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [expression]
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='rule'
-                                                                    prefix [prefix.lift]
-                                                                        prefix.lift [suffix]
-                                                                            suffix [suffix.zero-or-more]
-                                                                                suffix.zero-or-more [primary]
-                                                                                    primary [expression]
-                                                                                        expression [sequence]
-                                                                                            sequence [prefix, prefix]
-                                                                                                prefix [prefix.drop]
-                                                                                                    prefix.drop [suffix]
-                                                                                                        suffix [primary]
-                                                                                                            primary [string]
-                                                                                                                string [<*>]
-                                                                                                                    <*> [character]
-                                                                                                                        character [<not>, <any>]
-                                                                                                                            <not>=''
-                                                                                                                            <any>=';'
-                                                                                                prefix [suffix]
-                                                                                                    suffix [primary]
-                                                                                                        primary [identifier]
-                                                                                                            identifier [<~>]
-                                                                                                                <~>='rule'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='rule'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='identifier'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character, character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='<'
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='='
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [string]
-                                                            string [<*>]
-                                                                <*> [character]
-                                                                    character [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='/'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='expression'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='expression'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='choice'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='choice'
-                                expression [sequence]
-                                    sequence [prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='sequence'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-more]
-                                                    suffix.zero-or-more [primary]
-                                                        primary [expression]
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='/'
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='sequence'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='sequence'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.one-or-more]
-                                                    suffix.one-or-more [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='prefix'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='prefix'
-                                expression [sequence, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [inline]
-                                                    inline [identifier, expression]
-                                                        identifier [<~>]
-                                                            <~>='and'
-                                                        expression [sequence]
-                                                            sequence [prefix, prefix]
-                                                                prefix [prefix.drop]
-                                                                    prefix.drop [suffix]
-                                                                        suffix [primary]
-                                                                            primary [string]
-                                                                                string [<*>]
-                                                                                    <*> [character]
-                                                                                        character [<not>, <any>]
-                                                                                            <not>=''
-                                                                                            <any>='&'
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [identifier]
-                                                                            identifier [<~>]
-                                                                                <~>='suffix'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [inline]
-                                                        inline [identifier, expression]
-                                                            identifier [<~>]
-                                                                <~>='not'
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='!'
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='suffix'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [inline]
-                                                        inline [identifier, expression]
-                                                            identifier [<~>]
-                                                                <~>='drop'
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>=','
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='suffix'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [inline]
-                                                        inline [identifier, expression]
-                                                            identifier [<~>]
-                                                                <~>='fuse'
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='~'
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='suffix'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [inline]
-                                                        inline [identifier, expression]
-                                                            identifier [<~>]
-                                                                <~>='lift'
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='^'
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='suffix'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='suffix'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='suffix'
-                                expression [sequence, <sequence>, <sequence>, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [inline]
-                                                    inline [identifier, expression]
-                                                        identifier [<~>]
-                                                            <~>='zero-or-one'
-                                                        expression [sequence]
-                                                            sequence [prefix, prefix]
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [identifier]
-                                                                            identifier [<~>]
-                                                                                <~>='primary'
-                                                                prefix [prefix.drop]
-                                                                    prefix.drop [suffix]
-                                                                        suffix [primary]
-                                                                            primary [string]
-                                                                                string [<*>]
-                                                                                    <*> [character]
-                                                                                        character [<not>, <any>]
-                                                                                            <not>=''
-                                                                                            <any>='?'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [inline]
-                                                        inline [identifier, expression]
-                                                            identifier [<~>]
-                                                                <~>='zero-or-more'
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='primary'
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='*'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [inline]
-                                                        inline [identifier, expression]
-                                                            identifier [<~>]
-                                                                <~>='one-or-more'
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='primary'
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [string]
-                                                                                    string [<*>]
-                                                                                        <*> [character]
-                                                                                            character [<not>, <any>]
-                                                                                                <not>=''
-                                                                                                <any>='+'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='primary'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='primary'
-                                expression [sequence, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='identifier'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='string'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='character-class'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='any'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='epsilon'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='inline'
-                                    <sequence> [sequence]
-                                        sequence [prefix, prefix, prefix]
-                                            prefix [prefix.drop]
-                                                prefix.drop [suffix]
-                                                    suffix [primary]
-                                                        primary [string]
-                                                            string [<*>]
-                                                                <*> [character]
-                                                                    character [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='('
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='expression'
-                                            prefix [prefix.drop]
-                                                prefix.drop [suffix]
-                                                    suffix [primary]
-                                                        primary [string]
-                                                            string [<*>]
-                                                                <*> [character]
-                                                                    character [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>=')'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='inline'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='('
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='rule'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>=')'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='any'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='.'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='epsilon'
-                                expression [sequence, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [string]
-                                                    string [<*>]
-                                                        <*> [character, character, character, character, character, character, character]
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='e'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='p'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='s'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='i'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='l'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='o'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='n'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='\u{03B5}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='eof'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [prefix.not]
-                                            prefix.not [suffix]
-                                                suffix [primary]
-                                                    primary [any]
-                                                        any []
-        <sequence> [lexical]
-            lexical [rules]
-                rules [<sequence>]
-                    <sequence> [rule, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>, <sequence>]
-                        rule [identifier, expression]
-                            identifier [<~>]
-                                <~>='identifier'
-                            expression [sequence, <sequence>]
-                                sequence [prefix]
-                                    prefix [prefix.lift]
-                                        prefix.lift [suffix]
-                                            suffix [primary]
-                                                primary [expression]
-                                                    expression [sequence]
-                                                        sequence [prefix]
-                                                            prefix [prefix.fuse]
-                                                                prefix.fuse [suffix]
-                                                                    suffix [primary]
-                                                                        primary [expression]
-                                                                            expression [sequence]
-                                                                                sequence [prefix, prefix, prefix]
-                                                                                    prefix [suffix]
-                                                                                        suffix [primary]
-                                                                                            primary [identifier]
-                                                                                                identifier [<~>]
-                                                                                                    <~>='letter'
-                                                                                    prefix [prefix.lift]
-                                                                                        prefix.lift [suffix]
-                                                                                            suffix [suffix.zero-or-more]
-                                                                                                suffix.zero-or-more [primary]
-                                                                                                    primary [identifier]
-                                                                                                        identifier [<~>]
-                                                                                                            <~>='letter-or-digit'
-                                                                                    prefix [prefix.lift]
-                                                                                        prefix.lift [suffix]
-                                                                                            suffix [suffix.zero-or-more]
-                                                                                                suffix.zero-or-more [primary]
-                                                                                                    primary [expression]
-                                                                                                        expression [sequence]
-                                                                                                            sequence [prefix, prefix]
-                                                                                                                prefix [suffix]
-                                                                                                                    suffix [primary]
-                                                                                                                        primary [string]
-                                                                                                                            string [<*>]
-                                                                                                                                <*> [character]
-                                                                                                                                    character [<not>, <any>]
-                                                                                                                                        <not>=''
-                                                                                                                                        <any>='-'
-                                                                                                                prefix [prefix.lift]
-                                                                                                                    prefix.lift [suffix]
-                                                                                                                        suffix [suffix.one-or-more]
-                                                                                                                            suffix.one-or-more [primary]
-                                                                                                                                primary [identifier]
-                                                                                                                                    identifier [<~>]
-                                                                                                                                        <~>='letter-or-digit'
-                                <sequence> [sequence]
-                                    sequence [prefix]
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [primary]
-                                                    primary [expression]
-                                                        expression [sequence]
-                                                            sequence [prefix]
-                                                                prefix [prefix.fuse]
-                                                                    prefix.fuse [suffix]
-                                                                        suffix [primary]
-                                                                            primary [expression]
-                                                                                expression [sequence]
-                                                                                    sequence [prefix]
-                                                                                        prefix [suffix]
-                                                                                            suffix [primary]
-                                                                                                primary [string]
-                                                                                                    string [<*>]
-                                                                                                        <*> [character]
-                                                                                                            character [<not>, <any>]
-                                                                                                                <not>=''
-                                                                                                                <any>='_'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='letter'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [character-class]
-                                                    character-class [<?>, <*>]
-                                                        <?> []
-                                                        <*> [class-part, class-part]
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='a'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='z'
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='A'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='Z'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='letter-or-digit'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [character-class]
-                                                    character-class [<?>, <*>]
-                                                        <?> []
-                                                        <*> [class-part, class-part, class-part]
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='a'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='z'
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='A'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='Z'
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='0'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='9'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='hex-digit'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [character-class]
-                                                    character-class [<?>, <*>]
-                                                        <?> []
-                                                        <*> [class-part, class-part, class-part]
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='0'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='9'
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='a'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='f'
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='A'
-                                                                    class-char [<not>, <any>]
-                                                                        <not>=''
-                                                                        <any>='F'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='string'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='\''
-                                        prefix [suffix]
-                                            suffix [suffix.zero-or-more]
-                                                suffix.zero-or-more [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='character'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='\''
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='character'
-                                expression [sequence, <sequence>, <sequence>, <sequence>]
-                                    sequence [prefix, prefix]
-                                        prefix [prefix.not]
-                                            prefix.not [suffix]
-                                                suffix [primary]
-                                                    primary [expression]
-                                                        expression [sequence, <sequence>, <sequence>]
-                                                            sequence [prefix]
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [string]
-                                                                            string [<*>]
-                                                                                <*> [character]
-                                                                                    character [any-escape]
-                                                                                        any-escape [<any>]
-                                                                                            <any>='\''
-                                                            <sequence> [sequence]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [string]
-                                                                                string [<*>]
-                                                                                    <*> [character]
-                                                                                        character [any-escape]
-                                                                                            any-escape [<any>]
-                                                                                                <any>='\\'
-                                                            <sequence> [sequence]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='eol-char'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [any]
-                                                    any []
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='any-escape'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='unicode-escape'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='byte-escape'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='any-escape'
-                                expression [sequence]
-                                    sequence [prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='\\'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [character-class]
-                                                    character-class [<?>, <*>]
-                                                        <?> []
-                                                        <*> [class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part]
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='0'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='a'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='b'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='e'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='f'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='n'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='r'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='t'
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='v'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='-'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>=']'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='\\'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='\''
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='unicode-escape'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [expression]
-                                                        expression [sequence]
-                                                            sequence [prefix, prefix]
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [string]
-                                                                            string [<*>]
-                                                                                <*> [character, character, character]
-                                                                                    character [any-escape]
-                                                                                        any-escape [<any>]
-                                                                                            <any>='\\'
-                                                                                    character [<not>, <any>]
-                                                                                        <not>=''
-                                                                                        <any>='u'
-                                                                                    character [<not>, <any>]
-                                                                                        <not>=''
-                                                                                        <any>='{'
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [identifier]
-                                                                            identifier [<~>]
-                                                                                <~>='_'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='unicode-number'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='_'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-more]
-                                                    suffix.zero-or-more [primary]
-                                                        primary [expression]
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='unicode-number'
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [identifier]
-                                                                                    identifier [<~>]
-                                                                                        <~>='_'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='unicode-number'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix, prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='hex-digit'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='hex-digit'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='hex-digit'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='hex-digit'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='hex-digit'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='hex-digit'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='byte-escape'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [expression]
-                                                        expression [sequence]
-                                                            sequence [prefix, prefix]
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [string]
-                                                                            string [<*>]
-                                                                                <*> [character, character, character]
-                                                                                    character [any-escape]
-                                                                                        any-escape [<any>]
-                                                                                            <any>='\\'
-                                                                                    character [<not>, <any>]
-                                                                                        <not>=''
-                                                                                        <any>='x'
-                                                                                    character [<not>, <any>]
-                                                                                        <not>=''
-                                                                                        <any>='{'
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [identifier]
-                                                                            identifier [<~>]
-                                                                                <~>='_'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='byte-number'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='_'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-more]
-                                                    suffix.zero-or-more [primary]
-                                                        primary [expression]
-                                                            expression [sequence]
-                                                                sequence [prefix, prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='byte-number'
-                                                                    prefix [prefix.drop]
-                                                                        prefix.drop [suffix]
-                                                                            suffix [primary]
-                                                                                primary [identifier]
-                                                                                    identifier [<~>]
-                                                                                        <~>='_'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='}'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='byte-number'
-                                expression [sequence]
-                                    sequence [prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='hex-digit'
-                                        prefix [prefix.lift]
-                                            prefix.lift [suffix]
-                                                suffix [suffix.zero-or-one]
-                                                    suffix.zero-or-one [primary]
-                                                        primary [identifier]
-                                                            identifier [<~>]
-                                                                <~>='hex-digit'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='character-class'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix, prefix]
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='['
-                                        prefix [suffix]
-                                            suffix [suffix.zero-or-one]
-                                                suffix.zero-or-one [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='^'
-                                        prefix [suffix]
-                                            suffix [suffix.zero-or-more]
-                                                suffix.zero-or-more [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='class-part'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>=']'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='class-part'
-                                expression [sequence, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='class-range'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='class-char'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='class-range'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='class-char'
-                                        prefix [prefix.drop]
-                                            prefix.drop [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>='-'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='class-char'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='class-char'
-                                expression [sequence, <sequence>, <sequence>, <sequence>]
-                                    sequence [prefix, prefix]
-                                        prefix [prefix.not]
-                                            prefix.not [suffix]
-                                                suffix [primary]
-                                                    primary [expression]
-                                                        expression [sequence, <sequence>, <sequence>]
-                                                            sequence [prefix]
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [string]
-                                                                            string [<*>]
-                                                                                <*> [character]
-                                                                                    character [<not>, <any>]
-                                                                                        <not>=''
-                                                                                        <any>=']'
-                                                            <sequence> [sequence]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [string]
-                                                                                string [<*>]
-                                                                                    <*> [character]
-                                                                                        character [any-escape]
-                                                                                            any-escape [<any>]
-                                                                                                <any>='\\'
-                                                            <sequence> [sequence]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='eol-char'
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [any]
-                                                    any []
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='any-escape'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='unicode-escape'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='byte-escape'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='_'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [suffix.zero-or-more]
-                                                suffix.zero-or-more [primary]
-                                                    primary [expression]
-                                                        expression [sequence, <sequence>, <sequence>]
-                                                            sequence [prefix]
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [identifier]
-                                                                            identifier [<~>]
-                                                                                <~>='whitespace'
-                                                            <sequence> [sequence]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='newline'
-                                                            <sequence> [sequence]
-                                                                sequence [prefix]
-                                                                    prefix [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='comment'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='comment'
-                                expression [sequence, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [identifier]
-                                                    identifier [<~>]
-                                                        <~>='single-line-comment'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [identifier]
-                                                        identifier [<~>]
-                                                            <~>='multi-line-comment'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='single-line-comment'
-                                expression [sequence]
-                                    sequence [prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [string]
-                                                    string [<*>]
-                                                        <*> [character, character]
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='/'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='/'
-                                        prefix [suffix]
-                                            suffix [suffix.zero-or-more]
-                                                suffix.zero-or-more [primary]
-                                                    primary [expression]
-                                                        expression [sequence]
-                                                            sequence [prefix, prefix]
-                                                                prefix [prefix.not]
-                                                                    prefix.not [suffix]
-                                                                        suffix [primary]
-                                                                            primary [identifier]
-                                                                                identifier [<~>]
-                                                                                    <~>='eol-char'
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [any]
-                                                                            any []
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='multi-line-comment'
-                                expression [sequence]
-                                    sequence [prefix, prefix, prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [string]
-                                                    string [<*>]
-                                                        <*> [character, character]
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='/'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='*'
-                                        prefix [suffix]
-                                            suffix [suffix.zero-or-more]
-                                                suffix.zero-or-more [primary]
-                                                    primary [expression]
-                                                        expression [sequence]
-                                                            sequence [prefix, prefix]
-                                                                prefix [prefix.not]
-                                                                    prefix.not [suffix]
-                                                                        suffix [primary]
-                                                                            primary [string]
-                                                                                string [<*>]
-                                                                                    <*> [character, character]
-                                                                                        character [<not>, <any>]
-                                                                                            <not>=''
-                                                                                            <any>='*'
-                                                                                        character [<not>, <any>]
-                                                                                            <not>=''
-                                                                                            <any>='/'
-                                                                prefix [suffix]
-                                                                    suffix [primary]
-                                                                        primary [any]
-                                                                            any []
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [string]
-                                                    string [<*>]
-                                                        <*> [character, character]
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='*'
-                                                            character [<not>, <any>]
-                                                                <not>=''
-                                                                <any>='/'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='newline'
-                                expression [sequence, <sequence>, <sequence>, <sequence>, <sequence>]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [string]
-                                                    string [<*>]
-                                                        <*> [character]
-                                                            character [any-escape]
-                                                                any-escape [<any>]
-                                                                    <any>='n'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character, character]
-                                                                character [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='r'
-                                                                character [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='n'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='r'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='8'
-                                    <sequence> [sequence]
-                                        sequence [prefix]
-                                            prefix [suffix]
-                                                suffix [primary]
-                                                    primary [string]
-                                                        string [<*>]
-                                                            <*> [character]
-                                                                character [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='9'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='eol-char'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [character-class]
-                                                    character-class [<?>, <*>]
-                                                        <?> []
-                                                        <*> [class-part, class-part, class-part, class-part]
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='n'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='r'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='8'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='9'
-                        <sequence> [rule]
-                            rule [identifier, expression]
-                                identifier [<~>]
-                                    <~>='whitespace'
-                                expression [sequence]
-                                    sequence [prefix]
-                                        prefix [suffix]
-                                            suffix [primary]
-                                                primary [character-class]
-                                                    character-class [<?>, <*>]
-                                                        <?> []
-                                                        <*> [class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part, class-part]
-                                                            class-part [class-char]
-                                                                class-char [<not>, <any>]
-                                                                    <not>=''
-                                                                    <any>=' '
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='t'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='v'
-                                                            class-part [class-char]
-                                                                class-char [any-escape]
-                                                                    any-escape [<any>]
-                                                                        <any>='f'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='A'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='F'
-                                                                            hex-digit [<character>]
-                                                                                <character>='E'
-                                                                            hex-digit [<character>]
-                                                                                <character>='F'
-                                                                            hex-digit [<character>]
-                                                                                <character>='F'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='1'
-                                                                            hex-digit [<character>]
-                                                                                <character>='6'
-                                                                            hex-digit [<character>]
-                                                                                <character>='8'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='1'
-                                                                            hex-digit [<character>]
-                                                                                <character>='8'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='E'
-                                                            class-part [class-range]
-                                                                class-range [class-char, class-char]
-                                                                    class-char [unicode-escape]
-                                                                        unicode-escape [unicode-number]
-                                                                            unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                                hex-digit [<character>]
-                                                                                    <character>='2'
-                                                                                hex-digit [<character>]
-                                                                                    <character>='0'
-                                                                                hex-digit [<character>]
-                                                                                    <character>='0'
-                                                                                hex-digit [<character>]
-                                                                                    <character>='0'
-                                                                    class-char [unicode-escape]
-                                                                        unicode-escape [unicode-number]
-                                                                            unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                                hex-digit [<character>]
-                                                                                    <character>='2'
-                                                                                hex-digit [<character>]
-                                                                                    <character>='0'
-                                                                                hex-digit [<character>]
-                                                                                    <character>='0'
-                                                                                hex-digit [<character>]
-                                                                                    <character>='A'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='F'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='2'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='5'
-                                                                            hex-digit [<character>]
-                                                                                <character>='F'
-                                                            class-part [class-char]
-                                                                class-char [unicode-escape]
-                                                                    unicode-escape [unicode-number]
-                                                                        unicode-number [hex-digit, hex-digit, hex-digit, hex-digit]
-                                                                            hex-digit [<character>]
-                                                                                <character>='3'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-                                                                            hex-digit [<character>]
-                                                                                <character>='0'
-    eof [<not>]
-        <not>=''
+start [grammar, eof]
+    grammar [identifier, options, syntax, lexical]
+        identifier='lipeg'
+        options [option, option]
+            option [identifier, option-value]
+                identifier='start'
+                option-value [qualified-identifier]
+                    qualified-identifier [identifier]
+                        identifier='start'
+            option [identifier, option-value]
+                identifier='spacing'
+                option-value [qualified-identifier]
+                    qualified-identifier [identifier]
+                        identifier='_'
+        syntax [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+            rule [identifier, sequence]
+                identifier='start'
+                sequence [identifier, identifier]
+                    identifier='grammar'
+                    identifier='eof'
+            rule [identifier, sequence]
+                identifier='grammar'
+                sequence [prefix.drop, identifier, prefix.drop, prefix.lift, prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='grammar'
+                    identifier='identifier'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='{'
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [choice]
+                            choice [sequence, sequence, sequence]
+                                sequence [identifier]
+                                    identifier='options'
+                                sequence [identifier]
+                                    identifier='syntax'
+                                sequence [identifier]
+                                    identifier='lexical'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='}'
+            rule [identifier, sequence]
+                identifier='options'
+                sequence [prefix.drop, prefix.drop, prefix.lift, prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='options'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='{'
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [identifier]
+                            identifier='option'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='}'
+            rule [identifier, sequence]
+                identifier='option'
+                sequence [identifier, prefix.drop, identifier, prefix.drop]
+                    identifier='identifier'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='='
+                    identifier='option-value'
+                    prefix.drop [verbatim-string]
+                        verbatim-string=';'
+            rule [identifier, sequence]
+                identifier='option-value'
+                sequence [identifier]
+                    identifier='qualified-identifier'
+            rule [identifier, sequence]
+                identifier='qualified-identifier'
+                sequence [identifier, prefix.lift]
+                    identifier='identifier'
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [sequence]
+                            sequence [prefix.drop, identifier]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='.'
+                                identifier='identifier'
+            rule [identifier, sequence]
+                identifier='syntax'
+                sequence [prefix.drop, prefix.drop, prefix.lift, prefix.drop, prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='rules'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='{'
+                    prefix.lift [identifier]
+                        identifier='rules'
+                    prefix.drop [suffix.zero-or-one]
+                        suffix.zero-or-one [verbatim-string]
+                            verbatim-string=';'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='}'
+            rule [identifier, sequence]
+                identifier='lexical'
+                sequence [prefix.drop, prefix.drop, prefix.lift, prefix.drop, prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='lexical'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='{'
+                    prefix.lift [identifier]
+                        identifier='rules'
+                    prefix.drop [suffix.zero-or-one]
+                        suffix.zero-or-one [verbatim-string]
+                            verbatim-string=';'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='}'
+            rule [identifier, sequence]
+                identifier='rules'
+                sequence [prefix.lift]
+                    prefix.lift [suffix.zero-or-one]
+                        suffix.zero-or-one [sequence]
+                            sequence [identifier, prefix.lift]
+                                identifier='rule'
+                                prefix.lift [suffix.zero-or-more]
+                                    suffix.zero-or-more [sequence]
+                                        sequence [prefix.drop, identifier]
+                                            prefix.drop [verbatim-string]
+                                                verbatim-string=';'
+                                            identifier='rule'
+            rule [identifier, sequence]
+                identifier='rule'
+                sequence [identifier, prefix.drop, prefix.drop, prefix.lift]
+                    identifier='identifier'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='<='
+                    prefix.drop [suffix.zero-or-one]
+                        suffix.zero-or-one [verbatim-string]
+                            verbatim-string='/'
+                    prefix.lift [identifier]
+                        identifier='expression'
+            rule [identifier, choice]
+                identifier='expression'
+                choice [sequence, sequence]
+                    sequence [identifier]
+                        identifier='choice'
+                    sequence [identifier]
+                        identifier='sequence'
+            rule [identifier, sequence]
+                identifier='choice'
+                sequence [identifier, prefix.lift]
+                    identifier='sequence'
+                    prefix.lift [suffix.one-or-more]
+                        suffix.one-or-more [sequence]
+                            sequence [prefix.drop, identifier]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='/'
+                                identifier='sequence'
+            rule [identifier, sequence]
+                identifier='sequence'
+                sequence [prefix.lift]
+                    prefix.lift [suffix.one-or-more]
+                        suffix.one-or-more [sequence]
+                            sequence [prefix.lift]
+                                prefix.lift [identifier]
+                                    identifier='prefix'
+            rule [identifier, choice]
+                identifier='prefix'
+                choice [sequence, sequence, sequence, sequence, sequence, sequence]
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='and'
+                            sequence [prefix.drop, prefix.lift]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='&'
+                                prefix.lift [identifier]
+                                    identifier='suffix'
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='not'
+                            sequence [prefix.drop, prefix.lift]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='!'
+                                prefix.lift [identifier]
+                                    identifier='suffix'
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='drop'
+                            sequence [prefix.drop, prefix.lift]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string=','
+                                prefix.lift [identifier]
+                                    identifier='suffix'
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='fuse'
+                            sequence [prefix.drop, prefix.lift]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='~'
+                                prefix.lift [identifier]
+                                    identifier='suffix'
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='lift'
+                            sequence [prefix.drop, prefix.lift]
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='^'
+                                prefix.lift [identifier]
+                                    identifier='suffix'
+                    sequence [prefix.lift]
+                        prefix.lift [identifier]
+                            identifier='suffix'
+            rule [identifier, choice]
+                identifier='suffix'
+                choice [sequence, sequence, sequence, sequence]
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='zero-or-one'
+                            sequence [prefix.lift, prefix.drop]
+                                prefix.lift [identifier]
+                                    identifier='primary'
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='?'
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='zero-or-more'
+                            sequence [prefix.lift, prefix.drop]
+                                prefix.lift [identifier]
+                                    identifier='primary'
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='*'
+                    sequence [inline]
+                        inline [identifier, sequence]
+                            identifier='one-or-more'
+                            sequence [prefix.lift, prefix.drop]
+                                prefix.lift [identifier]
+                                    identifier='primary'
+                                prefix.drop [verbatim-string]
+                                    verbatim-string='+'
+                    sequence [prefix.lift]
+                        prefix.lift [identifier]
+                            identifier='primary'
+            rule [identifier, choice]
+                identifier='primary'
+                choice [sequence, sequence, sequence, sequence, sequence, sequence, sequence, sequence]
+                    sequence [identifier]
+                        identifier='identifier'
+                    sequence [identifier]
+                        identifier='verbatim-string'
+                    sequence [identifier]
+                        identifier='string'
+                    sequence [identifier]
+                        identifier='character-class'
+                    sequence [identifier]
+                        identifier='any'
+                    sequence [identifier]
+                        identifier='epsilon'
+                    sequence [identifier]
+                        identifier='inline'
+                    sequence [prefix.drop, prefix.lift, prefix.drop]
+                        prefix.drop [verbatim-string]
+                            verbatim-string='('
+                        prefix.lift [identifier]
+                            identifier='expression'
+                        prefix.drop [verbatim-string]
+                            verbatim-string=')'
+            rule [identifier, sequence]
+                identifier='inline'
+                sequence [prefix.drop, prefix.lift, prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='('
+                    prefix.lift [identifier]
+                        identifier='rule'
+                    prefix.drop [verbatim-string]
+                        verbatim-string=')'
+            rule [identifier, sequence]
+                identifier='any'
+                sequence [prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='.'
+            rule [identifier, choice]
+                identifier='epsilon'
+                choice [sequence, sequence]
+                    sequence [verbatim-string]
+                        verbatim-string='epsilon'
+                    sequence [verbatim-string]
+                        verbatim-string='\u{03B5}'
+            rule [identifier, sequence]
+                identifier='eof'
+                sequence [prefix.not]
+                    prefix.not [any]
+                        any []
+        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+            rule [identifier, choice]
+                identifier='identifier'
+                choice [sequence, sequence]
+                    sequence [prefix.fuse]
+                        prefix.fuse [sequence]
+                            sequence [identifier, prefix.lift, prefix.lift]
+                                identifier='letter'
+                                prefix.lift [suffix.zero-or-more]
+                                    suffix.zero-or-more [identifier]
+                                        identifier='letter-or-digit'
+                                prefix.lift [suffix.zero-or-more]
+                                    suffix.zero-or-more [sequence]
+                                        sequence [verbatim-string, prefix.lift]
+                                            verbatim-string='-'
+                                            prefix.lift [suffix.one-or-more]
+                                                suffix.one-or-more [identifier]
+                                                    identifier='letter-or-digit'
+                    sequence [prefix.fuse]
+                        prefix.fuse [sequence]
+                            sequence [verbatim-string]
+                                verbatim-string='_'
+            rule [identifier, sequence]
+                identifier='letter'
+                sequence [character-class]
+                    character-class [not, range, range]
+                        not []
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='a'
+                            class-verbatim='z'
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='A'
+                            class-verbatim='Z'
+            rule [identifier, sequence]
+                identifier='letter-or-digit'
+                sequence [character-class]
+                    character-class [not, range, range, range]
+                        not []
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='a'
+                            class-verbatim='z'
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='A'
+                            class-verbatim='Z'
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='0'
+                            class-verbatim='9'
+            rule [identifier, sequence]
+                identifier='hex-digit'
+                sequence [character-class]
+                    character-class [not, range, range, range]
+                        not []
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='0'
+                            class-verbatim='9'
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='a'
+                            class-verbatim='f'
+                        range [class-verbatim, class-verbatim]
+                            class-verbatim='A'
+                            class-verbatim='F'
+            rule [identifier, sequence]
+                identifier='verbatim-string'
+                sequence [prefix.fuse]
+                    prefix.fuse [sequence]
+                        sequence [prefix.drop, prefix.lift, prefix.drop]
+                            prefix.drop [string]
+                                string [character]
+                                    character [escape]
+                                        escape='\''
+                            prefix.lift [suffix.zero-or-more]
+                                suffix.zero-or-more [identifier]
+                                    identifier='verbatim-character'
+                            prefix.drop [string]
+                                string [character]
+                                    character [escape]
+                                        escape='\''
+            rule [identifier, sequence]
+                identifier='verbatim-character'
+                sequence [prefix.not, any]
+                    prefix.not [choice]
+                        choice [sequence, sequence, sequence]
+                            sequence [string]
+                                string [character]
+                                    character [escape]
+                                        escape='\''
+                            sequence [string]
+                                string [character]
+                                    character [escape]
+                                        escape='\\'
+                            sequence [identifier]
+                                identifier='eol-char'
+                    any []
+            rule [identifier, sequence]
+                identifier='string'
+                sequence [prefix.drop, prefix.lift, prefix.drop]
+                    prefix.drop [string]
+                        string [character]
+                            character [escape]
+                                escape='\''
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [identifier]
+                            identifier='character'
+                    prefix.drop [string]
+                        string [character]
+                            character [escape]
+                                escape='\''
+            rule [identifier, choice]
+                identifier='character'
+                choice [sequence, sequence, sequence, sequence]
+                    sequence [prefix.not, any]
+                        prefix.not [choice]
+                            choice [sequence, sequence, sequence]
+                                sequence [string]
+                                    string [character]
+                                        character [escape]
+                                            escape='\''
+                                sequence [string]
+                                    string [character]
+                                        character [escape]
+                                            escape='\\'
+                                sequence [identifier]
+                                    identifier='eol-char'
+                        any []
+                    sequence [identifier]
+                        identifier='escape'
+                    sequence [prefix.lift]
+                        prefix.lift [identifier]
+                            identifier='unicode-escape'
+                    sequence [identifier]
+                        identifier='byte-escape'
+            rule [identifier, sequence]
+                identifier='escape'
+                sequence [prefix.fuse]
+                    prefix.fuse [sequence]
+                        sequence [prefix.drop, character-class]
+                            prefix.drop [string]
+                                string [character]
+                                    character [escape]
+                                        escape='\\'
+                            character-class [not, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, escape, escape, escape, escape]
+                                not []
+                                class-verbatim='0'
+                                class-verbatim='a'
+                                class-verbatim='b'
+                                class-verbatim='e'
+                                class-verbatim='f'
+                                class-verbatim='n'
+                                class-verbatim='r'
+                                class-verbatim='t'
+                                class-verbatim='v'
+                                escape='-'
+                                escape=']'
+                                escape='\\'
+                                escape='\''
+            rule [identifier, sequence]
+                identifier='unicode-escape'
+                sequence [prefix.drop, identifier, prefix.drop, prefix.lift, prefix.drop]
+                    prefix.drop [sequence]
+                        sequence [string, identifier]
+                            string [character, character, character]
+                                character [escape]
+                                    escape='\\'
+                                character [<any>]
+                                    <any>='u'
+                                character [<any>]
+                                    <any>='{'
+                            identifier='_'
+                    identifier='unicode-number'
+                    prefix.drop [identifier]
+                        identifier='_'
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [sequence]
+                            sequence [identifier, prefix.drop]
+                                identifier='unicode-number'
+                                prefix.drop [identifier]
+                                    identifier='_'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='}'
+            rule [identifier, sequence]
+                identifier='unicode-number'
+                sequence [prefix.fuse]
+                    prefix.fuse [sequence]
+                        sequence [identifier, prefix.lift, prefix.lift, prefix.lift, prefix.lift, prefix.lift]
+                            identifier='hex-digit'
+                            prefix.lift [suffix.zero-or-one]
+                                suffix.zero-or-one [identifier]
+                                    identifier='hex-digit'
+                            prefix.lift [suffix.zero-or-one]
+                                suffix.zero-or-one [identifier]
+                                    identifier='hex-digit'
+                            prefix.lift [suffix.zero-or-one]
+                                suffix.zero-or-one [identifier]
+                                    identifier='hex-digit'
+                            prefix.lift [suffix.zero-or-one]
+                                suffix.zero-or-one [identifier]
+                                    identifier='hex-digit'
+                            prefix.lift [suffix.zero-or-one]
+                                suffix.zero-or-one [identifier]
+                                    identifier='hex-digit'
+            rule [identifier, sequence]
+                identifier='byte-escape'
+                sequence [prefix.drop, identifier, prefix.drop, prefix.lift, prefix.drop]
+                    prefix.drop [sequence]
+                        sequence [string, identifier]
+                            string [character, character, character]
+                                character [escape]
+                                    escape='\\'
+                                character [<any>]
+                                    <any>='x'
+                                character [<any>]
+                                    <any>='{'
+                            identifier='_'
+                    identifier='byte-number'
+                    prefix.drop [identifier]
+                        identifier='_'
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [sequence]
+                            sequence [identifier, prefix.drop]
+                                identifier='byte-number'
+                                prefix.drop [identifier]
+                                    identifier='_'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='}'
+            rule [identifier, sequence]
+                identifier='byte-number'
+                sequence [identifier, prefix.lift]
+                    identifier='hex-digit'
+                    prefix.lift [suffix.zero-or-one]
+                        suffix.zero-or-one [identifier]
+                            identifier='hex-digit'
+            rule [identifier, sequence]
+                identifier='character-class'
+                sequence [prefix.drop, identifier, prefix.lift, prefix.drop]
+                    prefix.drop [verbatim-string]
+                        verbatim-string='['
+                    identifier='not'
+                    prefix.lift [suffix.zero-or-more]
+                        suffix.zero-or-more [sequence]
+                            sequence [prefix.lift]
+                                prefix.lift [identifier]
+                                    identifier='class-part'
+                    prefix.drop [verbatim-string]
+                        verbatim-string=']'
+            rule [identifier, sequence]
+                identifier='not'
+                sequence [prefix.lift]
+                    prefix.lift [suffix.zero-or-one]
+                        suffix.zero-or-one [sequence]
+                            sequence [verbatim-string]
+                                verbatim-string='^'
+            rule [identifier, choice]
+                identifier='class-part'
+                choice [sequence, sequence]
+                    sequence [identifier]
+                        identifier='range'
+                    sequence [prefix.lift]
+                        prefix.lift [identifier]
+                            identifier='class-char'
+            rule [identifier, sequence]
+                identifier='range'
+                sequence [prefix.lift, prefix.drop, prefix.lift]
+                    prefix.lift [identifier]
+                        identifier='class-char'
+                    prefix.drop [verbatim-string]
+                        verbatim-string='-'
+                    prefix.lift [identifier]
+                        identifier='class-char'
+            rule [identifier, choice]
+                identifier='class-char'
+                choice [sequence, sequence, sequence, sequence]
+                    sequence [identifier]
+                        identifier='class-verbatim'
+                    sequence [identifier]
+                        identifier='escape'
+                    sequence [prefix.lift]
+                        prefix.lift [identifier]
+                            identifier='unicode-escape'
+                    sequence [identifier]
+                        identifier='byte-escape'
+            rule [identifier, sequence]
+                identifier='class-verbatim'
+                sequence [prefix.fuse]
+                    prefix.fuse [sequence]
+                        sequence [prefix.not, any]
+                            prefix.not [choice]
+                                choice [sequence, sequence, sequence]
+                                    sequence [verbatim-string]
+                                        verbatim-string=']'
+                                    sequence [string]
+                                        string [character]
+                                            character [escape]
+                                                escape='\\'
+                                    sequence [identifier]
+                                        identifier='eol-char'
+                            any []
+            rule [identifier, sequence]
+                identifier='_'
+                sequence [suffix.zero-or-more]
+                    suffix.zero-or-more [choice]
+                        choice [sequence, sequence, sequence]
+                            sequence [identifier]
+                                identifier='whitespace'
+                            sequence [identifier]
+                                identifier='newline'
+                            sequence [identifier]
+                                identifier='comment'
+            rule [identifier, choice]
+                identifier='comment'
+                choice [sequence, sequence]
+                    sequence [identifier]
+                        identifier='single-line-comment'
+                    sequence [identifier]
+                        identifier='multi-line-comment'
+            rule [identifier, sequence]
+                identifier='single-line-comment'
+                sequence [verbatim-string, suffix.zero-or-more]
+                    verbatim-string='//'
+                    suffix.zero-or-more [sequence]
+                        sequence [prefix.not, any]
+                            prefix.not [identifier]
+                                identifier='eol-char'
+                            any []
+            rule [identifier, sequence]
+                identifier='multi-line-comment'
+                sequence [verbatim-string, suffix.zero-or-more, verbatim-string]
+                    verbatim-string='/*'
+                    suffix.zero-or-more [sequence]
+                        sequence [prefix.not, any]
+                            prefix.not [verbatim-string]
+                                verbatim-string='*/'
+                            any []
+                    verbatim-string='*/'
+            rule [identifier, choice]
+                identifier='newline'
+                choice [sequence, sequence, sequence, sequence, sequence]
+                    sequence [string]
+                        string [character]
+                            character [escape]
+                                escape='n'
+                    sequence [string]
+                        string [character, character]
+                            character [escape]
+                                escape='r'
+                            character [escape]
+                                escape='n'
+                    sequence [string]
+                        string [character]
+                            character [escape]
+                                escape='r'
+                    sequence [string]
+                        string [character]
+                            character [unicode-number]
+                                unicode-number='2028'
+                    sequence [string]
+                        string [character]
+                            character [unicode-number]
+                                unicode-number='2029'
+            rule [identifier, sequence]
+                identifier='eol-char'
+                sequence [character-class]
+                    character-class [not, escape, escape, unicode-number, unicode-number]
+                        not []
+                        escape='n'
+                        escape='r'
+                        unicode-number='2028'
+                        unicode-number='2029'
+            rule [identifier, sequence]
+                identifier='whitespace'
+                sequence [character-class]
+                    character-class [not, class-verbatim, escape, escape, escape, unicode-number, unicode-number, unicode-number, unicode-number, range, unicode-number, unicode-number, unicode-number]
+                        not []
+                        class-verbatim=' '
+                        escape='t'
+                        escape='v'
+                        escape='f'
+                        unicode-number='00A0'
+                        unicode-number='FEFF'
+                        unicode-number='1680'
+                        unicode-number='180E'
+                        range [unicode-number, unicode-number]
+                            unicode-number='2000'
+                            unicode-number='200A'
+                        unicode-number='202F'
+                        unicode-number='205F'
+                        unicode-number='3000'
+    eof []

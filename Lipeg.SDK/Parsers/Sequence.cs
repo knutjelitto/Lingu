@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using Lipeg.Runtime;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
@@ -14,58 +15,26 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
-            var current = cursor;
+            var next = context;
             var nodes = new List<INode>();
             foreach (var parser in Parsers)
             {
-                var result = parser.Parse(current);
-                if (result == null) throw new InternalErrorException("can't be");
+                var result = parser.Parse(next);
 
-                if (result.IsFail)
+                if (!result.IsSuccess)
                 {
-                    return Result.Fail(cursor);
+                    return Result.Fail(context);
                 }
-                if (!result.IsDrop)
-                {
-                    if (result.IsFuse)
-                    {
-                        var value = result.Node.Fuse();
-                        result.SetNode(LeafNode.From(result.Node, NodeSymbols.Fusion, value));
-                    }
-                    if (result.IsLift)
-                    {
-                        if (result.Node is InternalNode lifted)
-                        {
-                            nodes.AddRange(lifted);
-                        }
-                        else
-                        {
-                            /*
-                             * Do nothing if leaf node
-                             */
-                            nodes.Add(result.Node);
-                        }
-                    }
-                    else
-                    {
-                        if (result.Node == null) throw new InternalErrorException("can't be");
-                        nodes.Add(result.Node);
-                    }
-                }
-                current = result.Next;
+
+                nodes.AddRange(result.Nodes);
+
+                next = result.Next;
             }
 
-            //if (nodes.Count == 1)
-            //{
-            //    var node = nodes[0];
-            //    return Result.Success(current, node);
-            //}
-
-            return Result.Success(
-                current, 
-                InternalNode.From(Location.From(cursor, current), NodeSymbols.Sequence, nodes));
+            var location = Location.From(context, next);
+            return Result.Success(location, next, nodes.ToArray());
         }
 
         public override void Dump(int level, IWriter writer)

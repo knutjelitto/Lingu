@@ -47,7 +47,7 @@ namespace Lipeg.SDK.Dump
 
             protected override void VisitOption(Option option)
             {
-                Writer.WriteLine($"{option.Identifier} = {option.QualifiedIdentifier};");
+                Writer.WriteLine($"{option.Identifier} = {option.OptionValue.QualifiedIdentifier};");
             }
 
             protected override void VisitGrammarSyntaxRules()

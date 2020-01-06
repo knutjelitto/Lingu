@@ -17,7 +17,7 @@ namespace Lipeg.SDK.Parsers
         public string Kind { get; }
         public IParser Parser { get; }
 
-        public abstract IResult Parse(ICursor cursor);
+        public abstract IResult Parse(IContext context);
 
         public void Dump(int level, IWriter writer)
         {

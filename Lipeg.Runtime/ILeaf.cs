@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface ILeafNode : INode
+    public interface ILeaf : INode
     { 
         string Value { get; }
     }

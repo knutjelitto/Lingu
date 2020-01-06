@@ -41,7 +41,7 @@ namespace Lipeg.SDK.Checkers
         {
             if (Semantic.Rules.TryGetValue(rule.Identifier.Name, out var already))
             {
-                if (already == null) throw new InternalErrorException($"{nameof(already)} really shouldn't be NULL");
+                if (already == null) throw new InternalNullException();
 
                 Results.AddError(new MessageError(MessageCode.AlreadyDefinedRule, already.Identifier));
                 Results.AddError(new MessageError(MessageCode.RedefinedRule, rule.Identifier));

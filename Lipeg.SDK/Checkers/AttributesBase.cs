@@ -8,8 +8,9 @@ namespace Lipeg.SDK.Checkers
         protected static bool Is(ref bool? field) => field.HasValue;
         protected static T Get<T>(ref T? field, string name) where T : class
         {
+            if (field == null) throw new InternalNullException();
             Debug.Assert(!string.IsNullOrWhiteSpace(name));
-            return field ?? throw new InternalErrorException($"{name} should be set somewhere else");
+            return field;
         }
 
         protected static bool Get(ref bool? field, string name)

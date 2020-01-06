@@ -2,40 +2,41 @@
     (&& grammar eof))
 
 (grammar
-    (&& (, [␣ 'grammar']) [␣ identifier] (, [␣ '{']) (^ (* (|| options syntax lexical))) (, [␣ '}'])))
+    (&& (, ['grammar']) [identifier] (, ['{']) (^ (* (|| options syntax lexical))) (, ['}'])))
 
 (options
-    (&& (, [␣ 'options']) (, [␣ '{']) (^ (* option)) (, [␣ '}'])))
+    (&& (, ['options']) (, ['{']) (^ (* option)) (, ['}'])))
 
 (option
-    [␣ [␣ (&& [␣ identifier] (, [␣ '=']) option-value (, [␣ ';']))]])
+    [(&& [identifier] (, ['=']) option-value (, [';']))])
 
 (option-value
     qualified-identifier)
 
 (qualified-identifier
-    [␣ [␣ (&& [␣ identifier] (^ (* (&& (, [␣ '.']) [␣ identifier]))))]])
+    [(&& [identifier] (^ (* (&& (, ['.']) [identifier]))))])
 
 (syntax
-    (&& (, [␣ 'rules']) (, [␣ '{']) rules (, [␣ (? [␣ ';'])]) (, [␣ '}'])))
+    (&& (, ['rules']) (, ['{']) (^ rules) (, [(? [';'])]) (, ['}'])))
 
 (lexical
-    (&& (, [␣ 'lexical']) (, [␣ '{']) rules (, [␣ (? [␣ ';'])]) (, [␣ '}'])))
+    (&& (, ['lexical']) (, ['{']) (^ rules) (, [(? [';'])]) (, ['}'])))
 
 (rules
-    (^ (? (&& rule (^ (* (&& (, [␣ ';']) rule)))))))
+    (^ (? (&& rule (^ (* (&& (, [';']) rule)))))))
 
 (rule
-    [␣ [␣ (&& [␣ identifier] (, [␣ '<=']) (, [␣ (? [␣ '/'])]) expression)]])
+    [(&& [identifier] (, ['<=']) (, [(? ['/'])]) (^ expression))])
 
 (expression
-    (^ choice))
+    (|| choice
+        sequence))
 
 (choice
-    (&& sequence (^ (* (&& (, [␣ '/']) sequence)))))
+    (&& sequence (^ (+ (&& (, ['/']) sequence)))))
 
 (sequence
-    (^ (+ prefix)))
+    (^ (+ (^ prefix))))
 
 (prefix
     (|| prefix.and
@@ -43,89 +44,101 @@
         prefix.drop
         prefix.fuse
         prefix.lift
-        suffix))
+        (^ suffix)))
 
 (suffix
     (|| suffix.zero-or-one
         suffix.zero-or-more
         suffix.one-or-more
-        primary))
+        (^ primary)))
 
 (primary
-    (|| [␣ [␣ identifier]]
-        [␣ [␣ string]]
-        [␣ [␣ character-class]]
+    (|| [[identifier]]
+        [[verbatim-string]]
+        [[string]]
+        [[character-class]]
         any
         epsilon
         inline
-        (&& (, [␣ '(']) expression (, [␣ ')']))))
+        (&& (, ['(']) (^ expression) (, [')']))))
 
 (inline
-    (&& (, [␣ '(']) (^ rule) (, [␣ ')'])))
+    (&& (, ['(']) (^ rule) (, [')'])))
 
 (any
-    (, [␣ '.']))
+    (, ['.']))
 
 (epsilon
-    [␣ (|| [␣ [␣ 'epsilon']] [␣ [␣ '\u{03B5}']])])
+    [(|| [['epsilon']] [['\u{03B5}']])])
 
 (eof
-    [␣ [␣ [␣ (! [␣ {Name}])]]])
+    [[(! [.])]])
 
 (prefix.and
-    (&& (, [␣ '&']) suffix))
+    (&& (, ['&']) (^ suffix)))
 
 (prefix.not
-    (&& (, [␣ '!']) suffix))
+    (&& (, ['!']) (^ suffix)))
 
 (prefix.drop
-    (&& (, [␣ ',']) suffix))
+    (&& (, [',']) (^ suffix)))
 
 (prefix.fuse
-    (&& (, [␣ '~']) suffix))
+    (&& (, ['~']) (^ suffix)))
 
 (prefix.lift
-    (&& (, [␣ '^']) suffix))
+    (&& (, ['^']) (^ suffix)))
 
 (suffix.zero-or-one
-    (&& primary (, [␣ '?'])))
+    (&& (^ primary) (, ['?'])))
 
 (suffix.zero-or-more
-    (&& primary (, [␣ '*'])))
+    (&& (^ primary) (, ['*'])))
 
 (suffix.one-or-more
-    (&& primary (, [␣ '+'])))
+    (&& (^ primary) (, ['+'])))
 
 (identifier
-    (|| (^ (~ (&& letter (^ (* letter-or-digit)) (^ (* (&& '-' (^ (+ letter-or-digit))))))))
-        (^ (~ '_'))))
+    (|| (~ (&& letter (^ (* letter-or-digit)) (^ (* (&& '-' (^ (+ letter-or-digit)))))))
+        (~ '_')))
 
 (letter
-    (|| 'a-z' 'A-Z'))
+    (|| 'a-z'
+        'A-Z'))
 
 (letter-or-digit
-    (|| 'a-z' 'A-Z' '0-9'))
+    (|| 'a-z'
+        'A-Z'
+        '0-9'))
 
 (hex-digit
-    (|| '0-9' 'a-f' 'A-F'))
+    (|| '0-9'
+        'a-f'
+        'A-F'))
+
+(verbatim-string
+    (~ (&& (, '\'') (^ (* verbatim-character)) (, '\''))))
+
+(verbatim-character
+    (&& (! (|| '\'' '\\' eol-char)) .))
 
 (string
-    (&& (, '\'') (* character) (, '\'')))
+    (&& (, '\'') (^ (* character)) (, '\'')))
 
 (character
-    (|| (&& (! (|| '\'' '\\' eol-char)) {Name})
-        any-escape
-        unicode-escape
+    (|| (&& (! (|| '\'' '\\' eol-char)) .)
+        escape
+        (^ unicode-escape)
         byte-escape))
 
-(any-escape
-    (&& (, '\\') (|| '0' 'a' 'b' 'e' 'f' 'n' 'r' 't' 'v' '-' ']' '\\' '\'')))
+(escape
+    (~ (&& (, '\\') (|| '0' 'a' 'b' 'e' 'f' 'n' 'r' 't' 'v' '-' ']' '\\' '\''))))
 
 (unicode-escape
     (&& (, (&& '\\u{' _)) unicode-number (, _) (^ (* (&& unicode-number (, _)))) (, '}')))
 
 (unicode-number
-    (&& hex-digit (^ (? hex-digit)) (^ (? hex-digit)) (^ (? hex-digit)) (^ (? hex-digit)) (^ (? hex-digit))))
+    (~ (&& hex-digit (^ (? hex-digit)) (^ (? hex-digit)) (^ (? hex-digit)) (^ (? hex-digit)) (^ (? hex-digit)))))
 
 (byte-escape
     (&& (, (&& '\\x{' _)) byte-number (, _) (^ (* (&& byte-number (, _)))) (, '}')))
@@ -134,20 +147,26 @@
     (&& hex-digit (^ (? hex-digit))))
 
 (character-class
-    (&& (, '[') (? '^') (* class-part) (, ']')))
+    (&& (, '[') not (^ (* (^ class-part))) (, ']')))
+
+(not
+    (^ (? '^')))
 
 (class-part
-    (|| class-range
-        class-char))
+    (|| range
+        (^ class-char)))
 
-(class-range
-    (&& class-char (, '-') class-char))
+(range
+    (&& (^ class-char) (, '-') (^ class-char)))
 
 (class-char
-    (|| (&& (! (|| ']' '\\' eol-char)) {Name})
-        any-escape
-        unicode-escape
+    (|| class-verbatim
+        escape
+        (^ unicode-escape)
         byte-escape))
+
+(class-verbatim
+    (~ (&& (! (|| ']' '\\' eol-char)) .)))
 
 (_
     (* (|| whitespace newline comment)))
@@ -157,10 +176,10 @@
         multi-line-comment))
 
 (single-line-comment
-    (&& '//' (* (&& (! eol-char) {Name}))))
+    (&& '//' (* (&& (! eol-char) .))))
 
 (multi-line-comment
-    (&& '/*' (* (&& (! '*/') {Name})) '*/'))
+    (&& '/*' (* (&& (! '*/') .)) '*/'))
 
 (newline
     (|| '\n'
@@ -170,7 +189,21 @@
         '\u{2029}'))
 
 (eol-char
-    (|| '\n' '\r' '\u{2028}' '\u{2029}'))
+    (|| '\n'
+        '\r'
+        '\u{2028}'
+        '\u{2029}'))
 
 (whitespace
-    (|| ' ' '\t' '\v' '\f' '\u{00A0}' '\u{FEFF}' '\u{1680}' '\u{180E}' '\u{2000}-\u{200A}' '\u{202F}' '\u{205F}' '\u{3000}'))
+    (|| ' '
+        '\t'
+        '\v'
+        '\f'
+        '\u{00A0}'
+        '\u{FEFF}'
+        '\u{1680}'
+        '\u{180E}'
+        '\u{2000}-\u{200A}'
+        '\u{202F}'
+        '\u{205F}'
+        '\u{3000}'))

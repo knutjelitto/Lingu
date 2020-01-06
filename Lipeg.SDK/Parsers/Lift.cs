@@ -1,4 +1,8 @@
-﻿using Lipeg.Runtime;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+using Lipeg.Runtime;
 using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
@@ -10,9 +14,23 @@ namespace Lipeg.SDK.Parsers
         {
         }
 
-        public override IResult Parse(ICursor cursor)
+        public override IResult Parse(IContext context)
         {
-            return Parser.Parse(cursor).SetLift();
+            var result = Parser.Parse(context);
+
+            if (result.IsSuccess)
+            {
+                var nodes = new List<INode>();
+
+                foreach (var node in result.Nodes)
+                {
+                    nodes.AddRange(node.Children);
+                }
+
+                result = Result.Success(result, result.Next, nodes.ToArray());
+            }
+
+            return result;
         }
     }
 }

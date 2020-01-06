@@ -1,18 +1,11 @@
-﻿namespace Lipeg.Runtime
-{
-    public interface IResult
-    {
-        ICursor Next { get; }
-        bool IsFail { get; }
-        bool IsSuccess => !IsFail;
-        bool IsDrop { get; }
-        bool IsLift { get; }
-        bool IsFuse { get; }
-        INode Node { get; }
+﻿using System.Collections.Generic;
 
-        IResult SetDrop();
-        IResult SetLift();
-        IResult SetFuse();
-        void SetNode(INode node);
+namespace Lipeg.Runtime
+{
+    public interface IResult : ILocated
+    {
+        IContext Next { get; }
+        bool IsSuccess { get; }
+        IReadOnlyList<INode> Nodes { get; }
     }
 }

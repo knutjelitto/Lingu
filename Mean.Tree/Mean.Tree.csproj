@@ -9,8 +9,4 @@
     <PackageReference Include="Hime.Redist" Version="3.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Mean.Language\Mean.Language.csproj" />
-  </ItemGroup>
-
 </Project>

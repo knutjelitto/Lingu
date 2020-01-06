@@ -18,22 +18,19 @@ namespace Lipeg.SDK.Parsers
         public string Kind => OpSymbols.ClassChar;
         public int Character { get; }
 
-        public IResult Parse(ICursor cursor)
+        public IResult Parse(IContext context)
         {
-            if (cursor == null) throw new ArgumentNullException(nameof(cursor));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
-            if (!cursor.AtEnd && cursor.Current == Character)
+            if (!context.AtEnd && context.Current == Character)
             {
-                if ((char)Character == '\'')
-                {
-                    Debug.Assert(true);
-                }
-                var next = cursor.Advance(1);
-                var location = Location.From(cursor, next);
-                return Result.Success(next, LeafNode.From(location, NodeSymbols.Any, ((char)cursor.Current).ToString(CultureInfo.InvariantCulture)));
+                var next = context.Advance(1);
+                var location = Location.From(context, next);
+                var node = Leaf.From(location, NodeSymbols.Any, ((char)context.Current).ToString(CultureInfo.InvariantCulture));
+                return Result.Success(location, next, node);
             }
 
-            return Result.Fail(cursor);
+            return Result.Fail(context);
         }
 
         public void Dump(int level, IWriter writer)

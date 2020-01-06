@@ -26,11 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lingu.Runtime\Lingu.Runtime.csproj" />
-    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Generated\" />
   </ItemGroup>

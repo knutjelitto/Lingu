@@ -2,34 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Lipeg.SDK.Output;
 using Lipeg.Runtime;
 using Lipeg.SDK.Common;
+using Lipeg.SDK.Output;
 
 namespace Lipeg.SDK.Dump
 {
-    public class DumpNodes : IDump<INode>
+    public class DumpNodes : IDump<IEnumerable<INode>>
     {
-        public void Dump(IWriter writer, INode node)
+        public void Dump(IWriter writer, IEnumerable<INode> nodes)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (nodes == null) throw new ArgumentNullException(nameof(nodes));
 
-            writer.Indent($"{Head(node)}", () =>
+            foreach (var node in nodes)
             {
-                foreach (var child in node)
+                writer.Indent($"{Head(node)}", () =>
                 {
-                    Dump(writer, child);
-                }
-            });
+                    Dump(writer, node.Children);
+                });
+            }
         }
 
         private string Head(INode node)
         {
-            if (node is ILeafNode leaf)
+            if (node is ILeaf leaf)
             {
                 return $"{leaf.Name}='{CharRep.InText(leaf.Value)}'";
             }
-            return $"{node.Name} [{string.Join(", ", node.Select(c => c.Name))}]";
+            return $"{node.Name} [{string.Join(", ", node.Children.Select(c => c.Name))}]";
         }
     }
 }

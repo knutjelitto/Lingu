@@ -9,8 +9,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Lingu.Sdk\Lingu.Sdk.csproj" />
-  </ItemGroup>
-
 </Project>

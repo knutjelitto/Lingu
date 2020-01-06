@@ -57,12 +57,7 @@
             ;
 
         sequence <=
-            ^aliased+
-            ;
-
-        aliased <=
-            / prefix ':' identifier
-            / prefix
+            prefix+
             ;
 
         prefix <=
@@ -112,8 +107,8 @@
     lexical
     {
         identifier <=
-            / letter letter-or-digit* ('-' letter-or-digit+)*
-            / '_'
+            / ~(letter ^letter-or-digit* ^('-' ^letter-or-digit+)*)
+            / ~('_')
             ;
 
         letter <=
@@ -133,7 +128,7 @@
             ;
 
         character <=
-            / !('\'' / '\\' / eol-char) .
+            / ,(!('\'' / '\\' / eol-char)) .
             / any-escape
             / unicode-escape
             / byte-escape
@@ -149,7 +144,7 @@
             ;
 
         unicode-number <=
-            hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?
+            ~(hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?)
             ;
         
         byte-escape <=

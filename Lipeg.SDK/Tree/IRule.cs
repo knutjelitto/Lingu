@@ -2,7 +2,7 @@
 {
     public interface IRule
     {
-        Expression Expression { get; }
         Identifier Identifier { get; }
+        Expression Expression { get; }
     }
 }

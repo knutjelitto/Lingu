@@ -4,10 +4,15 @@ using System.Text;
 
 namespace Lipeg.Runtime
 {
-    public interface INode : IReadOnlyList<INode>, ILocated
+    public interface INode : ILocated
     { 
         string Name { get; }
-        void WithName(string name);
         string Fuse();
+
+        INode this[int index] { get; }
+        IEnumerable<INode> Children { get; }
+        int Count { get; }
+
+        INode Rename(string newName);
     }
 }

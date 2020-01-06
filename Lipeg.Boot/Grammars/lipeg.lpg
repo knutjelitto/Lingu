@@ -33,57 +33,59 @@
             ;
 
         syntax <=
-            ,'rules' ,'{' rules ,';'? ,'}'
+            ,'rules' ,'{' ^rules ,';'? ,'}'
             ;
 
         lexical <=
-            ,'lexical' ,'{' rules ,';'? ,'}'
+            ,'lexical' ,'{' ^rules ,';'? ,'}'
             ;
 
         rules <=
             ^(rule ^(,';' rule)*)?
             ;
 
-        rule <= 
-            identifier ,'<=' ,'/'? expression
+        rule <=
+            identifier ,'<=' ,'/'? ^expression
             ;
 
         expression <=
-            ^choice
+            / choice
+            / sequence
             ;
 
         choice <=
-            sequence ^(,'/' sequence)*
+            sequence ^(,'/' sequence)+
             ;
 
         sequence <=
-            ^prefix+
+            ^(^prefix)+
             ;
 
         prefix <=
-            / (and  <= ,'&' suffix)
-            / (not  <= ,'!' suffix)
-            / (drop <= ,',' suffix)
-            / (fuse <= ,'~' suffix)
-            / (lift <= ,'^' suffix)
-            / suffix
+            / (and  <= ,'&' ^suffix)
+            / (not  <= ,'!' ^suffix)
+            / (drop <= ,',' ^suffix)
+            / (fuse <= ,'~' ^suffix)
+            / (lift <= ,'^' ^suffix)
+            / ^suffix
             ;
 
         suffix <=
-            / (zero-or-one  <= primary ,'?')
-            / (zero-or-more <= primary ,'*')
-            / (one-or-more  <= primary ,'+')
-            / primary
+            / (zero-or-one  <= ^primary ,'?')
+            / (zero-or-more <= ^primary ,'*')
+            / (one-or-more  <= ^primary ,'+')
+            / ^primary
             ;
 
         primary <=
             / identifier
+            / verbatim-string
             / string
             / character-class
             / any
             / epsilon
             / inline
-            / ,'(' expression ,')'
+            / ,'(' ^expression ,')'
             ;
 
         inline <=
@@ -123,28 +125,35 @@
             / [0-9a-fA-F]
             ;
 
+        verbatim-string <=
+            ~(,'\'' ^verbatim-character* ,'\'')
+            ;
+
+        verbatim-character <=
+            / !('\'' / '\\' / eol-char) .
+            ;
+
         string <=
-            ,'\'' character* ,'\''
+            ,'\'' ^character* ,'\''
             ;
 
         character <=
             / !('\'' / '\\' / eol-char) .
-            / any-escape
-            / unicode-escape
+            / escape
+            / ^unicode-escape
             / byte-escape
             ;
 
-        any-escape <=
-            ,'\\' [0abefnrtv\-\]\\\']
+        escape <=
+            ~(,'\\' [0abefnrtv\-\]\\\'])
             ;
-
 
         unicode-escape <=
             ,('\\u{' _) unicode-number ,_ ^(unicode-number ,_)* ,'}'
             ;
 
         unicode-number <=
-            hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?
+            ~(hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?)
             ;
         
         byte-escape <=
@@ -156,23 +165,31 @@
             ;
 
         character-class <=
-            ,'[' '^'? class-part* ,']'
+            ,'[' not ^(^class-part)* ,']'
+            ;
+
+        not <=
+            ^('^')?
             ;
 
         class-part <=
-            / class-range
-            / class-char
+            / range
+            / ^class-char
             ;
 
-        class-range <=
-            class-char ,'-' class-char
+        range <=
+            ^class-char ,'-' ^class-char
             ;
 
         class-char <=
-            / !(']' / '\\' / eol-char) .
-            / any-escape
-            / unicode-escape
+            / class-verbatim
+            / escape
+            / ^unicode-escape
             / byte-escape
+            ;
+
+        class-verbatim <=
+            / ~(!(']' / '\\' / eol-char) .)
             ;
 
         _ <= 
