@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class StarExpression : WithInnerExpression
+    public class StarExpression : SuffixExpression
     {
         private StarExpression(ILocated located, Expression expression)
             : base(located, expression)

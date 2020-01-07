@@ -32,7 +32,7 @@ namespace Lipeg.SDK.Tree
         public const string DefPlain = "<=";
 
         public const string Opt = "opt";
-        public const string Opts = "opts";
+        public const string Opts = "options";
         public const string Syntax = "rules";
         public const string Lexical = "lexical";
     }

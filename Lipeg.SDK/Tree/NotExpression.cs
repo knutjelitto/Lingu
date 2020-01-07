@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class NotExpression : WithInnerExpression
+    public class NotExpression : PrefixExpression
     {
         private NotExpression(ILocated located, Expression expression)
             : base(located, expression)

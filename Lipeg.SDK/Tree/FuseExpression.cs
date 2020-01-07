@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class FuseExpression : WithInnerExpression
+    public class FuseExpression : PrefixExpression
     {
         private FuseExpression(ILocated located, Expression expression)
             : base(located, expression)

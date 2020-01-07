@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class PlusExpression : WithInnerExpression
+    public class PlusExpression : SuffixExpression
     {
         private PlusExpression(ILocated located, Expression expression)
             : base(located, expression)

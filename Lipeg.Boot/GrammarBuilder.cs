@@ -37,12 +37,14 @@ namespace Lipeg.Boot
                     case "options":
                         options.AddRange(Options(content));
                         break;
-                    case "rules":
+                    case "syntax":
                         rules.AddRange(Rules(content));
                         break;
                     case "lexical":
                         lexical.AddRange(Rules(content));
                         break;
+                    default:
+                        throw new NotImplementedException();
                 }
             }
 
@@ -77,7 +79,7 @@ namespace Lipeg.Boot
 
         private IEnumerable<IRule> Rules(INode node)
         {
-            Debug.Assert(node.Name == "rules" || node.Name == "lexical");
+            Debug.Assert(node.Name == "syntax" || node.Name == "lexical");
 
             return node.Children.Select(Rule);
         }
@@ -94,7 +96,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "choice");
 
-            var choices = node.Children.Select(Sequence).ToPlusList();
+            var choices = node.Children.Select(Sequence);
 
             return ChoiceExpression.From(node, choices);
         }
@@ -103,7 +105,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "sequence");
 
-            var prefixes = node.Children.Select(Prefix).ToPlusList();
+            var prefixes = node.Children.Select(Prefix);
 
             return SequenceExpression.From(node, prefixes);
         }

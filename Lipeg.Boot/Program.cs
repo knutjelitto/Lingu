@@ -5,6 +5,8 @@ using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
 using System.Linq;
+using Lipeg.SDK.Tree;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Lipeg.Boot
 {
@@ -52,15 +54,18 @@ namespace Lipeg.Boot
 
                 if (!results.HasErrors)
                 {
-                    Builder.BuildParser(semantic);
-
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".ast"), new DumpAst(), semantic);
+
+                    Builder.BuildParser(semantic);
 
                     var combiParser = semantic.Grammar.Attr(semantic).Parser;
 
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParsers(), semantic);
 
+                    results = new CompileResult();
+
                     source = Source.FromFile(results, testFile);
+
                     Debug.Assert(source != null);
 
                     var start = DContext.Start(source);
@@ -71,8 +76,13 @@ namespace Lipeg.Boot
 
                     if (result.IsSuccess)
                     {
-                        Builder.BuildAst(results, result.Nodes[0]);
                         Dumper.Dump(debugDir.File(testFile.FileName).Add(".boot.nodes"), new DumpNodes(), result.Nodes);
+
+                        grammar = Builder.BuildAst(results, result.Nodes[0]);
+
+                        semantic = new Semantic(grammar, results);
+
+                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.ast"), new DumpAst(), semantic);
                     }
                     else
                     {

@@ -1,6 +1,6 @@
 grammar [identifier, *]
     identifier='lipeg'
-    * [options, rules, lexical]
+    * [options, syntax, lexical]
         options [option, option]
             option [identifier, qualifiedIdentifier]
                 identifier='start'
@@ -10,7 +10,7 @@ grammar [identifier, *]
                 identifier='spacing'
                 qualifiedIdentifier [identifier]
                     identifier='_'
-        rules [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+        syntax [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
             rule [identifier, choice]
                 identifier='start'
                 choice [sequence]
@@ -226,56 +226,66 @@ grammar [identifier, *]
                             rule [identifier, choice]
                                 identifier='and'
                                 choice [sequence]
-                                    sequence [drop, lift]
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='&'
-                                        lift [identifier]
-                                            identifier='suffix'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [drop, lift]
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='&'
+                                                lift [identifier]
+                                                    identifier='suffix'
                     sequence [inline]
                         inline [rule]
                             rule [identifier, choice]
                                 identifier='not'
                                 choice [sequence]
-                                    sequence [drop, lift]
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='!'
-                                        lift [identifier]
-                                            identifier='suffix'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [drop, lift]
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='!'
+                                                lift [identifier]
+                                                    identifier='suffix'
                     sequence [inline]
                         inline [rule]
                             rule [identifier, choice]
                                 identifier='drop'
                                 choice [sequence]
-                                    sequence [drop, lift]
-                                        drop [singleString]
-                                            singleString [character]
-                                                character=','
-                                        lift [identifier]
-                                            identifier='suffix'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [drop, lift]
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character=','
+                                                lift [identifier]
+                                                    identifier='suffix'
                     sequence [inline]
                         inline [rule]
                             rule [identifier, choice]
                                 identifier='fuse'
                                 choice [sequence]
-                                    sequence [drop, lift]
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='~'
-                                        lift [identifier]
-                                            identifier='suffix'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [drop, lift]
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='~'
+                                                lift [identifier]
+                                                    identifier='suffix'
                     sequence [inline]
                         inline [rule]
                             rule [identifier, choice]
                                 identifier='lift'
                                 choice [sequence]
-                                    sequence [drop, lift]
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='^'
-                                        lift [identifier]
-                                            identifier='suffix'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [drop, lift]
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='^'
+                                                lift [identifier]
+                                                    identifier='suffix'
                     sequence [lift]
                         lift [identifier]
                             identifier='suffix'
@@ -287,34 +297,40 @@ grammar [identifier, *]
                             rule [identifier, choice]
                                 identifier='zero-or-one'
                                 choice [sequence]
-                                    sequence [lift, drop]
-                                        lift [identifier]
-                                            identifier='primary'
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='?'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [lift, drop]
+                                                lift [identifier]
+                                                    identifier='primary'
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='?'
                     sequence [inline]
                         inline [rule]
                             rule [identifier, choice]
                                 identifier='zero-or-more'
                                 choice [sequence]
-                                    sequence [lift, drop]
-                                        lift [identifier]
-                                            identifier='primary'
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='*'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [lift, drop]
+                                                lift [identifier]
+                                                    identifier='primary'
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='*'
                     sequence [inline]
                         inline [rule]
                             rule [identifier, choice]
                                 identifier='one-or-more'
                                 choice [sequence]
-                                    sequence [lift, drop]
-                                        lift [identifier]
-                                            identifier='primary'
-                                        drop [singleString]
-                                            singleString [character]
-                                                character='+'
+                                    sequence [choice]
+                                        choice [sequence]
+                                            sequence [lift, drop]
+                                                lift [identifier]
+                                                    identifier='primary'
+                                                drop [singleString]
+                                                    singleString [character]
+                                                        character='+'
                     sequence [lift]
                         lift [identifier]
                             identifier='primary'
@@ -384,7 +400,7 @@ grammar [identifier, *]
                     sequence [not]
                         not [.]
                             .=''
-        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
             rule [identifier, choice]
                 identifier='identifier'
                 choice [sequence, sequence]
@@ -499,8 +515,11 @@ grammar [identifier, *]
                             singleString [simpleEscape]
                                 simpleEscape='\''
                         lift [quantified]
-                            quantified [identifier, *]
-                                identifier='character'
+                            quantified [choice, *]
+                                choice [sequence]
+                                    sequence [lift]
+                                        lift [identifier]
+                                            identifier='character'
                                 *=''
                         drop [singleString]
                             singleString [simpleEscape]
@@ -508,25 +527,32 @@ grammar [identifier, *]
             rule [identifier, choice]
                 identifier='character'
                 choice [sequence, sequence, sequence, sequence]
-                    sequence [not, .]
-                        not [choice]
-                            choice [sequence, sequence, sequence]
-                                sequence [singleString]
-                                    singleString [simpleEscape]
-                                        simpleEscape='\''
-                                sequence [singleString]
-                                    singleString [simpleEscape]
-                                        simpleEscape='\\'
-                                sequence [identifier]
-                                    identifier='eol-char'
-                        .=''
+                    sequence [identifier]
+                        identifier='string-verbatim'
                     sequence [identifier]
                         identifier='escape'
-                    sequence [lift]
-                        lift [identifier]
-                            identifier='unicode-escape'
+                    sequence [identifier]
+                        identifier='unicode-escape'
                     sequence [identifier]
                         identifier='byte-escape'
+            rule [identifier, choice]
+                identifier='string-verbatim'
+                choice [sequence]
+                    sequence [fuse]
+                        fuse [choice]
+                            choice [sequence]
+                                sequence [not, .]
+                                    not [choice]
+                                        choice [sequence, sequence, sequence]
+                                            sequence [singleString]
+                                                singleString [simpleEscape]
+                                                    simpleEscape='\''
+                                            sequence [singleString]
+                                                singleString [simpleEscape]
+                                                    simpleEscape='\\'
+                                            sequence [identifier]
+                                                identifier='eol-char'
+                                    .=''
             rule [identifier, choice]
                 identifier='escape'
                 choice [sequence]
@@ -678,11 +704,9 @@ grammar [identifier, *]
                 choice [sequence]
                     sequence [lift]
                         lift [quantified]
-                            quantified [choice, ?]
-                                choice [sequence]
-                                    sequence [singleString]
-                                        singleString [character]
-                                            character='^'
+                            quantified [singleString, ?]
+                                singleString [character]
+                                    character='^'
                                 ?=''
             rule [identifier, choice]
                 identifier='class-part'
@@ -710,9 +734,8 @@ grammar [identifier, *]
                         identifier='class-verbatim'
                     sequence [identifier]
                         identifier='escape'
-                    sequence [lift]
-                        lift [identifier]
-                            identifier='unicode-escape'
+                    sequence [identifier]
+                        identifier='unicode-escape'
                     sequence [identifier]
                         identifier='byte-escape'
             rule [identifier, choice]

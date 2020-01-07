@@ -6,7 +6,7 @@ namespace Lipeg.SDK.Tree
 {
     public class ClassExpression : Expression
     {
-        private ClassExpression(ILocated located, bool negated, params ClassPartExpression[] choices)
+        private ClassExpression(ILocated located, bool negated, IReadOnlyList<ClassPartExpression> choices)
             : base(located)
         {
             Negated = negated;
@@ -16,9 +16,9 @@ namespace Lipeg.SDK.Tree
         public IReadOnlyList<ClassPartExpression> Choices { get; }
         public bool Negated { get; }
 
-        public static ClassExpression From(ILocated located, bool negated, params ClassPartExpression[] parts)
+        public static ClassExpression From(ILocated located, bool negated, IEnumerable<ClassPartExpression> parts)
         {
-            return new ClassExpression(located, negated,  parts);
+            return new ClassExpression(located, negated,  parts.ToList());
         }
     }
 }

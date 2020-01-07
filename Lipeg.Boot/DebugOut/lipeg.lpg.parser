@@ -123,13 +123,16 @@
     (&& (! (|| '\'' '\\' eol-char)) .))
 
 (string
-    (&& (, '\'') (^ (* character)) (, '\'')))
+    (&& (, '\'') (^ (* (^ character))) (, '\'')))
 
 (character
-    (|| (&& (! (|| '\'' '\\' eol-char)) .)
+    (|| string-verbatim
         escape
-        (^ unicode-escape)
+        unicode-escape
         byte-escape))
+
+(string-verbatim
+    (~ (&& (! (|| '\'' '\\' eol-char)) .)))
 
 (escape
     (~ (&& (, '\\') (|| '0' 'a' 'b' 'e' 'f' 'n' 'r' 't' 'v' '-' ']' '\\' '\''))))
@@ -162,7 +165,7 @@
 (class-char
     (|| class-verbatim
         escape
-        (^ unicode-escape)
+        unicode-escape
         byte-escape))
 
 (class-verbatim

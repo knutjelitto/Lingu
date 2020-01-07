@@ -12,21 +12,23 @@ namespace Lipeg.SDK.Dump
     {
         public void Dump(IWriter writer, Semantic semantic)
         {
-            var dumper = new DumpVisitor(semantic, writer);
+            var dumper = new DumpVisitor(writer, semantic, 0);
 
             dumper.VisitGrammar();
         }
 
         private class DumpVisitor : TreeVisitor
         {
-            public DumpVisitor(Semantic semantic, IWriter writer)
+            public DumpVisitor(IWriter writer, Semantic semantic, int verbosity)
                 : base(semantic)
             {
                 Writer = writer;
+                Verbosity = verbosity;
             }
 
             public IWriter Writer { get; }
-            private bool top = true;
+            public int Verbosity { get; }
+            private int level = 0;
             private int ruleCount = 0;
 
             public override void VisitGrammar()
@@ -75,36 +77,53 @@ namespace Lipeg.SDK.Dump
                     Writer.WriteLine();
                 }
 
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsUsed)}is used");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}is reachable");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}is nullable");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}is lexical");
-                Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsSyntax)}is syntax");
-                Writer.WriteLine($"{rule.Identifier} {OpSymbols.DefPlain}");
-                if (rule.Identifier.Name == "identifier")
+                if (Verbosity > 1)
                 {
-                    Debug.Assert(true);
+                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsUsed)}is used");
+                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}is reachable");
+                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}is nullable");
+                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}is lexical");
+                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsSyntax)}is syntax");
                 }
+                Writer.WriteLine($"{rule.Identifier} {OpSymbols.DefPlain}");
                 Writer.Indent(() =>
                 {
+                    this.level = 0;
                     VisitExpression(rule.Expression);
                     Writer.WriteLine(";");
                 });
                 ruleCount += 1;
             }
 
+
+            public override void VisitExpression(Expression expression)
+            {
+                this.level++;
+                base.VisitExpression(expression);
+                if (this.level == 1)
+                {
+                    Writer.WriteLine();
+                }
+                this.level--;
+            }
+
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
-                if (top)
+                if (this.level == 1)
                 {
+                    var more = false;
                     foreach (var choice in expression.Choices)
                     {
+                        if (more)
+                        {
+                            Writer.WriteLine();
+                        }
                         if (expression.Choices.Count > 1)
                         {
                             Writer.Write("/ ");
                         }
                         VisitExpression(choice);
-                        Writer.WriteLine();
+                        more = true;
                     }
                 }
                 else
@@ -132,9 +151,8 @@ namespace Lipeg.SDK.Dump
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
-                var isTop = top;
+                var isTop = this.level == 1;
 
-                top = false;
                 var more = false;
                 if (!isTop && expression.Sequence.Count > 1)
                 {
@@ -154,55 +172,53 @@ namespace Lipeg.SDK.Dump
                 {
                     Writer.Write(")");
                 }
-
-                top = isTop;
             }
 
             protected override void VisitAndExpression(AndExpression expression)
             {
                 Writer.Write($"{OpSymbols.And}");
-                VisitExpression(expression.Expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
             }
 
             protected override void VisitNotExpression(NotExpression expression)
             {
                 Writer.Write($"{OpSymbols.Not}");
-                VisitExpression(expression.Expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 Writer.Write($"{OpSymbols.Lift}");
-                VisitExpression(expression.Expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
             }
 
             protected override void VisitDropExpression(DropExpression expression)
             {
                 Writer.Write($"{OpSymbols.Drop}");
-                VisitExpression(expression.Expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 Writer.Write($"{OpSymbols.Fuse}");
-                VisitExpression(expression.Expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
             }
 
             protected override void VisitOptionalExpression(OptionalExpression expression)
             {
-                base.VisitOptionalExpression(expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
                 Writer.Write($"{OpSymbols.Option}");
             }
 
             protected override void VisitPlusExpression(PlusExpression expression)
             {
-                base.VisitPlusExpression(expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
                 Writer.Write($"{OpSymbols.Plus}");
             }
 
             protected override void VisitStarExpression(StarExpression expression)
             {
-                base.VisitStarExpression(expression);
+                MaybeParent(expression.Expression is PrefixExpression, expression.Expression);
                 Writer.Write($"{OpSymbols.Star}");
             }
 
@@ -213,7 +229,14 @@ namespace Lipeg.SDK.Dump
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Writer.Write($"{expression.Rule.Identifier.Name}");
+                var rule = expression.Rule;
+
+                Writer.WriteLine($"({rule.Identifier} {OpSymbols.DefPlain}");
+                Writer.Indent(() =>
+                {
+                    VisitExpression(rule.Expression);
+                    Writer.Write(")");
+                });
             }
 
             protected override void VisitClassExpression(ClassExpression expression)
@@ -276,6 +299,19 @@ namespace Lipeg.SDK.Dump
                 }
                 write();
                 if (strip)
+                {
+                    Writer.Write(")");
+                }
+            }
+
+            private void MaybeParent(bool condition, Expression expression)
+            {
+                if (condition)
+                {
+                    Writer.Write("(");
+                }
+                VisitExpression(expression);
+                if (condition)
                 {
                     Writer.Write(")");
                 }

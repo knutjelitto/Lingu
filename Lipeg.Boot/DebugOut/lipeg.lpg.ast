@@ -1,149 +1,89 @@
 grammar lipeg
 {
-    opts
+    options
     {
         start = start;
         spacing = _;
     }
     rules
     {
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         start <=
-            grammar eof;
+            grammar eof
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         grammar <=
-            ,(_ 'grammar') identifier ,(_ '{') ^(options / syntax / lexical)* ,(_ '}');
+            ,(_ 'grammar') identifier ,(_ '{') ^(options / syntax / lexical)* ,(_ '}')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         options <=
-            ,(_ 'options') ,(_ '{') ^option* ,(_ '}');
+            ,(_ 'options') ,(_ '{') ^option* ,(_ '}')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         option <=
-            identifier ,(_ '=') option-value ,(_ ';');
+            identifier ,(_ '=') option-value ,(_ ';')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         option-value <=
-            qualified-identifier;
+            qualified-identifier
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         qualified-identifier <=
-            identifier ^(,(_ '.') identifier)*;
+            identifier ^(,(_ '.') identifier)*
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         syntax <=
-            ,(_ 'rules') ,(_ '{') ^rules ,(_ ';')? ,(_ '}');
+            ,(_ 'rules') ,(_ '{') ^rules ,(_ ';')? ,(_ '}')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         lexical <=
-            ,(_ 'lexical') ,(_ '{') ^rules ,(_ ';')? ,(_ '}');
+            ,(_ 'lexical') ,(_ '{') ^rules ,(_ ';')? ,(_ '}')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         rules <=
-            ^(rule ^(,(_ ';') rule)*)?;
+            ^(rule ^(,(_ ';') rule)*)?
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         rule <=
-            identifier ,(_ '<=') ,(_ '/')? ^expression;
+            identifier ,(_ '<=') ,(_ '/')? ^expression
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         expression <=
             / choice
             / sequence
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         choice <=
-            sequence ^(,(_ '/') sequence)+;
+            sequence ^(,(_ '/') sequence)+
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         sequence <=
-            ^^prefix+;
+            ^^prefix+
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         prefix <=
-            / prefix.and
-            / prefix.not
-            / prefix.drop
-            / prefix.fuse
-            / prefix.lift
+            / (prefix.and <=
+                (,(_ '&') ^suffix))
+            / (prefix.not <=
+                (,(_ '!') ^suffix))
+            / (prefix.drop <=
+                (,(_ ',') ^suffix))
+            / (prefix.fuse <=
+                (,(_ '~') ^suffix))
+            / (prefix.lift <=
+                (,(_ '^') ^suffix))
             / ^suffix
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         suffix <=
-            / suffix.zero-or-one
-            / suffix.zero-or-more
-            / suffix.one-or-more
+            / (suffix.zero-or-one <=
+                (^primary ,(_ '?')))
+            / (suffix.zero-or-more <=
+                (^primary ,(_ '*')))
+            / (suffix.one-or-more <=
+                (^primary ,(_ '+')))
             / ^primary
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         primary <=
             / identifier
             / verbatim-string
@@ -152,312 +92,165 @@ grammar lipeg
             / any
             / epsilon
             / inline
-            / ,(_ '(') ^expression ,(_ ')')
+            / (,(_ '(') ^expression ,(_ ')'))
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         inline <=
-            ,(_ '(') ^rule ,(_ ')');
+            ,(_ '(') ^rule ,(_ ')')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         any <=
-            ,(_ '.');
+            ,(_ '.')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         epsilon <=
             / (_ 'epsilon')
             / (_ '\u{03B5}')
             ;
         
-        // is used
-        // is reachable
-        // is nullable
-        // ! is lexical
-        // is syntax
         eof <=
-            !(_ .);
+            !(_ .)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         prefix.and <=
-            ,(_ '&') ^suffix;
+            (,(_ '&') ^suffix)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         prefix.not <=
-            ,(_ '!') ^suffix;
+            (,(_ '!') ^suffix)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         prefix.drop <=
-            ,(_ ',') ^suffix;
+            (,(_ ',') ^suffix)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         prefix.fuse <=
-            ,(_ '~') ^suffix;
+            (,(_ '~') ^suffix)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         prefix.lift <=
-            ,(_ '^') ^suffix;
+            (,(_ '^') ^suffix)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         suffix.zero-or-one <=
-            ^primary ,(_ '?');
+            (^primary ,(_ '?'))
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         suffix.zero-or-more <=
-            ^primary ,(_ '*');
+            (^primary ,(_ '*'))
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // ! is lexical
-        // is syntax
         suffix.one-or-more <=
-            ^primary ,(_ '+');
+            (^primary ,(_ '+'))
+            ;
     }
     lexical
     {
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         identifier <=
             / ~(letter ^letter-or-digit* ^('-' ^letter-or-digit+)*)
             / ~'_'
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         letter <=
-            [a-zA-Z];
+            [a-zA-Z]
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         letter-or-digit <=
-            [a-zA-Z0-9];
+            [a-zA-Z0-9]
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         hex-digit <=
-            [0-9a-fA-F];
+            [0-9a-fA-F]
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         verbatim-string <=
-            ~(,'\'' ^verbatim-character* ,'\'');
+            ~(,'\'' ^verbatim-character* ,'\'')
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         verbatim-character <=
-            !('\'' / '\\' / eol-char) .;
+            !('\'' / '\\' / eol-char) .
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         string <=
-            ,'\'' ^character* ,'\'';
+            ,'\'' ^^character* ,'\''
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         character <=
-            / !('\'' / '\\' / eol-char) .
+            / string-verbatim
             / escape
-            / ^unicode-escape
+            / unicode-escape
             / byte-escape
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
+        string-verbatim <=
+            ~(!('\'' / '\\' / eol-char) .)
+            ;
+        
         escape <=
-            ~(,'\\' [0abefnrtv\-\]\\\']);
+            ~(,'\\' [0abefnrtv\-\]\\\'])
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         unicode-escape <=
-            ,('\\u{' _) unicode-number ,_ ^(unicode-number ,_)* ,'}';
+            ,('\\u{' _) unicode-number ,_ ^(unicode-number ,_)* ,'}'
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         unicode-number <=
-            ~(hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?);
+            ~(hex-digit ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit? ^hex-digit?)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         byte-escape <=
-            ,('\\x{' _) byte-number ,_ ^(byte-number ,_)* ,'}';
+            ,('\\x{' _) byte-number ,_ ^(byte-number ,_)* ,'}'
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         byte-number <=
-            hex-digit ^hex-digit?;
+            hex-digit ^hex-digit?
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         character-class <=
-            ,'[' not ^^class-part* ,']';
+            ,'[' not ^^class-part* ,']'
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         not <=
-            ^'^'?;
+            ^'^'?
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         class-part <=
             / range
             / ^class-char
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         range <=
-            ^class-char ,'-' ^class-char;
+            ^class-char ,'-' ^class-char
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         class-char <=
             / class-verbatim
             / escape
-            / ^unicode-escape
+            / unicode-escape
             / byte-escape
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         class-verbatim <=
-            ~(!(']' / '\\' / eol-char) .);
+            ~(!(']' / '\\' / eol-char) .)
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         _ <=
-            (whitespace / newline / comment)*;
+            (whitespace / newline / comment)*
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         comment <=
             / single-line-comment
             / multi-line-comment
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         single-line-comment <=
-            '//' (!eol-char .)*;
+            '//' (!eol-char .)*
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         multi-line-comment <=
-            '/*' (!'*/' .)* '*/';
+            '/*' (!'*/' .)* '*/'
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         newline <=
             / '\n'
             / '\r\n'
@@ -466,20 +259,12 @@ grammar lipeg
             / '\u{2029}'
             ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         eol-char <=
-            [\n\r\u{2028}\u{2029}];
+            [\n\r\u{2028}\u{2029}]
+            ;
         
-        // is used
-        // is reachable
-        // ! is nullable
-        // is lexical
-        // ! is syntax
         whitespace <=
-            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}];
+            [ \t\v\f\u{00A0}\u{FEFF}\u{1680}\u{180E}\u{2000}-\u{200A}\u{202F}\u{205F}\u{3000}]
+            ;
     }
 }

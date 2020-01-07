@@ -155,43 +155,48 @@ start [grammar, eof]
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='and'
-                            sequence [prefix.drop, prefix.lift]
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='&'
-                                prefix.lift [identifier]
-                                    identifier='suffix'
+                            sequence [sequence]
+                                sequence [prefix.drop, prefix.lift]
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='&'
+                                    prefix.lift [identifier]
+                                        identifier='suffix'
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='not'
-                            sequence [prefix.drop, prefix.lift]
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='!'
-                                prefix.lift [identifier]
-                                    identifier='suffix'
+                            sequence [sequence]
+                                sequence [prefix.drop, prefix.lift]
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='!'
+                                    prefix.lift [identifier]
+                                        identifier='suffix'
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='drop'
-                            sequence [prefix.drop, prefix.lift]
-                                prefix.drop [verbatim-string]
-                                    verbatim-string=','
-                                prefix.lift [identifier]
-                                    identifier='suffix'
+                            sequence [sequence]
+                                sequence [prefix.drop, prefix.lift]
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string=','
+                                    prefix.lift [identifier]
+                                        identifier='suffix'
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='fuse'
-                            sequence [prefix.drop, prefix.lift]
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='~'
-                                prefix.lift [identifier]
-                                    identifier='suffix'
+                            sequence [sequence]
+                                sequence [prefix.drop, prefix.lift]
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='~'
+                                    prefix.lift [identifier]
+                                        identifier='suffix'
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='lift'
-                            sequence [prefix.drop, prefix.lift]
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='^'
-                                prefix.lift [identifier]
-                                    identifier='suffix'
+                            sequence [sequence]
+                                sequence [prefix.drop, prefix.lift]
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='^'
+                                    prefix.lift [identifier]
+                                        identifier='suffix'
                     sequence [prefix.lift]
                         prefix.lift [identifier]
                             identifier='suffix'
@@ -201,27 +206,30 @@ start [grammar, eof]
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='zero-or-one'
-                            sequence [prefix.lift, prefix.drop]
-                                prefix.lift [identifier]
-                                    identifier='primary'
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='?'
+                            sequence [sequence]
+                                sequence [prefix.lift, prefix.drop]
+                                    prefix.lift [identifier]
+                                        identifier='primary'
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='?'
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='zero-or-more'
-                            sequence [prefix.lift, prefix.drop]
-                                prefix.lift [identifier]
-                                    identifier='primary'
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='*'
+                            sequence [sequence]
+                                sequence [prefix.lift, prefix.drop]
+                                    prefix.lift [identifier]
+                                        identifier='primary'
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='*'
                     sequence [inline]
                         inline [identifier, sequence]
                             identifier='one-or-more'
-                            sequence [prefix.lift, prefix.drop]
-                                prefix.lift [identifier]
-                                    identifier='primary'
-                                prefix.drop [verbatim-string]
-                                    verbatim-string='+'
+                            sequence [sequence]
+                                sequence [prefix.lift, prefix.drop]
+                                    prefix.lift [identifier]
+                                        identifier='primary'
+                                    prefix.drop [verbatim-string]
+                                        verbatim-string='+'
                     sequence [prefix.lift]
                         prefix.lift [identifier]
                             identifier='primary'
@@ -275,7 +283,7 @@ start [grammar, eof]
                 sequence [prefix.not]
                     prefix.not [any]
                         any []
-        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
+        lexical [rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule]
             rule [identifier, choice]
                 identifier='identifier'
                 choice [sequence, sequence]
@@ -342,29 +350,25 @@ start [grammar, eof]
                     prefix.fuse [sequence]
                         sequence [prefix.drop, prefix.lift, prefix.drop]
                             prefix.drop [string]
-                                string [character]
-                                    character [escape]
-                                        escape='\''
+                                string [escape]
+                                    escape='\''
                             prefix.lift [suffix.zero-or-more]
                                 suffix.zero-or-more [identifier]
                                     identifier='verbatim-character'
                             prefix.drop [string]
-                                string [character]
-                                    character [escape]
-                                        escape='\''
+                                string [escape]
+                                    escape='\''
             rule [identifier, sequence]
                 identifier='verbatim-character'
                 sequence [prefix.not, any]
                     prefix.not [choice]
                         choice [sequence, sequence, sequence]
                             sequence [string]
-                                string [character]
-                                    character [escape]
-                                        escape='\''
+                                string [escape]
+                                    escape='\''
                             sequence [string]
-                                string [character]
-                                    character [escape]
-                                        escape='\\'
+                                string [escape]
+                                    escape='\\'
                             sequence [identifier]
                                 identifier='eol-char'
                     any []
@@ -372,49 +376,51 @@ start [grammar, eof]
                 identifier='string'
                 sequence [prefix.drop, prefix.lift, prefix.drop]
                     prefix.drop [string]
-                        string [character]
-                            character [escape]
-                                escape='\''
+                        string [escape]
+                            escape='\''
                     prefix.lift [suffix.zero-or-more]
-                        suffix.zero-or-more [identifier]
-                            identifier='character'
+                        suffix.zero-or-more [sequence]
+                            sequence [prefix.lift]
+                                prefix.lift [identifier]
+                                    identifier='character'
                     prefix.drop [string]
-                        string [character]
-                            character [escape]
-                                escape='\''
+                        string [escape]
+                            escape='\''
             rule [identifier, choice]
                 identifier='character'
                 choice [sequence, sequence, sequence, sequence]
-                    sequence [prefix.not, any]
-                        prefix.not [choice]
-                            choice [sequence, sequence, sequence]
-                                sequence [string]
-                                    string [character]
-                                        character [escape]
-                                            escape='\''
-                                sequence [string]
-                                    string [character]
-                                        character [escape]
-                                            escape='\\'
-                                sequence [identifier]
-                                    identifier='eol-char'
-                        any []
+                    sequence [identifier]
+                        identifier='string-verbatim'
                     sequence [identifier]
                         identifier='escape'
-                    sequence [prefix.lift]
-                        prefix.lift [identifier]
-                            identifier='unicode-escape'
+                    sequence [identifier]
+                        identifier='unicode-escape'
                     sequence [identifier]
                         identifier='byte-escape'
+            rule [identifier, sequence]
+                identifier='string-verbatim'
+                sequence [prefix.fuse]
+                    prefix.fuse [sequence]
+                        sequence [prefix.not, any]
+                            prefix.not [choice]
+                                choice [sequence, sequence, sequence]
+                                    sequence [string]
+                                        string [escape]
+                                            escape='\''
+                                    sequence [string]
+                                        string [escape]
+                                            escape='\\'
+                                    sequence [identifier]
+                                        identifier='eol-char'
+                            any []
             rule [identifier, sequence]
                 identifier='escape'
                 sequence [prefix.fuse]
                     prefix.fuse [sequence]
                         sequence [prefix.drop, character-class]
                             prefix.drop [string]
-                                string [character]
-                                    character [escape]
-                                        escape='\\'
+                                string [escape]
+                                    escape='\\'
                             character-class [not, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, class-verbatim, escape, escape, escape, escape]
                                 not []
                                 class-verbatim='0'
@@ -435,13 +441,10 @@ start [grammar, eof]
                 sequence [prefix.drop, identifier, prefix.drop, prefix.lift, prefix.drop]
                     prefix.drop [sequence]
                         sequence [string, identifier]
-                            string [character, character, character]
-                                character [escape]
-                                    escape='\\'
-                                character [<any>]
-                                    <any>='u'
-                                character [<any>]
-                                    <any>='{'
+                            string [escape, string-verbatim, string-verbatim]
+                                escape='\\'
+                                string-verbatim='u'
+                                string-verbatim='{'
                             identifier='_'
                     identifier='unicode-number'
                     prefix.drop [identifier]
@@ -480,13 +483,10 @@ start [grammar, eof]
                 sequence [prefix.drop, identifier, prefix.drop, prefix.lift, prefix.drop]
                     prefix.drop [sequence]
                         sequence [string, identifier]
-                            string [character, character, character]
-                                character [escape]
-                                    escape='\\'
-                                character [<any>]
-                                    <any>='x'
-                                character [<any>]
-                                    <any>='{'
+                            string [escape, string-verbatim, string-verbatim]
+                                escape='\\'
+                                string-verbatim='x'
+                                string-verbatim='{'
                             identifier='_'
                     identifier='byte-number'
                     prefix.drop [identifier]
@@ -523,9 +523,8 @@ start [grammar, eof]
                 identifier='not'
                 sequence [prefix.lift]
                     prefix.lift [suffix.zero-or-one]
-                        suffix.zero-or-one [sequence]
-                            sequence [verbatim-string]
-                                verbatim-string='^'
+                        suffix.zero-or-one [verbatim-string]
+                            verbatim-string='^'
             rule [identifier, choice]
                 identifier='class-part'
                 choice [sequence, sequence]
@@ -550,9 +549,8 @@ start [grammar, eof]
                         identifier='class-verbatim'
                     sequence [identifier]
                         identifier='escape'
-                    sequence [prefix.lift]
-                        prefix.lift [identifier]
-                            identifier='unicode-escape'
+                    sequence [identifier]
+                        identifier='unicode-escape'
                     sequence [identifier]
                         identifier='byte-escape'
             rule [identifier, sequence]
@@ -565,9 +563,8 @@ start [grammar, eof]
                                     sequence [verbatim-string]
                                         verbatim-string=']'
                                     sequence [string]
-                                        string [character]
-                                            character [escape]
-                                                escape='\\'
+                                        string [escape]
+                                            escape='\\'
                                     sequence [identifier]
                                         identifier='eol-char'
                             any []
@@ -612,53 +609,60 @@ start [grammar, eof]
                 identifier='newline'
                 choice [sequence, sequence, sequence, sequence, sequence]
                     sequence [string]
-                        string [character]
-                            character [escape]
-                                escape='n'
+                        string [escape]
+                            escape='n'
                     sequence [string]
-                        string [character, character]
-                            character [escape]
-                                escape='r'
-                            character [escape]
-                                escape='n'
+                        string [escape, escape]
+                            escape='r'
+                            escape='n'
                     sequence [string]
-                        string [character]
-                            character [escape]
-                                escape='r'
+                        string [escape]
+                            escape='r'
                     sequence [string]
-                        string [character]
-                            character [unicode-number]
+                        string [unicode-escape]
+                            unicode-escape [unicode-number]
                                 unicode-number='2028'
                     sequence [string]
-                        string [character]
-                            character [unicode-number]
+                        string [unicode-escape]
+                            unicode-escape [unicode-number]
                                 unicode-number='2029'
             rule [identifier, sequence]
                 identifier='eol-char'
                 sequence [character-class]
-                    character-class [not, escape, escape, unicode-number, unicode-number]
+                    character-class [not, escape, escape, unicode-escape, unicode-escape]
                         not []
                         escape='n'
                         escape='r'
-                        unicode-number='2028'
-                        unicode-number='2029'
+                        unicode-escape [unicode-number]
+                            unicode-number='2028'
+                        unicode-escape [unicode-number]
+                            unicode-number='2029'
             rule [identifier, sequence]
                 identifier='whitespace'
                 sequence [character-class]
-                    character-class [not, class-verbatim, escape, escape, escape, unicode-number, unicode-number, unicode-number, unicode-number, range, unicode-number, unicode-number, unicode-number]
+                    character-class [not, class-verbatim, escape, escape, escape, unicode-escape, unicode-escape, unicode-escape, unicode-escape, range, unicode-escape, unicode-escape, unicode-escape]
                         not []
                         class-verbatim=' '
                         escape='t'
                         escape='v'
                         escape='f'
-                        unicode-number='00A0'
-                        unicode-number='FEFF'
-                        unicode-number='1680'
-                        unicode-number='180E'
-                        range [unicode-number, unicode-number]
-                            unicode-number='2000'
-                            unicode-number='200A'
-                        unicode-number='202F'
-                        unicode-number='205F'
-                        unicode-number='3000'
+                        unicode-escape [unicode-number]
+                            unicode-number='00A0'
+                        unicode-escape [unicode-number]
+                            unicode-number='FEFF'
+                        unicode-escape [unicode-number]
+                            unicode-number='1680'
+                        unicode-escape [unicode-number]
+                            unicode-number='180E'
+                        range [unicode-escape, unicode-escape]
+                            unicode-escape [unicode-number]
+                                unicode-number='2000'
+                            unicode-escape [unicode-number]
+                                unicode-number='200A'
+                        unicode-escape [unicode-number]
+                            unicode-number='202F'
+                        unicode-escape [unicode-number]
+                            unicode-number='205F'
+                        unicode-escape [unicode-number]
+                            unicode-number='3000'
     eof []

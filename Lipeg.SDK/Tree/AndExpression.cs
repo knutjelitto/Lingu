@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class AndExpression : WithInnerExpression
+    public class AndExpression : PrefixExpression
     {
         private AndExpression(ILocated located, Expression expression)
             : base(located, expression)

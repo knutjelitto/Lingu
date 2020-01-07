@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class OptionalExpression : WithInnerExpression
+    public class OptionalExpression : SuffixExpression
     {
         private OptionalExpression(ILocated located, Expression expression)
             : base(located, expression)

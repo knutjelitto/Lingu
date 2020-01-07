@@ -2,7 +2,7 @@
 
 namespace Lipeg.SDK.Tree
 {
-    public class DropExpression : WithInnerExpression
+    public class DropExpression : PrefixExpression
     {
         private DropExpression(ILocated located, Expression expression)
             : base(located, expression)

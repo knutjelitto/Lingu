@@ -12,7 +12,7 @@ grammar <INode>
 
 content <INode>
     = options
-    / rules
+    / syntax
     / lexical
 
 options <INode>
@@ -27,8 +27,8 @@ optionValue <INode>
 qualifiedIdentifier <INode>
     = id:identifier<1,,'.' _> { NE(idStart, idEnd, "qualifiedIdentifier", NP(idStart, idEnd, id)) }
 
-rules <INode>
-    = a:'rules' _ '{' _  r:rule<0,,(';' _)> (';' _)? o:'}' _ { NE(aStart, oEnd, "rules",  NS(rStart, rEnd, r)) }
+syntax <INode>
+    = a:'rules' _ '{' _  r:rule<0,,(';' _)> (';' _)? o:'}' _ { NE(aStart, oEnd, "syntax",  NS(rStart, rEnd, r)) }
 
 lexical <INode>
     = a:'lexical' _ '{' _  r:rule<0,,(';' _)> (';' _)? o:'}' _ { NE(aStart, oEnd, "lexical",  NS(rStart, rEnd, r)) }

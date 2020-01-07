@@ -1,9 +1,10 @@
 ﻿using System;
-
+using System.Threading;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Builders;
 using Lipeg.SDK.Parsers;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checkers
 {
@@ -22,12 +23,12 @@ namespace Lipeg.SDK.Checkers
             semantic.Grammar.Attr(semantic).SetParser(parser);
         }
 
-        public static void BuildAst(ICompileResult result, INode root)
+        public static Grammar BuildAst(ICompileResult result, INode root)
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
             if (root == null) throw new ArgumentNullException(nameof(root));
 
-            Build(result, () => new BuildAst(result, root));
+            return new BuildAst(result, root).Grammar;
         }
 
         public static void BuildSource(Semantic semantic, FileRef file)
@@ -38,12 +39,17 @@ namespace Lipeg.SDK.Checkers
             Build(semantic.Results, () => new BuildCSharp(semantic, file));
         }
 
-        private static void Build(ICompileResult results, Func<IBuildPass> pass)
+        private static T? Build<T>(ICompileResult results, Func<T> newPass) where T : class, IBuildPass
         {
             if (!results.HasErrors)
             {
-                pass().Build();
+                var pass = newPass();
+                pass.Build();
+
+                return pass;
             }
+
+            return null;
         }
     }
 }
