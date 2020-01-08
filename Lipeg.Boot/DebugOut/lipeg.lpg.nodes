@@ -425,11 +425,9 @@ grammar [identifier, *]
                                                             +=''
                                             *=''
                     sequence [fuse]
-                        fuse [choice]
-                            choice [sequence]
-                                sequence [singleString]
-                                    singleString [character]
-                                        character='_'
+                        fuse [singleString]
+                            singleString [character]
+                                character='_'
             rule [identifier, choice]
                 identifier='letter'
                 choice [sequence]

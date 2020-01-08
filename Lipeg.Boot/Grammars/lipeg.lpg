@@ -116,7 +116,7 @@
     {
         identifier <=
             / ~(letter ^letter-or-digit* ^('-' ^letter-or-digit+)*)
-            / ~('_')
+            / ~'_'
             ;
 
         letter <=

@@ -302,9 +302,8 @@ start [grammar, eof]
                                                 suffix.one-or-more [identifier]
                                                     identifier='letter-or-digit'
                     sequence [prefix.fuse]
-                        prefix.fuse [sequence]
-                            sequence [verbatim-string]
-                                verbatim-string='_'
+                        prefix.fuse [verbatim-string]
+                            verbatim-string='_'
             rule [identifier, sequence]
                 identifier='letter'
                 sequence [character-class]
