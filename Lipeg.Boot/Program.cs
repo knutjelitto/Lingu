@@ -5,8 +5,6 @@ using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
 using System.Linq;
-using Lipeg.SDK.Tree;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Lipeg.Boot
 {
@@ -54,7 +52,7 @@ namespace Lipeg.Boot
 
                 if (!results.HasErrors)
                 {
-                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".ast"), new DumpAst(), semantic);
+                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".lpg"), new DumpAst(), semantic);
 
                     Builder.BuildParser(semantic);
 
@@ -86,7 +84,7 @@ namespace Lipeg.Boot
 
                         AChecker.Check(semantic);
 
-                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.ast"), new DumpAst(), semantic);
+                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.lpg"), new DumpAst(), semantic);
 
                         Builder.BuildParser(semantic);
 
