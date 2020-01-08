@@ -28,8 +28,8 @@ namespace Lipeg.SDK.Dump
 
             public IWriter Writer { get; }
             public int Verbosity { get; }
-            private int level = 0;
-            private int ruleCount = 0;
+            private int level;
+            private int ruleCount;
 
             public override void VisitGrammar()
             {
@@ -57,7 +57,14 @@ namespace Lipeg.SDK.Dump
                 Writer.Block($"{OpSymbols.Syntax}", () =>
                 {
                     ruleCount = 0;
-                    base.VisitGrammarSyntaxRules();
+                    foreach (var rule in Grammar.SyntaxRules)
+                    {
+                        if (rule.Attr(Semantic).IsInline)
+                        {
+                            continue;
+                        }
+                        VisitRule(rule);
+                    }
                 });
             }
 
@@ -66,7 +73,14 @@ namespace Lipeg.SDK.Dump
                 Writer.Block($"{OpSymbols.Lexical}", () =>
                 {
                     ruleCount = 0;
-                    base.VisitGrammarLexicalRules();
+                    foreach (var rule in Grammar.LexicalRules)
+                    {
+                        if (rule.Attr(Semantic).IsInline)
+                        {
+                            continue;
+                        }
+                        VisitRule(rule);
+                    }
                 });
             }
 
@@ -229,7 +243,7 @@ namespace Lipeg.SDK.Dump
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                var rule = expression.Rule;
+                var rule = expression.InlineRule;
 
                 Writer.WriteLine($"({rule.Identifier} {OpSymbols.DefPlain}");
                 Writer.Indent(() =>
@@ -291,6 +305,10 @@ namespace Lipeg.SDK.Dump
 
             private void LexSpaced(Expression expression, Action write)
             {
+#if true
+                Debug.Assert(expression != null);
+                write();
+#else
                 var strip = expression.Attr(Semantic).IsLexical && !expression.Attr(Semantic).Rule.Attr(Semantic).IsLexical;
 
                 if (strip)
@@ -302,6 +320,7 @@ namespace Lipeg.SDK.Dump
                 {
                     Writer.Write(")");
                 }
+#endif
             }
 
             private void MaybeParent(bool condition, Expression expression)

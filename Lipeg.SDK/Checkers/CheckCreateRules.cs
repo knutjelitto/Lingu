@@ -77,6 +77,7 @@ namespace Lipeg.SDK.Checkers
 
                 Check.TryAdd(rule);
                 rule.Attr(Semantic).SetIsLexical(parent.Attr(Semantic).IsLexical);
+                rule.Attr(Semantic).SetIsInline(true);
                 if (rule.Attr(Semantic).IsLexical)
                 {
                     Grammar.LexicalRules.Add(rule);

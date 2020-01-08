@@ -3,6 +3,10 @@ Try to understand (programming-) Languages
 
 ## Links
 
+### Memory Management
+
+[ASAP: As Static As Possible memory management](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-908.html)
+
 ### Hime
 [Hime reference](https://cenotelie.fr/projects/hime/reference/index.html)
 [Hime tools](https://bitbucket.org/cenotelie/hime/downloads/hime-v3.4.0.zip)

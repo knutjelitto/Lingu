@@ -96,18 +96,28 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "choice");
 
-            var choices = node.Children.Select(Sequence);
+            if (node.Count > 1)
+            {
+                var choices = node.Children.Select(Sequence);
+                return ChoiceExpression.From(node, choices);
+            }
 
-            return ChoiceExpression.From(node, choices);
+            return Sequence(node[0]);
+
         }
 
         private Expression Sequence(INode node)
         {
             Debug.Assert(node.Name == "sequence");
 
-            var prefixes = node.Children.Select(Prefix);
+            if (node.Count > 1)
+            {
+                var prefixes = node.Children.Select(Prefix);
 
-            return SequenceExpression.From(node, prefixes);
+                return SequenceExpression.From(node, prefixes);
+            }
+
+            return Prefix(node[0]);
         }
 
         private Expression Prefix(INode node)

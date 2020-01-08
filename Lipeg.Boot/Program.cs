@@ -62,6 +62,8 @@ namespace Lipeg.Boot
 
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParsers(), semantic);
 
+
+                    
                     results = new CompileResult();
 
                     source = Source.FromFile(results, testFile);
@@ -82,7 +84,15 @@ namespace Lipeg.Boot
 
                         semantic = new Semantic(grammar, results);
 
+                        AChecker.Check(semantic);
+
                         Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.ast"), new DumpAst(), semantic);
+
+                        Builder.BuildParser(semantic);
+
+                        combiParser = semantic.Grammar.Attr(semantic).Parser;
+
+                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.parser"), new DumpParsers(), semantic);
                     }
                     else
                     {

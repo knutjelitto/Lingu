@@ -12,15 +12,15 @@ grammar lipeg
             ;
         
         grammar <=
-            ,(_ 'grammar') identifier ,(_ '{') ^(options / syntax / lexical)* ,(_ '}')
+            ,'grammar' identifier ,'{' ^(options / syntax / lexical)* ,'}'
             ;
         
         options <=
-            ,(_ 'options') ,(_ '{') ^option* ,(_ '}')
+            ,'options' ,'{' ^option* ,'}'
             ;
         
         option <=
-            identifier ,(_ '=') option-value ,(_ ';')
+            identifier ,'=' option-value ,';'
             ;
         
         option-value <=
@@ -28,23 +28,23 @@ grammar lipeg
             ;
         
         qualified-identifier <=
-            identifier ^(,(_ '.') identifier)*
+            identifier ^(,'.' identifier)*
             ;
         
         syntax <=
-            ,(_ 'rules') ,(_ '{') ^rules ,(_ ';')? ,(_ '}')
+            ,'rules' ,'{' ^rules ,';'? ,'}'
             ;
         
         lexical <=
-            ,(_ 'lexical') ,(_ '{') ^rules ,(_ ';')? ,(_ '}')
+            ,'lexical' ,'{' ^rules ,';'? ,'}'
             ;
         
         rules <=
-            ^(rule ^(,(_ ';') rule)*)?
+            ^(rule ^(,';' rule)*)?
             ;
         
         rule <=
-            identifier ,(_ '<=') ,(_ '/')? ^expression
+            identifier ,'<=' ,'/'? ^expression
             ;
         
         expression <=
@@ -53,34 +53,34 @@ grammar lipeg
             ;
         
         choice <=
-            sequence ^(,(_ '/') sequence)+
+            sequence ^(,'/' sequence)+
             ;
         
         sequence <=
-            ^^prefix+
+            ^(^prefix)+
             ;
         
         prefix <=
-            / (prefix.and <=
-                (,(_ '&') ^suffix))
-            / (prefix.not <=
-                (,(_ '!') ^suffix))
-            / (prefix.drop <=
-                (,(_ ',') ^suffix))
-            / (prefix.fuse <=
-                (,(_ '~') ^suffix))
-            / (prefix.lift <=
-                (,(_ '^') ^suffix))
+            / (and <=
+                (,'&' ^suffix))
+            / (not <=
+                (,'!' ^suffix))
+            / (drop <=
+                (,',' ^suffix))
+            / (fuse <=
+                (,'~' ^suffix))
+            / (lift <=
+                (,'^' ^suffix))
             / ^suffix
             ;
         
         suffix <=
-            / (suffix.zero-or-one <=
-                (^primary ,(_ '?')))
-            / (suffix.zero-or-more <=
-                (^primary ,(_ '*')))
-            / (suffix.one-or-more <=
-                (^primary ,(_ '+')))
+            / (zero-or-one <=
+                (^primary ,'?'))
+            / (zero-or-more <=
+                (^primary ,'*'))
+            / (one-or-more <=
+                (^primary ,'+'))
             / ^primary
             ;
         
@@ -92,56 +92,24 @@ grammar lipeg
             / any
             / epsilon
             / inline
-            / (,(_ '(') ^expression ,(_ ')'))
+            / (,'(' ^expression ,')')
             ;
         
         inline <=
-            ,(_ '(') ^rule ,(_ ')')
+            ,'(' ^rule ,')'
             ;
         
         any <=
-            ,(_ '.')
+            ,'.'
             ;
         
         epsilon <=
-            / (_ 'epsilon')
-            / (_ '\u{03B5}')
+            / 'epsilon'
+            / '\u{03B5}'
             ;
         
         eof <=
-            !(_ .)
-            ;
-        
-        prefix.and <=
-            (,(_ '&') ^suffix)
-            ;
-        
-        prefix.not <=
-            (,(_ '!') ^suffix)
-            ;
-        
-        prefix.drop <=
-            (,(_ ',') ^suffix)
-            ;
-        
-        prefix.fuse <=
-            (,(_ '~') ^suffix)
-            ;
-        
-        prefix.lift <=
-            (,(_ '^') ^suffix)
-            ;
-        
-        suffix.zero-or-one <=
-            (^primary ,(_ '?'))
-            ;
-        
-        suffix.zero-or-more <=
-            (^primary ,(_ '*'))
-            ;
-        
-        suffix.one-or-more <=
-            (^primary ,(_ '+'))
+            !.
             ;
     }
     lexical
@@ -172,7 +140,7 @@ grammar lipeg
             ;
         
         string <=
-            ,'\'' ^^character* ,'\''
+            ,'\'' ^(^character)* ,'\''
             ;
         
         character <=
@@ -207,7 +175,7 @@ grammar lipeg
             ;
         
         character-class <=
-            ,'[' not ^^class-part* ,']'
+            ,'[' not ^(^class-part)* ,']'
             ;
         
         not <=
