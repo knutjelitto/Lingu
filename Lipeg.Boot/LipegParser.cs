@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Lipeg.Runtime;
+using Lipeg.SDK.Output;
+using Lipeg.SDK.Parsers;
 using Pegasus.Common;
 using Pegasus.Parser;
 
@@ -10,14 +12,25 @@ using Pegasus.Parser;
 
 namespace Lipeg.Boot
 {
-    public partial class LipegParser
+    public partial class LipegParser : IParser
     {
         internal readonly CSharpParser cSharpParser = new CSharpParser();
         private readonly ISource source;
 
+        public string Kind => "lipeg";
+
         public LipegParser(ISource source)
         {
             this.source = source;
+        }
+
+        public IResult Parse(IContext context)
+        {
+            if (context == null) throw new InternalNullException();
+
+            var node = Parse(context.Source.ToString(), context.Source.Name);
+
+            return Result.Success(node, context, node);
         }
 
         protected INode N(Cursor start, Cursor end, string name, params INode[] children)
@@ -107,6 +120,11 @@ namespace Lipeg.Boot
         protected static string HexChar(string hexDigits)
         {
             return ((char)int.Parse(hexDigits, NumberStyles.HexNumber, CultureInfo.InvariantCulture)).ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void Dump(int level, IWriter writer)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

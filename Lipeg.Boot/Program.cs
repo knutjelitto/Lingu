@@ -5,6 +5,8 @@ using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
 using System.Linq;
+using Lipeg.SDK.Tree;
+using Lipeg.SDK;
 
 namespace Lipeg.Boot
 {
@@ -23,7 +25,7 @@ namespace Lipeg.Boot
         {
             var projectDir = DirRef.ProjectDir();
             var grammarDir = projectDir.Dir("Grammars");
-            var debugDir = projectDir.Dir("DebugOut");
+            DirRef debugDir = projectDir.Dir("DebugOut");
 
             var grammarFile = grammarDir.File(grammarFilename);
             var testFile = grammarDir.File(testFilename);
@@ -36,15 +38,17 @@ namespace Lipeg.Boot
 
             if (!results.HasErrors && source != null)
             {
-                var parser = new LipegParser(source);
+                IParser parser = new LipegParser(source);
 
-                var parseTree = parser.Parse(source.ToString(), grammarFile);
+                var start = DContext.Start(source);
 
-                Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".nodes"), new DumpNodes(), Enumerable.Repeat(parseTree, 1));
+                IResult parseTree = parser.Parse(start);
 
-                var grammarBuilder = new GrammarBuilder();
+                Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".nodes"), new DumpNodes(), parseTree.Nodes);
 
-                var grammar = grammarBuilder.Build(parseTree);
+                IGrammarBuilder grammarBuilder = new GrammarBuilder();
+
+                Grammar grammar = grammarBuilder.Build(parseTree.Nodes[0]);
 
                 var semantic = new Semantic(grammar, results);
 
@@ -52,15 +56,13 @@ namespace Lipeg.Boot
 
                 if (!results.HasErrors)
                 {
-                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".lpg"), new DumpAst(), semantic);
+                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".lpg"), new DumpPpGrammar(), semantic);
 
                     Builder.BuildParser(semantic);
 
-                    var combiParser = semantic.Grammar.Attr(semantic).Parser;
+                    parser = semantic.Grammar.Attr(semantic).Parser;
 
                     Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParsers(), semantic);
-
-
                     
                     results = new CompileResult();
 
@@ -68,9 +70,9 @@ namespace Lipeg.Boot
 
                     Debug.Assert(source != null);
 
-                    var start = DContext.Start(source);
+                    start = DContext.Start(source);
                     
-                    var result = combiParser.Parse(start);
+                    var result = parser.Parse(start);
 
                     Console.WriteLine($"{result}");
 
@@ -84,11 +86,9 @@ namespace Lipeg.Boot
 
                         AChecker.Check(semantic);
 
-                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.lpg"), new DumpAst(), semantic);
+                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.lpg"), new DumpPpGrammar(), semantic);
 
                         Builder.BuildParser(semantic);
-
-                        combiParser = semantic.Grammar.Attr(semantic).Parser;
 
                         Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.parser"), new DumpParsers(), semantic);
                     }

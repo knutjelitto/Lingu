@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 
 using Lipeg.Runtime;
+using Lipeg.SDK;
 using Lipeg.SDK.Tree;
 
 #pragma warning disable CA1822 // Mark members as static
@@ -12,7 +13,7 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.Boot
 {
-    internal class GrammarBuilder
+    internal class GrammarBuilder : IGrammarBuilder
     {
         public Grammar Build(INode node)
         {
@@ -65,7 +66,7 @@ namespace Lipeg.Boot
 
         private Identifier Identifier(INode node)
         {
-            return SDK.Tree.Identifier.From(node, ((ILeaf) node).Value);
+            return SDK.Tree.Identifier.From(node, ((ILeaf)node).Value);
         }
 
         private Identifier QualifiedIdentifier(INode node)
@@ -241,12 +242,12 @@ namespace Lipeg.Boot
                 return ClassRangeExpression.From(node, c1[0], c2[0]);
             }
 
-            throw  new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private string Character(INode node)
         {
-            var leaf = (ILeaf) node;
+            var leaf = (ILeaf)node;
 
             return leaf.Name switch
             {
