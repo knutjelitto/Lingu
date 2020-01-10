@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -14,19 +15,20 @@ namespace Lipeg.Boot
 {
     public partial class LipegParser : IParser
     {
-        internal readonly CSharpParser cSharpParser = new CSharpParser();
-        private readonly ISource source;
+        private ISource source = Source.FromString(String.Empty, String.Empty);
 
         public string Kind => "lipeg";
 
-        public LipegParser(ISource source)
+        public static IParser From()
         {
-            this.source = source;
+            return new LipegParser();
         }
 
         public IResult Parse(IContext context)
         {
-            if (context == null) throw new InternalNullException();
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (context.Source == null) throw  new InternalNullException();
+            this.source = context.Source;
 
             var node = Parse(context.Source.ToString(), context.Source.Name);
 

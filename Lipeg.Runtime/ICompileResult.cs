@@ -5,9 +5,7 @@ namespace Lipeg.Runtime
 {
     public interface ICompileResult
     {
-        void SetSource(Source source);
-        Source GetSource();
-
+        bool HasAny { get; }
         bool HasErrors { get; }
         bool ShouldStop { get; }
         bool IsFatal { get; }

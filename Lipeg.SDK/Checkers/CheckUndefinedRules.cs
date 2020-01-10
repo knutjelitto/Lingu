@@ -8,25 +8,25 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all rules are defined
     /// </summary>
-    public class CheckUndefinedRules : ACheckBase, ICheckPass
+    public class CheckUndefinedRules : CheckBase, ICheckPass
     {
-        public CheckUndefinedRules(Semantic semantic)
-            : base(semantic)
+        public CheckUndefinedRules(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            new Visitor(Semantic).VisitGrammarRules();
+            new Visitor(Grammar).VisitGrammarRules();
         }
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                if (!Semantic.Rules.TryGetValue(expression.Identifier.Name, out var _))
+                if (!Grammar.Attr.Rules.TryGetValue(expression.Identifier.Name, out var _))
                 {
                     Results.AddError(new MessageError(MessageCode.UndefinedRule, expression.Identifier));
                     return;

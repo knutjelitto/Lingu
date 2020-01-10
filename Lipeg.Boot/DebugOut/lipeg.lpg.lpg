@@ -5,7 +5,7 @@ grammar lipeg
         start = start;
         spacing = _;
     }
-    rules
+    syntax
     {
         start <=
             grammar eof
@@ -32,7 +32,7 @@ grammar lipeg
             ;
         
         syntax <=
-            ,'rules' ,'{' ^rules ,';'? ,'}'
+            ,'syntax' ,'{' ^rules ,';'? ,'}'
             ;
         
         lexical <=

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Lipeg.Runtime;
@@ -9,7 +8,6 @@ namespace Lipeg.SDK.Checkers
     public class CompileResult : ICompileResult
     {
         private List<IMessage> errors = new List<IMessage>();
-        private Source? source;
 
         public CompileResult()
         {
@@ -32,9 +30,6 @@ namespace Lipeg.SDK.Checkers
             IsFatal = true;
             AddError(error);
         }
-
-        public void SetSource(Source source) => this.source = source;
-        public Source GetSource() => this.source ?? throw new NullReferenceException();
 
         public bool Report(TextWriter writer)
         {

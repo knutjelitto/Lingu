@@ -5,6 +5,7 @@ using System.Linq;
 using Lipeg.Runtime;
 using Lipeg.SDK.Common;
 using Lipeg.SDK.Output;
+using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Dump
 {
@@ -23,7 +24,20 @@ namespace Lipeg.SDK.Dump
             }
         }
 
-        private string Head(INode node)
+        public void Dump(Grammar grammar, IWriter writer, IEnumerable<INode> nodes)
+        {
+            if (nodes == null) throw new ArgumentNullException(nameof(nodes));
+
+            foreach (var node in nodes)
+            {
+                writer.Indent($"{Head(node)}", () =>
+                {
+                    Dump(grammar, writer, node.Children);
+                });
+            }
+        }
+
+        private static string Head(INode node)
         {
             if (node is ILeaf leaf)
             {

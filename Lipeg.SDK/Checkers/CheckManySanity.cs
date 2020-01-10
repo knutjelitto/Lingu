@@ -6,26 +6,26 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all X* or X+ rules have non-nullable X
     /// </summary>
-    public class CheckManySanity : ACheckBase, ICheckPass
+    public class CheckManySanity : CheckBase, ICheckPass
     {
-        public CheckManySanity(Semantic semantic)
-            : base(semantic)
+        public CheckManySanity(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            new Visitor(Semantic).VisitGrammarRules();
+            new Visitor(Grammar).VisitGrammarRules();
         }
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             protected override void VisitStarExpression(StarExpression expression)
             {
                 base.VisitStarExpression(expression);
-                if (Semantic[expression.Expression].IsNullable)
+                if (expression.Expression.Attr.IsNullable)
                 {
                     Results.AddError(new MessageError(MessageCode.NullableManyContent, expression));
                 }
@@ -34,7 +34,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitPlusExpression(PlusExpression expression)
             {
                 base.VisitPlusExpression(expression);
-                if (Semantic[expression.Expression].IsNullable)
+                if (expression.Expression.Attr.IsNullable)
                 {
                     Results.AddError(new MessageError(MessageCode.NullableManyContent, expression));
                 }

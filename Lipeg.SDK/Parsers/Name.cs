@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -11,6 +12,7 @@ namespace Lipeg.SDK.Parsers
     public class Name : IParser
     {
         private Lazy<IParser> getParser;
+        private Dictionary<string, Dictionary<int, IResult>> cache = new Dictionary<string, Dictionary<int, IResult>>();
 
         public Name(Func<IParser> parser, Identifier identifier)
         {
@@ -26,6 +28,14 @@ namespace Lipeg.SDK.Parsers
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
+            if (this.cache.TryGetValue(Identifier.Name, out var lineCache))
+            {
+                if (lineCache.TryGetValue(context.Offset, out var previous))
+                {
+                    return previous;
+                }
+            }
+
             var result = Parser.Parse(context);
 
             if (result.IsSuccess)
@@ -39,6 +49,13 @@ namespace Lipeg.SDK.Parsers
                     result = Result.Success(result, result.Next, NodeList.From(result, Identifier.Name, result.Nodes.ToArray()));
                 }
             }
+
+            if (lineCache == null)
+            {
+                lineCache = new Dictionary<int, IResult>();
+                this.cache.Add(Identifier.Name, lineCache);
+            }
+            lineCache[context.Offset] = result;
 
             return result;
         }

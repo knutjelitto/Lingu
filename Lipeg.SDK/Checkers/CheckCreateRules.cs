@@ -9,10 +9,10 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Create all rules
     /// </summary>
-    internal class CheckCreateRules : ACheckBase, ICheckPass
+    internal class CheckCreateRules : CheckBase, ICheckPass
     {
-        public CheckCreateRules(Semantic semantic)
-            : base(semantic)
+        public CheckCreateRules(Grammar grammar)
+            : base(grammar)
         {
         }
 
@@ -20,16 +20,16 @@ namespace Lipeg.SDK.Checkers
         {
             foreach (var syntaxRule in Grammar.SyntaxRules)
             {
-                syntaxRule.Attr(Semantic).SetIsLexical(false);
+                syntaxRule.Attr.SetIsLexical(false);
             }
             foreach (var lexicalRule in Grammar.LexicalRules)
             {
-                lexicalRule.Attr(Semantic).SetIsLexical(true);
+                lexicalRule.Attr.SetIsLexical(true);
             }
 
-            var visitor = new Visitor(this, Semantic);
+            var visitor = new Visitor(Grammar, this);
 
-            foreach (var rule in Grammar.Rules.ToList())
+            foreach (var rule in Grammar.AllRules.ToList())
             {
                 TryAdd(rule);
 
@@ -39,7 +39,7 @@ namespace Lipeg.SDK.Checkers
 
         public void TryAdd(IRule rule)
         {
-            if (Semantic.Rules.TryGetValue(rule.Identifier.Name, out var already))
+            if (Grammar.Attr.Rules.TryGetValue(rule.Identifier.Name, out var already))
             {
                 if (already == null) throw new InternalNullException();
 
@@ -48,14 +48,14 @@ namespace Lipeg.SDK.Checkers
             }
             else
             {
-                Semantic.Rules.Add(rule);
+                Grammar.Attr.Rules.Add(rule);
             }
         }
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(CheckCreateRules check, Semantic semantic)
-                : base(semantic)
+            public Visitor(Grammar grammar, CheckCreateRules check)
+                : base(grammar)
             {
                 Check = check;
             }
@@ -76,9 +76,9 @@ namespace Lipeg.SDK.Checkers
                 var rule = Rule.From(parent.Identifier.With(expression.InlineRule.Identifier), expression.InlineRule.Expression);
 
                 Check.TryAdd(rule);
-                rule.Attr(Semantic).SetIsLexical(parent.Attr(Semantic).IsLexical);
-                rule.Attr(Semantic).SetIsInline(true);
-                if (rule.Attr(Semantic).IsLexical)
+                rule.Attr.SetIsLexical(parent.Attr.IsLexical);
+                rule.Attr.SetIsInline(true);
+                if (rule.Attr.IsLexical)
                 {
                     Grammar.LexicalRules.Add(rule);
                 }

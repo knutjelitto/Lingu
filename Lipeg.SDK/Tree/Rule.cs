@@ -1,4 +1,6 @@
-﻿namespace Lipeg.SDK.Tree
+﻿using Lipeg.SDK.Checkers;
+
+namespace Lipeg.SDK.Tree
 {
     public class Rule : IRule
     {
@@ -20,6 +22,8 @@
         }
         public Identifier Identifier { get; private set; }
         public Expression Expression { get; }
+        public IRuleAttributes Attr { get; } = new RuleAttributes();
+
         public static IRule From(Identifier identifier, Expression expression) => new Rule(identifier, expression);
 
         public override string ToString()

@@ -5,7 +5,7 @@
         start = start;
         spacing = _;
     }
-    rules
+    syntax
     {
         start <=
             grammar eof
@@ -32,7 +32,7 @@
             ;
 
         syntax <=
-            ,'rules' ,'{' ^rules ,';'? ,'}'
+            ,'syntax' ,'{' ^rules ,';'? ,'}'
             ;
 
         lexical <=

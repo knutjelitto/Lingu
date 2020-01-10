@@ -2,9 +2,9 @@
 
 namespace Lipeg.Runtime
 {
-    public struct DContext : IContext
+    public struct SourceContext : IContext
     {
-        private DContext(ISource source, int offset)
+        private SourceContext(ISource source, int offset)
         {
             Source = source;
             Offset = offset;
@@ -17,12 +17,12 @@ namespace Lipeg.Runtime
         public IContext Advance(int count)
         {
             Debug.Assert(count >= 0);
-            return new DContext(Source, Offset + count);
+            return new SourceContext(Source, Offset + count);
         }
 
         public static IContext Start(ISource source)
         {
-            return new DContext(source, 0);
+            return new SourceContext(source, 0);
         }
 
         public override string ToString()

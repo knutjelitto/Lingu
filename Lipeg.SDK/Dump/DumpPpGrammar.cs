@@ -1,26 +1,25 @@
+using System;
 using System.Diagnostics;
 
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
-using Lipeg.SDK.Checkers;
 using Lipeg.SDK.Common;
-using System;
 
 namespace Lipeg.SDK.Dump
 {
-    public class DumpPpGrammar : IDump<Semantic>
+    public class DumpPpGrammar : IDump<bool>
     {
-        public void Dump(IWriter writer, Semantic semantic)
+        public void Dump(Grammar grammar, IWriter writer, bool _)
         {
-            var dumper = new DumpVisitor(writer, semantic, 0);
+            var dumper = new DumpVisitor(grammar, writer, 0);
 
             dumper.VisitGrammar();
         }
 
         private class DumpVisitor : TreeVisitor
         {
-            public DumpVisitor(IWriter writer, Semantic semantic, int verbosity)
-                : base(semantic)
+            public DumpVisitor(Grammar grammar, IWriter writer, int verbosity)
+                : base(grammar)
             {
                 Writer = writer;
                 Verbosity = verbosity;
@@ -59,7 +58,7 @@ namespace Lipeg.SDK.Dump
                     ruleCount = 0;
                     foreach (var rule in Grammar.SyntaxRules)
                     {
-                        if (rule.Attr(Semantic).IsInline)
+                        if (rule.Attr.IsInline)
                         {
                             continue;
                         }
@@ -75,7 +74,7 @@ namespace Lipeg.SDK.Dump
                     ruleCount = 0;
                     foreach (var rule in Grammar.LexicalRules)
                     {
-                        if (rule.Attr(Semantic).IsInline)
+                        if (rule.Attr.IsInline)
                         {
                             continue;
                         }
@@ -93,11 +92,11 @@ namespace Lipeg.SDK.Dump
 
                 if (Verbosity > 1)
                 {
-                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsUsed)}is used");
-                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsReachable)}is reachable");
-                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsNullable)}is nullable");
-                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsLexical)}is lexical");
-                    Writer.WriteLine($"// {Not(rule.Attr(Semantic).IsSyntax)}is syntax");
+                    Writer.WriteLine($"// {Not(rule.Attr.IsUsed)}is used");
+                    Writer.WriteLine($"// {Not(rule.Attr.IsReachable)}is reachable");
+                    Writer.WriteLine($"// {Not(rule.Attr.IsNullable)}is nullable");
+                    Writer.WriteLine($"// {Not(rule.Attr.IsLexical)}is lexical");
+                    Writer.WriteLine($"// {Not(rule.Attr.IsSyntax)}is syntax");
                 }
                 Writer.WriteLine($"{rule.Identifier} {OpSymbols.DefPlain}");
                 Writer.Indent(() =>

@@ -13,16 +13,16 @@ namespace Lipeg.SDK.Builders
 {
     public class BuildCombinator : IBuildPass
     {
-        public BuildCombinator(Semantic semantic)
+        public BuildCombinator(Grammar grammar)
         {
-            Semantic = semantic;
+            Grammar = grammar;
         }
 
-        public Semantic Semantic { get; }
+        public Grammar Grammar { get; }
 
         public void Build()
         {
-            new Visitor(Semantic).Visit();
+            new Visitor(Grammar).Visit();
         }
 
         private class Visitor : TreeVisitor
@@ -30,10 +30,10 @@ namespace Lipeg.SDK.Builders
             private readonly List<IParser> parsers = new List<IParser>();
             private readonly Func<IParser> spacer;
 
-            public Visitor(Semantic semantic)
-                : base(semantic)
+            public Visitor(Grammar grammar)
+                : base(grammar)
             {
-                spacer = () => Grammar.Attr(Semantic).Spacing.Attr(Semantic).Parser;
+                spacer = () => Grammar.Attr.Spacing.Attr.Parser;
             }
 
             public void Visit()
@@ -74,7 +74,7 @@ namespace Lipeg.SDK.Builders
 
                 Debug.Assert(parsers.Count == 1);
 
-                rule.Attr(Semantic).SetParser(Pop());
+                rule.Attr.SetParser(Pop());
             }
 
             public override void VisitExpression(Expression expression)
@@ -83,7 +83,7 @@ namespace Lipeg.SDK.Builders
 
                 base.VisitExpression(expression);
 
-                if (expression.Attr(Semantic).IsWithSpacing && !(Peek() is Space))
+                if (expression.Attr.IsWithSpacing && !(Peek() is Space))
                 {
                     Push(new Space(spacer, Pop()));
                 }
@@ -96,6 +96,7 @@ namespace Lipeg.SDK.Builders
                 base.VisitChoiceExpression(expression);
 
                 var parser = new Choice(Pop(start));
+
                 parsers.Add(parser);
             }
 
@@ -152,12 +153,12 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                Push(new Name(() => Semantic[Semantic.Rules[expression.Identifier.Name]].Parser, expression.Identifier));
+                Push(new Name(() => Grammar.Attr.Rules[expression.Identifier.Name].Attr.Parser, expression.Identifier));
             }
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Push(new Name(() => Semantic[Semantic.Rules[expression.Rule.Identifier.Name]].Parser, expression.Rule.Identifier));
+                Push(new Name(() => Grammar.Attr.Rules[expression.Rule.Identifier.Name].Attr.Parser, expression.Rule.Identifier));
             }
 
             protected override void VisitAndExpression(AndExpression expression)

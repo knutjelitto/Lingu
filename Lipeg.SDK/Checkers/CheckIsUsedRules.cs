@@ -6,20 +6,20 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check for rules that are used
     /// </summary>
-    public class CheckIsUsedRules : ACheckBase, ICheckPass
+    public class CheckIsUsedRules : CheckBase, ICheckPass
     {
-        public CheckIsUsedRules(Semantic semantic)
-        : base(semantic)
+        public CheckIsUsedRules(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            new Visitor(Semantic).VisitGrammarRules();
+            new Visitor(Grammar).VisitGrammarRules();
 
-            foreach (var rule in Semantic.Rules)
+            foreach (var rule in Grammar.Attr.Rules)
             {
-                if (!Semantic[rule].IsUsed)
+                if (!rule.Attr.IsUsed)
                 {
                     Results.AddError(new MessageWarning(MessageCode.UnusedRule, rule.Identifier));
                 }
@@ -28,16 +28,16 @@ namespace Lipeg.SDK.Checkers
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                Semantic[Semantic.Rules[expression.Identifier.Name]].SetIsUsed(true);
+                Grammar.Attr.Rules[expression.Identifier.Name].Attr.SetIsUsed(true);
             }
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Semantic[Semantic.Rules[expression.Rule.Identifier.Name]].SetIsUsed(true);
+                Grammar.Attr.Rules[expression.Rule.Identifier.Name].Attr.SetIsUsed(true);
             }
         }
     }

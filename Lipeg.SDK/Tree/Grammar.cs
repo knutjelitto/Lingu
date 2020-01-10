@@ -3,6 +3,7 @@ using System.Linq;
 
 using Lipeg.Runtime;
 using Lipeg.SDK.Checkers;
+using Lipeg.SDK.Common;
 
 namespace Lipeg.SDK.Tree
 {
@@ -20,7 +21,10 @@ namespace Lipeg.SDK.Tree
         public IList<Option> Options { get; }
         public IList<IRule> SyntaxRules { get; }
         public IList<IRule> LexicalRules { get; }
-        public IEnumerable<IRule> Rules => SyntaxRules.Concat(LexicalRules);
+        public IEnumerable<IRule> AllRules => SyntaxRules.Concat(LexicalRules);
+
+        public IGrammarAttributes Attr { get; } = new GrammarAttributes();
+        public ICompileResult Results { get; } = new CompileResult();
 
         public static Grammar From(Identifier name, IList<Option> options, IList<IRule> syntax, IList<IRule> lexicals)
         {

@@ -11,5 +11,7 @@ namespace Lipeg.Runtime
         bool AtEnd(int offset);
 
         bool StartsWith(int offset, string start);
+
+        IContext Start();
     }
 }

@@ -76,7 +76,7 @@ start [grammar, eof]
                 identifier='syntax'
                 sequence [prefix.drop, prefix.drop, prefix.lift, prefix.drop, prefix.drop]
                     prefix.drop [verbatim-string]
-                        verbatim-string='rules'
+                        verbatim-string='syntax'
                     prefix.drop [verbatim-string]
                         verbatim-string='{'
                     prefix.lift [identifier]

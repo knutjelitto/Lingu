@@ -7,21 +7,21 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check for rules that are reached from start symbol
     /// </summary>
-    public class CheckParentRules : ACheckBase, ICheckPass
+    public class CheckParentRules : CheckBase, ICheckPass
     {
-        public CheckParentRules(Semantic semantic)
-        : base(semantic)
+        public CheckParentRules(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            new Visitor(Semantic).VisitGrammarRules();
+            new Visitor(Grammar).VisitGrammarRules();
         }
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             private Stack<IRule> rules = new Stack<IRule>();
             private void Push(IRule rule) => rules.Push(rule);
@@ -38,10 +38,10 @@ namespace Lipeg.SDK.Checkers
             public override void VisitExpression(Expression expression)
             {
                 base.VisitExpression(expression);
-                expression.Attr(Semantic).SetRule(Rule);
-                if (Rule.Attr(Semantic).IsSyntax && expression.Attr(Semantic).IsLexical)
+                expression.Attr.SetRule(Rule);
+                if (Rule.Attr.IsSyntax && expression.Attr.IsLexical)
                 {
-                    expression.Attr(Semantic).SetIsWithSpacing(true);
+                    expression.Attr.SetIsWithSpacing(true);
                 }
             }
         }

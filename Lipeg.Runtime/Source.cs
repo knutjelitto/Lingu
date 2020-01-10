@@ -34,6 +34,11 @@ namespace Lipeg.Runtime
         public int this[int index] => Content[index];
         public bool AtEnd(int index) => index >= Content.Length;
 
+        public IContext Start()
+        {
+            return SourceContext.Start(this);
+        }
+
         public static ISource? FromFile(ICompileResult result, FileRef sourceFile)
         {
             try
@@ -48,9 +53,21 @@ namespace Lipeg.Runtime
             return null;
         }
 
-        public static ISource FromString(string content)
+        public static ISource FromFile(FileRef sourceFile)
         {
-            return new Source("<noname>", content);
+            try
+            {
+                return new Source(sourceFile.FileName, sourceFile.GetContent());
+            }
+            catch (FileNotFoundException)
+            {
+                throw new MessageException(new MessageError(MessageCode.SourceFileNotFound, sourceFile));
+            }
+        }
+
+        public static ISource FromString(string name, string content)
+        {
+            return new Source(name, content);
         }
 
         public bool StartsWith(int offset, string prefix)

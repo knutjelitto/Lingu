@@ -1,4 +1,5 @@
 ﻿using Lipeg.Runtime;
+using Lipeg.SDK.Common;
 
 namespace Lipeg.SDK.Tree
 {
@@ -11,5 +12,8 @@ namespace Lipeg.SDK.Tree
 
         IParser Parser { get; }
         bool SetParser(IParser parser);
+
+        UniqueCollection<string, IRule> Rules { get; }
+
     }
 }

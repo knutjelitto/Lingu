@@ -5,31 +5,31 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Checkers
 {
-    public class CheckOptions : ACheckBase, ICheckPass
+    public class CheckOptions : CheckBase, ICheckPass
     {
-        public CheckOptions(Semantic semantic)
-            : base(semantic)
+        public CheckOptions(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            new Visitor(Semantic).VisitGrammarOptions();
+            new Visitor(Grammar).VisitGrammarOptions();
         }
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             protected override void VisitOption(Option option)
             {
                 switch (option.Identifier.Name.ToUpperInvariant())
                 {
                     case "START":
-                        FindRule(option, rule => Semantic[Grammar].SetStart(rule));
+                        FindRule(option, rule => Grammar.Attr.SetStart(rule));
                         break;
                     case "SPACING":
-                        FindRule(option, rule => Semantic[Grammar].SetSpacing(rule));
+                        FindRule(option, rule => Grammar.Attr.SetSpacing(rule));
                         break;
                     default:
                         Results.AddError(new MessageError(MessageCode.UnknownOption, option.Identifier));
@@ -43,7 +43,7 @@ namespace Lipeg.SDK.Checkers
                 {
                     var identifier = option.OptionValue.QualifiedIdentifier.Parts[0];
 
-                    if (Semantic.Rules.TryGetValue(identifier.Name, out var rule))
+                    if (Grammar.Attr.Rules.TryGetValue(identifier.Name, out var rule))
                     {
                         if (rule == null) throw new InternalNullException();
 
@@ -53,7 +53,7 @@ namespace Lipeg.SDK.Checkers
                         }
                         else
                         {
-                            Semantic[rule].SetIsUsed(true);
+                            rule.Attr.SetIsUsed(true);
                             return;
                         }
                     }

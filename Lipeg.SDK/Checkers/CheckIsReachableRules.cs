@@ -6,28 +6,28 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check for rules that are reached from start symbol
     /// </summary>
-    public class CheckIsReachableRules : ACheckBase
+    public class CheckIsReachableRules : CheckBase
         , ICheckPass
     {
-        public CheckIsReachableRules(Semantic semantic)
-        : base(semantic)
+        public CheckIsReachableRules(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            var start = Semantic[Grammar].Start;
-            Semantic[start].SetIsReachable(true);
-            var spacing = Semantic[Grammar].Spacing;
-            Semantic[spacing].SetIsReachable(true);
+            var start = Grammar.Attr.Start;
+            start.Attr.SetIsReachable(true);
+            var spacing = Grammar.Attr.Spacing;
+            spacing.Attr.SetIsReachable(true);
 
-            var visitor = new Visitor(Semantic);
+            var visitor = new Visitor(Grammar);
             visitor.VisitExpression(start.Expression);
             visitor.VisitExpression(spacing.Expression);
 
-            foreach (var rule in Semantic.Rules)
+            foreach (var rule in Grammar.Attr.Rules)
             {
-                if (!Semantic[rule].IsReachable)
+                if (!rule.Attr.IsReachable)
                 {
                     Results.AddError(new MessageWarning(MessageCode.UnreachableRule, rule.Identifier));
                 }
@@ -37,12 +37,12 @@ namespace Lipeg.SDK.Checkers
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                var rule = Semantic.Rules[expression.Identifier.Name];
-                if (Semantic[rule].SetIsReachable(true))
+                var rule = Grammar.Attr.Rules[expression.Identifier.Name];
+                if (rule.Attr.SetIsReachable(true))
                 {
                     VisitExpression(rule.Expression);
                 }
@@ -50,8 +50,8 @@ namespace Lipeg.SDK.Checkers
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                var rule = Semantic.Rules[expression.Rule.Identifier.Name];
-                if (Semantic[rule].SetIsReachable(true))
+                var rule = Grammar.Attr.Rules[expression.Rule.Identifier.Name];
+                if (rule.Attr.SetIsReachable(true))
                 {
                     VisitExpression(rule.Expression);
                 }

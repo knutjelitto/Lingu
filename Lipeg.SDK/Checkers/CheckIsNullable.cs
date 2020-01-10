@@ -7,16 +7,16 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check if all rules are used
     /// </summary>
-    public class CheckIsNullable : ACheckBase, ICheckPass
+    public class CheckIsNullable : CheckBase, ICheckPass
     {
-        public CheckIsNullable(Semantic semantic)
-        : base(semantic)
+        public CheckIsNullable(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            var visitor = new Visitor(Semantic);
+            var visitor = new Visitor(Grammar);
 
             visitor.Changed = true;
             while (visitor.Changed)
@@ -28,13 +28,13 @@ namespace Lipeg.SDK.Checkers
 
         private class Visitor : TreeVisitor
         {
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             public bool Changed { get; set; }
 
             private void SetNullable(Expression expression, bool nullable)
             {
-                if (Semantic[expression].SetIsNullable(nullable))
+                if (expression.Attr.SetIsNullable(nullable))
                 {
                     Changed = true;
                 }
@@ -42,7 +42,7 @@ namespace Lipeg.SDK.Checkers
 
             private void SetNullable(IRule rule, bool nullable)
             {
-                if (nullable && Semantic[rule].SetIsNullable(nullable))
+                if (nullable && rule.Attr.SetIsNullable(nullable))
                 {
                     Changed = true;
                 }
@@ -51,7 +51,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitRule(IRule rule)
             {
                 base.VisitRule(rule);
-                SetNullable(rule, Semantic[rule.Expression].IsNullable);
+                SetNullable(rule, rule.Expression.Attr.IsNullable);
             }
 
             protected override void VisitAndExpression(AndExpression expression)
@@ -77,7 +77,7 @@ namespace Lipeg.SDK.Checkers
                 base.VisitChoiceExpression(expression);
                 foreach (var choice in expression.Choices)
                 {
-                    if (Semantic[choice].IsNullable)
+                    if (choice.Attr.IsNullable)
                     {
                         SetNullable(expression, true);
                     }
@@ -93,23 +93,23 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitDropExpression(DropExpression expression)
             {
                 base.VisitDropExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetNullable(expression, expression.Expression.Attr.IsNullable);
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetNullable(expression, expression.Expression.Attr.IsNullable);
             }
 
             protected override void VisitNameExpression(NameExpression expression)
             {
                 base.VisitNameExpression(expression);
-                if (Semantic.Rules.TryGetValue(expression.Identifier.Name, out var rule))
+                if (Grammar.Attr.Rules.TryGetValue(expression.Identifier.Name, out var rule))
                 {
                     if (rule == null) throw new InternalNullException();
 
-                    SetNullable(expression, Semantic[rule].IsNullable);
+                    SetNullable(expression, rule.Attr.IsNullable);
                 }
             }
 
@@ -122,25 +122,25 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetNullable(expression, expression.Expression.Attr.IsNullable);
             }
 
             protected override void VisitStarExpression(StarExpression expression)
             {
                 base.VisitStarExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetNullable(expression, expression.Expression.Attr.IsNullable);
             }
 
             protected override void VisitPlusExpression(PlusExpression expression)
             {
                 base.VisitPlusExpression(expression);
-                SetNullable(expression, Semantic[expression.Expression].IsNullable);
+                SetNullable(expression, expression.Expression.Attr.IsNullable);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
                 base.VisitSequenceExpression(expression);
-                SetNullable(expression, expression.Sequence.All(s => Semantic[s].IsNullable));
+                SetNullable(expression, expression.Sequence.All(expr => expr.Attr.IsNullable));
             }
 
             protected override void VisitStringLiteralExpression(StringLiteralExpression expression)

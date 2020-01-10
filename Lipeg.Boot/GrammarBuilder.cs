@@ -20,36 +20,36 @@ namespace Lipeg.Boot
             Debug.Assert(node.Name == "grammar");
 
             var identifier = Identifier(node[0]);
-            var (options, rules, lexicals) = Content(node[1]);
+            var (options, syntax, lexicals) = Content(node[1]);
 
-            return Grammar.From(identifier, options, rules, lexicals);
+            return Grammar.From(identifier, options, syntax, lexicals);
         }
 
         private (IList<Option>, IList<IRule>, IList<IRule>) Content(INode node)
         {
             var options = new List<Option>();
-            var rules = new List<IRule>();
+            var syntax = new List<IRule>();
             var lexical = new List<IRule>();
 
             foreach (var content in node.Children)
             {
                 switch (content.Name)
                 {
-                    case "options":
+                    case OpSymbols.Opts:
                         options.AddRange(Options(content));
                         break;
-                    case "syntax":
-                        rules.AddRange(Rules(content));
+                    case OpSymbols.Syntax:
+                        syntax.AddRange(Rules(content));
                         break;
-                    case "lexical":
+                    case OpSymbols.Lexical:
                         lexical.AddRange(Rules(content));
                         break;
                     default:
-                        throw new NotImplementedException();
+                        throw new InternalErrorException($"expected '{OpSymbols.Opts}', '{OpSymbols.Syntax}' or '{OpSymbols.Lexical}' but found '{content.Name}'");
                 }
             }
 
-            return (options, rules, lexical);
+            return (options, syntax, lexical);
         }
 
         private IEnumerable<Option> Options(INode node)
@@ -73,7 +73,7 @@ namespace Lipeg.Boot
         {
             Debug.Assert(node.Name == "qualifiedIdentifier");
 
-            var identifiers = node.Children.Select(Identifier).ToPlusList();
+            var identifiers = node.Children.Select(Identifier);
 
             return SDK.Tree.Identifier.From(node, identifiers);
         }

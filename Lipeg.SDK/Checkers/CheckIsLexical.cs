@@ -8,20 +8,20 @@ namespace Lipeg.SDK.Checkers
     /// <summary>
     /// Check which rules are ``terminal´´ (sole lexical without spacing skipping)
     /// </summary>
-    public class CheckIsLexical : ACheckBase, ICheckPass
+    public class CheckIsLexical : CheckBase, ICheckPass
     {
-        public CheckIsLexical(Semantic semantic)
-        : base(semantic)
+        public CheckIsLexical(Grammar grammar)
+            : base(grammar)
         {
         }
 
         public void Check()
         {
-            var visitor = new Visitor(Semantic);
+            var visitor = new Visitor(Grammar);
 
             foreach (var rule in Grammar.LexicalRules)
             {
-                rule.Attr(Semantic).SetIsLexical(true);
+                rule.Attr.SetIsLexical(true);
             }
 
             visitor.Changed = true;
@@ -36,7 +36,7 @@ namespace Lipeg.SDK.Checkers
         {
             private bool changed;
 
-            public Visitor(Semantic semantic) : base(semantic) { }
+            public Visitor(Grammar grammar) : base(grammar) { }
 
             public bool Changed
             {
@@ -53,7 +53,7 @@ namespace Lipeg.SDK.Checkers
 
             private void SetIsLexical(Expression expression, bool isLexical)
             {
-                if (expression.Attr(Semantic).SetIsLexical(isLexical))
+                if (expression.Attr.SetIsLexical(isLexical))
                 {
                     Changed = true;
                 }
@@ -62,7 +62,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitAndExpression(AndExpression expression)
             {
                 base.VisitAndExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitClassCharExpression(ClassCharExpression expression)
@@ -88,7 +88,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
                 base.VisitChoiceExpression(expression);
-                SetIsLexical(expression, expression.Choices.All(c => c.Attr(Semantic).IsLexical));
+                SetIsLexical(expression, expression.Choices.All(c => c.Attr.IsLexical));
             }
 
             protected override void VisitDropExpression(DropExpression expression)
@@ -100,54 +100,54 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitNameExpression(NameExpression expression)
             {
                 base.VisitNameExpression(expression);
-                if (Semantic.Rules.TryGetValue(expression.Identifier.Name, out var rule))
+                if (Grammar.Attr.Rules.TryGetValue(expression.Identifier.Name, out var rule))
                 {
                     if (rule == null) throw new InternalNullException();
 
-                    SetIsLexical(expression, rule.Attr(Semantic).IsLexical);
+                    SetIsLexical(expression, rule.Attr.IsLexical);
                 }
             }
 
             protected override void VisitNotExpression(NotExpression expression)
             {
                 base.VisitNotExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitOptionalExpression(OptionalExpression expression)
             {
                 base.VisitOptionalExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitPlusExpression(PlusExpression expression)
             {
                 base.VisitPlusExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitStarExpression(StarExpression expression)
             {
                 base.VisitStarExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
                 base.VisitSequenceExpression(expression);
-                SetIsLexical(expression, expression.Sequence[0].Attr(Semantic).IsLexical);
+                SetIsLexical(expression, expression.Sequence[0].Attr.IsLexical);
             }
             protected override void VisitAnyExpression(AnyExpression expression)
             {

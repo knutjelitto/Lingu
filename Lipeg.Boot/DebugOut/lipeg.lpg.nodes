@@ -106,12 +106,13 @@ grammar [identifier, *]
                 choice [sequence]
                     sequence [drop, drop, lift, drop, drop]
                         drop [singleString]
-                            singleString [character, character, character, character, character]
-                                character='r'
-                                character='u'
-                                character='l'
-                                character='e'
+                            singleString [character, character, character, character, character, character]
                                 character='s'
+                                character='y'
+                                character='n'
+                                character='t'
+                                character='a'
+                                character='x'
                         drop [singleString]
                             singleString [character]
                                 character='{'

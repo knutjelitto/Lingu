@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Builders;
@@ -10,33 +9,34 @@ namespace Lipeg.SDK.Checkers
 {
     public static class Builder
     {
-        public static void BuildParser(Semantic semantic)
+        public static IParser BuildParser(Grammar grammar)
         {
-            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
+            if (grammar == null) throw new ArgumentNullException(nameof(grammar));
 
-            Build(semantic.Results, () => new BuildCombinator(semantic));
+            Build(grammar.Results, () => new BuildCombinator(grammar));
 
-            var startRule = semantic.Grammar.Attr(semantic).Start;
+            var startRule = grammar.Attr.Start;
 
-            var parser = new Name(() => startRule.Attr(semantic).Parser, startRule.Identifier);
+            var parser = new Name(() => startRule.Attr.Parser, startRule.Identifier);
 
-            semantic.Grammar.Attr(semantic).SetParser(parser);
+            grammar.Attr.SetParser(parser);
+
+            return parser;
         }
 
-        public static Grammar BuildAst(ICompileResult result, INode root)
+        public static Grammar BuildAst(INode root)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
             if (root == null) throw new ArgumentNullException(nameof(root));
 
-            return new BuildAst(result, root).Grammar;
+            return new BuildAst(root).Grammar;
         }
 
-        public static void BuildSource(Semantic semantic, FileRef file)
+        public static void BuildSource(Grammar grammar, FileRef file)
         {
-            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
+            if (grammar == null) throw new ArgumentNullException(nameof(grammar));
             if (file == null) throw new ArgumentNullException(nameof(file));
 
-            Build(semantic.Results, () => new BuildCSharp(semantic, file));
+            Build(grammar.Results, () => new BuildCSharp(grammar, file));
         }
 
         private static T? Build<T>(ICompileResult results, Func<T> newPass) where T : class, IBuildPass

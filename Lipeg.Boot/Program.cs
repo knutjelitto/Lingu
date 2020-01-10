@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
+using Lipeg.SDK;
+using Lipeg.SDK.Builders;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
-using System.Linq;
 using Lipeg.SDK.Tree;
-using Lipeg.SDK;
 
 namespace Lipeg.Boot
 {
@@ -25,84 +26,77 @@ namespace Lipeg.Boot
         {
             var projectDir = DirRef.ProjectDir();
             var grammarDir = projectDir.Dir("Grammars");
-            DirRef debugDir = projectDir.Dir("DebugOut");
+            var debugDir = projectDir.Dir("DebugOut");
 
             var grammarFile = grammarDir.File(grammarFilename);
             var testFile = grammarDir.File(testFilename);
 
             Environment.CurrentDirectory = debugDir;
 
-            var results = new CompileResult();
-
-            var source = Source.FromFile(results, grammarFile);
-
-            if (!results.HasErrors && source != null)
+            try
             {
-                IParser parser = new LipegParser(source);
+                var outFile = debugDir.File(grammarFile.FileName);
 
-                var start = DContext.Start(source);
+                var parser = Parse(grammarFile, outFile, LipegParser.From(), root => new GrammarBuilder().Build(root));
 
-                IResult parseTree = parser.Parse(start);
-
-                Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".nodes"), new DumpNodes(), parseTree.Nodes);
-
-                IGrammarBuilder grammarBuilder = new GrammarBuilder();
-
-                Grammar grammar = grammarBuilder.Build(parseTree.Nodes[0]);
-
-                var semantic = new Semantic(grammar, results);
-
-                AChecker.Check(semantic);
-
-                if (!results.HasErrors)
+                for (var i = 0; i < 1; ++i)
                 {
-                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".lpg"), new DumpPpGrammar(), semantic);
+                    Debug.Assert(parser != null);
 
-                    Builder.BuildParser(semantic);
+                    outFile = outFile.Add(".boot");
 
-                    parser = semantic.Grammar.Attr(semantic).Parser;
-
-                    Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".parser"), new DumpParsers(), semantic);
-                    
-                    results = new CompileResult();
-
-                    source = Source.FromFile(results, testFile);
-
-                    Debug.Assert(source != null);
-
-                    start = DContext.Start(source);
-                    
-                    var result = parser.Parse(start);
-
-                    Console.WriteLine($"{result}");
-
-                    if (result.IsSuccess)
-                    {
-                        Dumper.Dump(debugDir.File(testFile.FileName).Add(".boot.nodes"), new DumpNodes(), result.Nodes);
-
-                        grammar = Builder.BuildAst(results, result.Nodes[0]);
-
-                        semantic = new Semantic(grammar, results);
-
-                        AChecker.Check(semantic);
-
-                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.lpg"), new DumpPpGrammar(), semantic);
-
-                        Builder.BuildParser(semantic);
-
-                        Dumper.Dump(debugDir.File(grammarFile.FileName).Add(".boot.parser"), new DumpParsers(), semantic);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"farthest:{SDK.Parsers.Result.FarthestFail}");
-                    }
+                    parser = Timer.Time("p-a-p", () => Parse(testFile, outFile, parser, Builder.BuildAst));
                 }
 
-                if (results.HasAny)
-                {
-                    results.Report(Console.Out);
-                }
             }
+            catch (MessageException e)
+            {
+                var results = new CompileResult();
+                results.AddError(e.Msg);
+                results.Report(Console.Out);
+            }
+        }
+
+        private static IParser? Parse(FileRef sourceFile, FileRef debugFile, IParser parser, Func<INode, Grammar> aster)
+        {
+            if (debugFile == null) throw new ArgumentNullException(nameof(debugFile));
+            var source = Source.FromFile(sourceFile);
+
+            var parseTree = parser.Parse(source.Start());
+
+            //Console.WriteLine($"{parseTree.IsSuccess}");
+            //Console.WriteLine($"{parseTree}");
+
+            if (parseTree.IsSuccess)
+            {
+                Dumper.Nodes(debugFile.Add(".nodes"), parseTree.Nodes);
+
+                var grammar = aster(parseTree.Nodes[0]);
+
+                Checker.Check(grammar);
+
+                if (!grammar.Results.HasAny)
+                {
+
+                    Dumper.Pretty(debugFile.Add(".lpg"), grammar);
+
+                    parser = Builder.BuildParser(grammar);
+
+                    Builder.BuildSource(grammar, debugFile.Add(".g.cs"));
+
+                    Dumper.Parsers(debugFile.Add(".parser"), grammar);
+
+                    return parser;
+                }
+
+                grammar.Results.Report(Console.Out);
+            }
+            else
+            {
+                Console.WriteLine($"farthest:{SDK.Parsers.Result.FarthestFail}");
+            }
+
+            return null;
         }
     }
 }

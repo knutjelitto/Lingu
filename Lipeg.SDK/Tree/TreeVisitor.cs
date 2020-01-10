@@ -5,13 +5,12 @@ namespace Lipeg.SDK.Tree
 {
     internal abstract class TreeVisitor
     {
-        public TreeVisitor(Semantic semantic)
+        public TreeVisitor(Grammar grammar)
         {
-            Semantic = semantic;
+            Grammar = grammar;
         }
-        public Semantic Semantic { get; }
-        public Grammar Grammar => Semantic.Grammar;
-        public ICompileResult Results => Semantic.Results;
+        public Grammar Grammar { get; }
+        public ICompileResult Results => Grammar.Results;
 
         public virtual void VisitGrammar()
         {

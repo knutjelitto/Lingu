@@ -5,7 +5,6 @@ namespace Lipeg.SDK.Checkers
 {
     public interface ICheckPass
     {
-        Semantic Semantic { get; }
         void Check();
     }
 }

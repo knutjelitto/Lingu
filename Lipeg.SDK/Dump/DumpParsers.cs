@@ -6,34 +6,32 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Dump
 {
-    public class DumpParsers : IDump<Semantic>
+    public class DumpParsers : IDump<bool>
     {
-        public void Dump(IWriter writer, Semantic semantic)
+        public void Dump(Grammar grammar, IWriter writer, bool _)
         {
             if (writer == null) throw  new ArgumentNullException(nameof(writer));
-            if (semantic == null) throw new ArgumentNullException(nameof(semantic));
 
-            new Visitor(semantic, writer).Dump();
+            new Visitor(grammar, writer).Dump();
         }
 
         private class Visitor
         {
-            public Visitor(Semantic semantic, IWriter writer)
+            public Visitor(Grammar grammar, IWriter writer)
             {
-                Semantic = semantic;
+                Grammar = grammar;
                 Writer = writer;
             }
 
-            public Semantic Semantic { get; }
-            public Grammar Grammar => Semantic.Grammar;
+            public Grammar Grammar { get; }
             public IWriter Writer { get; }
 
             public void Dump()
             {
                 var more = false;
-                foreach (var rule in Grammar.Rules)
+                foreach (var rule in Grammar.AllRules)
                 {
-                    var parser = rule.Attr(Semantic).Parser;
+                    var parser = rule.Attr.Parser;
 
                     if (more)
                     {

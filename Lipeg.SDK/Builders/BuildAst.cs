@@ -11,14 +11,12 @@ namespace Lipeg.SDK.Builders
 {
     public class BuildAst : IBuildPass
     {
-        public BuildAst(ICompileResult result, INode node)
+        public BuildAst(INode node)
         {
-            Result = result;
             Node = node;
             Grammar = new Visitor(this).Visit();
         }
 
-        public ICompileResult Result { get; }
         public INode Node { get; }
         public Grammar Grammar { get; }
 
