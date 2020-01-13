@@ -8,6 +8,7 @@ using Lipeg.SDK.Builders;
 using Lipeg.SDK.Dump;
 using Lipeg.SDK.Checkers;
 using Lipeg.SDK.Tree;
+using Lipeg.SDK.Parsers;
 
 namespace Lipeg.Boot
 {
@@ -62,6 +63,7 @@ namespace Lipeg.Boot
             if (debugFile == null) throw new ArgumentNullException(nameof(debugFile));
             var source = Source.FromFile(sourceFile);
 
+            Name.Clear();
             var parseTree = parser.Parse(source.Start());
 
             //Console.WriteLine($"{parseTree.IsSuccess}");

@@ -12,7 +12,7 @@ namespace Lipeg.SDK.Parsers
     public class Name : IParser
     {
         private Lazy<IParser> getParser;
-        private Dictionary<string, Dictionary<int, IResult>> cache = new Dictionary<string, Dictionary<int, IResult>>();
+        private static Dictionary<string, Dictionary<int, IResult>> cache = new Dictionary<string, Dictionary<int, IResult>>();
 
         public Name(Func<IParser> parser, Identifier identifier)
         {
@@ -24,11 +24,16 @@ namespace Lipeg.SDK.Parsers
         public IParser Parser => getParser.Value;
         public Identifier Identifier { get; }
 
+        public static void Clear()
+        {
+            cache.Clear();
+        }
+
         public IResult Parse(IContext context)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
-            if (this.cache.TryGetValue(Identifier.Name, out var lineCache))
+            if (cache.TryGetValue(Identifier.Name, out var lineCache))
             {
                 if (lineCache.TryGetValue(context.Offset, out var previous))
                 {
@@ -53,7 +58,7 @@ namespace Lipeg.SDK.Parsers
             if (lineCache == null)
             {
                 lineCache = new Dictionary<int, IResult>();
-                this.cache.Add(Identifier.Name, lineCache);
+                cache.Add(Identifier.Name, lineCache);
             }
             lineCache[context.Offset] = result;
 
