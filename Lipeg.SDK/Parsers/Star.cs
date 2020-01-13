@@ -14,8 +14,9 @@ namespace Lipeg.SDK.Parsers
 
         public override IResult Parse(IContext context)
         {
-            var nodes = new List<INode>();
             var current = context;
+
+            var nodes = new List<INode>();
             do
             {
                 if (current == null) throw new InternalNullException();

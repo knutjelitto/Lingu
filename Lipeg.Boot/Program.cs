@@ -38,7 +38,7 @@ namespace Lipeg.Boot
             {
                 var outFile = debugDir.File(grammarFile.FileName);
 
-                var parser = Parse(grammarFile, outFile, LipegParser.From(), root => new GrammarBuilder().Build(root));
+                var parser = Parse(grammarFile, outFile, false, LipegParser.From(), root => new GrammarBuilder().Build(root));
 
                 for (var i = 0; i < 1; ++i)
                 {
@@ -46,7 +46,7 @@ namespace Lipeg.Boot
 
                     outFile = outFile.Add(".boot");
 
-                    parser = Timer.Time("p-a-p", () => Parse(testFile, outFile, parser, Builder.BuildAst));
+                    parser = Timer.Time("p-a-p", () => Parse(testFile, outFile, true, parser, Builder.BuildAst));
                 }
 
             }
@@ -58,16 +58,13 @@ namespace Lipeg.Boot
             }
         }
 
-        private static IParser? Parse(FileRef sourceFile, FileRef debugFile, IParser parser, Func<INode, Grammar> aster)
+        private static IParser? Parse(FileRef sourceFile, FileRef debugFile, bool toCs, IParser parser, Func<INode, Grammar> aster)
         {
             if (debugFile == null) throw new ArgumentNullException(nameof(debugFile));
             var source = Source.FromFile(sourceFile);
 
             Name.Clear();
             var parseTree = parser.Parse(source.Start());
-
-            //Console.WriteLine($"{parseTree.IsSuccess}");
-            //Console.WriteLine($"{parseTree}");
 
             if (parseTree.IsSuccess)
             {
@@ -84,7 +81,10 @@ namespace Lipeg.Boot
 
                     parser = Builder.BuildParser(grammar);
 
-                    Builder.BuildSource(grammar, debugFile.Add(".g.cs"));
+                    if (toCs)
+                    {
+                        Builder.BuildSource(grammar, debugFile.Add(".g.cs"));
+                    }
 
                     Dumper.Parsers(debugFile.Add(".parser"), grammar);
 

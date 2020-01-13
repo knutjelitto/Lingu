@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
+using Lipeg.SDK.Common;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Parsers;
 using Lipeg.SDK.Tree;
@@ -16,6 +19,11 @@ namespace Lipeg.SDK.Builders
     {
         private class Config
         {
+            public readonly bool Disable = false;
+            public int First = 2;
+            public readonly string Namespace = "Lipeg.Generated";
+            private const string ParserClassNameSuffix = "Parser";
+
             public Config(Grammar grammar)
             {
                 Grammar = grammar;
@@ -23,12 +31,10 @@ namespace Lipeg.SDK.Builders
 
             public Grammar Grammar { get; }
 
-            public readonly bool Disable = true;
-            public readonly string Namespace = "Lipeg.Generated";
-            public string ParserClass => $"{Capa(Grammar.Name)}Parser";
+            public string ParserClass => $"{Capa(Grammar.Name)}{ParserClassNameSuffix}";
 
             [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Scheiß drauf")]
-            public IEnumerable<string> Usings => new[] { "Lipeg.Runtime" };
+            public IEnumerable<string> Usings => new[] { "System", "System.Collections.Generic", "Lipeg.SDK.Parsers", "Lipeg.SDK.Tree", "Lipeg.Runtime" };
 
             public string Capa(Identifier id)
             {
@@ -71,19 +77,16 @@ namespace Lipeg.SDK.Builders
 
         private class Visitor : TreeVisitor
         {
-            private readonly List<IParser> parsers = new List<IParser>();
-            private readonly Func<IParser> spacer;
-
             public Visitor(CsWriter writer, Config cfg, Grammar grammar)
                 : base(grammar)
             {
-                spacer = () => Grammar.Attr.Spacing.Attr.Parser;
                 Writer = writer;
                 Cfg = cfg;
             }
 
             public CsWriter Writer { get; }
             public Config Cfg { get; }
+            public int RuleNo { get; set; } = 0;
 
             public void Visit()
             {
@@ -96,34 +99,18 @@ namespace Lipeg.SDK.Builders
                     Writer.WriteLine();
                     Writer.Block($"public partial class {Cfg.ParserClass}", () =>
                     {
-                        VisitGrammarRules();
+                        var more = false;
+                        foreach (var rule in Grammar.AllRules)
+                        {
+                            if (more)
+                            {
+                                Writer.WriteLine();
+                            }
+                            VisitRule(rule);
+                            more = true;
+                        }
                     });
                 });
-            }
-
-            private IReadOnlyList<IParser> Pop(int start)
-            {
-                var subs = parsers.Skip(start).Take(parsers.Count - start).ToArray();
-                parsers.RemoveRange(start, parsers.Count - start);
-
-                return subs;
-            }
-
-            private IParser Pop()
-            {
-                var parser = parsers[parsers.Count - 1];
-                parsers.RemoveAt(parsers.Count - 1);
-                return parser;
-            }
-
-            private void Push(IParser parser)
-            {
-                parsers.Add(parser);
-            }
-
-            private IParser Peek()
-            {
-                return parsers[parsers.Count - 1];
             }
 
             protected override void VisitRule(IRule rule)
@@ -131,138 +118,256 @@ namespace Lipeg.SDK.Builders
                 Writer.WriteLine($"// {rule.Identifier} -> {Cfg.Capa(rule.Identifier)}");
                 Writer.Block($"public IResult {Cfg.Capa(rule.Identifier)}(IContext context)", () =>
                 {
-                    Writer.WriteLine("throw new System.NotImplementedException();");
+                    RuleNo += 1;
+                    if (RuleNo > Cfg.First)
+                    {
+                        Writer.WriteLine("throw new NotImplementedException();");
+                        return;
+                    }
+
+                    Locals.Reset();
+                    using (Locals.Result())
+                    {
+                        Writer.WriteLine($"{Locals.Peek()} = Result.Fail(context);");
+                        Writer.WriteLine("var current = context;");
+                        VisitExpression(rule.Expression);
+                        Writer.WriteLine($"return {Locals.Peek()};");
+                    }
                 });
             }
 
             public override void VisitExpression(Expression expression)
             {
-                if (expression == null) throw new ArgumentNullException(nameof(expression));
-
                 base.VisitExpression(expression);
+            }
 
-                if (expression.Attr.IsWithSpacing && !(Peek() is Space))
+            // <**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**>
+
+            protected override void VisitSequenceExpression(SequenceExpression expression)
+            {
+                Writer.WriteLine("// SequenceExpression:");
+                using (var nodes = Locals.Use("nodes"))
                 {
-                    Push(new Space(spacer, Pop()));
+                    Writer.WriteLine($"{nodes} = new List<INode>({expression.Sequence.Count});");
+                    using (Locals.Result())
+                    {
+                        AddToList(nodes, expression.Sequence.ToList(), 0);
+                    }
+                }
+
+                void AddToList(Local nodes, IReadOnlyList<Expression> exprs, int index)
+                {
+                    if (index < exprs.Count)
+                    {
+                        VisitExpression(exprs[index]);
+                        Writer.Block(
+                            $"if ({Locals.Peek()}.IsSuccess)",
+                            () =>
+                            {
+                                Writer.WriteLine($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
+                                Writer.WriteLine($"current = {Locals.Peek()}.Next;");
+                                AddToList(nodes, exprs, index + 1);
+                            });
+                    }
+                    else
+                    {
+                        Writer.WriteLine($"{Locals.Peek()} = Result.Success({nodes}[0], current, {nodes}.ToArray());");
+                    }
+                }
+            }
+
+            protected override void VisitNameExpression(NameExpression expression)
+            {
+                Writer.WriteLine("// NameExpression:");
+                Writer.WriteLine($"{Locals.Peek()} = {Cfg.Capa(expression.Identifier)}(current);");
+            }
+
+            protected override void VisitDropExpression(DropExpression expression)
+            {
+                Writer.WriteLine("// DropExpression:");
+                VisitExpression(expression.Expression);
+                Writer.Block(
+                    $"if ({Locals.Peek()}.IsSuccess)",
+                    () =>
+                    {
+                        Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next);");
+                    });
+            }
+
+            protected override void VisitLiftExpression(LiftExpression expression)
+            {
+                Writer.WriteLine("// LiftExpression:");
+                VisitExpression(expression.Expression);
+                Writer.Block(
+                    $"if ({Locals.Peek()}.IsSuccess)",
+                    () =>
+                    {
+                        using (var nodes = Locals.Use("nodes"))
+                        using (var node = Locals.Use("node"))
+                        {
+                            Writer.WriteLine($"{nodes} = new List<INode>();");
+                            Writer.Block(
+                                $"foreach ({node} in {Locals.Peek()}.Nodes)",
+                                () => { Writer.WriteLine($"{nodes}.AddRange({node}.Children);"); });
+
+                            Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {nodes}.ToArray());");
+                        }
+                    });
+
+            }
+
+            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
+            {
+                Writer.WriteLine("// StringLiteralExpression:");
+
+                var str = Locals.Use("str");
+                Writer.WriteLine($"{str} = \"{CharRep.InText(expression.Value)}\";");
+
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    $"if (current.StartsWith({str}))",
+                    () =>
+                    {
+                        using (var next = Locals.Use("next"))
+                        using (var location = Locals.Use("location"))
+                        using (var node = Locals.Use("node"))
+                        {
+                            Writer.WriteLine($"{next} = current.Advance({str}.Length);");
+                            Writer.WriteLine($"{location} = Location.From(current, {next});");
+                            Writer.WriteLine($"{node} = Leaf.From({location}, NodeSymbols.StringLiteral, {str});");
+                            Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, {next}, {node});");
+                            Writer.WriteLine($"current = {next};");
+                        }
+                    });
+                Writer.Block(
+                    $"else",
+                    () =>
+                    {
+                        Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
+                    });
+            }
+
+            protected override void VisitStarExpression(StarExpression star)
+            {
+                Writer.WriteLine("// StarExpression:");
+
+                using (var start = Locals.Use("start"))
+                using (var nodes = Locals.Use("nodes"))
+                using (var location = Locals.Use("location"))
+                using (var node = Locals.Use("node"))
+                {
+                    Writer.WriteLine($"{start} = current;");
+                    Writer.WriteLine($"{nodes} = new List<INode>();");
+                    Writer.Block(
+                        "for (;;)",
+                        () =>
+                        {
+                            VisitExpression(star.Expression);
+                            Writer.Block(
+                                $"if ({Locals.Peek()}.IsSuccess)",
+                                () =>
+                                {
+                                    Writer.WriteLine($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
+                                    Writer.WriteLine($"current = {Locals.Peek()}.Next;");
+                                });
+                            Writer.Block(
+                                $"else",
+                                () =>
+                                {
+                                    Writer.WriteLine("break;");
+                                });
+                        });
+
+                    Writer.WriteLine($"{location} = Location.From(start, current);");
+                    Writer.WriteLine($"{node} = NodeList.From({location}, NodeSymbols.Star, {nodes});");
+                    Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, current, {node});");
                 }
             }
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
-                var start = parsers.Count;
+                Writer.WriteLine("// ChoiceExpression:");
+                
+                AddToList(expression.Choices.ToList(), 0);
 
-                base.VisitChoiceExpression(expression);
-
-                var parser = new Choice(Pop(start));
-
-                parsers.Add(parser);
+                void AddToList(IReadOnlyList<Expression> exprs, int index)
+                {
+                    if (index < exprs.Count)
+                    {
+                        VisitExpression(exprs[index]);
+                        index += 1;
+                        if (index < exprs.Count)
+                        {
+                            Writer.Block(
+                                $"if (!{Locals.Peek()}.IsSuccess)",
+                                () =>
+                                {
+                                    AddToList(exprs, index);
+                                });
+                        }
+                    }
+                    //else
+                    //{
+                    //    Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
+                    //}
+                }
             }
 
-            protected override void VisitSequenceExpression(SequenceExpression expression)
-            {
-                var start = parsers.Count;
 
-                base.VisitSequenceExpression(expression);
-
-                var parser = new Sequence(Pop(start));
-                Push(parser);
-            }
+            // <**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**>
+            // **><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><
+            // *><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><*
+            // ><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**
+            // <**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**>
 
             protected override void VisitClassCharExpression(ClassCharExpression expression)
             {
-                Push(new SingleChar(expression.Value));
+                Writer.WriteLine("VisitClassCharExpression");
             }
 
             protected override void VisitClassExpression(ClassExpression expression)
             {
-                var start = parsers.Count;
-
-                base.VisitClassExpression(expression);
-
-                var parser = new Choice(Pop(start));
-                parsers.Add(parser);
+                Writer.WriteLine("VisitClassExpression");
             }
 
             protected override void VisitClassRangeExpression(ClassRangeExpression expression)
             {
-                Push(new CharRange(expression.Min, expression.Max));
-            }
-
-            protected override void VisitDropExpression(DropExpression expression)
-            {
-                base.VisitDropExpression(expression);
-
-                Push(Drop.From(Pop()));
+                Writer.WriteLine("VisitClassRangeExpression");
             }
 
             protected override void VisitFuseExpression(FuseExpression expression)
             {
-                base.VisitFuseExpression(expression);
-
-                Push(new Fuse(Pop()));
-            }
-
-            protected override void VisitLiftExpression(LiftExpression expression)
-            {
-                base.VisitLiftExpression(expression);
-
-                Push(new Lift(Pop()));
-            }
-
-            protected override void VisitNameExpression(NameExpression expression)
-            {
-                Push(new Name(() => Grammar.Attr.Rules[expression.Identifier.Name].Attr.Parser, expression.Identifier));
+                Writer.WriteLine("VisitFuseExpression");
             }
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Push(new Name(() => Grammar.Attr.Rules[expression.Rule.Identifier.Name].Attr.Parser, expression.Rule.Identifier));
+                Writer.WriteLine("VisitInlineExpression");
             }
 
             protected override void VisitAndExpression(AndExpression expression)
             {
-                base.VisitAndExpression(expression);
-
-                var inner = Pop();
-
-                Push(new And(inner));
+                Writer.WriteLine("VisitAndExpression");
             }
 
             protected override void VisitNotExpression(NotExpression expression)
             {
-                base.VisitNotExpression(expression);
-
-                var inner = Pop();
-
-                Push(new Not(inner));
+                Writer.WriteLine("VisitNotExpression");
             }
 
             protected override void VisitOptionalExpression(OptionalExpression optional)
             {
-                VisitExpression(optional.Expression);
-                Push(new Parsers.Optional(Pop()));
+                Writer.WriteLine("VisitOptionalExpression");
             }
 
             protected override void VisitPlusExpression(PlusExpression plus)
             {
-                VisitExpression(plus.Expression);
-                Push(new Plus(Pop()));
-            }
-
-            protected override void VisitStarExpression(StarExpression star)
-            {
-                VisitExpression(star.Expression);
-                Push(new Star(Pop()));
-            }
-
-            protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
-            {
-                Push(new CharSequence(expression.Value));
+                Writer.WriteLine("VisitPlusExpression");
             }
 
             protected override void VisitAnyExpression(AnyExpression expression)
             {
-                Push(new Any());
+                Writer.WriteLine("VisitAnyExpression");
             }
 
             // >===>
@@ -291,6 +396,150 @@ namespace Lipeg.SDK.Builders
             {
                 base.VisitOption(option);
             }
+
+            public override void VisitGrammarRules()
+            {
+                base.VisitGrammarRules();
+            }
+        }
+
+        private class Local : IDisposable
+        {
+            private readonly Cache cache;
+            private readonly int id;
+            private int useCount;
+
+            public Local(Cache cache, int id)
+            {
+                Debug.Assert(id >= 1);
+                this.cache = cache;
+                this.id = id;
+                this.useCount = 0;
+            }
+
+            public string Name
+            {
+                get
+                {
+                    if (this.id == 1)
+                    {
+                        return this.cache.Stem;
+                    }
+                    return this.cache.Stem + this.id;
+                }
+            }
+
+            public void PrepResult(IWriter writer)
+            {
+                if (this.cache.Stem == "result")
+                {
+                    if (this.useCount == 0)
+                    {
+                        writer.WriteLine($"IResult {Name};");
+                        this.useCount++;
+                    }
+                }
+            }
+
+            public void Dispose()
+            {
+                this.cache.Free(this);
+            }
+
+            public override string ToString()
+            {
+                this.useCount += 1;
+                if (this.useCount == 1)
+                {
+                    return "var " + Name;
+                }
+
+                return Name;
+            }
+        }
+
+        private static class Locals
+        {
+            private static Dictionary<string, Cache> cached = new Dictionary<string, Cache>();
+            private static Stack<Local> results = new Stack<Local>();
+
+            public static void Reset()
+            {
+                cached.Clear();
+                results.Clear();
+            }
+
+            public static IDisposable Result()
+            {
+                var result = Use("result");
+                results.Push(result);
+                return new Disposable(() =>
+                {
+                    Debug.Assert(results.Peek() == result);
+                    result.Dispose();
+                    results.Pop();
+                });
+            }
+
+            public static Local Peek()
+            {
+                return results.Peek();
+            }
+
+            public static void PeekPrep(IWriter writer)
+            {
+                results.Peek().PrepResult(writer);
+            }
+
+            public static Local Use(string stem)
+            {
+                if (!cached.TryGetValue(stem, out var cache))
+                {
+                    cache = new Cache(stem);
+                    cached.Add(stem, cache);
+                }
+
+                return cache.Use();
+            }
+        }
+
+        private class Cache
+        {
+            public Cache(string stem)
+            {
+                Stem = stem;
+                this.next = 1;
+            }
+
+            public Local Use()
+            {
+                Local use;
+                if (this.free.Count > 0)
+                {
+                    use = this.free[0];
+                    this.free.RemoveAt(0);
+                }
+                else
+                {
+                    use = new Local(this, this.next);
+                    this.next += 1;
+                }
+
+                this.used.Add(use);
+                return use;
+            }
+
+            public void Free(Local local)
+            {
+                Debug.Assert(this.used.Contains(local));
+                this.used.Remove(local);
+                //this.free.Add(local);
+            }
+
+            public string Stem { get; }
+            private int next;
+            private List<Local> used = new List<Local>();
+            private List<Local> free = new List<Local>();
         }
     }
 }
