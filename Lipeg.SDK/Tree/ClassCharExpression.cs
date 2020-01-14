@@ -1,5 +1,6 @@
 ﻿using Lipeg.Runtime;
 using System;
+using System.Collections.Generic;
 
 namespace Lipeg.SDK.Tree
 {
@@ -24,5 +25,6 @@ namespace Lipeg.SDK.Tree
             other.Value == Value;
 
         public override int GetHashCode() => Value.GetHashCode();
+        public override IEnumerable<int> Values => new[] {Value};
     }
 }

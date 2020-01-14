@@ -19,8 +19,9 @@ namespace Lipeg.SDK.Parsers
             if (result.IsSuccess)
             {
                 var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
+                var node = Leaf.From(result, NodeSymbols.Fusion, value);
 
-                return Result.Success(result, result.Next, Leaf.From(result, NodeSymbols.Fusion, value));
+                return Result.Success(result, result.Next, node);
             }
 
             return result;

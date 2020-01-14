@@ -16,6 +16,11 @@ namespace Lipeg.SDK.Common
         {
             return Convert(value);
         }
+        public static string InCSharp(string value)
+        {
+            return string.Join(string.Empty, value.Select(v => Convert(v, true)));
+        }
+
 
         public static string InClass(this int value)
         {
@@ -41,7 +46,7 @@ namespace Lipeg.SDK.Common
             return $"{result}";
         }
 
-        public static string Convert(int value)
+        public static string Convert(int value, bool csharp = false)
         {
             if (value <= char.MaxValue)
             {
@@ -77,7 +82,15 @@ namespace Lipeg.SDK.Common
                 }
             }
 
-            return "\\u{" + value.ToString("X4", CultureInfo.InvariantCulture) + "}";
+            if (csharp)
+            {
+                return "\\u" + value.ToString("X4", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return "\\u{" + value.ToString("X4", CultureInfo.InvariantCulture) + "}";
+
+            }
         }
     }
 }

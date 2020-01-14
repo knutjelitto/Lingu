@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Lipeg.Runtime;
-
-namespace Lipeg.SDK.Parsers
+namespace Lipeg.Runtime
 {
     public class Result : IResult
     {

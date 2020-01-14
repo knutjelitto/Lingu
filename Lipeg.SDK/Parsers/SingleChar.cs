@@ -26,7 +26,7 @@ namespace Lipeg.SDK.Parsers
             {
                 var next = context.Advance(1);
                 var location = Location.From(context, next);
-                var node = Leaf.From(location, NodeSymbols.Any, ((char)context.Current).ToString(CultureInfo.InvariantCulture));
+                var node = Leaf.From(location, NodeSymbols.CharacterLiteral, ((char)context.Current).ToString(CultureInfo.InvariantCulture));
                 return Result.Success(location, next, node);
             }
 

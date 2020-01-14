@@ -1,5 +1,7 @@
 ﻿using Lipeg.Runtime;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lipeg.SDK.Tree
 {
@@ -27,5 +29,7 @@ namespace Lipeg.SDK.Tree
             other.Max == Max;
 
         public override int GetHashCode() => (Min, Max).GetHashCode();
+
+        public override IEnumerable<int> Values => Enumerable.Range(Min, Max - Min + 1);
     }
 }

@@ -95,7 +95,7 @@ namespace Lipeg.Boot
             }
             else
             {
-                Console.WriteLine($"farthest:{SDK.Parsers.Result.FarthestFail}");
+                Console.WriteLine($"farthest:{Result.FarthestFail}");
             }
 
             return null;

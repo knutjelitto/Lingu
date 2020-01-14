@@ -1,4 +1,5 @@
-﻿using Lipeg.Runtime;
+﻿using System.Collections.Generic;
+using Lipeg.Runtime;
 
 namespace Lipeg.SDK.Tree
 {
@@ -8,5 +9,7 @@ namespace Lipeg.SDK.Tree
             : base(located)
         {
         }
+
+        public abstract IEnumerable<int> Values { get; }
     }
 }
