@@ -19,13 +19,7 @@ namespace Lipeg.SDK.Parsers
         {
             if (context == null) throw new InternalNullException();
 
-            if (context.StartsWith("'"))
-            {
-                Debug.Assert(true);
-            }
-
             var result = Parser.Parse(context);
-
 
             if (!result.IsSuccess)
             {

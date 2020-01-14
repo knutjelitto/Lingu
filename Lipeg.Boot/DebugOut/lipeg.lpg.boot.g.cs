@@ -2,6 +2,8 @@ namespace Lipeg.Generated
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
     using Lipeg.SDK.Parsers;
     using Lipeg.SDK.Tree;
     using Lipeg.Runtime;
@@ -11,23 +13,29 @@ namespace Lipeg.Generated
         // start -> Start
         public IResult Start(IContext context)
         {
-            var result = Result.Fail(context);
             var current = context;
+            IResult result;
             // SequenceExpression:
-            var nodes = new List<INode>(2);
-            // NameExpression:
-            var result2 = Grammar(current);
-            if (result2.IsSuccess)
             {
-                nodes.AddRange(result2.Nodes);
-                current = result2.Next;
+                var nodes = new List<INode>(2);
                 // NameExpression:
-                result2 = Eof(current);
-                if (result2.IsSuccess)
                 {
-                    nodes.AddRange(result2.Nodes);
-                    current = result2.Next;
-                    result2 = Result.Success(nodes[0], current, nodes.ToArray());
+                    result = Grammar(current);
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // NameExpression:
+                    {
+                        result = Eof(current);
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
                 }
             }
             return result;
@@ -36,132 +44,159 @@ namespace Lipeg.Generated
         // grammar -> Grammar
         public IResult Grammar(IContext context)
         {
-            var result = Result.Fail(context);
             var current = context;
+            IResult result;
             // SequenceExpression:
-            var nodes = new List<INode>(5);
-            // DropExpression:
-            // StringLiteralExpression:
-            var str = "grammar";
-            IResult result2;
-            if (current.StartsWith(str))
             {
-                var next = current.Advance(str.Length);
-                var location = Location.From(current, next);
-                var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
-                result2 = Result.Success(location, next, node);
-                current = next;
-            }
-            else
-            {
-                result2 = Result.Fail(current);
-            }
-            if (result2.IsSuccess)
-            {
-                result2 = Result.Success(result2, result2.Next);
-            }
-            if (result2.IsSuccess)
-            {
-                nodes.AddRange(result2.Nodes);
-                current = result2.Next;
-                // NameExpression:
-                result2 = Identifier(current);
-                if (result2.IsSuccess)
+                var nodes = new List<INode>(5);
+                // DropExpression:
                 {
-                    nodes.AddRange(result2.Nodes);
-                    current = result2.Next;
-                    // DropExpression:
                     // StringLiteralExpression:
-                    var str2 = "{";
-                    if (current.StartsWith(str2))
                     {
-                        var next2 = current.Advance(str2.Length);
-                        var location2 = Location.From(current, next2);
-                        var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
-                        result2 = Result.Success(location2, next2, node2);
-                        current = next2;
-                    }
-                    else
-                    {
-                        result2 = Result.Fail(current);
-                    }
-                    if (result2.IsSuccess)
-                    {
-                        result2 = Result.Success(result2, result2.Next);
-                    }
-                    if (result2.IsSuccess)
-                    {
-                        nodes.AddRange(result2.Nodes);
-                        current = result2.Next;
-                        // LiftExpression:
-                        // StarExpression:
-                        var start = current;
-                        var nodes2 = new List<INode>();
-                        for (;;)
+                        var str = "grammar";
+                        if (current.StartsWith(str))
                         {
-                            // ChoiceExpression:
-                            // NameExpression:
-                            result2 = Options(current);
-                            if (!result2.IsSuccess)
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // NameExpression:
+                    {
+                        result = Identifier(current);
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // DropExpression:
+                        {
+                            // StringLiteralExpression:
                             {
-                                // NameExpression:
-                                result2 = Syntax(current);
-                                if (!result2.IsSuccess)
+                                var str2 = "{";
+                                if (current.StartsWith(str2))
                                 {
-                                    // NameExpression:
-                                    result2 = Lexical(current);
+                                    var next2 = current.Advance(str2.Length);
+                                    var location2 = Location.From(current, next2);
+                                    var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                    result = Result.Success(location2, next2, node2);
+                                    current = next2;
+                                }
+                                else
+                                {
+                                    result = Result.Fail(current);
                                 }
                             }
-                            if (result2.IsSuccess)
+                            if (result.IsSuccess)
                             {
-                                nodes2.AddRange(result2.Nodes);
-                                current = result2.Next;
-                            }
-                            else
-                            {
-                                break;
+                                result = Result.Success(result, result.Next);
                             }
                         }
-                        var location3 = Location.From(start, current);
-                        var node3 = NodeList.From(location3, NodeSymbols.Star, nodes2);
-                        result2 = Result.Success(location3, current, node3);
-                        if (result2.IsSuccess)
+                        if (result.IsSuccess)
                         {
-                            var nodes3 = new List<INode>();
-                            foreach (var node4 in result2.Nodes)
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // LiftExpression:
                             {
-                                nodes3.AddRange(node4.Children);
+                                // StarExpression:
+                                {
+                                    var start = current;
+                                    var nodes2 = new List<INode>();
+                                    for (;;)
+                                    {
+                                        // ChoiceExpression:
+                                        {
+                                            // NameExpression:
+                                            {
+                                                result = Options(current);
+                                            }
+                                            if (!result.IsSuccess)
+                                            {
+                                                // NameExpression:
+                                                {
+                                                    result = Syntax(current);
+                                                }
+                                                if (!result.IsSuccess)
+                                                {
+                                                    // NameExpression:
+                                                    {
+                                                        result = Lexical(current);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            nodes2.AddRange(result.Nodes);
+                                            current = result.Next;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    var location3 = Location.From(start, current);
+                                    var node3 = NodeList.From(location3, NodeSymbols.Star, nodes2);
+                                    result = Result.Success(location3, current, node3);
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    var nodes3 = new List<INode>();
+                                    foreach (var node4 in result.Nodes)
+                                    {
+                                        nodes3.AddRange(node4.Children);
+                                    }
+                                    result = Result.Success(result, result.Next, nodes3.ToArray());
+                                }
                             }
-                            result2 = Result.Success(result2, result2.Next, nodes3.ToArray());
-                        }
-                        if (result2.IsSuccess)
-                        {
-                            nodes.AddRange(result2.Nodes);
-                            current = result2.Next;
-                            // DropExpression:
-                            // StringLiteralExpression:
-                            var str3 = "}";
-                            if (current.StartsWith(str3))
+                            if (result.IsSuccess)
                             {
-                                var next3 = current.Advance(str3.Length);
-                                var location4 = Location.From(current, next3);
-                                var node5 = Leaf.From(location4, NodeSymbols.StringLiteral, str3);
-                                result2 = Result.Success(location4, next3, node5);
-                                current = next3;
-                            }
-                            else
-                            {
-                                result2 = Result.Fail(current);
-                            }
-                            if (result2.IsSuccess)
-                            {
-                                result2 = Result.Success(result2, result2.Next);
-                            }
-                            if (result2.IsSuccess)
-                            {
-                                nodes.AddRange(result2.Nodes);
-                                current = result2.Next;
-                                result2 = Result.Success(nodes[0], current, nodes.ToArray());
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                // DropExpression:
+                                {
+                                    // StringLiteralExpression:
+                                    {
+                                        var str3 = "}";
+                                        if (current.StartsWith(str3))
+                                        {
+                                            var next3 = current.Advance(str3.Length);
+                                            var location4 = Location.From(current, next3);
+                                            var node5 = Leaf.From(location4, NodeSymbols.StringLiteral, str3);
+                                            result = Result.Success(location4, next3, node5);
+                                            current = next3;
+                                        }
+                                        else
+                                        {
+                                            result = Result.Fail(current);
+                                        }
+                                    }
+                                    if (result.IsSuccess)
+                                    {
+                                        result = Result.Success(result, result.Next);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    nodes.AddRange(result.Nodes);
+                                    current = result.Next;
+                                    result = Result.Success(nodes[0], current, nodes.ToArray());
+                                }
                             }
                         }
                     }
@@ -173,169 +208,2064 @@ namespace Lipeg.Generated
         // options -> Options
         public IResult Options(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(4);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "options";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str2 = "{";
+                            if (current.StartsWith(str2))
+                            {
+                                var next2 = current.Advance(str2.Length);
+                                var location2 = Location.From(current, next2);
+                                var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                result = Result.Success(location2, next2, node2);
+                                current = next2;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // LiftExpression:
+                        {
+                            // StarExpression:
+                            {
+                                var start = current;
+                                var nodes2 = new List<INode>();
+                                for (;;)
+                                {
+                                    // NameExpression:
+                                    {
+                                        result = Option(current);
+                                    }
+                                    if (result.IsSuccess)
+                                    {
+                                        nodes2.AddRange(result.Nodes);
+                                        current = result.Next;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                var location3 = Location.From(start, current);
+                                var node3 = NodeList.From(location3, NodeSymbols.Star, nodes2);
+                                result = Result.Success(location3, current, node3);
+                            }
+                            if (result.IsSuccess)
+                            {
+                                var nodes3 = new List<INode>();
+                                foreach (var node4 in result.Nodes)
+                                {
+                                    nodes3.AddRange(node4.Children);
+                                }
+                                result = Result.Success(result, result.Next, nodes3.ToArray());
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // DropExpression:
+                            {
+                                // StringLiteralExpression:
+                                {
+                                    var str3 = "}";
+                                    if (current.StartsWith(str3))
+                                    {
+                                        var next3 = current.Advance(str3.Length);
+                                        var location4 = Location.From(current, next3);
+                                        var node5 = Leaf.From(location4, NodeSymbols.StringLiteral, str3);
+                                        result = Result.Success(location4, next3, node5);
+                                        current = next3;
+                                    }
+                                    else
+                                    {
+                                        result = Result.Fail(current);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    result = Result.Success(result, result.Next);
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                result = Result.Success(nodes[0], current, nodes.ToArray());
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // option -> Option
         public IResult Option(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(4);
+                // NameExpression:
+                {
+                    result = Identifier(current);
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str = "=";
+                            if (current.StartsWith(str))
+                            {
+                                var next = current.Advance(str.Length);
+                                var location = Location.From(current, next);
+                                var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                result = Result.Success(location, next, node);
+                                current = next;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // NameExpression:
+                        {
+                            result = OptionValue(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // DropExpression:
+                            {
+                                // StringLiteralExpression:
+                                {
+                                    var str2 = ";";
+                                    if (current.StartsWith(str2))
+                                    {
+                                        var next2 = current.Advance(str2.Length);
+                                        var location2 = Location.From(current, next2);
+                                        var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                        result = Result.Success(location2, next2, node2);
+                                        current = next2;
+                                    }
+                                    else
+                                    {
+                                        result = Result.Fail(current);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    result = Result.Success(result, result.Next);
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                result = Result.Success(nodes[0], current, nodes.ToArray());
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // option-value -> OptionValue
         public IResult OptionValue(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // NameExpression:
+            {
+                result = QualifiedIdentifier(current);
+            }
+            return result;
         }
         
         // qualified-identifier -> QualifiedIdentifier
         public IResult QualifiedIdentifier(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // NameExpression:
+                {
+                    result = Identifier(current);
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // StarExpression:
+                        {
+                            var start = current;
+                            var nodes2 = new List<INode>();
+                            for (;;)
+                            {
+                                // SequenceExpression:
+                                {
+                                    var nodes3 = new List<INode>(2);
+                                    // DropExpression:
+                                    {
+                                        // StringLiteralExpression:
+                                        {
+                                            var str = ".";
+                                            if (current.StartsWith(str))
+                                            {
+                                                var next = current.Advance(str.Length);
+                                                var location2 = Location.From(current, next);
+                                                var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str);
+                                                result = Result.Success(location2, next, node2);
+                                                current = next;
+                                            }
+                                            else
+                                            {
+                                                result = Result.Fail(current);
+                                            }
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            result = Result.Success(result, result.Next);
+                                        }
+                                    }
+                                    if (result.IsSuccess)
+                                    {
+                                        nodes3.AddRange(result.Nodes);
+                                        current = result.Next;
+                                        // NameExpression:
+                                        {
+                                            result = Identifier(current);
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            nodes3.AddRange(result.Nodes);
+                                            current = result.Next;
+                                            result = Result.Success(nodes3[0], current, nodes3.ToArray());
+                                        }
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    nodes2.AddRange(result.Nodes);
+                                    current = result.Next;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            var location = Location.From(start, current);
+                            var node = NodeList.From(location, NodeSymbols.Star, nodes2);
+                            result = Result.Success(location, current, node);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes4 = new List<INode>();
+                            foreach (var node3 in result.Nodes)
+                            {
+                                nodes4.AddRange(node3.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes4.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // syntax -> Syntax
         public IResult Syntax(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(5);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "syntax";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str2 = "{";
+                            if (current.StartsWith(str2))
+                            {
+                                var next2 = current.Advance(str2.Length);
+                                var location2 = Location.From(current, next2);
+                                var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                result = Result.Success(location2, next2, node2);
+                                current = next2;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // LiftExpression:
+                        {
+                            // NameExpression:
+                            {
+                                result = Rules(current);
+                            }
+                            if (result.IsSuccess)
+                            {
+                                var nodes2 = new List<INode>();
+                                foreach (var node3 in result.Nodes)
+                                {
+                                    nodes2.AddRange(node3.Children);
+                                }
+                                result = Result.Success(result, result.Next, nodes2.ToArray());
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // DropExpression:
+                            {
+                                // OptionalExpression:
+                                {
+                                    // StringLiteralExpression:
+                                    {
+                                        var str3 = ";";
+                                        if (current.StartsWith(str3))
+                                        {
+                                            var next3 = current.Advance(str3.Length);
+                                            var location3 = Location.From(current, next3);
+                                            var node4 = Leaf.From(location3, NodeSymbols.StringLiteral, str3);
+                                            result = Result.Success(location3, next3, node4);
+                                            current = next3;
+                                        }
+                                        else
+                                        {
+                                            result = Result.Fail(current);
+                                        }
+                                    }
+                                    var node5 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
+                                    if (result.IsSuccess)
+                                    {
+                                        result = Result.Success(result, result.Next, node5);
+                                    }
+                                    else
+                                    {
+                                        result = Result.Success(current, current, node5);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    result = Result.Success(result, result.Next);
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                // DropExpression:
+                                {
+                                    // StringLiteralExpression:
+                                    {
+                                        var str4 = "}";
+                                        if (current.StartsWith(str4))
+                                        {
+                                            var next4 = current.Advance(str4.Length);
+                                            var location4 = Location.From(current, next4);
+                                            var node6 = Leaf.From(location4, NodeSymbols.StringLiteral, str4);
+                                            result = Result.Success(location4, next4, node6);
+                                            current = next4;
+                                        }
+                                        else
+                                        {
+                                            result = Result.Fail(current);
+                                        }
+                                    }
+                                    if (result.IsSuccess)
+                                    {
+                                        result = Result.Success(result, result.Next);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    nodes.AddRange(result.Nodes);
+                                    current = result.Next;
+                                    result = Result.Success(nodes[0], current, nodes.ToArray());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // lexical -> Lexical
         public IResult Lexical(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(5);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "lexical";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str2 = "{";
+                            if (current.StartsWith(str2))
+                            {
+                                var next2 = current.Advance(str2.Length);
+                                var location2 = Location.From(current, next2);
+                                var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                result = Result.Success(location2, next2, node2);
+                                current = next2;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // LiftExpression:
+                        {
+                            // NameExpression:
+                            {
+                                result = Rules(current);
+                            }
+                            if (result.IsSuccess)
+                            {
+                                var nodes2 = new List<INode>();
+                                foreach (var node3 in result.Nodes)
+                                {
+                                    nodes2.AddRange(node3.Children);
+                                }
+                                result = Result.Success(result, result.Next, nodes2.ToArray());
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // DropExpression:
+                            {
+                                // OptionalExpression:
+                                {
+                                    // StringLiteralExpression:
+                                    {
+                                        var str3 = ";";
+                                        if (current.StartsWith(str3))
+                                        {
+                                            var next3 = current.Advance(str3.Length);
+                                            var location3 = Location.From(current, next3);
+                                            var node4 = Leaf.From(location3, NodeSymbols.StringLiteral, str3);
+                                            result = Result.Success(location3, next3, node4);
+                                            current = next3;
+                                        }
+                                        else
+                                        {
+                                            result = Result.Fail(current);
+                                        }
+                                    }
+                                    var node5 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
+                                    if (result.IsSuccess)
+                                    {
+                                        result = Result.Success(result, result.Next, node5);
+                                    }
+                                    else
+                                    {
+                                        result = Result.Success(current, current, node5);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    result = Result.Success(result, result.Next);
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                // DropExpression:
+                                {
+                                    // StringLiteralExpression:
+                                    {
+                                        var str4 = "}";
+                                        if (current.StartsWith(str4))
+                                        {
+                                            var next4 = current.Advance(str4.Length);
+                                            var location4 = Location.From(current, next4);
+                                            var node6 = Leaf.From(location4, NodeSymbols.StringLiteral, str4);
+                                            result = Result.Success(location4, next4, node6);
+                                            current = next4;
+                                        }
+                                        else
+                                        {
+                                            result = Result.Fail(current);
+                                        }
+                                    }
+                                    if (result.IsSuccess)
+                                    {
+                                        result = Result.Success(result, result.Next);
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    nodes.AddRange(result.Nodes);
+                                    current = result.Next;
+                                    result = Result.Success(nodes[0], current, nodes.ToArray());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // rules -> Rules
         public IResult Rules(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // LiftExpression:
+            {
+                // OptionalExpression:
+                {
+                    // SequenceExpression:
+                    {
+                        var nodes = new List<INode>(2);
+                        // NameExpression:
+                        {
+                            result = Rule(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // LiftExpression:
+                            {
+                                // StarExpression:
+                                {
+                                    var start = current;
+                                    var nodes2 = new List<INode>();
+                                    for (;;)
+                                    {
+                                        // SequenceExpression:
+                                        {
+                                            var nodes3 = new List<INode>(2);
+                                            // DropExpression:
+                                            {
+                                                // StringLiteralExpression:
+                                                {
+                                                    var str = ";";
+                                                    if (current.StartsWith(str))
+                                                    {
+                                                        var next = current.Advance(str.Length);
+                                                        var location2 = Location.From(current, next);
+                                                        var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str);
+                                                        result = Result.Success(location2, next, node2);
+                                                        current = next;
+                                                    }
+                                                    else
+                                                    {
+                                                        result = Result.Fail(current);
+                                                    }
+                                                }
+                                                if (result.IsSuccess)
+                                                {
+                                                    result = Result.Success(result, result.Next);
+                                                }
+                                            }
+                                            if (result.IsSuccess)
+                                            {
+                                                nodes3.AddRange(result.Nodes);
+                                                current = result.Next;
+                                                // NameExpression:
+                                                {
+                                                    result = Rule(current);
+                                                }
+                                                if (result.IsSuccess)
+                                                {
+                                                    nodes3.AddRange(result.Nodes);
+                                                    current = result.Next;
+                                                    result = Result.Success(nodes3[0], current, nodes3.ToArray());
+                                                }
+                                            }
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            nodes2.AddRange(result.Nodes);
+                                            current = result.Next;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    var location = Location.From(start, current);
+                                    var node = NodeList.From(location, NodeSymbols.Star, nodes2);
+                                    result = Result.Success(location, current, node);
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    var nodes4 = new List<INode>();
+                                    foreach (var node3 in result.Nodes)
+                                    {
+                                        nodes4.AddRange(node3.Children);
+                                    }
+                                    result = Result.Success(result, result.Next, nodes4.ToArray());
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                result = Result.Success(nodes[0], current, nodes.ToArray());
+                            }
+                        }
+                    }
+                    var node4 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next, node4);
+                    }
+                    else
+                    {
+                        result = Result.Success(current, current, node4);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    var nodes5 = new List<INode>();
+                    foreach (var node5 in result.Nodes)
+                    {
+                        nodes5.AddRange(node5.Children);
+                    }
+                    result = Result.Success(result, result.Next, nodes5.ToArray());
+                }
+            }
+            return result;
         }
         
         // rule -> Rule
         public IResult Rule(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(4);
+                // NameExpression:
+                {
+                    result = Identifier(current);
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str = "<=";
+                            if (current.StartsWith(str))
+                            {
+                                var next = current.Advance(str.Length);
+                                var location = Location.From(current, next);
+                                var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                result = Result.Success(location, next, node);
+                                current = next;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // DropExpression:
+                        {
+                            // OptionalExpression:
+                            {
+                                // StringLiteralExpression:
+                                {
+                                    var str2 = "/";
+                                    if (current.StartsWith(str2))
+                                    {
+                                        var next2 = current.Advance(str2.Length);
+                                        var location2 = Location.From(current, next2);
+                                        var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                        result = Result.Success(location2, next2, node2);
+                                        current = next2;
+                                    }
+                                    else
+                                    {
+                                        result = Result.Fail(current);
+                                    }
+                                }
+                                var node3 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
+                                if (result.IsSuccess)
+                                {
+                                    result = Result.Success(result, result.Next, node3);
+                                }
+                                else
+                                {
+                                    result = Result.Success(current, current, node3);
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                result = Result.Success(result, result.Next);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            // LiftExpression:
+                            {
+                                // NameExpression:
+                                {
+                                    result = Expression(current);
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    var nodes2 = new List<INode>();
+                                    foreach (var node4 in result.Nodes)
+                                    {
+                                        nodes2.AddRange(node4.Children);
+                                    }
+                                    result = Result.Success(result, result.Next, nodes2.ToArray());
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                nodes.AddRange(result.Nodes);
+                                current = result.Next;
+                                result = Result.Success(nodes[0], current, nodes.ToArray());
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // expression -> Expression
         public IResult Expression(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // ChoiceExpression:
+            {
+                // NameExpression:
+                {
+                    result = Choice(current);
+                }
+                if (!result.IsSuccess)
+                {
+                    // NameExpression:
+                    {
+                        result = Sequence(current);
+                    }
+                }
+            }
+            return result;
         }
         
         // choice -> Choice
         public IResult Choice(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // NameExpression:
+                {
+                    result = Sequence(current);
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // PlusExpression:
+                        {
+                            var start = current;
+                            var nodes2 = new List<INode>();
+                            for (;;)
+                            {
+                                // SequenceExpression:
+                                {
+                                    var nodes3 = new List<INode>(2);
+                                    // DropExpression:
+                                    {
+                                        // StringLiteralExpression:
+                                        {
+                                            var str = "/";
+                                            if (current.StartsWith(str))
+                                            {
+                                                var next = current.Advance(str.Length);
+                                                var location = Location.From(current, next);
+                                                var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                                result = Result.Success(location, next, node);
+                                                current = next;
+                                            }
+                                            else
+                                            {
+                                                result = Result.Fail(current);
+                                            }
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            result = Result.Success(result, result.Next);
+                                        }
+                                    }
+                                    if (result.IsSuccess)
+                                    {
+                                        nodes3.AddRange(result.Nodes);
+                                        current = result.Next;
+                                        // NameExpression:
+                                        {
+                                            result = Sequence(current);
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            nodes3.AddRange(result.Nodes);
+                                            current = result.Next;
+                                            result = Result.Success(nodes3[0], current, nodes3.ToArray());
+                                        }
+                                    }
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    nodes2.AddRange(result.Nodes);
+                                    current = result.Next;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            if (nodes2.Count > 0)
+                            {
+                                var location2 = Location.From(start, current);
+                                var node2 = NodeList.From(location2, NodeSymbols.Plus, nodes2.ToArray());
+                                result = Result.Success(location2, current, node2);
+                            }
+                            else
+                            {
+                                result = Result.Fail(start);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes4 = new List<INode>();
+                            foreach (var node3 in result.Nodes)
+                            {
+                                nodes4.AddRange(node3.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes4.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // sequence -> Sequence
         public IResult Sequence(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // LiftExpression:
+            {
+                // PlusExpression:
+                {
+                    var start = current;
+                    var nodes = new List<INode>();
+                    for (;;)
+                    {
+                        // LiftExpression:
+                        {
+                            // NameExpression:
+                            {
+                                result = Prefix(current);
+                            }
+                            if (result.IsSuccess)
+                            {
+                                var nodes2 = new List<INode>();
+                                foreach (var node in result.Nodes)
+                                {
+                                    nodes2.AddRange(node.Children);
+                                }
+                                result = Result.Success(result, result.Next, nodes2.ToArray());
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    if (nodes.Count > 0)
+                    {
+                        var location = Location.From(start, current);
+                        var node2 = NodeList.From(location, NodeSymbols.Plus, nodes.ToArray());
+                        result = Result.Success(location, current, node2);
+                    }
+                    else
+                    {
+                        result = Result.Fail(start);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    var nodes3 = new List<INode>();
+                    foreach (var node3 in result.Nodes)
+                    {
+                        nodes3.AddRange(node3.Children);
+                    }
+                    result = Result.Success(result, result.Next, nodes3.ToArray());
+                }
+            }
+            return result;
         }
         
         // prefix -> Prefix
         public IResult Prefix(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // ChoiceExpression:
+            {
+                // InlineExpression:
+                {
+                    // prefix.and
+                    result = PrefixAnd(current);
+                }
+                if (!result.IsSuccess)
+                {
+                    // InlineExpression:
+                    {
+                        // prefix.not
+                        result = PrefixNot(current);
+                    }
+                    if (!result.IsSuccess)
+                    {
+                        // InlineExpression:
+                        {
+                            // prefix.drop
+                            result = PrefixDrop(current);
+                        }
+                        if (!result.IsSuccess)
+                        {
+                            // InlineExpression:
+                            {
+                                // prefix.fuse
+                                result = PrefixFuse(current);
+                            }
+                            if (!result.IsSuccess)
+                            {
+                                // InlineExpression:
+                                {
+                                    // prefix.lift
+                                    result = PrefixLift(current);
+                                }
+                                if (!result.IsSuccess)
+                                {
+                                    // LiftExpression:
+                                    {
+                                        // NameExpression:
+                                        {
+                                            result = Suffix(current);
+                                        }
+                                        if (result.IsSuccess)
+                                        {
+                                            var nodes = new List<INode>();
+                                            foreach (var node in result.Nodes)
+                                            {
+                                                nodes.AddRange(node.Children);
+                                            }
+                                            result = Result.Success(result, result.Next, nodes.ToArray());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // suffix -> Suffix
         public IResult Suffix(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // ChoiceExpression:
+            {
+                // InlineExpression:
+                {
+                    // suffix.zero-or-one
+                    result = SuffixZeroOrOne(current);
+                }
+                if (!result.IsSuccess)
+                {
+                    // InlineExpression:
+                    {
+                        // suffix.zero-or-more
+                        result = SuffixZeroOrMore(current);
+                    }
+                    if (!result.IsSuccess)
+                    {
+                        // InlineExpression:
+                        {
+                            // suffix.one-or-more
+                            result = SuffixOneOrMore(current);
+                        }
+                        if (!result.IsSuccess)
+                        {
+                            // LiftExpression:
+                            {
+                                // NameExpression:
+                                {
+                                    result = Primary(current);
+                                }
+                                if (result.IsSuccess)
+                                {
+                                    var nodes = new List<INode>();
+                                    foreach (var node in result.Nodes)
+                                    {
+                                        nodes.AddRange(node.Children);
+                                    }
+                                    result = Result.Success(result, result.Next, nodes.ToArray());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // primary -> Primary
         public IResult Primary(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // ChoiceExpression:
+            {
+                // NameExpression:
+                {
+                    result = Identifier(current);
+                }
+                if (!result.IsSuccess)
+                {
+                    // NameExpression:
+                    {
+                        result = VerbatimString(current);
+                    }
+                    if (!result.IsSuccess)
+                    {
+                        // NameExpression:
+                        {
+                            result = String(current);
+                        }
+                        if (!result.IsSuccess)
+                        {
+                            // NameExpression:
+                            {
+                                result = CharacterClass(current);
+                            }
+                            if (!result.IsSuccess)
+                            {
+                                // NameExpression:
+                                {
+                                    result = Any(current);
+                                }
+                                if (!result.IsSuccess)
+                                {
+                                    // NameExpression:
+                                    {
+                                        result = Epsilon(current);
+                                    }
+                                    if (!result.IsSuccess)
+                                    {
+                                        // NameExpression:
+                                        {
+                                            result = Inline(current);
+                                        }
+                                        if (!result.IsSuccess)
+                                        {
+                                            // SequenceExpression:
+                                            {
+                                                var nodes = new List<INode>(3);
+                                                // DropExpression:
+                                                {
+                                                    // StringLiteralExpression:
+                                                    {
+                                                        var str = "(";
+                                                        if (current.StartsWith(str))
+                                                        {
+                                                            var next = current.Advance(str.Length);
+                                                            var location = Location.From(current, next);
+                                                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                                            result = Result.Success(location, next, node);
+                                                            current = next;
+                                                        }
+                                                        else
+                                                        {
+                                                            result = Result.Fail(current);
+                                                        }
+                                                    }
+                                                    if (result.IsSuccess)
+                                                    {
+                                                        result = Result.Success(result, result.Next);
+                                                    }
+                                                }
+                                                if (result.IsSuccess)
+                                                {
+                                                    nodes.AddRange(result.Nodes);
+                                                    current = result.Next;
+                                                    // LiftExpression:
+                                                    {
+                                                        // NameExpression:
+                                                        {
+                                                            result = Expression(current);
+                                                        }
+                                                        if (result.IsSuccess)
+                                                        {
+                                                            var nodes2 = new List<INode>();
+                                                            foreach (var node2 in result.Nodes)
+                                                            {
+                                                                nodes2.AddRange(node2.Children);
+                                                            }
+                                                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                                                        }
+                                                    }
+                                                    if (result.IsSuccess)
+                                                    {
+                                                        nodes.AddRange(result.Nodes);
+                                                        current = result.Next;
+                                                        // DropExpression:
+                                                        {
+                                                            // StringLiteralExpression:
+                                                            {
+                                                                var str2 = ")";
+                                                                if (current.StartsWith(str2))
+                                                                {
+                                                                    var next2 = current.Advance(str2.Length);
+                                                                    var location2 = Location.From(current, next2);
+                                                                    var node3 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                                                    result = Result.Success(location2, next2, node3);
+                                                                    current = next2;
+                                                                }
+                                                                else
+                                                                {
+                                                                    result = Result.Fail(current);
+                                                                }
+                                                            }
+                                                            if (result.IsSuccess)
+                                                            {
+                                                                result = Result.Success(result, result.Next);
+                                                            }
+                                                        }
+                                                        if (result.IsSuccess)
+                                                        {
+                                                            nodes.AddRange(result.Nodes);
+                                                            current = result.Next;
+                                                            result = Result.Success(nodes[0], current, nodes.ToArray());
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // inline -> Inline
         public IResult Inline(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(3);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "(";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // NameExpression:
+                        {
+                            result = Rule(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes2 = new List<INode>();
+                            foreach (var node2 in result.Nodes)
+                            {
+                                nodes2.AddRange(node2.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        // DropExpression:
+                        {
+                            // StringLiteralExpression:
+                            {
+                                var str2 = ")";
+                                if (current.StartsWith(str2))
+                                {
+                                    var next2 = current.Advance(str2.Length);
+                                    var location2 = Location.From(current, next2);
+                                    var node3 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                                    result = Result.Success(location2, next2, node3);
+                                    current = next2;
+                                }
+                                else
+                                {
+                                    result = Result.Fail(current);
+                                }
+                            }
+                            if (result.IsSuccess)
+                            {
+                                result = Result.Success(result, result.Next);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            nodes.AddRange(result.Nodes);
+                            current = result.Next;
+                            result = Result.Success(nodes[0], current, nodes.ToArray());
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // any -> Any
         public IResult Any(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // DropExpression:
+            {
+                // StringLiteralExpression:
+                {
+                    var str = ".";
+                    if (current.StartsWith(str))
+                    {
+                        var next = current.Advance(str.Length);
+                        var location = Location.From(current, next);
+                        var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                        result = Result.Success(location, next, node);
+                        current = next;
+                    }
+                    else
+                    {
+                        result = Result.Fail(current);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    result = Result.Success(result, result.Next);
+                }
+            }
+            return result;
         }
         
         // epsilon -> Epsilon
         public IResult Epsilon(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // ChoiceExpression:
+            {
+                // StringLiteralExpression:
+                {
+                    var str = "epsilon";
+                    if (current.StartsWith(str))
+                    {
+                        var next = current.Advance(str.Length);
+                        var location = Location.From(current, next);
+                        var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                        result = Result.Success(location, next, node);
+                        current = next;
+                    }
+                    else
+                    {
+                        result = Result.Fail(current);
+                    }
+                }
+                if (!result.IsSuccess)
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str2 = "ε";
+                        if (current.StartsWith(str2))
+                        {
+                            var next2 = current.Advance(str2.Length);
+                            var location2 = Location.From(current, next2);
+                            var node2 = Leaf.From(location2, NodeSymbols.StringLiteral, str2);
+                            result = Result.Success(location2, next2, node2);
+                            current = next2;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                }
+            }
+            return result;
         }
         
         // eof -> Eof
         public IResult Eof(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // NotExpression:
+            {
+                // VisitAnyExpression:
+                {
+                    if (!current.AtEnd)
+                    {
+                        var next = current.Advance(1);
+                        var location = Location.From(current, next);
+                        var node = Leaf.From(location, NodeSymbols.Any, ((char)current.Current).ToString(CultureInfo.InvariantCulture));
+                        result = Result.Success(node, next, node);
+                    }
+                    else
+                    {
+                        result = Result.Fail(current);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    result = Result.Success(result, current);
+                }
+                else
+                {
+                    result = Result.Fail(current);
+                }
+            }
+            return result;
         }
         
         // prefix.and -> PrefixAnd
         public IResult PrefixAnd(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "&";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // NameExpression:
+                        {
+                            result = Suffix(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes2 = new List<INode>();
+                            foreach (var node2 in result.Nodes)
+                            {
+                                nodes2.AddRange(node2.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // prefix.not -> PrefixNot
         public IResult PrefixNot(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "!";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // NameExpression:
+                        {
+                            result = Suffix(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes2 = new List<INode>();
+                            foreach (var node2 in result.Nodes)
+                            {
+                                nodes2.AddRange(node2.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // prefix.drop -> PrefixDrop
         public IResult PrefixDrop(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = ",";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // NameExpression:
+                        {
+                            result = Suffix(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes2 = new List<INode>();
+                            foreach (var node2 in result.Nodes)
+                            {
+                                nodes2.AddRange(node2.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // prefix.fuse -> PrefixFuse
         public IResult PrefixFuse(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "~";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // NameExpression:
+                        {
+                            result = Suffix(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes2 = new List<INode>();
+                            foreach (var node2 in result.Nodes)
+                            {
+                                nodes2.AddRange(node2.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // prefix.lift -> PrefixLift
         public IResult PrefixLift(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // DropExpression:
+                {
+                    // StringLiteralExpression:
+                    {
+                        var str = "^";
+                        if (current.StartsWith(str))
+                        {
+                            var next = current.Advance(str.Length);
+                            var location = Location.From(current, next);
+                            var node = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                            result = Result.Success(location, next, node);
+                            current = next;
+                        }
+                        else
+                        {
+                            result = Result.Fail(current);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        result = Result.Success(result, result.Next);
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // LiftExpression:
+                    {
+                        // NameExpression:
+                        {
+                            result = Suffix(current);
+                        }
+                        if (result.IsSuccess)
+                        {
+                            var nodes2 = new List<INode>();
+                            foreach (var node2 in result.Nodes)
+                            {
+                                nodes2.AddRange(node2.Children);
+                            }
+                            result = Result.Success(result, result.Next, nodes2.ToArray());
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // suffix.zero-or-one -> SuffixZeroOrOne
         public IResult SuffixZeroOrOne(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // LiftExpression:
+                {
+                    // NameExpression:
+                    {
+                        result = Primary(current);
+                    }
+                    if (result.IsSuccess)
+                    {
+                        var nodes2 = new List<INode>();
+                        foreach (var node in result.Nodes)
+                        {
+                            nodes2.AddRange(node.Children);
+                        }
+                        result = Result.Success(result, result.Next, nodes2.ToArray());
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str = "?";
+                            if (current.StartsWith(str))
+                            {
+                                var next = current.Advance(str.Length);
+                                var location = Location.From(current, next);
+                                var node2 = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                result = Result.Success(location, next, node2);
+                                current = next;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // suffix.zero-or-more -> SuffixZeroOrMore
         public IResult SuffixZeroOrMore(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // LiftExpression:
+                {
+                    // NameExpression:
+                    {
+                        result = Primary(current);
+                    }
+                    if (result.IsSuccess)
+                    {
+                        var nodes2 = new List<INode>();
+                        foreach (var node in result.Nodes)
+                        {
+                            nodes2.AddRange(node.Children);
+                        }
+                        result = Result.Success(result, result.Next, nodes2.ToArray());
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str = "*";
+                            if (current.StartsWith(str))
+                            {
+                                var next = current.Advance(str.Length);
+                                var location = Location.From(current, next);
+                                var node2 = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                result = Result.Success(location, next, node2);
+                                current = next;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // suffix.one-or-more -> SuffixOneOrMore
         public IResult SuffixOneOrMore(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // SequenceExpression:
+            {
+                var nodes = new List<INode>(2);
+                // LiftExpression:
+                {
+                    // NameExpression:
+                    {
+                        result = Primary(current);
+                    }
+                    if (result.IsSuccess)
+                    {
+                        var nodes2 = new List<INode>();
+                        foreach (var node in result.Nodes)
+                        {
+                            nodes2.AddRange(node.Children);
+                        }
+                        result = Result.Success(result, result.Next, nodes2.ToArray());
+                    }
+                }
+                if (result.IsSuccess)
+                {
+                    nodes.AddRange(result.Nodes);
+                    current = result.Next;
+                    // DropExpression:
+                    {
+                        // StringLiteralExpression:
+                        {
+                            var str = "+";
+                            if (current.StartsWith(str))
+                            {
+                                var next = current.Advance(str.Length);
+                                var location = Location.From(current, next);
+                                var node2 = Leaf.From(location, NodeSymbols.StringLiteral, str);
+                                result = Result.Success(location, next, node2);
+                                current = next;
+                            }
+                            else
+                            {
+                                result = Result.Fail(current);
+                            }
+                        }
+                        if (result.IsSuccess)
+                        {
+                            result = Result.Success(result, result.Next);
+                        }
+                    }
+                    if (result.IsSuccess)
+                    {
+                        nodes.AddRange(result.Nodes);
+                        current = result.Next;
+                        result = Result.Success(nodes[0], current, nodes.ToArray());
+                    }
+                }
+            }
+            return result;
         }
         
         // identifier -> Identifier
         public IResult Identifier(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            IResult result;
+            // ChoiceExpression:
+            {
+                VisitFuseExpression
+                if (!result.IsSuccess)
+                {
+                    VisitFuseExpression
+                }
+            }
+            return result;
         }
         
         // letter -> Letter
         public IResult Letter(IContext context)
         {
-            throw new NotImplementedException();
+            var current = context;
+            VisitClassExpression
+            return var result;
         }
         
         // letter-or-digit -> LetterOrDigit

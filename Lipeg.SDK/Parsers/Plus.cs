@@ -14,15 +14,16 @@ namespace Lipeg.SDK.Parsers
 
         public override IResult Parse(IContext context)
         {
+            var current = context;
+            var start = current;
             var nodes = new List<INode>();
-            var next = context;
             while (true)
             {
-                var result = Parser.Parse(next);
+                var result = Parser.Parse(current);
                 if (result.IsSuccess)
                 {
                     nodes.AddRange(result.Nodes);
-                    next = result.Next;
+                    current = result.Next;
                 }
                 else
                 {
@@ -32,12 +33,12 @@ namespace Lipeg.SDK.Parsers
 
             if (nodes.Count > 0)
             {
-                var location = Location.From(context, next);
+                var location = Location.From(context, current);
                 var node = NodeList.From(location, NodeSymbols.Plus, nodes.ToArray());
-                return Result.Success(location, next, node);
+                return Result.Success(location, current, node);
             }
 
-            return Result.Fail(context);
+            return Result.Fail(start);
         }
     }
 }

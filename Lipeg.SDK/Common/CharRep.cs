@@ -69,7 +69,7 @@ namespace Lipeg.SDK.Common
                         return "\\\\";
 
                     default:
-                        if (value >= 32 && value < 127 || value >= 161 && value <= 255)
+                        if (value >= 32 && value < 127 || value >= 161 && value <= 255 || char.IsLetterOrDigit((char)value))
                         {
                             return $"{(char)value}";
                         }

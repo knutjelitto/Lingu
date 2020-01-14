@@ -277,7 +277,7 @@ start [grammar, eof]
                     sequence [verbatim-string]
                         verbatim-string='epsilon'
                     sequence [verbatim-string]
-                        verbatim-string='\u{03B5}'
+                        verbatim-string='ε'
             rule [identifier, sequence]
                 identifier='eof'
                 sequence [prefix.not]

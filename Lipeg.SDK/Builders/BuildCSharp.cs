@@ -20,7 +20,7 @@ namespace Lipeg.SDK.Builders
         private class Config
         {
             public readonly bool Disable = false;
-            public int First = 2;
+            public int First = 30;
             public readonly string Namespace = "Lipeg.Generated";
             private const string ParserClassNameSuffix = "Parser";
 
@@ -34,7 +34,7 @@ namespace Lipeg.SDK.Builders
             public string ParserClass => $"{Capa(Grammar.Name)}{ParserClassNameSuffix}";
 
             [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Scheiß drauf")]
-            public IEnumerable<string> Usings => new[] { "System", "System.Collections.Generic", "Lipeg.SDK.Parsers", "Lipeg.SDK.Tree", "Lipeg.Runtime" };
+            public IEnumerable<string> Usings => new[] { "System", "System.Collections.Generic", "System.Globalization", "System.Linq", "Lipeg.SDK.Parsers", "Lipeg.SDK.Tree", "Lipeg.Runtime" };
 
             public string Capa(Identifier id)
             {
@@ -128,7 +128,6 @@ namespace Lipeg.SDK.Builders
                     Locals.Reset();
                     using (Locals.Result())
                     {
-                        Writer.WriteLine($"{Locals.Peek()} = Result.Fail(context);");
                         Writer.WriteLine("var current = context;");
                         VisitExpression(rule.Expression);
                         Writer.WriteLine($"return {Locals.Peek()};");
@@ -145,15 +144,21 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
-                Writer.WriteLine("// SequenceExpression:");
-                using (var nodes = Locals.Use("nodes"))
-                {
-                    Writer.WriteLine($"{nodes} = new List<INode>({expression.Sequence.Count});");
-                    using (Locals.Result())
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// SequenceExpression:",
+                    () => 
                     {
-                        AddToList(nodes, expression.Sequence.ToList(), 0);
-                    }
-                }
+                        using (var nodes = Locals.Use("nodes"))
+                        {
+                            Writer.WriteLine($"{nodes} = new List<INode>({expression.Sequence.Count});");
+                            //using (Locals.Result())
+                            //{
+                            AddToList(nodes, expression.Sequence.ToList(), 0);
+                            //}
+                        }
+
+                    });
 
                 void AddToList(Local nodes, IReadOnlyList<Expression> exprs, int index)
                 {
@@ -178,118 +183,197 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                Writer.WriteLine("// NameExpression:");
-                Writer.WriteLine($"{Locals.Peek()} = {Cfg.Capa(expression.Identifier)}(current);");
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// NameExpression:",
+                    () =>
+                    {
+                        Writer.WriteLine($"{Locals.Peek()} = {Cfg.Capa(expression.Identifier)}(current);");
+                    });
             }
 
             protected override void VisitDropExpression(DropExpression expression)
             {
-                Writer.WriteLine("// DropExpression:");
-                VisitExpression(expression.Expression);
+                Locals.PeekPrep(Writer);
                 Writer.Block(
-                    $"if ({Locals.Peek()}.IsSuccess)",
+                    "// DropExpression:",
                     () =>
                     {
-                        Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next);");
+                        VisitExpression(expression.Expression);
+                        Writer.Block(
+                            $"if ({Locals.Peek()}.IsSuccess)",
+                            () =>
+                            {
+                                Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next);");
+                            });
                     });
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
-                Writer.WriteLine("// LiftExpression:");
-                VisitExpression(expression.Expression);
+                Locals.PeekPrep(Writer);
                 Writer.Block(
-                    $"if ({Locals.Peek()}.IsSuccess)",
+                    "// LiftExpression:",
                     () =>
                     {
-                        using (var nodes = Locals.Use("nodes"))
-                        using (var node = Locals.Use("node"))
-                        {
-                            Writer.WriteLine($"{nodes} = new List<INode>();");
-                            Writer.Block(
-                                $"foreach ({node} in {Locals.Peek()}.Nodes)",
-                                () => { Writer.WriteLine($"{nodes}.AddRange({node}.Children);"); });
+                        VisitExpression(expression.Expression);
+                        Writer.Block(
+                            $"if ({Locals.Peek()}.IsSuccess)",
+                            () =>
+                            {
+                                using (var nodes = Locals.Use("nodes"))
+                                using (var node = Locals.Use("node"))
+                                {
+                                    Writer.WriteLine($"{nodes} = new List<INode>();");
+                                    Writer.Block(
+                                        $"foreach ({node} in {Locals.Peek()}.Nodes)",
+                                        () => { Writer.WriteLine($"{nodes}.AddRange({node}.Children);"); });
 
-                            Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {nodes}.ToArray());");
-                        }
+                                    Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {nodes}.ToArray());");
+                                }
+                            });
                     });
-
             }
 
             protected override void VisitStringLiteralExpression(StringLiteralExpression expression)
             {
-                Writer.WriteLine("// StringLiteralExpression:");
-
-                var str = Locals.Use("str");
-                Writer.WriteLine($"{str} = \"{CharRep.InText(expression.Value)}\";");
-
                 Locals.PeekPrep(Writer);
                 Writer.Block(
-                    $"if (current.StartsWith({str}))",
+                    "// StringLiteralExpression:",
                     () =>
                     {
-                        using (var next = Locals.Use("next"))
-                        using (var location = Locals.Use("location"))
-                        using (var node = Locals.Use("node"))
-                        {
-                            Writer.WriteLine($"{next} = current.Advance({str}.Length);");
-                            Writer.WriteLine($"{location} = Location.From(current, {next});");
-                            Writer.WriteLine($"{node} = Leaf.From({location}, NodeSymbols.StringLiteral, {str});");
-                            Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, {next}, {node});");
-                            Writer.WriteLine($"current = {next};");
-                        }
-                    });
-                Writer.Block(
-                    $"else",
-                    () =>
-                    {
-                        Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
+                        var str = Locals.Use("str");
+                        Writer.WriteLine($"{str} = \"{CharRep.InText(expression.Value)}\";");
+
+                        Locals.PeekPrep(Writer);
+                        Writer.Block(
+                            $"if (current.StartsWith({str}))",
+                            () =>
+                            {
+                                using (var next = Locals.Use("next"))
+                                using (var location = Locals.Use("location"))
+                                using (var node = Locals.Use("node"))
+                                {
+                                    Writer.WriteLine($"{next} = current.Advance({str}.Length);");
+                                    Writer.WriteLine($"{location} = Location.From(current, {next});");
+                                    Writer.WriteLine($"{node} = Leaf.From({location}, NodeSymbols.StringLiteral, {str});");
+                                    Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, {next}, {node});");
+                                    Writer.WriteLine($"current = {next};");
+                                }
+                            });
+                        Writer.Block(
+                            $"else",
+                            () =>
+                            {
+                                Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
+                            });
                     });
             }
 
             protected override void VisitStarExpression(StarExpression star)
             {
-                Writer.WriteLine("// StarExpression:");
-
-                using (var start = Locals.Use("start"))
-                using (var nodes = Locals.Use("nodes"))
-                using (var location = Locals.Use("location"))
-                using (var node = Locals.Use("node"))
-                {
-                    Writer.WriteLine($"{start} = current;");
-                    Writer.WriteLine($"{nodes} = new List<INode>();");
-                    Writer.Block(
-                        "for (;;)",
-                        () =>
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// StarExpression:",
+                    () =>
+                    {
+                        using (var start = Locals.Use("start"))
+                        using (var nodes = Locals.Use("nodes"))
+                        using (var location = Locals.Use("location"))
+                        using (var node = Locals.Use("node"))
                         {
-                            VisitExpression(star.Expression);
+                            Writer.WriteLine($"{start} = current;");
+                            Writer.WriteLine($"{nodes} = new List<INode>();");
                             Writer.Block(
-                                $"if ({Locals.Peek()}.IsSuccess)",
+                                "for (;;)",
                                 () =>
                                 {
-                                    Writer.WriteLine($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
-                                    Writer.WriteLine($"current = {Locals.Peek()}.Next;");
+                                    VisitExpression(star.Expression);
+                                    Writer.Block(
+                                        $"if ({Locals.Peek()}.IsSuccess)",
+                                        () =>
+                                        {
+                                            Writer.WriteLine($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
+                                            Writer.WriteLine($"current = {Locals.Peek()}.Next;");
+                                        });
+                                    Writer.Block(
+                                        $"else",
+                                        () =>
+                                        {
+                                            Writer.WriteLine("break;");
+                                        });
+                                });
+
+                            Writer.WriteLine($"{location} = Location.From(start, current);");
+                            Writer.WriteLine($"{node} = NodeList.From({location}, NodeSymbols.Star, {nodes});");
+                            Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, current, {node});");
+                        }
+                    });
+            }
+
+            protected override void VisitPlusExpression(PlusExpression plus)
+            {
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// PlusExpression:",
+                    () =>
+                    {
+                        using(var start = Locals.Use("start"))
+                        using (var nodes = Locals.Use("nodes"))
+                        {
+                            Writer.WriteLine($"{start} = current;");
+                            Writer.WriteLine($"{nodes} = new List<INode>();");
+                            Writer.Block(
+                                "for (;;)",
+                                () =>
+                                {
+                                    VisitExpression(plus.Expression);                                    
+                                    Writer.Block(
+                                        $"if ({Locals.Peek()}.IsSuccess)",
+                                        () =>
+                                        {
+                                            Writer.WriteLine($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
+                                            Writer.WriteLine($"current = {Locals.Peek()}.Next;");
+                                        });
+                                    Writer.Block(
+                                        $"else",
+                                        () =>
+                                        {
+                                            Writer.WriteLine("break;");
+                                        });
+                                });
+                            Writer.Block(
+                                $"if ({nodes}.Count > 0)",
+                                () =>
+                                {
+                                    using (var location = Locals.Use("location"))
+                                    using (var node = Locals.Use("node"))
+                                    {
+                                        Writer.WriteLine($"{location} = Location.From({start}, current);");
+                                        Writer.WriteLine($"{node} = NodeList.From({location}, NodeSymbols.Plus, {nodes}.ToArray());");
+                                        Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, current, {node});");
+                                    }
                                 });
                             Writer.Block(
                                 $"else",
                                 () =>
                                 {
-                                    Writer.WriteLine("break;");
+                                    Writer.WriteLine($"{Locals.Peek()} = Result.Fail({start});");
                                 });
-                        });
-
-                    Writer.WriteLine($"{location} = Location.From(start, current);");
-                    Writer.WriteLine($"{node} = NodeList.From({location}, NodeSymbols.Star, {nodes});");
-                    Writer.WriteLine($"{Locals.Peek()} = Result.Success({location}, current, {node});");
-                }
+                        }
+                    });
             }
 
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
-                Writer.WriteLine("// ChoiceExpression:");
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// ChoiceExpression:",
+                    () =>
+                    {
+                        AddToList(expression.Choices.ToList(), 0);
+                    });
                 
-                AddToList(expression.Choices.ToList(), 0);
-
                 void AddToList(IReadOnlyList<Expression> exprs, int index)
                 {
                     if (index < exprs.Count)
@@ -306,13 +390,105 @@ namespace Lipeg.SDK.Builders
                                 });
                         }
                     }
-                    //else
-                    //{
-                    //    Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
-                    //}
                 }
             }
 
+            protected override void VisitOptionalExpression(OptionalExpression optional)
+            {
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// OptionalExpression:",
+                    () =>
+                    {
+                        VisitExpression(optional.Expression);
+                        using (var node = Locals.Use("node"))
+                        {
+                            Writer.WriteLine($"{node} = NodeList.From({Locals.Peek()}, NodeSymbols.Optional, {Locals.Peek()}.Nodes.ToArray());");
+                            Writer.Block(
+                                $"if ({Locals.Peek()}.IsSuccess)",
+                                () =>
+                                {
+                                    Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {node});");
+                                });
+                            Writer.Block(
+                                $"else",
+                                () =>
+                                {
+                                    Writer.WriteLine($"{Locals.Peek()} = Result.Success(current, current, {node});");
+                                });
+                        }
+                    });
+            }
+
+            protected override void VisitInlineExpression(InlineExpression expression)
+            {
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// InlineExpression:",
+                    () =>
+                    {
+                        Writer.WriteLine($"// {expression.Rule}");
+                        Writer.WriteLine($"{Locals.Peek()} = {Cfg.Capa(expression.Rule.Identifier)}(current);");
+                    });
+            }
+
+            protected override void VisitNotExpression(NotExpression expression)
+            {
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// NotExpression:",
+                    () =>
+                    {
+                        VisitExpression(expression.Expression);
+                        Writer.Block(
+                            $"if ({Locals.Peek()}.IsSuccess)",
+                            () =>
+                            {
+                                Writer.WriteLine($"{Locals.Peek()} = Result.Success({Locals.Peek()}, current);");
+                            });
+                        Writer.Block(
+                            $"else",
+                            () =>
+                            {
+                                Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
+                            });
+                    });
+            }
+
+            protected override void VisitAnyExpression(AnyExpression expression)
+            {
+                Locals.PeekPrep(Writer);
+                Writer.Block(
+                    "// VisitAnyExpression:",
+                    () =>
+                    {
+                        Writer.Block(
+                            $"if (!current.AtEnd)",
+                            () =>
+                            {
+                                using (var next = Locals.Use("next"))
+                                using (var location = Locals.Use("location"))
+                                using (var node = Locals.Use("node"))
+                                {
+                                    Writer.WriteLine($"{next} = current.Advance(1);");
+                                    Writer.WriteLine($"{location} = Location.From(current, {next});");
+                                    Writer.WriteLine($"{node} = Leaf.From({location}, NodeSymbols.Any, ((char)current.Current).ToString(CultureInfo.InvariantCulture));");
+                                    Writer.WriteLine($"{Locals.Peek()} = Result.Success({node}, {next}, {node});");
+                                }
+                            });
+                        Writer.Block(
+                            $"else",
+                            () =>
+                            {
+                                Writer.WriteLine($"{Locals.Peek()} = Result.Fail(current);");
+                            });
+                    });
+            }
+
+            protected override void VisitFuseExpression(FuseExpression expression)
+            {
+                Writer.WriteLine("VisitFuseExpression");
+            }
 
             // <**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**>
             // **><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><**><
@@ -335,39 +511,9 @@ namespace Lipeg.SDK.Builders
                 Writer.WriteLine("VisitClassRangeExpression");
             }
 
-            protected override void VisitFuseExpression(FuseExpression expression)
-            {
-                Writer.WriteLine("VisitFuseExpression");
-            }
-
-            protected override void VisitInlineExpression(InlineExpression expression)
-            {
-                Writer.WriteLine("VisitInlineExpression");
-            }
-
             protected override void VisitAndExpression(AndExpression expression)
             {
                 Writer.WriteLine("VisitAndExpression");
-            }
-
-            protected override void VisitNotExpression(NotExpression expression)
-            {
-                Writer.WriteLine("VisitNotExpression");
-            }
-
-            protected override void VisitOptionalExpression(OptionalExpression optional)
-            {
-                Writer.WriteLine("VisitOptionalExpression");
-            }
-
-            protected override void VisitPlusExpression(PlusExpression plus)
-            {
-                Writer.WriteLine("VisitPlusExpression");
-            }
-
-            protected override void VisitAnyExpression(AnyExpression expression)
-            {
-                Writer.WriteLine("VisitAnyExpression");
             }
 
             // >===>

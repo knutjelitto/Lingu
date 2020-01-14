@@ -394,7 +394,7 @@ grammar [identifier, *]
                             character='n'
                     sequence [singleString]
                         singleString [character]
-                            character='\u{03B5}'
+                            character='ε'
             rule [identifier, choice]
                 identifier='eof'
                 choice [sequence]

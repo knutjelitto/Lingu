@@ -1,6 +1,6 @@
 ﻿namespace Lipeg.Runtime
 {
-    public interface IContext
+    public interface IContext : ILocated
     {
         ISource Source { get; }
         int Offset { get; }

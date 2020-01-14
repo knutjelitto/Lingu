@@ -14,6 +14,8 @@ namespace Lipeg.Runtime
 
         public int Offset { get; }
 
+        public ILocation Location => Runtime.Location.From(this);
+
         public IContext Advance(int count)
         {
             Debug.Assert(count >= 0);

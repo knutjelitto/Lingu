@@ -23,6 +23,7 @@ namespace Lipeg.Runtime
 
         public static INodeList From(ILocated located, string name, params INode[] children) => new NodeList(located, name, children);
         public static INodeList From(ILocated located, string name, IReadOnlyList<INode> children) => new NodeList(located, name, children);
+
         public override string ToString() => $"{Name}[{string.Join(",", Children)}]";
 
         public string Fuse()

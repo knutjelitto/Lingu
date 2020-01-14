@@ -16,12 +16,16 @@ namespace Lipeg.SDK.Parsers
         public override IResult Parse(IContext context)
         {
             var result = Parser.Parse(context);
+            var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
 
             if (result.IsSuccess)
             {
-                return Result.Success(result, result.Next, NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray()));
+                return Result.Success(result, result.Next, node);
             }
-            return Result.Success(Location.From(context), context, NodeList.From(Location.From(context), NodeSymbols.Optional));
+            else
+            {
+                return Result.Success(context, context, node);
+            }
         }
     }
 }
