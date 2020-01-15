@@ -10,7 +10,7 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class CharSequence : IParser
+    public class CharSequence : ICombiParser
     {
         public CharSequence(string characters)
         {

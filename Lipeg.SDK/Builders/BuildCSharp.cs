@@ -19,16 +19,19 @@ namespace Lipeg.SDK.Builders
         {
             public readonly bool Disable = false;
             public readonly string Namespace = "Lipeg.Command";
+
             public readonly string CtxName = "context";
             public readonly string CurName = "current";
+
             public readonly string MatchString = "__MatchString";
             public readonly string MatchPredicate = "__MatchPredicate";
             public readonly string FinishRule = "__FinishRule";
+
             public readonly string SkipSpace = "__SkipSpace";
-            public readonly string ParseCache = "__Parse";
+            public readonly string ParseWithCache = "__Parse";
+            public readonly string InterfaceParse = "Parse";
 
             private const string ParserClassNameSuffix = "Parser";
-
 
             public Config(Grammar grammar)
             {
@@ -106,7 +109,9 @@ namespace Lipeg.SDK.Builders
                     CS.Line();
                     CS.Block($"public partial class {Cfg.ParserClass} : ParserBase", () =>
                     {
-                        MakeSkipSpace();
+                        ImplementTheParse();
+                        CS.Line();
+                        ImplementSkipSpace();
 
                         foreach (var rule in Grammar.AllRules)
                         {
@@ -117,7 +122,16 @@ namespace Lipeg.SDK.Builders
                 });
             }
 
-            private  void MakeSkipSpace()
+            private void ImplementTheParse()
+            {
+                CS.Block($"public override IResult {Cfg.InterfaceParse}(IContext {Cfg.CtxName})", () =>
+                {
+                    CS.Line("this.cache.Clear();");
+                    CS.Line($"return {Cfg.Capa(Grammar.Attr.Start.Identifier)}({Cfg.CtxName});");
+                });
+            }
+
+            private void ImplementSkipSpace()
             {
                 CS.Block($"protected override IContext {Cfg.SkipSpace}(IContext {Cfg.CtxName})", () =>
                 {
@@ -128,7 +142,7 @@ namespace Lipeg.SDK.Builders
             protected override void VisitRule(IRule rule)
             {
                 CS.Line($"// {rule.Identifier} -> {Cfg.Capa(rule.Identifier)}");
-                CS.Block($"public IResult {Cfg.Capa(rule.Identifier)}(IContext {Cfg.CtxName})", () =>
+                CS.Block($"protected virtual IResult {Cfg.Capa(rule.Identifier)}(IContext {Cfg.CtxName})", () =>
                 {
                     Locals.Reset();
                     using (Locals.PrepareResult())
@@ -189,7 +203,7 @@ namespace Lipeg.SDK.Builders
                     () =>
                     {
                         //CS.Line($"{Locals.Result} = {Cfg.Capa(expression.Identifier)}({Cfg.CurName});");
-                        CS.Line($"{Locals.Result} = {Cfg.ParseCache}({Cfg.Capa(expression.Identifier)}, {Cfg.CurName});");
+                        CS.Line($"{Locals.Result} = {Cfg.ParseWithCache}({Cfg.Capa(expression.Identifier)}, {Cfg.CurName});");
                     });
             }
 

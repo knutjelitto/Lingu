@@ -7,7 +7,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Star : Single
     {
-        public Star(IParser parser)
+        public Star(ICombiParser parser)
             : base(OpSymbols.Star, parser)
         {
         }

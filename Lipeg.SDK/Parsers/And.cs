@@ -9,7 +9,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class And : Single
     {
-        public And(IParser inner)
+        public And(ICombiParser inner)
             : base(OpSymbols.And, inner)
         {
         }

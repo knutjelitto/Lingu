@@ -6,15 +6,15 @@ using Lipeg.SDK.Output;
 
 namespace Lipeg.SDK.Parsers
 {
-    public abstract class Multi : IParser
+    public abstract class Multi : ICombiParser
     {
-        protected Multi(string name, IReadOnlyList<IParser> parsers)
+        protected Multi(string name, IReadOnlyList<ICombiParser> parsers)
         {
             Kind = name;
             Parsers = parsers;
         }
         public string Kind { get; }
-        public IReadOnlyList<IParser> Parsers { get; }
+        public IReadOnlyList<ICombiParser> Parsers { get; }
 
         public abstract void Dump(int level, IWriter writer);
 

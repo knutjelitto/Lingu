@@ -7,7 +7,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Fuse : Single
     {
-        public Fuse(IParser parser)
+        public Fuse(ICombiParser parser)
             : base(OpSymbols.Fuse, parser)
         {
         }

@@ -10,7 +10,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Sequence : Multi
     {
-        public Sequence(IReadOnlyList<IParser> parsers)
+        public Sequence(IReadOnlyList<ICombiParser> parsers)
             : base(OpSymbols.Sequence, parsers)
         {
         }

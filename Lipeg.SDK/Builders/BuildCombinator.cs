@@ -27,13 +27,13 @@ namespace Lipeg.SDK.Builders
 
         private class Visitor : TreeVisitor
         {
-            private readonly List<IParser> parsers = new List<IParser>();
-            private readonly Func<IParser> spacer;
+            private readonly List<Parsers.ICombiParser> parsers = new List<Parsers.ICombiParser>();
+            private readonly Func<Parsers.ICombiParser> spacer;
 
             public Visitor(Grammar grammar)
                 : base(grammar)
             {
-                spacer = () => Grammar.Attr.Spacing.Attr.Parser;
+                spacer = () => (Parsers.ICombiParser)Grammar.Attr.Spacing.Attr.Parser;
             }
 
             public void Visit()
@@ -43,7 +43,7 @@ namespace Lipeg.SDK.Builders
                 Debug.Assert(parsers.Count == 0);
             }
 
-            private IReadOnlyList<IParser> Pop(int start)
+            private IReadOnlyList<Parsers.ICombiParser> Pop(int start)
             {
                 var subs = parsers.Skip(start).Take(parsers.Count - start).ToArray();
                 parsers.RemoveRange(start, parsers.Count - start);
@@ -51,19 +51,19 @@ namespace Lipeg.SDK.Builders
                 return subs;
             }
 
-            private IParser Pop()
+            private Parsers.ICombiParser Pop()
             {
                 var parser = parsers[parsers.Count - 1];
                 parsers.RemoveAt(parsers.Count - 1);
                 return parser;
             }
 
-            private void Push(IParser parser)
+            private void Push(Parsers.ICombiParser parser)
             {
                 parsers.Add(parser);
             }
 
-            private IParser Peek()
+            private Parsers.ICombiParser Peek()
             {
                 return parsers[parsers.Count - 1];
             }
@@ -153,12 +153,12 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                Push(new Name(() => Grammar.Attr.Rules[expression.Identifier.Name].Attr.Parser, expression.Identifier));
+                Push(new Name(() => (Parsers.ICombiParser)Grammar.Attr.Rules[expression.Identifier.Name].Attr.Parser, expression.Identifier));
             }
 
             protected override void VisitInlineExpression(InlineExpression expression)
             {
-                Push(new Name(() => Grammar.Attr.Rules[expression.Rule.Identifier.Name].Attr.Parser, expression.Rule.Identifier));
+                Push(new Name(() => (Parsers.ICombiParser)Grammar.Attr.Rules[expression.Rule.Identifier.Name].Attr.Parser, expression.Rule.Identifier));
             }
 
             protected override void VisitAndExpression(AndExpression expression)

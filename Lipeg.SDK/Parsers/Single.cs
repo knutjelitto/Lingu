@@ -7,15 +7,15 @@ using Lipeg.SDK.Output;
 
 namespace Lipeg.SDK.Parsers
 {
-    public abstract class Single : IParser
+    public abstract class Single : ICombiParser
     {
-        protected Single(string name, IParser parser)
+        protected Single(string name, ICombiParser parser)
         {
             Kind = name;
             Parser = parser;
         }
         public string Kind { get; }
-        public IParser Parser { get; }
+        public ICombiParser Parser { get; }
 
         public abstract IResult Parse(IContext context);
 

@@ -9,7 +9,7 @@ namespace Lipeg.SDK.Checkers
 {
     public static class Builder
     {
-        public static IParser BuildParser(Grammar grammar)
+        public static ICombiParser BuildParser(Grammar grammar)
         {
             if (grammar == null) throw new ArgumentNullException(nameof(grammar));
 
@@ -17,7 +17,7 @@ namespace Lipeg.SDK.Checkers
 
             var startRule = grammar.Attr.Start;
 
-            var parser = new Name(() => startRule.Attr.Parser, startRule.Identifier);
+            var parser = new Name(() => (ICombiParser)startRule.Attr.Parser, startRule.Identifier);
 
             grammar.Attr.SetParser(parser);
 

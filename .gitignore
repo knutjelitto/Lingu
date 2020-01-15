@@ -340,3 +340,4 @@ ASALocalRun/
 /LinguCC/Gen/*.Out.*
 /LinguUcd/Data/**
 /LinguUcd/Generated/*.Out.*
+out/*

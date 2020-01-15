@@ -10,7 +10,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Not : Single
     {
-        public Not(IParser inner)
+        public Not(ICombiParser inner)
             : base(OpSymbols.Not, inner)
         {
         }

@@ -7,7 +7,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Plus : Single
     {
-        public Plus(IParser parser)
+        public Plus(ICombiParser parser)
             : base(OpSymbols.Plus, parser)
         {
         }

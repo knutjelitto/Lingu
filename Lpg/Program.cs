@@ -29,20 +29,33 @@ namespace Lipeg.Command
             var current = source.Start();
 
             var parser = new LipegParser();
-            var result = Timer.Time("parse", () => parser.Start(current));
+            var result = Timer.Time("parse", () => parser.Parse(current));
             if (!result.IsSuccess || !result.Next.AtEnd)
             {
                 Console.WriteLine("ERROR");
                 return;
             }
-            for (var i = 0; i < 10; ++i)
+
+            var loop = 5;
+
+            var sum = TimeSpan.Zero;
+            for (var i = 0; i < loop; ++i)
             {
-                result = Timer.Time("parse", () => parser.Start(current));
+                result = Timer.Time("parse", ref sum, () => parser.Parse(current));
             }
+            Console.WriteLine($"Ø parse: {sum / loop}");
 
             Dumper.Nodes(debugDir.File("nodes"), result.Nodes);
 
+            var ast = Timer.Time("aster", () => SDK.Checkers.Builder.BuildAst(result.Nodes[0]));
+            sum = TimeSpan.Zero;
+            for (var i = 0; i < loop; ++i)
+            {
+                ast = Timer.Time("aster", ref sum, () => SDK.Checkers.Builder.BuildAst(result.Nodes[0]));
+            }
+            Console.WriteLine($"Ø aster: {sum / loop}");
 
+            Dumper.Pretty(debugDir.File("ast"), ast);
         }
     }
 }

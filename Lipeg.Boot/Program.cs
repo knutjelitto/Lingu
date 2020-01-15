@@ -58,7 +58,7 @@ namespace Lipeg.Boot
             }
         }
 
-        private static IParser? Parse(FileRef sourceFile, FileRef debugFile, bool toCs, IParser parser, Func<INode, Grammar> aster)
+        private static SDK.Parsers.ICombiParser? Parse(FileRef sourceFile, FileRef debugFile, bool toCs, SDK.Parsers.ICombiParser parser, Func<INode, Grammar> aster)
         {
             if (debugFile == null) throw new ArgumentNullException(nameof(debugFile));
             var source = Source.FromFile(sourceFile);

@@ -13,13 +13,13 @@ using Pegasus.Parser;
 
 namespace Lipeg.Boot
 {
-    public partial class LipegParser : IParser
+    public partial class LipegParser : SDK.Parsers.ICombiParser
     {
         private ISource source = Source.FromString(String.Empty, String.Empty);
 
         public string Kind => "lipeg";
 
-        public static IParser From()
+        public static SDK.Parsers.ICombiParser From()
         {
             return new LipegParser();
         }

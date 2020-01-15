@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System;using System.Collections.Generic;
 using System.Globalization;
 
 namespace Lipeg.Runtime
 {
-    public abstract class ParserBase
+    public abstract class ParserBase : IParser
     {
         protected Dictionary<Func<IContext, IResult>, Dictionary<int, IResult>> cache = new Dictionary<Func<IContext, IResult>, Dictionary<int, IResult>>();
         protected Stack<List<INode>> lists = new Stack<List<INode>>();
+
+        public abstract IResult Parse(IContext context);
 
         protected virtual IResult __Parse(Func<IContext, IResult> parser, IContext context)
         {

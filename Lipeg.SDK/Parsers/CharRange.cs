@@ -8,7 +8,7 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class CharRange : IParser
+    public class CharRange : ICombiParser
     {
         public CharRange(int min, int max)
         {

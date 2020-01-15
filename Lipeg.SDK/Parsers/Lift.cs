@@ -9,7 +9,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Lift : Single
     {
-        public Lift(IParser parser)
+        public Lift(ICombiParser parser)
             : base(OpSymbols.Lift, parser)
         {
         }

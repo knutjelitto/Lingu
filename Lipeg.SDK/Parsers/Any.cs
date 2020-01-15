@@ -7,7 +7,7 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Any : IParser
+    public class Any : ICombiParser
     {
         public Any()
         {

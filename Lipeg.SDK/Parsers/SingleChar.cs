@@ -9,7 +9,7 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class SingleChar : IParser
+    public class SingleChar : ICombiParser
     {
         public SingleChar(int character)
         {

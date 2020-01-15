@@ -8,13 +8,19 @@ namespace Lipeg.Command
     
     public partial class LipegParser : ParserBase
     {
+        public override IResult Parse(IContext context)
+        {
+            this.cache.Clear();
+            return Start(context);
+        }
+        
         protected override IContext __SkipSpace(IContext context)
         {
             return _(context).Next;
         }
         
         // start -> Start
-        public IResult Start(IContext context)
+        protected virtual IResult Start(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -41,7 +47,7 @@ namespace Lipeg.Command
         }
         
         // grammar -> Grammar
-        public IResult Grammar(IContext context)
+        protected virtual IResult Grammar(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -158,7 +164,7 @@ namespace Lipeg.Command
         }
         
         // options -> Options
-        public IResult Options(IContext context)
+        protected virtual IResult Options(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -252,7 +258,7 @@ namespace Lipeg.Command
         }
         
         // option -> Option
-        public IResult Option(IContext context)
+        protected virtual IResult Option(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -310,7 +316,7 @@ namespace Lipeg.Command
         }
         
         // option-value -> OptionValue
-        public IResult OptionValue(IContext context)
+        protected virtual IResult OptionValue(IContext context)
         {
             var current = context;
             // {{NameExpression
@@ -320,7 +326,7 @@ namespace Lipeg.Command
         }
         
         // qualified-identifier -> QualifiedIdentifier
-        public IResult QualifiedIdentifier(IContext context)
+        protected virtual IResult QualifiedIdentifier(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -403,7 +409,7 @@ namespace Lipeg.Command
         }
         
         // syntax -> Syntax
-        public IResult Syntax(IContext context)
+        protected virtual IResult Syntax(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -504,7 +510,7 @@ namespace Lipeg.Command
         }
         
         // lexical -> Lexical
-        public IResult Lexical(IContext context)
+        protected virtual IResult Lexical(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -605,7 +611,7 @@ namespace Lipeg.Command
         }
         
         // rules -> Rules
-        public IResult Rules(IContext context)
+        protected virtual IResult Rules(IContext context)
         {
             var current = context;
             // {{LiftExpression
@@ -708,7 +714,7 @@ namespace Lipeg.Command
         }
         
         // rule -> Rule
-        public IResult Rule(IContext context)
+        protected virtual IResult Rule(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -788,7 +794,7 @@ namespace Lipeg.Command
         }
         
         // expression -> Expression
-        public IResult Expression(IContext context)
+        protected virtual IResult Expression(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -806,7 +812,7 @@ namespace Lipeg.Command
         }
         
         // choice -> Choice
-        public IResult Choice(IContext context)
+        protected virtual IResult Choice(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -894,7 +900,7 @@ namespace Lipeg.Command
         }
         
         // sequence -> Sequence
-        public IResult Sequence(IContext context)
+        protected virtual IResult Sequence(IContext context)
         {
             var current = context;
             // {{LiftExpression
@@ -953,7 +959,7 @@ namespace Lipeg.Command
         }
         
         // prefix -> Prefix
-        public IResult Prefix(IContext context)
+        protected virtual IResult Prefix(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -1006,7 +1012,7 @@ namespace Lipeg.Command
         }
         
         // suffix -> Suffix
-        public IResult Suffix(IContext context)
+        protected virtual IResult Suffix(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -1047,7 +1053,7 @@ namespace Lipeg.Command
         }
         
         // primary -> Primary
-        public IResult Primary(IContext context)
+        protected virtual IResult Primary(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -1155,7 +1161,7 @@ namespace Lipeg.Command
         }
         
         // inline -> Inline
-        public IResult Inline(IContext context)
+        protected virtual IResult Inline(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1215,7 +1221,7 @@ namespace Lipeg.Command
         }
         
         // any -> Any
-        public IResult Any(IContext context)
+        protected virtual IResult Any(IContext context)
         {
             var current = context;
             // {{DropExpression
@@ -1232,7 +1238,7 @@ namespace Lipeg.Command
         }
         
         // epsilon -> Epsilon
-        public IResult Epsilon(IContext context)
+        protected virtual IResult Epsilon(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -1252,7 +1258,7 @@ namespace Lipeg.Command
         }
         
         // eof -> Eof
-        public IResult Eof(IContext context)
+        protected virtual IResult Eof(IContext context)
         {
             var current = context;
             // {{NotExpression
@@ -1284,7 +1290,7 @@ namespace Lipeg.Command
         }
         
         // prefix.and -> PrefixAnd
-        public IResult PrefixAnd(IContext context)
+        protected virtual IResult PrefixAnd(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1329,7 +1335,7 @@ namespace Lipeg.Command
         }
         
         // prefix.not -> PrefixNot
-        public IResult PrefixNot(IContext context)
+        protected virtual IResult PrefixNot(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1374,7 +1380,7 @@ namespace Lipeg.Command
         }
         
         // prefix.drop -> PrefixDrop
-        public IResult PrefixDrop(IContext context)
+        protected virtual IResult PrefixDrop(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1419,7 +1425,7 @@ namespace Lipeg.Command
         }
         
         // prefix.fuse -> PrefixFuse
-        public IResult PrefixFuse(IContext context)
+        protected virtual IResult PrefixFuse(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1464,7 +1470,7 @@ namespace Lipeg.Command
         }
         
         // prefix.lift -> PrefixLift
-        public IResult PrefixLift(IContext context)
+        protected virtual IResult PrefixLift(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1509,7 +1515,7 @@ namespace Lipeg.Command
         }
         
         // suffix.zero-or-one -> SuffixZeroOrOne
-        public IResult SuffixZeroOrOne(IContext context)
+        protected virtual IResult SuffixZeroOrOne(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1554,7 +1560,7 @@ namespace Lipeg.Command
         }
         
         // suffix.zero-or-more -> SuffixZeroOrMore
-        public IResult SuffixZeroOrMore(IContext context)
+        protected virtual IResult SuffixZeroOrMore(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1599,7 +1605,7 @@ namespace Lipeg.Command
         }
         
         // suffix.one-or-more -> SuffixOneOrMore
-        public IResult SuffixOneOrMore(IContext context)
+        protected virtual IResult SuffixOneOrMore(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1644,7 +1650,7 @@ namespace Lipeg.Command
         }
         
         // identifier -> Identifier
-        public IResult Identifier(IContext context)
+        protected virtual IResult Identifier(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -1817,7 +1823,7 @@ namespace Lipeg.Command
         }
         
         // letter -> Letter
-        public IResult Letter(IContext context)
+        protected virtual IResult Letter(IContext context)
         {
             var current = context;
             // {{ClassExpression
@@ -1828,7 +1834,7 @@ namespace Lipeg.Command
         }
         
         // letter-or-digit -> LetterOrDigit
-        public IResult LetterOrDigit(IContext context)
+        protected virtual IResult LetterOrDigit(IContext context)
         {
             var current = context;
             // {{ClassExpression
@@ -1839,7 +1845,7 @@ namespace Lipeg.Command
         }
         
         // hex-digit -> HexDigit
-        public IResult HexDigit(IContext context)
+        protected virtual IResult HexDigit(IContext context)
         {
             var current = context;
             // {{ClassExpression
@@ -1850,7 +1856,7 @@ namespace Lipeg.Command
         }
         
         // verbatim-string -> VerbatimString
-        public IResult VerbatimString(IContext context)
+        protected virtual IResult VerbatimString(IContext context)
         {
             var current = context;
             // {{FuseExpression
@@ -1935,7 +1941,7 @@ namespace Lipeg.Command
         }
         
         // verbatim-character -> VerbatimCharacter
-        public IResult VerbatimCharacter(IContext context)
+        protected virtual IResult VerbatimCharacter(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -1997,7 +2003,7 @@ namespace Lipeg.Command
         }
         
         // string -> String
-        public IResult String(IContext context)
+        protected virtual IResult String(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -2085,7 +2091,7 @@ namespace Lipeg.Command
         }
         
         // character -> Character
-        public IResult Character(IContext context)
+        protected virtual IResult Character(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -2115,7 +2121,7 @@ namespace Lipeg.Command
         }
         
         // string-verbatim -> StringVerbatim
-        public IResult StringVerbatim(IContext context)
+        protected virtual IResult StringVerbatim(IContext context)
         {
             var current = context;
             // {{FuseExpression
@@ -2185,7 +2191,7 @@ namespace Lipeg.Command
         }
         
         // escape -> Escape
-        public IResult Escape(IContext context)
+        protected virtual IResult Escape(IContext context)
         {
             var current = context;
             // {{FuseExpression
@@ -2227,7 +2233,7 @@ namespace Lipeg.Command
         }
         
         // unicode-escape -> UnicodeEscape
-        public IResult UnicodeEscape(IContext context)
+        protected virtual IResult UnicodeEscape(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -2366,7 +2372,7 @@ namespace Lipeg.Command
         }
         
         // unicode-number -> UnicodeNumber
-        public IResult UnicodeNumber(IContext context)
+        protected virtual IResult UnicodeNumber(IContext context)
         {
             var current = context;
             // {{FuseExpression
@@ -2543,7 +2549,7 @@ namespace Lipeg.Command
         }
         
         // byte-escape -> ByteEscape
-        public IResult ByteEscape(IContext context)
+        protected virtual IResult ByteEscape(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -2682,7 +2688,7 @@ namespace Lipeg.Command
         }
         
         // byte-number -> ByteNumber
-        public IResult ByteNumber(IContext context)
+        protected virtual IResult ByteNumber(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -2731,7 +2737,7 @@ namespace Lipeg.Command
         }
         
         // character-class -> CharacterClass
-        public IResult CharacterClass(IContext context)
+        protected virtual IResult CharacterClass(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -2827,7 +2833,7 @@ namespace Lipeg.Command
         }
         
         // not -> Not
-        public IResult Not(IContext context)
+        protected virtual IResult Not(IContext context)
         {
             var current = context;
             // {{LiftExpression
@@ -2859,7 +2865,7 @@ namespace Lipeg.Command
         }
         
         // class-part -> ClassPart
-        public IResult ClassPart(IContext context)
+        protected virtual IResult ClassPart(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -2888,7 +2894,7 @@ namespace Lipeg.Command
         }
         
         // range -> Range
-        public IResult Range(IContext context)
+        protected virtual IResult Range(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -2951,7 +2957,7 @@ namespace Lipeg.Command
         }
         
         // class-char -> ClassChar
-        public IResult ClassChar(IContext context)
+        protected virtual IResult ClassChar(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -2981,7 +2987,7 @@ namespace Lipeg.Command
         }
         
         // class-verbatim -> ClassVerbatim
-        public IResult ClassVerbatim(IContext context)
+        protected virtual IResult ClassVerbatim(IContext context)
         {
             var current = context;
             // {{FuseExpression
@@ -3051,7 +3057,7 @@ namespace Lipeg.Command
         }
         
         // _ -> _
-        public IResult _(IContext context)
+        protected virtual IResult _(IContext context)
         {
             var current = context;
             // {{StarExpression
@@ -3095,7 +3101,7 @@ namespace Lipeg.Command
         }
         
         // comment -> Comment
-        public IResult Comment(IContext context)
+        protected virtual IResult Comment(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -3113,7 +3119,7 @@ namespace Lipeg.Command
         }
         
         // single-line-comment -> SingleLineComment
-        public IResult SingleLineComment(IContext context)
+        protected virtual IResult SingleLineComment(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -3196,7 +3202,7 @@ namespace Lipeg.Command
         }
         
         // multi-line-comment -> MultiLineComment
-        public IResult MultiLineComment(IContext context)
+        protected virtual IResult MultiLineComment(IContext context)
         {
             var current = context;
             // {{SequenceExpression
@@ -3287,7 +3293,7 @@ namespace Lipeg.Command
         }
         
         // newline -> Newline
-        public IResult Newline(IContext context)
+        protected virtual IResult Newline(IContext context)
         {
             var current = context;
             // {{ChoiceExpression
@@ -3306,7 +3312,7 @@ namespace Lipeg.Command
         }
         
         // eol-char -> EolChar
-        public IResult EolChar(IContext context)
+        protected virtual IResult EolChar(IContext context)
         {
             var current = context;
             // {{ClassExpression
@@ -3317,7 +3323,7 @@ namespace Lipeg.Command
         }
         
         // whitespace -> Whitespace
-        public IResult Whitespace(IContext context)
+        protected virtual IResult Whitespace(IContext context)
         {
             var current = context;
             // {{ClassExpression

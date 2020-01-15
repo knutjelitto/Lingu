@@ -6,7 +6,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Drop : Single
     {
-        protected Drop(IParser parser)
+        protected Drop(ICombiParser parser)
             : base(OpSymbols.Drop, parser)
         {
         }
@@ -24,7 +24,7 @@ namespace Lipeg.SDK.Parsers
             return result;
         }
 
-        public static IParser From(IParser parser)
+        public static ICombiParser From(ICombiParser parser)
         {
             return new Drop(parser);
         }

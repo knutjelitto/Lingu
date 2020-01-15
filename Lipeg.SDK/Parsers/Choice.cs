@@ -9,7 +9,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Choice : Multi
     {
-        public Choice(IReadOnlyList<IParser> parsers)
+        public Choice(IReadOnlyList<ICombiParser> parsers)
             : base(OpSymbols.Choice, parsers)
         {
         }

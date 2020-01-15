@@ -9,19 +9,19 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Name : IParser
+    public class Name : ICombiParser
     {
-        private Lazy<IParser> getParser;
+        private Lazy<ICombiParser> getParser;
         private static Dictionary<string, Dictionary<int, IResult>> cache = new Dictionary<string, Dictionary<int, IResult>>();
 
-        public Name(Func<IParser> parser, Identifier identifier)
+        public Name(Func<ICombiParser> parser, Identifier identifier)
         {
             Identifier = identifier;
-            getParser = new Lazy<IParser>(parser);
+            getParser = new Lazy<ICombiParser>(parser);
         }
 
         public string Kind => OpSymbols.Ref;
-        public IParser Parser => getParser.Value;
+        public ICombiParser Parser => getParser.Value;
         public Identifier Identifier { get; }
 
         public static void Clear()

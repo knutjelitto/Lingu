@@ -6,9 +6,9 @@ using Lipeg.SDK.Tree;
 
 namespace Lipeg.SDK.Parsers
 {
-    public class Space : IParser
+    public class Space : ICombiParser
     {
-        public Space(Func<IParser> spacer, IParser andThen)
+        public Space(Func<ICombiParser> spacer, ICombiParser andThen)
         {
             Spacer = spacer;
             AndThen = andThen;
@@ -16,8 +16,8 @@ namespace Lipeg.SDK.Parsers
 
         public string Kind => OpSymbols.Spacing;
 
-        public Func<IParser> Spacer { get; }
-        public IParser AndThen { get; }
+        public Func<ICombiParser> Spacer { get; }
+        public ICombiParser AndThen { get; }
 
         public IResult Parse(IContext context)
         {

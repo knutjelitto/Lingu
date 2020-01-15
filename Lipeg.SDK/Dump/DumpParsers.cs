@@ -3,6 +3,7 @@ using System;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Checkers;
 using Lipeg.SDK.Tree;
+using Lipeg.SDK.Parsers;
 
 namespace Lipeg.SDK.Dump
 {
@@ -31,7 +32,7 @@ namespace Lipeg.SDK.Dump
                 var more = false;
                 foreach (var rule in Grammar.AllRules)
                 {
-                    var parser = rule.Attr.Parser;
+                    var parser = (ICombiParser)rule.Attr.Parser;
 
                     if (more)
                     {

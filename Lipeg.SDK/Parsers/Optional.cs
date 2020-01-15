@@ -8,7 +8,7 @@ namespace Lipeg.SDK.Parsers
 {
     public class Optional : Single
     {
-        public Optional(IParser parser)
+        public Optional(ICombiParser parser)
             : base(OpSymbols.Option, parser)
         {
         }

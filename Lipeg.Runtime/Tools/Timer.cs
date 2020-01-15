@@ -15,6 +15,17 @@ namespace Lipeg.Runtime.Tools
             return result;
         }
 
+        public static T Time<T>(string msg, ref TimeSpan accu, Func<T> action)
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+            var result = action();
+            watch.Stop();
+            accu = accu.Add(watch.Elapsed);
+            Console.WriteLine($"{msg}: {watch.Elapsed}");
+            return result;
+        }
+
         public static void Time(string msg, Action action)
         {
             var watch = new Stopwatch();

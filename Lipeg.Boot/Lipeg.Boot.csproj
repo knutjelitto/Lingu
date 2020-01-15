@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DebugOut\lipeg.lpg.boot.g.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Grammars\CSharpParser.peg" />
     <None Remove="Grammars\lipeg.peg" />
   </ItemGroup>
@@ -46,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DebugOut\" />
+    <None Include="DebugOut\lipeg.lpg.boot.g.cs" />
   </ItemGroup>
 
 </Project>

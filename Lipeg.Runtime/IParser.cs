@@ -1,12 +1,11 @@
-﻿using Lipeg.SDK.Output;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Lipeg.Runtime
 {
     public interface IParser
     {
-        string Kind { get; }
         IResult Parse(IContext context);
-        void Dump(int level, IWriter writer);
     }
 }
