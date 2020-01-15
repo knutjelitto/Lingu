@@ -88,7 +88,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitChoiceExpression(ChoiceExpression expression)
             {
                 base.VisitChoiceExpression(expression);
-                SetIsLexical(expression, expression.Choices.All(c => c.Attr.IsLexical));
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitDropExpression(DropExpression expression)
@@ -100,7 +100,7 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitFuseExpression(FuseExpression expression)
             {
                 base.VisitFuseExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitNameExpression(NameExpression expression)
@@ -117,37 +117,37 @@ namespace Lipeg.SDK.Checkers
             protected override void VisitNotExpression(NotExpression expression)
             {
                 base.VisitNotExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitLiftExpression(LiftExpression expression)
             {
                 base.VisitLiftExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitOptionalExpression(OptionalExpression expression)
             {
                 base.VisitOptionalExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitPlusExpression(PlusExpression expression)
             {
                 base.VisitPlusExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitStarExpression(StarExpression expression)
             {
                 base.VisitStarExpression(expression);
-                SetIsLexical(expression, expression.Expression.Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
 
             protected override void VisitSequenceExpression(SequenceExpression expression)
             {
                 base.VisitSequenceExpression(expression);
-                SetIsLexical(expression, expression.Sequence[0].Attr.IsLexical);
+                SetIsLexical(expression, false);
             }
             protected override void VisitAnyExpression(AnyExpression expression)
             {

@@ -16,11 +16,22 @@ namespace Lipeg.SDK.Common
         {
             return Convert(value);
         }
+
         public static string InCSharp(string value)
         {
             return string.Join(string.Empty, value.Select(v => Convert(v, true)));
         }
 
+        public static string InCSharp(int value)
+        {
+            var result = Convert(value, true, true);
+            if (!result.StartsWith("0x", StringComparison.InvariantCulture))
+            {
+                result = "\'" + result + "\'";
+            }
+
+            return result;
+        }
 
         public static string InClass(this int value)
         {
@@ -46,7 +57,7 @@ namespace Lipeg.SDK.Common
             return $"{result}";
         }
 
-        public static string Convert(int value, bool csharp = false)
+        public static string Convert(int value, bool csharp = false, bool asInt = false)
         {
             if (value <= char.MaxValue)
             {
@@ -84,13 +95,14 @@ namespace Lipeg.SDK.Common
 
             if (csharp)
             {
+                if (asInt)
+                {
+                    return "0x" + value.ToString("X", CultureInfo.InvariantCulture);
+                }
                 return "\\u" + value.ToString("X4", CultureInfo.InvariantCulture);
             }
-            else
-            {
-                return "\\u{" + value.ToString("X4", CultureInfo.InvariantCulture) + "}";
 
-            }
+            return "\\u{" + value.ToString("X4", CultureInfo.InvariantCulture) + "}";
         }
     }
 }

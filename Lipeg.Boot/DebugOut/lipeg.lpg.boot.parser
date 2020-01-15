@@ -8,25 +8,25 @@
     (&& (, ['options']) (, ['{']) (^ (* option)) (, ['}'])))
 
 (option
-    [(&& [identifier] (, ['=']) option-value (, [';']))])
+    (&& [identifier] (, ['=']) option-value (, [';'])))
 
 (option-value
     qualified-identifier)
 
 (qualified-identifier
-    [(&& [identifier] (^ (* (&& (, ['.']) [identifier]))))])
+    (&& [identifier] (^ (* (&& (, ['.']) [identifier])))))
 
 (syntax
-    (&& (, ['syntax']) (, ['{']) (^ rules) (, [(? [';'])]) (, ['}'])))
+    (&& (, ['syntax']) (, ['{']) (^ rules) (, (? [';'])) (, ['}'])))
 
 (lexical
-    (&& (, ['lexical']) (, ['{']) (^ rules) (, [(? [';'])]) (, ['}'])))
+    (&& (, ['lexical']) (, ['{']) (^ rules) (, (? [';'])) (, ['}'])))
 
 (rules
     (^ (? (&& rule (^ (* (&& (, [';']) rule)))))))
 
 (rule
-    [(&& [identifier] (, ['<=']) (, [(? ['/'])]) (^ expression))])
+    (&& [identifier] (, ['<=']) (, (? ['/'])) (^ expression)))
 
 (expression
     (|| choice
@@ -69,10 +69,11 @@
     (, ['.']))
 
 (epsilon
-    [(|| ['epsilon'] ['ε'])])
+    (|| ['epsilon']
+        ['ε']))
 
 (eof
-    [(! [.])])
+    (! [.]))
 
 (prefix.and
     (&& (, ['&']) (^ suffix)))

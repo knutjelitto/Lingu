@@ -1,6 +1,7 @@
 ﻿using System;
 using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
+using Lipeg.SDK.Dump;
 
 namespace Lipeg.Command
 {
@@ -17,11 +18,10 @@ namespace Lipeg.Command
         private static void Demo()
         {
             var projectDir = DirRef.ProjectDir();
-            var grammarDir = projectDir.Dir("..").Dir("Lipeg.Boot").Dir("Grammars");
-            var debugDir = projectDir.Dir("Out");
+            var debugDir = projectDir.Dir("out");
             Environment.CurrentDirectory = debugDir;
 
-            var grammarFile = grammarDir.File("lipeg.lpg");
+            var grammarFile = projectDir.Dir("..").Dir("Lipeg.Boot").Dir("Grammars").File("lipeg.lpg");
 
             var sourceContent = grammarFile.GetContent();
 
@@ -29,7 +29,19 @@ namespace Lipeg.Command
             var current = source.Start();
 
             var parser = new LipegParser();
-            var nodes = parser.Start(current);
+            var result = Timer.Time("parse", () => parser.Start(current));
+            if (!result.IsSuccess || !result.Next.AtEnd)
+            {
+                Console.WriteLine("ERROR");
+                return;
+            }
+            for (var i = 0; i < 10; ++i)
+            {
+                result = Timer.Time("parse", () => parser.Start(current));
+            }
+
+            Dumper.Nodes(debugDir.File("nodes"), result.Nodes);
+
 
         }
     }

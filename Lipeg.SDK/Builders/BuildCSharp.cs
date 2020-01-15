@@ -9,6 +9,7 @@ using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Common;
 using Lipeg.SDK.Output;
 using Lipeg.SDK.Tree;
+using Microsoft.CodeAnalysis;
 
 namespace Lipeg.SDK.Builders
 {
@@ -20,8 +21,11 @@ namespace Lipeg.SDK.Builders
             public readonly string Namespace = "Lipeg.Command";
             public readonly string CtxName = "context";
             public readonly string CurName = "current";
-            public readonly string MatchString = "this.__MatchString";
-            public readonly string MatchPredicate = "this.__MatchPredicate";
+            public readonly string MatchString = "__MatchString";
+            public readonly string MatchPredicate = "__MatchPredicate";
+            public readonly string FinishRule = "__FinishRule";
+            public readonly string SkipSpace = "__SkipSpace";
+            public readonly string ParseCache = "__Parse";
 
             private const string ParserClassNameSuffix = "Parser";
 
@@ -36,7 +40,7 @@ namespace Lipeg.SDK.Builders
             public string ParserClass => $"{Capa(Grammar.Name)}{ParserClassNameSuffix}";
 
             [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Scheiß drauf")]
-            public IEnumerable<string> Usings => new[] { "System", "System.Collections.Generic", "System.Globalization", "System.Linq", "Lipeg.SDK.Tree", "Lipeg.Runtime" };
+            public IEnumerable<string> Usings => new[] { "System", "System.Collections.Generic", "System.Globalization", "System.Linq", "Lipeg.Runtime" };
 
             public string Capa(Identifier id)
             {
@@ -90,7 +94,6 @@ namespace Lipeg.SDK.Builders
             public CsWriter Writer { get; }
             public CSharper CS { get; }
             public Config Cfg { get; }
-            public int RuleNo { get; set; } = 0;
 
             public void Visit()
             {
@@ -103,17 +106,22 @@ namespace Lipeg.SDK.Builders
                     CS.Line();
                     CS.Block($"public partial class {Cfg.ParserClass} : ParserBase", () =>
                     {
-                        var more = false;
+                        MakeSkipSpace();
+
                         foreach (var rule in Grammar.AllRules)
                         {
-                            if (more)
-                            {
-                                CS.Line();
-                            }
+                            CS.Line();
                             VisitRule(rule);
-                            more = true;
                         }
                     });
+                });
+            }
+
+            private  void MakeSkipSpace()
+            {
+                CS.Block($"protected override IContext {Cfg.SkipSpace}(IContext {Cfg.CtxName})", () =>
+                {
+                    CS.Line($"return {Cfg.Capa(Grammar.Attr.Spacing.Identifier)}({Cfg.CtxName}).Next;");
                 });
             }
 
@@ -122,14 +130,12 @@ namespace Lipeg.SDK.Builders
                 CS.Line($"// {rule.Identifier} -> {Cfg.Capa(rule.Identifier)}");
                 CS.Block($"public IResult {Cfg.Capa(rule.Identifier)}(IContext {Cfg.CtxName})", () =>
                 {
-                    RuleNo += 1;
-
                     Locals.Reset();
-                    using (Locals.Result())
+                    using (Locals.PrepareResult())
                     {
                         CS.Line($"var {Cfg.CurName} = {Cfg.CtxName};");
                         VisitExpression(rule.Expression);
-                        CS.Line($"return {Locals.Peek()};");
+                        CS.Line($"return {Cfg.FinishRule}({Locals.Result}, \"{CharRep.InCSharp(rule.Identifier.Name)}\");");
                     }
                 });
             }
@@ -150,28 +156,28 @@ namespace Lipeg.SDK.Builders
                     {
                         using (var nodes = Locals.Use("nodes"))
                         {
-                            CS.Line($"{nodes} = new List<INode>();");
-                            AddToList(nodes, expression.Sequence.ToList(), 0);
+                            CS.Line($"{nodes} = new List<INode>(10);");
+                            CheckSequence(nodes, expression.Sequence.ToList(), 0);
                         }
                     });
 
-                void AddToList(Local nodes, IReadOnlyList<Expression> exprs, int index)
+                void CheckSequence(Local nodes, IReadOnlyList<Expression> exprs, int index)
                 {
                     if (index < exprs.Count)
                     {
                         VisitExpression(exprs[index]);
                         CS.If(
-                            $"{Locals.Peek()}.IsSuccess",
+                            $"{Locals.Result}.IsSuccess",
                             () =>
                             {
-                                CS.Line($"{Cfg.CurName} = {Locals.Peek()}.Next;");
-                                CS.Line($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
-                                AddToList(nodes, exprs, index + 1);
+                                CS.Line($"{Cfg.CurName} = {Locals.Result}.Next;");
+                                CS.Line($"{nodes}.AddRange({Locals.Result}.Nodes);");
+                                CheckSequence(nodes, exprs, index + 1);
                             });
                     }
                     else
                     {
-                        CS.Line($"{Locals.Peek()} = Result.Success({nodes}[0], {Cfg.CurName}, {nodes}.ToArray());");
+                        CS.Line($"{Locals.Result} = Result.Success({nodes}[0], {Cfg.CurName}, {nodes}.ToArray());");
                     }
                 }
             }
@@ -182,7 +188,8 @@ namespace Lipeg.SDK.Builders
                     "NameExpression",
                     () =>
                     {
-                        CS.Line($"{Locals.Peek()} = {Cfg.Capa(expression.Identifier)}({Cfg.CurName});");
+                        //CS.Line($"{Locals.Result} = {Cfg.Capa(expression.Identifier)}({Cfg.CurName});");
+                        CS.Line($"{Locals.Result} = {Cfg.ParseCache}({Cfg.Capa(expression.Identifier)}, {Cfg.CurName});");
                     });
             }
 
@@ -194,10 +201,10 @@ namespace Lipeg.SDK.Builders
                     {
                         VisitExpression(expression.Expression);
                         CS.If(
-                            $"{Locals.Peek()}.IsSuccess",
+                            $"{Locals.Result}.IsSuccess",
                             () =>
                             {
-                                CS.Line($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next);");
+                                CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Locals.Result}.Next);");
                             });
                     });
             }
@@ -210,21 +217,21 @@ namespace Lipeg.SDK.Builders
                     {
                         VisitExpression(expression.Expression);
                         CS.If(
-                            $"{Locals.Peek()}.IsSuccess",
+                            $"{Locals.Result}.IsSuccess",
                             () =>
                             {
                                 using (var nodes = Locals.Use("nodes"))
                                 using (var node = Locals.Use("node"))
                                 {
-                                    CS.Line($"{nodes} = new List<INode>();");
+                                    CS.Line($"{nodes} = new List<INode>(10);");
                                     CS.Block(
-                                        $"foreach ({node} in {Locals.Peek()}.Nodes)",
+                                        $"foreach ({node} in {Locals.Result}.Nodes)",
                                         () =>
                                         {
                                             CS.Line($"{nodes}.AddRange({node}.Children);");
                                         });
 
-                                    CS.Line($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {nodes}.ToArray());");
+                                    CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Locals.Result}.Next, {nodes}.ToArray());");
                                 }
                             });
                     });
@@ -236,11 +243,7 @@ namespace Lipeg.SDK.Builders
                     "StringLiteralExpression",
                     () =>
                     {
-                        using (var str = Locals.Use("str"))
-                        {
-                            CS.Line($"{str} = \"{CharRep.InCSharp(expression.Value)}\";");
-                            CS.Line($"{Locals.Peek()} = {Cfg.MatchString}({Cfg.CurName}, {str});");
-                        }
+                        CS.Line($"{Locals.Result} = {Cfg.MatchString}({Cfg.CurName}, \"{CharRep.InCSharp(expression.Value)}\");");
                     });
             }
 
@@ -256,18 +259,18 @@ namespace Lipeg.SDK.Builders
                         using (var node = Locals.Use("node"))
                         {
                             CS.Line($"{start} = {Cfg.CurName};");
-                            CS.Line($"{nodes} = new List<INode>();");
+                            CS.Line($"{nodes} = new List<INode>(10);");
                             Locals.PeekPrep(Writer);
                             CS.ForEver(
                                 () =>
                                 {
                                     VisitExpression(star.Expression);
                                     CS.If(
-                                        $"{Locals.Peek()}.IsSuccess",
+                                        $"{Locals.Result}.IsSuccess",
                                         () =>
                                         {
-                                            CS.Line($"{Cfg.CurName} = {Locals.Peek()}.Next;");
-                                            CS.Line($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
+                                            CS.Line($"{Cfg.CurName} = {Locals.Result}.Next;");
+                                            CS.Line($"{nodes}.AddRange({Locals.Result}.Nodes);");
                                         },
                                         () =>
                                         {
@@ -277,7 +280,7 @@ namespace Lipeg.SDK.Builders
 
                             CS.Line($"{location} = Location.From({start}, {Cfg.CurName});");
                             CS.Line($"{node} = NodeList.From({location}, NodeSymbols.Star, {nodes});");
-                            CS.Line($"{Locals.Peek()} = Result.Success({location}, {Cfg.CurName}, {node});");
+                            CS.Line($"{Locals.Result} = Result.Success({location}, {Cfg.CurName}, {node});");
                         }
                     });
             }
@@ -292,18 +295,18 @@ namespace Lipeg.SDK.Builders
                         using (var nodes = Locals.Use("nodes"))
                         {
                             CS.Line($"{start} = {Cfg.CurName};");
-                            CS.Line($"{nodes} = new List<INode>();");
+                            CS.Line($"{nodes} = new List<INode>(10);");
                             Locals.PeekPrep(Writer);
                             CS.ForEver(
                                 () =>
                                 {
                                     VisitExpression(plus.Expression);                                    
                                     CS.If(
-                                        $"{Locals.Peek()}.IsSuccess",
+                                        $"{Locals.Result}.IsSuccess",
                                         () =>
                                         {
-                                            CS.Line($"{Cfg.CurName} = {Locals.Peek()}.Next;");
-                                            CS.Line($"{nodes}.AddRange({Locals.Peek()}.Nodes);");
+                                            CS.Line($"{Cfg.CurName} = {Locals.Result}.Next;");
+                                            CS.Line($"{nodes}.AddRange({Locals.Result}.Nodes);");
                                         },
                                         () =>
                                         {
@@ -319,12 +322,12 @@ namespace Lipeg.SDK.Builders
                                     {
                                         CS.Line($"{location} = Location.From({start}, {Cfg.CurName});");
                                         CS.Line($"{node} = NodeList.From({location}, NodeSymbols.Plus, {nodes}.ToArray());");
-                                        CS.Line($"{Locals.Peek()} = Result.Success({location}, {Cfg.CurName}, {node});");
+                                        CS.Line($"{Locals.Result} = Result.Success({location}, {Cfg.CurName}, {node});");
                                     }
                                 },
                                 () =>
                                 {
-                                    CS.Line($"{Locals.Peek()} = Result.Fail({start});");
+                                    CS.Line($"{Locals.Result} = Result.Fail({start});");
                                 });
                         }
                     });
@@ -348,7 +351,7 @@ namespace Lipeg.SDK.Builders
                         if (index < exprs.Count)
                         {
                             CS.If(
-                                $"!{Locals.Peek()}.IsSuccess",
+                                $"!{Locals.Result}.IsSuccess",
                                 () =>
                                 {
                                     AddToList(exprs, index);
@@ -367,16 +370,16 @@ namespace Lipeg.SDK.Builders
                         VisitExpression(optional.Expression);
                         using (var node = Locals.Use("node"))
                         {
-                            CS.Line($"{node} = NodeList.From({Locals.Peek()}, NodeSymbols.Optional, {Locals.Peek()}.Nodes.ToArray());");
+                            CS.Line($"{node} = NodeList.From({Locals.Result}, NodeSymbols.Optional, {Locals.Result}.Nodes.ToArray());");
                             CS.If(
-                                $"{Locals.Peek()}.IsSuccess",
+                                $"{Locals.Result}.IsSuccess",
                                 () =>
                                 {
-                                    CS.Line($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {node});");
+                                    CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Locals.Result}.Next, {node});");
                                 },
                                 () =>
                                 {
-                                    CS.Line($"{Locals.Peek()} = Result.Success({Cfg.CurName}, {Cfg.CurName}, {node});");
+                                    CS.Line($"{Locals.Result} = Result.Success({Cfg.CurName}, {Cfg.CurName}, {node});");
                                 });
                         }
                     });
@@ -388,7 +391,7 @@ namespace Lipeg.SDK.Builders
                     "InlineExpression",
                     () =>
                     {
-                        CS.Line($"{Locals.Peek()} = {Cfg.Capa(expression.Rule.Identifier)}({Cfg.CurName});");
+                        CS.Line($"{Locals.Result} = {Cfg.Capa(expression.Rule.Identifier)}({Cfg.CurName});");
                     });
             }
 
@@ -401,14 +404,14 @@ namespace Lipeg.SDK.Builders
                         Locals.PeekPrep(Writer);
                         VisitExpression(expression.Expression);
                         CS.If(
-                            $"{Locals.Peek()}.IsSuccess",
+                            $"{Locals.Result}.IsSuccess",
                             () =>
                             {
-                                CS.Line($"{Locals.Peek()} = Result.Fail({Cfg.CurName});");
+                                CS.Line($"{Locals.Result} = Result.Fail({Cfg.CurName});");
                             },
                             () =>
                             {
-                                CS.Line($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Cfg.CurName});");
+                                CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Cfg.CurName});");
                             });
                     });
             }
@@ -422,14 +425,14 @@ namespace Lipeg.SDK.Builders
                         Locals.PeekPrep(Writer);
                         VisitExpression(expression.Expression);
                         CS.If(
-                            $"{Locals.Peek()}.IsSuccess",
+                            $"{Locals.Result}.IsSuccess",
                             () =>
                             {
-                                CS.Line($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Cfg.CurName});");
+                                CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Cfg.CurName});");
                             },
                             () =>
                             {
-                                CS.Line($"{Locals.Peek()} = Result.Fail({Cfg.CurName});");
+                                CS.Line($"{Locals.Result} = Result.Fail({Cfg.CurName});");
                             });
                     });
             }
@@ -452,12 +455,12 @@ namespace Lipeg.SDK.Builders
                                     CS.Line($"{next} = {Cfg.CurName}.Advance(1);");
                                     CS.Line($"{location} = Location.From({Cfg.CurName}, {next});");
                                     CS.Line($"{node} = Leaf.From({location}, NodeSymbols.Any, ((char){Cfg.CurName}.Current).ToString(CultureInfo.InvariantCulture));");
-                                    CS.Line($"{Locals.Peek()} = Result.Success({node}, {next}, {node});");
+                                    CS.Line($"{Locals.Result} = Result.Success({node}, {next}, {node});");
                                 }
                             },
                             () =>
                             {
-                                CS.Line($"{Locals.Peek()} = Result.Fail({Cfg.CurName});");
+                                CS.Line($"{Locals.Result} = Result.Fail({Cfg.CurName});");
                             });
                     });
             }
@@ -470,15 +473,15 @@ namespace Lipeg.SDK.Builders
                     {
                         VisitExpression(expression.Expression);
                         CS.If(
-                            $"{Locals.Peek()}.IsSuccess",
+                            $"{Locals.Result}.IsSuccess",
                             () =>
                             {
                                 using (var value = Locals.Use("value"))
                                 using (var node = Locals.Use("node"))
                                 {
-                                    CS.Line($"{value} = string.Join(string.Empty, {Locals.Peek()}.Nodes.Select(n => n.Fuse()));");
-                                    CS.Line($"{node} = Leaf.From({Locals.Peek()}, NodeSymbols.Fusion, {value});");
-                                    CS.Line($"{Locals.Peek()} = Result.Success({Locals.Peek()}, {Locals.Peek()}.Next, {node});");
+                                    CS.Line($"{value} = string.Join(string.Empty, {Locals.Result}.Nodes.Select(n => n.Fuse()));");
+                                    CS.Line($"{node} = Leaf.From({Locals.Result}, NodeSymbols.Fusion, {value});");
+                                    CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Locals.Result}.Next, {node});");
                                 }
                             });
                     });
@@ -495,12 +498,12 @@ namespace Lipeg.SDK.Builders
                         {
                             characters.UnionWith(part.Values);
                         }
-                        var array = String.Join(",", characters);
+                        var array = String.Join(",", characters.Select(c => CharRep.InCSharp(c)));
 
                         using (var values = Locals.Use("values"))
                         {
 
-                            CS.Line($"{values} = new []{{{array}}};");
+                            CS.Line($"{values} = new int[]{{{array}}};");
 
                             var cond = expression.Negated
                                            ? "< 0"
@@ -509,21 +512,16 @@ namespace Lipeg.SDK.Builders
                                             ? $"_current => Array.BinarySearch({values}, _current) {cond}"
                                             : $"_current => Array.IndexOf({values}, _current) {cond}";
 
-                            CS.Line($"{Locals.Peek()} = {Cfg.MatchPredicate}({Cfg.CurName}, {check});");
+                            CS.Line($"{Locals.Result} = {Cfg.MatchPredicate}({Cfg.CurName}, {check});");
                         }
                     });
             }
 
-            protected void Space(Expression expression)
+            private void Space(Expression expression)
             {
                 if (expression.Attr.IsWithSpacing)
                 {
-                    CS.IndentInOut(
-                        "SPACE",
-                        () =>
-                        {
-                            CS.Line($"/*SKIP SPACE*/ {Cfg.CurName} = {Cfg.Capa(Grammar.Attr.Spacing.Identifier)}({Cfg.CurName}).Next;");
-                        });
+                    CS.Line($"{Cfg.CurName} = {Cfg.SkipSpace}({Cfg.CurName});");
                 }
             }
 
@@ -645,7 +643,7 @@ namespace Lipeg.SDK.Builders
                 results.Clear();
             }
 
-            public static IDisposable Result()
+            public static IDisposable PrepareResult()
             {
                 var result = Use("result");
                 results.Push(result);
@@ -657,10 +655,7 @@ namespace Lipeg.SDK.Builders
                 });
             }
 
-            public static Local Peek()
-            {
-                return results.Peek();
-            }
+            public static Local Result => results.Peek();
 
             public static void PeekPrep(IWriter writer)
             {

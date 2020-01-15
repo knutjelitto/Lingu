@@ -5,19 +5,19 @@ namespace Lipeg.Runtime
 {
     public class NodeList : INodeList
     {
-        private readonly IList<INode> children;
+        private readonly IReadOnlyList<INode> children;
 
-        private NodeList(ILocated located, string name, IEnumerable<INode> children)
+        private NodeList(ILocated located, string name, IReadOnlyList<INode> children)
         {
             Location = located.Location;
             Name = name;
-            this.children = children.ToList();
+            this.children = children;
         }
 
         public ILocation Location { get; }
         public string Name { get; private set; }
         public INode this[int index] => children[index];
-        public IEnumerable<INode> Children => children;
+        public IReadOnlyList<INode> Children => children;
         public int Count => children.Count;
 
 

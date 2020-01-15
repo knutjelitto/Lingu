@@ -1,4 +1,4 @@
-﻿namespace Lipeg.SDK.Tree
+﻿namespace Lipeg.Runtime
 {
     public static class NodeSymbols
     {

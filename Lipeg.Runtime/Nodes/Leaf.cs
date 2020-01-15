@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,8 @@ namespace Lipeg.Runtime
 {
     public class Leaf : ILeaf
     {
+        private static IReadOnlyList<INode> Empty = new INode[] { };
+
         private Leaf(ILocated located, string name)
         {
             Location = located.Location;
@@ -25,7 +28,7 @@ namespace Lipeg.Runtime
         public string Value { get; }
 
         public INode this[int index] => Children.ElementAt(index);
-        public IEnumerable<INode> Children => Enumerable.Empty<INode>();
+        public IReadOnlyList<INode> Children => Empty;
         public int Count => 0;
 
         public static INode From(ILocated located, string name) => new Leaf(located, name);

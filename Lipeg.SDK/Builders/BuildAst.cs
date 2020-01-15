@@ -175,7 +175,7 @@ namespace Lipeg.SDK.Builders
 
             private static StringLiteralExpression String(INode node)
             {
-                var builder = new StringBuilder(node.Children.Count());
+                var builder = new StringBuilder(node.Count);
 
                 foreach (var child in node.Children)
                 {
@@ -206,7 +206,7 @@ namespace Lipeg.SDK.Builders
                     }
                 }
 
-                return ClassExpression.From(node, node.Children.First().Count != 0, parts);
+                return ClassExpression.From(node, node[0].Count != 0, parts);
             }
 
             private static string DecodeChar(INode node)

@@ -10,7 +10,7 @@ namespace Lipeg.Runtime
         string Fuse();
 
         INode this[int index] { get; }
-        IEnumerable<INode> Children { get; }
+        IReadOnlyList<INode> Children { get; }
         int Count { get; }
 
         INode Rename(string newName);
