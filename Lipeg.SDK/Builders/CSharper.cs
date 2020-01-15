@@ -8,27 +8,20 @@ namespace Lipeg.SDK.Builders
     public class CSharper
     {
         private readonly CsWriter writer;
+        private readonly bool withComments;
 
-        public CSharper(CsWriter writer)
+        public CSharper(CsWriter writer, bool withComments = false)
         {
             this.writer = writer;
+            this.withComments = withComments;
         }
 
-        public string this[string line]
-        {
-            get
-            {
-                this.writer.WriteLine(line);
-                return String.Empty;
-            }
-        }
-
-        public void L()
+        public void Line()
         {
             this.writer.WriteLine();
         }
 
-        public void L(string line)
+        public void Line(string line)
         {
             this.writer.WriteLine(line);
         }
@@ -38,9 +31,18 @@ namespace Lipeg.SDK.Builders
             this.writer.Block(head, body);
         }
 
-        public void Indent(string head, Action body)
+        public void IndentInOut(string comment, Action body)
         {
-            this.writer.Indent(head, body);
+            if (withComments)
+            {
+                Line($"// {{{{{comment}");
+                this.writer.Indent(body);
+                Line($"// }}}}{comment}");
+            }
+            else
+            {
+                body?.Invoke();
+            }
         }
 
         public void If(string condition, Action thenBody, Action? elseBody = null)

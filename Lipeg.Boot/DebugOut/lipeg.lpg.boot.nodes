@@ -606,23 +606,18 @@ start [grammar, eof]
                     verbatim-string='*/'
             rule [identifier, choice]
                 identifier='newline'
-                choice [sequence, sequence, sequence, sequence, sequence]
-                    sequence [string]
-                        string [escape]
-                            escape='n'
+                choice [sequence, sequence]
                     sequence [string]
                         string [escape, escape]
                             escape='r'
                             escape='n'
-                    sequence [string]
-                        string [escape]
+                    sequence [character-class]
+                        character-class [not, escape, escape, unicode-escape, unicode-escape]
+                            not []
+                            escape='n'
                             escape='r'
-                    sequence [string]
-                        string [unicode-escape]
                             unicode-escape [unicode-number]
                                 unicode-number='2028'
-                    sequence [string]
-                        string [unicode-escape]
                             unicode-escape [unicode-number]
                                 unicode-number='2029'
             rule [identifier, sequence]

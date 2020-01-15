@@ -13,21 +13,26 @@ namespace Lipeg.Command
         public IResult Start(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                var result = Grammar(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{NameExpression
+                    var result = Grammar(current);
+                // }}NameExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    result = Eof(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{NameExpression
+                        result = Eof(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -35,63 +40,79 @@ namespace Lipeg.Command
         public IResult Grammar(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(5);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "grammar";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "grammar";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    result = Identifier(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{NameExpression
+                        result = Identifier(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // DropExpression:
-                            // SHOULD SPACE <_>
-                            current = _(current).Next;
-                            // StringLiteralExpression:
-                            var str2 = "{";
-                            result = this.MatchString(current, str2);
+                        nodes.AddRange(result.Nodes);
+                        // {{DropExpression
+                            // {{SPACE
+                                /*SKIP SPACE*/ current = _(current).Next;
+                            // }}SPACE
+                            // {{StringLiteralExpression
+                                var str2 = "{";
+                                result = this.__MatchString(current, str2);
+                            // }}StringLiteralExpression
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
                             }
+                        // }}DropExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                // StarExpression:
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{StarExpression
                                     var start = current;
                                     var nodes2 = new List<INode>();
                                     for (;;)
                                     {
-                                        // ChoiceExpression:
-                                            result = Options(current);
+                                        // {{ChoiceExpression
+                                            // {{NameExpression
+                                                result = Options(current);
+                                            // }}NameExpression
                                             if (!result.IsSuccess)
                                             {
-                                                result = Syntax(current);
+                                                // {{NameExpression
+                                                    result = Syntax(current);
+                                                // }}NameExpression
                                                 if (!result.IsSuccess)
                                                 {
-                                                    result = Lexical(current);
+                                                    // {{NameExpression
+                                                        result = Lexical(current);
+                                                    // }}NameExpression
                                                 }
                                             }
+                                        // }}ChoiceExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes2.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes2.AddRange(result.Nodes);
                                         }
                                         else
                                         {
@@ -101,6 +122,7 @@ namespace Lipeg.Command
                                     var location = Location.From(start, current);
                                     var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                                     result = Result.Success(location, current, node);
+                                // }}StarExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes3 = new List<INode>();
@@ -110,30 +132,35 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes3.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // DropExpression:
-                                    // SHOULD SPACE <_>
-                                    current = _(current).Next;
-                                    // StringLiteralExpression:
-                                    var str3 = "}";
-                                    result = this.MatchString(current, str3);
+                                nodes.AddRange(result.Nodes);
+                                // {{DropExpression
+                                    // {{SPACE
+                                        /*SKIP SPACE*/ current = _(current).Next;
+                                    // }}SPACE
+                                    // {{StringLiteralExpression
+                                        var str3 = "}";
+                                        result = this.__MatchString(current, str3);
+                                    // }}StringLiteralExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Success(result, result.Next);
                                     }
+                                // }}DropExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes.AddRange(result.Nodes);
                                     result = Result.Success(nodes[0], current, nodes.ToArray());
                                 }
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -141,47 +168,55 @@ namespace Lipeg.Command
         public IResult Options(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(4);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "options";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "options";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str2 = "{";
-                        result = this.MatchString(current, str2);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str2 = "{";
+                            result = this.__MatchString(current, str2);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            // StarExpression:
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{StarExpression
                                 var start = current;
                                 var nodes2 = new List<INode>();
                                 for (;;)
                                 {
-                                    result = Option(current);
+                                    // {{NameExpression
+                                        result = Option(current);
+                                    // }}NameExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes2.AddRange(result.Nodes);
                                         current = result.Next;
+                                        nodes2.AddRange(result.Nodes);
                                     }
                                     else
                                     {
@@ -191,6 +226,7 @@ namespace Lipeg.Command
                                 var location = Location.From(start, current);
                                 var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                                 result = Result.Success(location, current, node);
+                            // }}StarExpression
                             if (result.IsSuccess)
                             {
                                 var nodes3 = new List<INode>();
@@ -200,29 +236,34 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes3.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // DropExpression:
-                                // SHOULD SPACE <_>
-                                current = _(current).Next;
-                                // StringLiteralExpression:
-                                var str3 = "}";
-                                result = this.MatchString(current, str3);
+                            nodes.AddRange(result.Nodes);
+                            // {{DropExpression
+                                // {{SPACE
+                                    /*SKIP SPACE*/ current = _(current).Next;
+                                // }}SPACE
+                                // {{StringLiteralExpression
+                                    var str3 = "}";
+                                    result = this.__MatchString(current, str3);
+                                // }}StringLiteralExpression
                                 if (result.IsSuccess)
                                 {
                                     result = Result.Success(result, result.Next);
                                 }
+                            // }}DropExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes.AddRange(result.Nodes);
                                 result = Result.Success(nodes[0], current, nodes.ToArray());
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -230,55 +271,68 @@ namespace Lipeg.Command
         public IResult Option(IContext context)
         {
             var current = context;
-            // SHOULD SPACE <_>
-            current = _(current).Next;
-            // SequenceExpression:
-                var nodes = new List<INode>(4);
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                var result = Identifier(current);
+            // {{SPACE
+                /*SKIP SPACE*/ current = _(current).Next;
+            // }}SPACE
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{NameExpression
+                    var result = Identifier(current);
+                // }}NameExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str = "=";
-                        result = this.MatchString(current, str);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str = "=";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        result = OptionValue(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{NameExpression
+                            result = OptionValue(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // DropExpression:
-                                // SHOULD SPACE <_>
-                                current = _(current).Next;
-                                // StringLiteralExpression:
-                                var str2 = ";";
-                                result = this.MatchString(current, str2);
+                            nodes.AddRange(result.Nodes);
+                            // {{DropExpression
+                                // {{SPACE
+                                    /*SKIP SPACE*/ current = _(current).Next;
+                                // }}SPACE
+                                // {{StringLiteralExpression
+                                    var str2 = ";";
+                                    result = this.__MatchString(current, str2);
+                                // }}StringLiteralExpression
                                 if (result.IsSuccess)
                                 {
                                     result = Result.Success(result, result.Next);
                                 }
+                            // }}DropExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes.AddRange(result.Nodes);
                                 result = Result.Success(nodes[0], current, nodes.ToArray());
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -286,7 +340,9 @@ namespace Lipeg.Command
         public IResult OptionValue(IContext context)
         {
             var current = context;
-            var result = QualifiedIdentifier(current);
+            // {{NameExpression
+                var result = QualifiedIdentifier(current);
+            // }}NameExpression
             return result;
         }
         
@@ -294,53 +350,64 @@ namespace Lipeg.Command
         public IResult QualifiedIdentifier(IContext context)
         {
             var current = context;
-            // SHOULD SPACE <_>
-            current = _(current).Next;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                var result = Identifier(current);
+            // {{SPACE
+                /*SKIP SPACE*/ current = _(current).Next;
+            // }}SPACE
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{NameExpression
+                    var result = Identifier(current);
+                // }}NameExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        // StarExpression:
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{StarExpression
                             var start = current;
                             var nodes2 = new List<INode>();
                             for (;;)
                             {
-                                // SequenceExpression:
-                                    var nodes3 = new List<INode>(2);
-                                    // DropExpression:
-                                        // SHOULD SPACE <_>
-                                        current = _(current).Next;
-                                        // StringLiteralExpression:
-                                        var str = ".";
-                                        result = this.MatchString(current, str);
+                                // {{SequenceExpression
+                                    var nodes3 = new List<INode>();
+                                    // {{DropExpression
+                                        // {{SPACE
+                                            /*SKIP SPACE*/ current = _(current).Next;
+                                        // }}SPACE
+                                        // {{StringLiteralExpression
+                                            var str = ".";
+                                            result = this.__MatchString(current, str);
+                                        // }}StringLiteralExpression
                                         if (result.IsSuccess)
                                         {
                                             result = Result.Success(result, result.Next);
                                         }
+                                    // }}DropExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes3.AddRange(result.Nodes);
                                         current = result.Next;
-                                        // SHOULD SPACE <_>
-                                        current = _(current).Next;
-                                        result = Identifier(current);
+                                        nodes3.AddRange(result.Nodes);
+                                        // {{SPACE
+                                            /*SKIP SPACE*/ current = _(current).Next;
+                                        // }}SPACE
+                                        // {{NameExpression
+                                            result = Identifier(current);
+                                        // }}NameExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes3.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes3.AddRange(result.Nodes);
                                             result = Result.Success(nodes3[0], current, nodes3.ToArray());
                                         }
                                     }
+                                // }}SequenceExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes2.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes2.AddRange(result.Nodes);
                                 }
                                 else
                                 {
@@ -350,6 +417,7 @@ namespace Lipeg.Command
                             var location = Location.From(start, current);
                             var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                             result = Result.Success(location, current, node);
+                        // }}StarExpression
                         if (result.IsSuccess)
                         {
                             var nodes4 = new List<INode>();
@@ -359,13 +427,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes4.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -373,38 +443,46 @@ namespace Lipeg.Command
         public IResult Syntax(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(5);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "syntax";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "syntax";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str2 = "{";
-                        result = this.MatchString(current, str2);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str2 = "{";
+                            result = this.__MatchString(current, str2);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            result = Rules(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{NameExpression
+                                result = Rules(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>();
@@ -414,20 +492,23 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes2.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // DropExpression:
-                                // SHOULD SPACE <_>
-                                current = _(current).Next;
-                                // OptionalExpression:
-                                {
-                                    // SHOULD SPACE <_>
-                                    current = _(current).Next;
-                                    // StringLiteralExpression:
-                                    var str3 = ";";
-                                    result = this.MatchString(current, str3);
+                            nodes.AddRange(result.Nodes);
+                            // {{DropExpression
+                                // {{SPACE
+                                    /*SKIP SPACE*/ current = _(current).Next;
+                                // }}SPACE
+                                // {{OptionalExpression
+                                    // {{SPACE
+                                        /*SKIP SPACE*/ current = _(current).Next;
+                                    // }}SPACE
+                                    // {{StringLiteralExpression
+                                        var str3 = ";";
+                                        result = this.__MatchString(current, str3);
+                                    // }}StringLiteralExpression
                                     var node2 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                     if (result.IsSuccess)
                                     {
@@ -437,35 +518,40 @@ namespace Lipeg.Command
                                     {
                                         result = Result.Success(current, current, node2);
                                     }
-                                }
+                                // }}OptionalExpression
                                 if (result.IsSuccess)
                                 {
                                     result = Result.Success(result, result.Next);
                                 }
+                            // }}DropExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // DropExpression:
-                                    // SHOULD SPACE <_>
-                                    current = _(current).Next;
-                                    // StringLiteralExpression:
-                                    var str4 = "}";
-                                    result = this.MatchString(current, str4);
+                                nodes.AddRange(result.Nodes);
+                                // {{DropExpression
+                                    // {{SPACE
+                                        /*SKIP SPACE*/ current = _(current).Next;
+                                    // }}SPACE
+                                    // {{StringLiteralExpression
+                                        var str4 = "}";
+                                        result = this.__MatchString(current, str4);
+                                    // }}StringLiteralExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Success(result, result.Next);
                                     }
+                                // }}DropExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes.AddRange(result.Nodes);
                                     result = Result.Success(nodes[0], current, nodes.ToArray());
                                 }
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -473,38 +559,46 @@ namespace Lipeg.Command
         public IResult Lexical(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(5);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "lexical";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "lexical";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str2 = "{";
-                        result = this.MatchString(current, str2);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str2 = "{";
+                            result = this.__MatchString(current, str2);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            result = Rules(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{NameExpression
+                                result = Rules(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>();
@@ -514,20 +608,23 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes2.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // DropExpression:
-                                // SHOULD SPACE <_>
-                                current = _(current).Next;
-                                // OptionalExpression:
-                                {
-                                    // SHOULD SPACE <_>
-                                    current = _(current).Next;
-                                    // StringLiteralExpression:
-                                    var str3 = ";";
-                                    result = this.MatchString(current, str3);
+                            nodes.AddRange(result.Nodes);
+                            // {{DropExpression
+                                // {{SPACE
+                                    /*SKIP SPACE*/ current = _(current).Next;
+                                // }}SPACE
+                                // {{OptionalExpression
+                                    // {{SPACE
+                                        /*SKIP SPACE*/ current = _(current).Next;
+                                    // }}SPACE
+                                    // {{StringLiteralExpression
+                                        var str3 = ";";
+                                        result = this.__MatchString(current, str3);
+                                    // }}StringLiteralExpression
                                     var node2 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                     if (result.IsSuccess)
                                     {
@@ -537,35 +634,40 @@ namespace Lipeg.Command
                                     {
                                         result = Result.Success(current, current, node2);
                                     }
-                                }
+                                // }}OptionalExpression
                                 if (result.IsSuccess)
                                 {
                                     result = Result.Success(result, result.Next);
                                 }
+                            // }}DropExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // DropExpression:
-                                    // SHOULD SPACE <_>
-                                    current = _(current).Next;
-                                    // StringLiteralExpression:
-                                    var str4 = "}";
-                                    result = this.MatchString(current, str4);
+                                nodes.AddRange(result.Nodes);
+                                // {{DropExpression
+                                    // {{SPACE
+                                        /*SKIP SPACE*/ current = _(current).Next;
+                                    // }}SPACE
+                                    // {{StringLiteralExpression
+                                        var str4 = "}";
+                                        result = this.__MatchString(current, str4);
+                                    // }}StringLiteralExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Success(result, result.Next);
                                     }
+                                // }}DropExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes.AddRange(result.Nodes);
                                     result = Result.Success(nodes[0], current, nodes.ToArray());
                                 }
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -573,51 +675,57 @@ namespace Lipeg.Command
         public IResult Rules(IContext context)
         {
             var current = context;
-            // LiftExpression:
-                IResult result;
-                // OptionalExpression:
-                {
-                    // SequenceExpression:
-                        var nodes = new List<INode>(2);
-                        result = Rule(current);
+            // {{LiftExpression
+                // {{OptionalExpression
+                    // {{SequenceExpression
+                        var nodes = new List<INode>();
+                        // {{NameExpression
+                            var result = Rule(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                // StarExpression:
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{StarExpression
                                     var start = current;
                                     var nodes2 = new List<INode>();
                                     for (;;)
                                     {
-                                        // SequenceExpression:
-                                            var nodes3 = new List<INode>(2);
-                                            // DropExpression:
-                                                // SHOULD SPACE <_>
-                                                current = _(current).Next;
-                                                // StringLiteralExpression:
-                                                var str = ";";
-                                                result = this.MatchString(current, str);
+                                        // {{SequenceExpression
+                                            var nodes3 = new List<INode>();
+                                            // {{DropExpression
+                                                // {{SPACE
+                                                    /*SKIP SPACE*/ current = _(current).Next;
+                                                // }}SPACE
+                                                // {{StringLiteralExpression
+                                                    var str = ";";
+                                                    result = this.__MatchString(current, str);
+                                                // }}StringLiteralExpression
                                                 if (result.IsSuccess)
                                                 {
                                                     result = Result.Success(result, result.Next);
                                                 }
+                                            // }}DropExpression
                                             if (result.IsSuccess)
                                             {
-                                                nodes3.AddRange(result.Nodes);
                                                 current = result.Next;
-                                                result = Rule(current);
+                                                nodes3.AddRange(result.Nodes);
+                                                // {{NameExpression
+                                                    result = Rule(current);
+                                                // }}NameExpression
                                                 if (result.IsSuccess)
                                                 {
-                                                    nodes3.AddRange(result.Nodes);
                                                     current = result.Next;
+                                                    nodes3.AddRange(result.Nodes);
                                                     result = Result.Success(nodes3[0], current, nodes3.ToArray());
                                                 }
                                             }
+                                        // }}SequenceExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes2.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes2.AddRange(result.Nodes);
                                         }
                                         else
                                         {
@@ -627,6 +735,7 @@ namespace Lipeg.Command
                                     var location = Location.From(start, current);
                                     var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                                     result = Result.Success(location, current, node);
+                                // }}StarExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes4 = new List<INode>();
@@ -636,13 +745,15 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes4.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes.AddRange(result.Nodes);
                                 result = Result.Success(nodes[0], current, nodes.ToArray());
                             }
                         }
+                    // }}SequenceExpression
                     var node3 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                     if (result.IsSuccess)
                     {
@@ -652,7 +763,7 @@ namespace Lipeg.Command
                     {
                         result = Result.Success(current, current, node3);
                     }
-                }
+                // }}OptionalExpression
                 if (result.IsSuccess)
                 {
                     var nodes5 = new List<INode>();
@@ -662,6 +773,7 @@ namespace Lipeg.Command
                     }
                     result = Result.Success(result, result.Next, nodes5.ToArray());
                 }
+            // }}LiftExpression
             return result;
         }
         
@@ -669,41 +781,50 @@ namespace Lipeg.Command
         public IResult Rule(IContext context)
         {
             var current = context;
-            // SHOULD SPACE <_>
-            current = _(current).Next;
-            // SequenceExpression:
-                var nodes = new List<INode>(4);
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                var result = Identifier(current);
+            // {{SPACE
+                /*SKIP SPACE*/ current = _(current).Next;
+            // }}SPACE
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{NameExpression
+                    var result = Identifier(current);
+                // }}NameExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str = "<=";
-                        result = this.MatchString(current, str);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str = "<=";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // DropExpression:
-                            // SHOULD SPACE <_>
-                            current = _(current).Next;
-                            // OptionalExpression:
-                            {
-                                // SHOULD SPACE <_>
-                                current = _(current).Next;
-                                // StringLiteralExpression:
-                                var str2 = "/";
-                                result = this.MatchString(current, str2);
+                        nodes.AddRange(result.Nodes);
+                        // {{DropExpression
+                            // {{SPACE
+                                /*SKIP SPACE*/ current = _(current).Next;
+                            // }}SPACE
+                            // {{OptionalExpression
+                                // {{SPACE
+                                    /*SKIP SPACE*/ current = _(current).Next;
+                                // }}SPACE
+                                // {{StringLiteralExpression
+                                    var str2 = "/";
+                                    result = this.__MatchString(current, str2);
+                                // }}StringLiteralExpression
                                 var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                 if (result.IsSuccess)
                                 {
@@ -713,17 +834,20 @@ namespace Lipeg.Command
                                 {
                                     result = Result.Success(current, current, node);
                                 }
-                            }
+                            // }}OptionalExpression
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
                             }
+                        // }}DropExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                result = Expression(current);
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{NameExpression
+                                    result = Expression(current);
+                                // }}NameExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes2 = new List<INode>();
@@ -733,15 +857,17 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes2.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes.AddRange(result.Nodes);
                                 result = Result.Success(nodes[0], current, nodes.ToArray());
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -749,12 +875,17 @@ namespace Lipeg.Command
         public IResult Expression(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                var result = Choice(current);
+            // {{ChoiceExpression
+                // {{NameExpression
+                    var result = Choice(current);
+                // }}NameExpression
                 if (!result.IsSuccess)
                 {
-                    result = Sequence(current);
+                    // {{NameExpression
+                        result = Sequence(current);
+                    // }}NameExpression
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -762,47 +893,55 @@ namespace Lipeg.Command
         public IResult Choice(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                var result = Sequence(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{NameExpression
+                    var result = Sequence(current);
+                // }}NameExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        // PlusExpression:
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{PlusExpression
                             var start = current;
                             var nodes2 = new List<INode>();
                             for (;;)
                             {
-                                // SequenceExpression:
-                                    var nodes3 = new List<INode>(2);
-                                    // DropExpression:
-                                        // SHOULD SPACE <_>
-                                        current = _(current).Next;
-                                        // StringLiteralExpression:
-                                        var str = "/";
-                                        result = this.MatchString(current, str);
+                                // {{SequenceExpression
+                                    var nodes3 = new List<INode>();
+                                    // {{DropExpression
+                                        // {{SPACE
+                                            /*SKIP SPACE*/ current = _(current).Next;
+                                        // }}SPACE
+                                        // {{StringLiteralExpression
+                                            var str = "/";
+                                            result = this.__MatchString(current, str);
+                                        // }}StringLiteralExpression
                                         if (result.IsSuccess)
                                         {
                                             result = Result.Success(result, result.Next);
                                         }
+                                    // }}DropExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes3.AddRange(result.Nodes);
                                         current = result.Next;
-                                        result = Sequence(current);
+                                        nodes3.AddRange(result.Nodes);
+                                        // {{NameExpression
+                                            result = Sequence(current);
+                                        // }}NameExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes3.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes3.AddRange(result.Nodes);
                                             result = Result.Success(nodes3[0], current, nodes3.ToArray());
                                         }
                                     }
+                                // }}SequenceExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes2.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes2.AddRange(result.Nodes);
                                 }
                                 else
                                 {
@@ -819,6 +958,7 @@ namespace Lipeg.Command
                             {
                                 result = Result.Fail(start);
                             }
+                        // }}PlusExpression
                         if (result.IsSuccess)
                         {
                             var nodes4 = new List<INode>();
@@ -828,13 +968,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes4.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -842,15 +984,17 @@ namespace Lipeg.Command
         public IResult Sequence(IContext context)
         {
             var current = context;
-            // LiftExpression:
-                IResult result;
-                // PlusExpression:
+            // {{LiftExpression
+                // {{PlusExpression
                     var start = current;
                     var nodes = new List<INode>();
+                    IResult result;
                     for (;;)
                     {
-                        // LiftExpression:
-                            result = Prefix(current);
+                        // {{LiftExpression
+                            // {{NameExpression
+                                result = Prefix(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>();
@@ -860,10 +1004,11 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes2.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                         }
                         else
                         {
@@ -880,6 +1025,7 @@ namespace Lipeg.Command
                     {
                         result = Result.Fail(start);
                     }
+                // }}PlusExpression
                 if (result.IsSuccess)
                 {
                     var nodes3 = new List<INode>();
@@ -889,6 +1035,7 @@ namespace Lipeg.Command
                     }
                     result = Result.Success(result, result.Next, nodes3.ToArray());
                 }
+            // }}LiftExpression
             return result;
         }
         
@@ -896,45 +1043,36 @@ namespace Lipeg.Command
         public IResult Prefix(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                IResult result;
-                // InlineExpression:
-                {
-                    // prefix.and
-                    result = PrefixAnd(current);
-                }
+            // {{ChoiceExpression
+                // {{InlineExpression
+                    var result = PrefixAnd(current);
+                // }}InlineExpression
                 if (!result.IsSuccess)
                 {
-                    // InlineExpression:
-                    {
-                        // prefix.not
+                    // {{InlineExpression
                         result = PrefixNot(current);
-                    }
+                    // }}InlineExpression
                     if (!result.IsSuccess)
                     {
-                        // InlineExpression:
-                        {
-                            // prefix.drop
+                        // {{InlineExpression
                             result = PrefixDrop(current);
-                        }
+                        // }}InlineExpression
                         if (!result.IsSuccess)
                         {
-                            // InlineExpression:
-                            {
-                                // prefix.fuse
+                            // {{InlineExpression
                                 result = PrefixFuse(current);
-                            }
+                            // }}InlineExpression
                             if (!result.IsSuccess)
                             {
-                                // InlineExpression:
-                                {
-                                    // prefix.lift
+                                // {{InlineExpression
                                     result = PrefixLift(current);
-                                }
+                                // }}InlineExpression
                                 if (!result.IsSuccess)
                                 {
-                                    // LiftExpression:
-                                        result = Suffix(current);
+                                    // {{LiftExpression
+                                        // {{NameExpression
+                                            result = Suffix(current);
+                                        // }}NameExpression
                                         if (result.IsSuccess)
                                         {
                                             var nodes = new List<INode>();
@@ -944,11 +1082,13 @@ namespace Lipeg.Command
                                             }
                                             result = Result.Success(result, result.Next, nodes.ToArray());
                                         }
+                                    // }}LiftExpression
                                 }
                             }
                         }
                     }
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -956,31 +1096,26 @@ namespace Lipeg.Command
         public IResult Suffix(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                IResult result;
-                // InlineExpression:
-                {
-                    // suffix.zero-or-one
-                    result = SuffixZeroOrOne(current);
-                }
+            // {{ChoiceExpression
+                // {{InlineExpression
+                    var result = SuffixZeroOrOne(current);
+                // }}InlineExpression
                 if (!result.IsSuccess)
                 {
-                    // InlineExpression:
-                    {
-                        // suffix.zero-or-more
+                    // {{InlineExpression
                         result = SuffixZeroOrMore(current);
-                    }
+                    // }}InlineExpression
                     if (!result.IsSuccess)
                     {
-                        // InlineExpression:
-                        {
-                            // suffix.one-or-more
+                        // {{InlineExpression
                             result = SuffixOneOrMore(current);
-                        }
+                        // }}InlineExpression
                         if (!result.IsSuccess)
                         {
-                            // LiftExpression:
-                                result = Primary(current);
+                            // {{LiftExpression
+                                // {{NameExpression
+                                    result = Primary(current);
+                                // }}NameExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes = new List<INode>();
@@ -990,9 +1125,11 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes.ToArray());
                                 }
+                            // }}LiftExpression
                         }
                     }
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -1000,54 +1137,77 @@ namespace Lipeg.Command
         public IResult Primary(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                var result = Identifier(current);
+            // {{ChoiceExpression
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{NameExpression
+                    var result = Identifier(current);
+                // }}NameExpression
                 if (!result.IsSuccess)
                 {
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    result = VerbatimString(current);
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{NameExpression
+                        result = VerbatimString(current);
+                    // }}NameExpression
                     if (!result.IsSuccess)
                     {
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        result = String(current);
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{NameExpression
+                            result = String(current);
+                        // }}NameExpression
                         if (!result.IsSuccess)
                         {
-                            // SHOULD SPACE <_>
-                            current = _(current).Next;
-                            result = CharacterClass(current);
+                            // {{SPACE
+                                /*SKIP SPACE*/ current = _(current).Next;
+                            // }}SPACE
+                            // {{NameExpression
+                                result = CharacterClass(current);
+                            // }}NameExpression
                             if (!result.IsSuccess)
                             {
-                                result = Any(current);
+                                // {{NameExpression
+                                    result = Any(current);
+                                // }}NameExpression
                                 if (!result.IsSuccess)
                                 {
-                                    result = Epsilon(current);
+                                    // {{NameExpression
+                                        result = Epsilon(current);
+                                    // }}NameExpression
                                     if (!result.IsSuccess)
                                     {
-                                        result = Inline(current);
+                                        // {{NameExpression
+                                            result = Inline(current);
+                                        // }}NameExpression
                                         if (!result.IsSuccess)
                                         {
-                                            // SequenceExpression:
-                                                var nodes = new List<INode>(3);
-                                                // DropExpression:
-                                                    // SHOULD SPACE <_>
-                                                    current = _(current).Next;
-                                                    // StringLiteralExpression:
-                                                    var str = "(";
-                                                    result = this.MatchString(current, str);
+                                            // {{SequenceExpression
+                                                var nodes = new List<INode>();
+                                                // {{DropExpression
+                                                    // {{SPACE
+                                                        /*SKIP SPACE*/ current = _(current).Next;
+                                                    // }}SPACE
+                                                    // {{StringLiteralExpression
+                                                        var str = "(";
+                                                        result = this.__MatchString(current, str);
+                                                    // }}StringLiteralExpression
                                                     if (result.IsSuccess)
                                                     {
                                                         result = Result.Success(result, result.Next);
                                                     }
+                                                // }}DropExpression
                                                 if (result.IsSuccess)
                                                 {
-                                                    nodes.AddRange(result.Nodes);
                                                     current = result.Next;
-                                                    // LiftExpression:
-                                                        result = Expression(current);
+                                                    nodes.AddRange(result.Nodes);
+                                                    // {{LiftExpression
+                                                        // {{NameExpression
+                                                            result = Expression(current);
+                                                        // }}NameExpression
                                                         if (result.IsSuccess)
                                                         {
                                                             var nodes2 = new List<INode>();
@@ -1057,28 +1217,33 @@ namespace Lipeg.Command
                                                             }
                                                             result = Result.Success(result, result.Next, nodes2.ToArray());
                                                         }
+                                                    // }}LiftExpression
                                                     if (result.IsSuccess)
                                                     {
-                                                        nodes.AddRange(result.Nodes);
                                                         current = result.Next;
-                                                        // DropExpression:
-                                                            // SHOULD SPACE <_>
-                                                            current = _(current).Next;
-                                                            // StringLiteralExpression:
-                                                            var str2 = ")";
-                                                            result = this.MatchString(current, str2);
+                                                        nodes.AddRange(result.Nodes);
+                                                        // {{DropExpression
+                                                            // {{SPACE
+                                                                /*SKIP SPACE*/ current = _(current).Next;
+                                                            // }}SPACE
+                                                            // {{StringLiteralExpression
+                                                                var str2 = ")";
+                                                                result = this.__MatchString(current, str2);
+                                                            // }}StringLiteralExpression
                                                             if (result.IsSuccess)
                                                             {
                                                                 result = Result.Success(result, result.Next);
                                                             }
+                                                        // }}DropExpression
                                                         if (result.IsSuccess)
                                                         {
-                                                            nodes.AddRange(result.Nodes);
                                                             current = result.Next;
+                                                            nodes.AddRange(result.Nodes);
                                                             result = Result.Success(nodes[0], current, nodes.ToArray());
                                                         }
                                                     }
                                                 }
+                                            // }}SequenceExpression
                                         }
                                     }
                                 }
@@ -1086,6 +1251,7 @@ namespace Lipeg.Command
                         }
                     }
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -1093,24 +1259,29 @@ namespace Lipeg.Command
         public IResult Inline(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(3);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "(";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "(";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        result = Rule(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = Rule(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -1120,28 +1291,33 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // DropExpression:
-                            // SHOULD SPACE <_>
-                            current = _(current).Next;
-                            // StringLiteralExpression:
-                            var str2 = ")";
-                            result = this.MatchString(current, str2);
+                        nodes.AddRange(result.Nodes);
+                        // {{DropExpression
+                            // {{SPACE
+                                /*SKIP SPACE*/ current = _(current).Next;
+                            // }}SPACE
+                            // {{StringLiteralExpression
+                                var str2 = ")";
+                                result = this.__MatchString(current, str2);
+                            // }}StringLiteralExpression
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
                             }
+                        // }}DropExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1149,16 +1325,19 @@ namespace Lipeg.Command
         public IResult Any(IContext context)
         {
             var current = context;
-            // DropExpression:
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                // StringLiteralExpression:
-                var str = ".";
-                var result = this.MatchString(current, str);
+            // {{DropExpression
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{StringLiteralExpression
+                    var str = ".";
+                    var result = this.__MatchString(current, str);
+                // }}StringLiteralExpression
                 if (result.IsSuccess)
                 {
                     result = Result.Success(result, result.Next);
                 }
+            // }}DropExpression
             return result;
         }
         
@@ -1166,22 +1345,28 @@ namespace Lipeg.Command
         public IResult Epsilon(IContext context)
         {
             var current = context;
-            // SHOULD SPACE <_>
-            current = _(current).Next;
-            // ChoiceExpression:
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                // StringLiteralExpression:
-                var str = "epsilon";
-                var result = this.MatchString(current, str);
+            // {{SPACE
+                /*SKIP SPACE*/ current = _(current).Next;
+            // }}SPACE
+            // {{ChoiceExpression
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{StringLiteralExpression
+                    var str = "epsilon";
+                    var result = this.__MatchString(current, str);
+                // }}StringLiteralExpression
                 if (!result.IsSuccess)
                 {
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str2 = "ε";
-                    result = this.MatchString(current, str2);
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str2 = "ε";
+                        result = this.__MatchString(current, str2);
+                    // }}StringLiteralExpression
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -1189,14 +1374,15 @@ namespace Lipeg.Command
         public IResult Eof(IContext context)
         {
             var current = context;
-            // SHOULD SPACE <_>
-            current = _(current).Next;
-            IResult result;
-            // NotExpression:
-                // SHOULD SPACE <_>
-                current = _(current).Next;
-                // VisitAnyExpression:
-                {
+            // {{SPACE
+                /*SKIP SPACE*/ current = _(current).Next;
+            // }}SPACE
+            // {{NotExpression
+                IResult result;
+                // {{SPACE
+                    /*SKIP SPACE*/ current = _(current).Next;
+                // }}SPACE
+                // {{AnyExpression
                     if (!current.AtEnd)
                     {
                         var next = current.Advance(1);
@@ -1208,7 +1394,7 @@ namespace Lipeg.Command
                     {
                         result = Result.Fail(current);
                     }
-                }
+                // }}AnyExpression
                 if (result.IsSuccess)
                 {
                     result = Result.Fail(current);
@@ -1217,6 +1403,7 @@ namespace Lipeg.Command
                 {
                     result = Result.Success(result, current);
                 }
+            // }}NotExpression
             return result;
         }
         
@@ -1224,24 +1411,29 @@ namespace Lipeg.Command
         public IResult PrefixAnd(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "&";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "&";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        result = Suffix(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = Suffix(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -1251,13 +1443,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1265,24 +1459,29 @@ namespace Lipeg.Command
         public IResult PrefixNot(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "!";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "!";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        result = Suffix(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = Suffix(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -1292,13 +1491,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1306,24 +1507,29 @@ namespace Lipeg.Command
         public IResult PrefixDrop(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = ",";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = ",";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        result = Suffix(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = Suffix(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -1333,13 +1539,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1347,24 +1555,29 @@ namespace Lipeg.Command
         public IResult PrefixFuse(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "~";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "~";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        result = Suffix(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = Suffix(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -1374,13 +1587,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1388,24 +1603,29 @@ namespace Lipeg.Command
         public IResult PrefixLift(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // DropExpression:
-                    // SHOULD SPACE <_>
-                    current = _(current).Next;
-                    // StringLiteralExpression:
-                    var str = "^";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SPACE
+                        /*SKIP SPACE*/ current = _(current).Next;
+                    // }}SPACE
+                    // {{StringLiteralExpression
+                        var str = "^";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        result = Suffix(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = Suffix(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -1415,13 +1635,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1429,10 +1651,12 @@ namespace Lipeg.Command
         public IResult SuffixZeroOrOne(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // LiftExpression:
-                    var result = Primary(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{LiftExpression
+                    // {{NameExpression
+                        var result = Primary(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>();
@@ -1442,27 +1666,32 @@ namespace Lipeg.Command
                         }
                         result = Result.Success(result, result.Next, nodes2.ToArray());
                     }
+                // }}LiftExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str = "?";
-                        result = this.MatchString(current, str);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str = "?";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1470,10 +1699,12 @@ namespace Lipeg.Command
         public IResult SuffixZeroOrMore(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // LiftExpression:
-                    var result = Primary(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{LiftExpression
+                    // {{NameExpression
+                        var result = Primary(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>();
@@ -1483,27 +1714,32 @@ namespace Lipeg.Command
                         }
                         result = Result.Success(result, result.Next, nodes2.ToArray());
                     }
+                // }}LiftExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str = "*";
-                        result = this.MatchString(current, str);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str = "*";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1511,10 +1747,12 @@ namespace Lipeg.Command
         public IResult SuffixOneOrMore(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // LiftExpression:
-                    var result = Primary(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{LiftExpression
+                    // {{NameExpression
+                        var result = Primary(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>();
@@ -1524,27 +1762,32 @@ namespace Lipeg.Command
                         }
                         result = Result.Success(result, result.Next, nodes2.ToArray());
                     }
+                // }}LiftExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // SHOULD SPACE <_>
-                        current = _(current).Next;
-                        // StringLiteralExpression:
-                        var str = "+";
-                        result = this.MatchString(current, str);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{SPACE
+                            /*SKIP SPACE*/ current = _(current).Next;
+                        // }}SPACE
+                        // {{StringLiteralExpression
+                            var str = "+";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1552,28 +1795,30 @@ namespace Lipeg.Command
         public IResult Identifier(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                IResult result;
-                // FuseExpression:
-                {
-                    // SequenceExpression:
-                        var nodes = new List<INode>(3);
-                        result = Letter(current);
+            // {{ChoiceExpression
+                // {{FuseExpression
+                    // {{SequenceExpression
+                        var nodes = new List<INode>();
+                        // {{NameExpression
+                            var result = Letter(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                // StarExpression:
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{StarExpression
                                     var start = current;
                                     var nodes2 = new List<INode>();
                                     for (;;)
                                     {
-                                        result = LetterOrDigit(current);
+                                        // {{NameExpression
+                                            result = LetterOrDigit(current);
+                                        // }}NameExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes2.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes2.AddRange(result.Nodes);
                                         }
                                         else
                                         {
@@ -1583,6 +1828,7 @@ namespace Lipeg.Command
                                     var location = Location.From(start, current);
                                     var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                                     result = Result.Success(location, current, node);
+                                // }}StarExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes3 = new List<INode>();
@@ -1592,36 +1838,40 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes3.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // LiftExpression:
-                                    // StarExpression:
+                                nodes.AddRange(result.Nodes);
+                                // {{LiftExpression
+                                    // {{StarExpression
                                         var start2 = current;
                                         var nodes4 = new List<INode>();
                                         for (;;)
                                         {
-                                            // SequenceExpression:
-                                                var nodes5 = new List<INode>(2);
-                                                // StringLiteralExpression:
-                                                var str = "-";
-                                                result = this.MatchString(current, str);
+                                            // {{SequenceExpression
+                                                var nodes5 = new List<INode>();
+                                                // {{StringLiteralExpression
+                                                    var str = "-";
+                                                    result = this.__MatchString(current, str);
+                                                // }}StringLiteralExpression
                                                 if (result.IsSuccess)
                                                 {
-                                                    nodes5.AddRange(result.Nodes);
                                                     current = result.Next;
-                                                    // LiftExpression:
-                                                        // PlusExpression:
+                                                    nodes5.AddRange(result.Nodes);
+                                                    // {{LiftExpression
+                                                        // {{PlusExpression
                                                             var start3 = current;
                                                             var nodes6 = new List<INode>();
                                                             for (;;)
                                                             {
-                                                                result = LetterOrDigit(current);
+                                                                // {{NameExpression
+                                                                    result = LetterOrDigit(current);
+                                                                // }}NameExpression
                                                                 if (result.IsSuccess)
                                                                 {
-                                                                    nodes6.AddRange(result.Nodes);
                                                                     current = result.Next;
+                                                                    nodes6.AddRange(result.Nodes);
                                                                 }
                                                                 else
                                                                 {
@@ -1638,6 +1888,7 @@ namespace Lipeg.Command
                                                             {
                                                                 result = Result.Fail(start3);
                                                             }
+                                                        // }}PlusExpression
                                                         if (result.IsSuccess)
                                                         {
                                                             var nodes7 = new List<INode>();
@@ -1647,17 +1898,19 @@ namespace Lipeg.Command
                                                             }
                                                             result = Result.Success(result, result.Next, nodes7.ToArray());
                                                         }
+                                                    // }}LiftExpression
                                                     if (result.IsSuccess)
                                                     {
-                                                        nodes5.AddRange(result.Nodes);
                                                         current = result.Next;
+                                                        nodes5.AddRange(result.Nodes);
                                                         result = Result.Success(nodes5[0], current, nodes5.ToArray());
                                                     }
                                                 }
+                                            // }}SequenceExpression
                                             if (result.IsSuccess)
                                             {
-                                                nodes4.AddRange(result.Nodes);
                                                 current = result.Next;
+                                                nodes4.AddRange(result.Nodes);
                                             }
                                             else
                                             {
@@ -1667,6 +1920,7 @@ namespace Lipeg.Command
                                         var location2 = Location.From(start2, current);
                                         var node3 = NodeList.From(location2, NodeSymbols.Star, nodes4);
                                         result = Result.Success(location2, current, node3);
+                                    // }}StarExpression
                                     if (result.IsSuccess)
                                     {
                                         var nodes8 = new List<INode>();
@@ -1676,36 +1930,39 @@ namespace Lipeg.Command
                                         }
                                         result = Result.Success(result, result.Next, nodes8.ToArray());
                                     }
+                                // }}LiftExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes.AddRange(result.Nodes);
                                     result = Result.Success(nodes[0], current, nodes.ToArray());
                                 }
                             }
                         }
+                    // }}SequenceExpression
                     if (result.IsSuccess)
                     {
                         var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                         var node7 = Leaf.From(result, NodeSymbols.Fusion, value);
                         result = Result.Success(result, result.Next, node7);
                     }
-                }
+                // }}FuseExpression
                 if (!result.IsSuccess)
                 {
-                    // FuseExpression:
-                    {
-                        // StringLiteralExpression:
-                        var str2 = "_";
-                        result = this.MatchString(current, str2);
+                    // {{FuseExpression
+                        // {{StringLiteralExpression
+                            var str2 = "_";
+                            result = this.__MatchString(current, str2);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             var value2 = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                             var node8 = Leaf.From(result, NodeSymbols.Fusion, value2);
                             result = Result.Success(result, result.Next, node8);
                         }
-                    }
+                    // }}FuseExpression
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -1713,9 +1970,10 @@ namespace Lipeg.Command
         public IResult Letter(IContext context)
         {
             var current = context;
-            // ClassExpression
-            var values = new []{65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122};
-            var result = this.MatchPredicate(current, (cur) => Array.BinarySearch(values, cur) >= 0);
+            // {{ClassExpression
+                var values = new []{65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122};
+                var result = this.__MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
+            // }}ClassExpression
             return result;
         }
         
@@ -1723,9 +1981,10 @@ namespace Lipeg.Command
         public IResult LetterOrDigit(IContext context)
         {
             var current = context;
-            // ClassExpression
-            var values = new []{48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122};
-            var result = this.MatchPredicate(current, (cur) => Array.BinarySearch(values, cur) >= 0);
+            // {{ClassExpression
+                var values = new []{48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122};
+                var result = this.__MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
+            // }}ClassExpression
             return result;
         }
         
@@ -1733,9 +1992,10 @@ namespace Lipeg.Command
         public IResult HexDigit(IContext context)
         {
             var current = context;
-            // ClassExpression
-            var values = new []{48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,97,98,99,100,101,102};
-            var result = this.MatchPredicate(current, (cur) => Array.BinarySearch(values, cur) >= 0);
+            // {{ClassExpression
+                var values = new []{48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,97,98,99,100,101,102};
+                var result = this.__MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
+            // }}ClassExpression
             return result;
         }
         
@@ -1743,34 +2003,36 @@ namespace Lipeg.Command
         public IResult VerbatimString(IContext context)
         {
             var current = context;
-            IResult result;
-            // FuseExpression:
-            {
-                // SequenceExpression:
-                    var nodes = new List<INode>(3);
-                    // DropExpression:
-                        // StringLiteralExpression:
-                        var str = "\'";
-                        result = this.MatchString(current, str);
+            // {{FuseExpression
+                // {{SequenceExpression
+                    var nodes = new List<INode>();
+                    // {{DropExpression
+                        // {{StringLiteralExpression
+                            var str = "\'";
+                            var result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            // StarExpression:
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{StarExpression
                                 var start = current;
                                 var nodes2 = new List<INode>();
                                 for (;;)
                                 {
-                                    result = VerbatimCharacter(current);
+                                    // {{NameExpression
+                                        result = VerbatimCharacter(current);
+                                    // }}NameExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes2.AddRange(result.Nodes);
                                         current = result.Next;
+                                        nodes2.AddRange(result.Nodes);
                                     }
                                     else
                                     {
@@ -1780,6 +2042,7 @@ namespace Lipeg.Command
                                 var location = Location.From(start, current);
                                 var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                                 result = Result.Success(location, current, node);
+                            // }}StarExpression
                             if (result.IsSuccess)
                             {
                                 var nodes3 = new List<INode>();
@@ -1789,33 +2052,37 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes3.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // DropExpression:
-                                // StringLiteralExpression:
-                                var str2 = "\'";
-                                result = this.MatchString(current, str2);
+                            nodes.AddRange(result.Nodes);
+                            // {{DropExpression
+                                // {{StringLiteralExpression
+                                    var str2 = "\'";
+                                    result = this.__MatchString(current, str2);
+                                // }}StringLiteralExpression
                                 if (result.IsSuccess)
                                 {
                                     result = Result.Success(result, result.Next);
                                 }
+                            // }}DropExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes.AddRange(result.Nodes);
                                 result = Result.Success(nodes[0], current, nodes.ToArray());
                             }
                         }
                     }
+                // }}SequenceExpression
                 if (result.IsSuccess)
                 {
                     var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                     var node3 = Leaf.From(result, NodeSymbols.Fusion, value);
                     result = Result.Success(result, result.Next, node3);
                 }
-            }
+            // }}FuseExpression
             return result;
         }
         
@@ -1823,24 +2090,29 @@ namespace Lipeg.Command
         public IResult VerbatimCharacter(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                IResult result;
-                // NotExpression:
-                    // ChoiceExpression:
-                        // StringLiteralExpression:
-                        var str = "\'";
-                        result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{NotExpression
+                    IResult result;
+                    // {{ChoiceExpression
+                        // {{StringLiteralExpression
+                            var str = "\'";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (!result.IsSuccess)
                         {
-                            // StringLiteralExpression:
-                            var str2 = "\\";
-                            result = this.MatchString(current, str2);
+                            // {{StringLiteralExpression
+                                var str2 = "\\";
+                                result = this.__MatchString(current, str2);
+                            // }}StringLiteralExpression
                             if (!result.IsSuccess)
                             {
-                                result = EolChar(current);
+                                // {{NameExpression
+                                    result = EolChar(current);
+                                // }}NameExpression
                             }
                         }
+                    // }}ChoiceExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Fail(current);
@@ -1849,12 +2121,12 @@ namespace Lipeg.Command
                     {
                         result = Result.Success(result, current);
                     }
+                // }}NotExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // VisitAnyExpression:
-                    {
+                    nodes.AddRange(result.Nodes);
+                    // {{AnyExpression
                         if (!current.AtEnd)
                         {
                             var next = current.Advance(1);
@@ -1866,14 +2138,15 @@ namespace Lipeg.Command
                         {
                             result = Result.Fail(current);
                         }
-                    }
+                    // }}AnyExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1881,28 +2154,32 @@ namespace Lipeg.Command
         public IResult String(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(3);
-                // DropExpression:
-                    // StringLiteralExpression:
-                    var str = "\'";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{StringLiteralExpression
+                        var str = "\'";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        // StarExpression:
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{StarExpression
                             var start = current;
                             var nodes2 = new List<INode>();
                             for (;;)
                             {
-                                // LiftExpression:
-                                    result = Character(current);
+                                // {{LiftExpression
+                                    // {{NameExpression
+                                        result = Character(current);
+                                    // }}NameExpression
                                     if (result.IsSuccess)
                                     {
                                         var nodes3 = new List<INode>();
@@ -1912,10 +2189,11 @@ namespace Lipeg.Command
                                         }
                                         result = Result.Success(result, result.Next, nodes3.ToArray());
                                     }
+                                // }}LiftExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes2.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes2.AddRange(result.Nodes);
                                 }
                                 else
                                 {
@@ -1925,6 +2203,7 @@ namespace Lipeg.Command
                             var location = Location.From(start, current);
                             var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                             result = Result.Success(location, current, node);
+                        // }}StarExpression
                         if (result.IsSuccess)
                         {
                             var nodes4 = new List<INode>();
@@ -1934,26 +2213,30 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes4.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // DropExpression:
-                            // StringLiteralExpression:
-                            var str2 = "\'";
-                            result = this.MatchString(current, str2);
+                        nodes.AddRange(result.Nodes);
+                        // {{DropExpression
+                            // {{StringLiteralExpression
+                                var str2 = "\'";
+                                result = this.__MatchString(current, str2);
+                            // }}StringLiteralExpression
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
                             }
+                        // }}DropExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -1961,20 +2244,29 @@ namespace Lipeg.Command
         public IResult Character(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                var result = StringVerbatim(current);
+            // {{ChoiceExpression
+                // {{NameExpression
+                    var result = StringVerbatim(current);
+                // }}NameExpression
                 if (!result.IsSuccess)
                 {
-                    result = Escape(current);
+                    // {{NameExpression
+                        result = Escape(current);
+                    // }}NameExpression
                     if (!result.IsSuccess)
                     {
-                        result = UnicodeEscape(current);
+                        // {{NameExpression
+                            result = UnicodeEscape(current);
+                        // }}NameExpression
                         if (!result.IsSuccess)
                         {
-                            result = ByteEscape(current);
+                            // {{NameExpression
+                                result = ByteEscape(current);
+                            // }}NameExpression
                         }
                     }
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -1982,26 +2274,30 @@ namespace Lipeg.Command
         public IResult StringVerbatim(IContext context)
         {
             var current = context;
-            IResult result;
-            // FuseExpression:
-            {
-                // SequenceExpression:
-                    var nodes = new List<INode>(2);
-                    // NotExpression:
-                        // ChoiceExpression:
-                            // StringLiteralExpression:
-                            var str = "\'";
-                            result = this.MatchString(current, str);
+            // {{FuseExpression
+                // {{SequenceExpression
+                    var nodes = new List<INode>();
+                    // {{NotExpression
+                        IResult result;
+                        // {{ChoiceExpression
+                            // {{StringLiteralExpression
+                                var str = "\'";
+                                result = this.__MatchString(current, str);
+                            // }}StringLiteralExpression
                             if (!result.IsSuccess)
                             {
-                                // StringLiteralExpression:
-                                var str2 = "\\";
-                                result = this.MatchString(current, str2);
+                                // {{StringLiteralExpression
+                                    var str2 = "\\";
+                                    result = this.__MatchString(current, str2);
+                                // }}StringLiteralExpression
                                 if (!result.IsSuccess)
                                 {
-                                    result = EolChar(current);
+                                    // {{NameExpression
+                                        result = EolChar(current);
+                                    // }}NameExpression
                                 }
                             }
+                        // }}ChoiceExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Fail(current);
@@ -2010,12 +2306,12 @@ namespace Lipeg.Command
                         {
                             result = Result.Success(result, current);
                         }
+                    // }}NotExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // VisitAnyExpression:
-                        {
+                        nodes.AddRange(result.Nodes);
+                        // {{AnyExpression
                             if (!current.AtEnd)
                             {
                                 var next = current.Advance(1);
@@ -2027,21 +2323,22 @@ namespace Lipeg.Command
                             {
                                 result = Result.Fail(current);
                             }
-                        }
+                        // }}AnyExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
+                // }}SequenceExpression
                 if (result.IsSuccess)
                 {
                     var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                     var node2 = Leaf.From(result, NodeSymbols.Fusion, value);
                     result = Result.Success(result, result.Next, node2);
                 }
-            }
+            // }}FuseExpression
             return result;
         }
         
@@ -2049,40 +2346,42 @@ namespace Lipeg.Command
         public IResult Escape(IContext context)
         {
             var current = context;
-            IResult result;
-            // FuseExpression:
-            {
-                // SequenceExpression:
-                    var nodes = new List<INode>(2);
-                    // DropExpression:
-                        // StringLiteralExpression:
-                        var str = "\\";
-                        result = this.MatchString(current, str);
+            // {{FuseExpression
+                // {{SequenceExpression
+                    var nodes = new List<INode>();
+                    // {{DropExpression
+                        // {{StringLiteralExpression
+                            var str = "\\";
+                            var result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // ClassExpression
-                        var values = new []{39,45,48,92,93,97,98,101,102,110,114,116,118};
-                        result = this.MatchPredicate(current, (cur) => Array.BinarySearch(values, cur) >= 0);
+                        nodes.AddRange(result.Nodes);
+                        // {{ClassExpression
+                            var values = new []{39,45,48,92,93,97,98,101,102,110,114,116,118};
+                            result = this.__MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
+                        // }}ClassExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
+                // }}SequenceExpression
                 if (result.IsSuccess)
                 {
                     var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                     var node = Leaf.From(result, NodeSymbols.Fusion, value);
                     result = Result.Success(result, result.Next, node);
                 }
-            }
+            // }}FuseExpression
             return result;
         }
         
@@ -2090,79 +2389,95 @@ namespace Lipeg.Command
         public IResult UnicodeEscape(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(5);
-                // DropExpression:
-                    // SequenceExpression:
-                        var nodes2 = new List<INode>(2);
-                        // StringLiteralExpression:
-                        var str = "\\u{";
-                        var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SequenceExpression
+                        var nodes2 = new List<INode>();
+                        // {{StringLiteralExpression
+                            var str = "\\u{";
+                            var result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
-                            nodes2.AddRange(result.Nodes);
                             current = result.Next;
-                            result = _(current);
+                            nodes2.AddRange(result.Nodes);
+                            // {{NameExpression
+                                result = _(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
-                                nodes2.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes2.AddRange(result.Nodes);
                                 result = Result.Success(nodes2[0], current, nodes2.ToArray());
                             }
                         }
+                    // }}SequenceExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    result = UnicodeNumber(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{NameExpression
+                        result = UnicodeNumber(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // DropExpression:
-                            result = _(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{DropExpression
+                            // {{NameExpression
+                                result = _(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
                             }
+                        // }}DropExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                // StarExpression:
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{StarExpression
                                     var start = current;
                                     var nodes3 = new List<INode>();
                                     for (;;)
                                     {
-                                        // SequenceExpression:
-                                            var nodes4 = new List<INode>(2);
-                                            result = UnicodeNumber(current);
+                                        // {{SequenceExpression
+                                            var nodes4 = new List<INode>();
+                                            // {{NameExpression
+                                                result = UnicodeNumber(current);
+                                            // }}NameExpression
                                             if (result.IsSuccess)
                                             {
-                                                nodes4.AddRange(result.Nodes);
                                                 current = result.Next;
-                                                // DropExpression:
-                                                    result = _(current);
+                                                nodes4.AddRange(result.Nodes);
+                                                // {{DropExpression
+                                                    // {{NameExpression
+                                                        result = _(current);
+                                                    // }}NameExpression
                                                     if (result.IsSuccess)
                                                     {
                                                         result = Result.Success(result, result.Next);
                                                     }
+                                                // }}DropExpression
                                                 if (result.IsSuccess)
                                                 {
-                                                    nodes4.AddRange(result.Nodes);
                                                     current = result.Next;
+                                                    nodes4.AddRange(result.Nodes);
                                                     result = Result.Success(nodes4[0], current, nodes4.ToArray());
                                                 }
                                             }
+                                        // }}SequenceExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes3.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes3.AddRange(result.Nodes);
                                         }
                                         else
                                         {
@@ -2172,6 +2487,7 @@ namespace Lipeg.Command
                                     var location = Location.From(start, current);
                                     var node = NodeList.From(location, NodeSymbols.Star, nodes3);
                                     result = Result.Success(location, current, node);
+                                // }}StarExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes5 = new List<INode>();
@@ -2181,28 +2497,32 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes5.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // DropExpression:
-                                    // StringLiteralExpression:
-                                    var str2 = "}";
-                                    result = this.MatchString(current, str2);
+                                nodes.AddRange(result.Nodes);
+                                // {{DropExpression
+                                    // {{StringLiteralExpression
+                                        var str2 = "}";
+                                        result = this.__MatchString(current, str2);
+                                    // }}StringLiteralExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Success(result, result.Next);
                                     }
+                                // }}DropExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes.AddRange(result.Nodes);
                                     result = Result.Success(nodes[0], current, nodes.ToArray());
                                 }
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -2210,20 +2530,21 @@ namespace Lipeg.Command
         public IResult UnicodeNumber(IContext context)
         {
             var current = context;
-            IResult result;
-            // FuseExpression:
-            {
-                // SequenceExpression:
-                    var nodes = new List<INode>(6);
-                    result = HexDigit(current);
+            // {{FuseExpression
+                // {{SequenceExpression
+                    var nodes = new List<INode>();
+                    // {{NameExpression
+                        var result = HexDigit(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            // OptionalExpression:
-                            {
-                                result = HexDigit(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{OptionalExpression
+                                // {{NameExpression
+                                    result = HexDigit(current);
+                                // }}NameExpression
                                 var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                 if (result.IsSuccess)
                                 {
@@ -2233,7 +2554,7 @@ namespace Lipeg.Command
                                 {
                                     result = Result.Success(current, current, node);
                                 }
-                            }
+                            // }}OptionalExpression
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>();
@@ -2243,14 +2564,16 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes2.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                // OptionalExpression:
-                                {
-                                    result = HexDigit(current);
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{OptionalExpression
+                                    // {{NameExpression
+                                        result = HexDigit(current);
+                                    // }}NameExpression
                                     var node3 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                     if (result.IsSuccess)
                                     {
@@ -2260,7 +2583,7 @@ namespace Lipeg.Command
                                     {
                                         result = Result.Success(current, current, node3);
                                     }
-                                }
+                                // }}OptionalExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes3 = new List<INode>();
@@ -2270,14 +2593,16 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes3.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // LiftExpression:
-                                    // OptionalExpression:
-                                    {
-                                        result = HexDigit(current);
+                                nodes.AddRange(result.Nodes);
+                                // {{LiftExpression
+                                    // {{OptionalExpression
+                                        // {{NameExpression
+                                            result = HexDigit(current);
+                                        // }}NameExpression
                                         var node5 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                         if (result.IsSuccess)
                                         {
@@ -2287,7 +2612,7 @@ namespace Lipeg.Command
                                         {
                                             result = Result.Success(current, current, node5);
                                         }
-                                    }
+                                    // }}OptionalExpression
                                     if (result.IsSuccess)
                                     {
                                         var nodes4 = new List<INode>();
@@ -2297,14 +2622,16 @@ namespace Lipeg.Command
                                         }
                                         result = Result.Success(result, result.Next, nodes4.ToArray());
                                     }
+                                // }}LiftExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
-                                    // LiftExpression:
-                                        // OptionalExpression:
-                                        {
-                                            result = HexDigit(current);
+                                    nodes.AddRange(result.Nodes);
+                                    // {{LiftExpression
+                                        // {{OptionalExpression
+                                            // {{NameExpression
+                                                result = HexDigit(current);
+                                            // }}NameExpression
                                             var node7 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                             if (result.IsSuccess)
                                             {
@@ -2314,7 +2641,7 @@ namespace Lipeg.Command
                                             {
                                                 result = Result.Success(current, current, node7);
                                             }
-                                        }
+                                        // }}OptionalExpression
                                         if (result.IsSuccess)
                                         {
                                             var nodes5 = new List<INode>();
@@ -2324,14 +2651,16 @@ namespace Lipeg.Command
                                             }
                                             result = Result.Success(result, result.Next, nodes5.ToArray());
                                         }
+                                    // }}LiftExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes.AddRange(result.Nodes);
                                         current = result.Next;
-                                        // LiftExpression:
-                                            // OptionalExpression:
-                                            {
-                                                result = HexDigit(current);
+                                        nodes.AddRange(result.Nodes);
+                                        // {{LiftExpression
+                                            // {{OptionalExpression
+                                                // {{NameExpression
+                                                    result = HexDigit(current);
+                                                // }}NameExpression
                                                 var node9 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                                 if (result.IsSuccess)
                                                 {
@@ -2341,7 +2670,7 @@ namespace Lipeg.Command
                                                 {
                                                     result = Result.Success(current, current, node9);
                                                 }
-                                            }
+                                            // }}OptionalExpression
                                             if (result.IsSuccess)
                                             {
                                                 var nodes6 = new List<INode>();
@@ -2351,10 +2680,11 @@ namespace Lipeg.Command
                                                 }
                                                 result = Result.Success(result, result.Next, nodes6.ToArray());
                                             }
+                                        // }}LiftExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes.AddRange(result.Nodes);
                                             result = Result.Success(nodes[0], current, nodes.ToArray());
                                         }
                                     }
@@ -2362,13 +2692,14 @@ namespace Lipeg.Command
                             }
                         }
                     }
+                // }}SequenceExpression
                 if (result.IsSuccess)
                 {
                     var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                     var node11 = Leaf.From(result, NodeSymbols.Fusion, value);
                     result = Result.Success(result, result.Next, node11);
                 }
-            }
+            // }}FuseExpression
             return result;
         }
         
@@ -2376,79 +2707,95 @@ namespace Lipeg.Command
         public IResult ByteEscape(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(5);
-                // DropExpression:
-                    // SequenceExpression:
-                        var nodes2 = new List<INode>(2);
-                        // StringLiteralExpression:
-                        var str = "\\x{";
-                        var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{SequenceExpression
+                        var nodes2 = new List<INode>();
+                        // {{StringLiteralExpression
+                            var str = "\\x{";
+                            var result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
-                            nodes2.AddRange(result.Nodes);
                             current = result.Next;
-                            result = _(current);
+                            nodes2.AddRange(result.Nodes);
+                            // {{NameExpression
+                                result = _(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
-                                nodes2.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes2.AddRange(result.Nodes);
                                 result = Result.Success(nodes2[0], current, nodes2.ToArray());
                             }
                         }
+                    // }}SequenceExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    result = ByteNumber(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{NameExpression
+                        result = ByteNumber(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // DropExpression:
-                            result = _(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{DropExpression
+                            // {{NameExpression
+                                result = _(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
                             }
+                        // }}DropExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // LiftExpression:
-                                // StarExpression:
+                            nodes.AddRange(result.Nodes);
+                            // {{LiftExpression
+                                // {{StarExpression
                                     var start = current;
                                     var nodes3 = new List<INode>();
                                     for (;;)
                                     {
-                                        // SequenceExpression:
-                                            var nodes4 = new List<INode>(2);
-                                            result = ByteNumber(current);
+                                        // {{SequenceExpression
+                                            var nodes4 = new List<INode>();
+                                            // {{NameExpression
+                                                result = ByteNumber(current);
+                                            // }}NameExpression
                                             if (result.IsSuccess)
                                             {
-                                                nodes4.AddRange(result.Nodes);
                                                 current = result.Next;
-                                                // DropExpression:
-                                                    result = _(current);
+                                                nodes4.AddRange(result.Nodes);
+                                                // {{DropExpression
+                                                    // {{NameExpression
+                                                        result = _(current);
+                                                    // }}NameExpression
                                                     if (result.IsSuccess)
                                                     {
                                                         result = Result.Success(result, result.Next);
                                                     }
+                                                // }}DropExpression
                                                 if (result.IsSuccess)
                                                 {
-                                                    nodes4.AddRange(result.Nodes);
                                                     current = result.Next;
+                                                    nodes4.AddRange(result.Nodes);
                                                     result = Result.Success(nodes4[0], current, nodes4.ToArray());
                                                 }
                                             }
+                                        // }}SequenceExpression
                                         if (result.IsSuccess)
                                         {
-                                            nodes3.AddRange(result.Nodes);
                                             current = result.Next;
+                                            nodes3.AddRange(result.Nodes);
                                         }
                                         else
                                         {
@@ -2458,6 +2805,7 @@ namespace Lipeg.Command
                                     var location = Location.From(start, current);
                                     var node = NodeList.From(location, NodeSymbols.Star, nodes3);
                                     result = Result.Success(location, current, node);
+                                // }}StarExpression
                                 if (result.IsSuccess)
                                 {
                                     var nodes5 = new List<INode>();
@@ -2467,28 +2815,32 @@ namespace Lipeg.Command
                                     }
                                     result = Result.Success(result, result.Next, nodes5.ToArray());
                                 }
+                            // }}LiftExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
-                                // DropExpression:
-                                    // StringLiteralExpression:
-                                    var str2 = "}";
-                                    result = this.MatchString(current, str2);
+                                nodes.AddRange(result.Nodes);
+                                // {{DropExpression
+                                    // {{StringLiteralExpression
+                                        var str2 = "}";
+                                        result = this.__MatchString(current, str2);
+                                    // }}StringLiteralExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Success(result, result.Next);
                                     }
+                                // }}DropExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes.AddRange(result.Nodes);
                                     current = result.Next;
+                                    nodes.AddRange(result.Nodes);
                                     result = Result.Success(nodes[0], current, nodes.ToArray());
                                 }
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -2496,17 +2848,20 @@ namespace Lipeg.Command
         public IResult ByteNumber(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                var result = HexDigit(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{NameExpression
+                    var result = HexDigit(current);
+                // }}NameExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // LiftExpression:
-                        // OptionalExpression:
-                        {
-                            result = HexDigit(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{LiftExpression
+                        // {{OptionalExpression
+                            // {{NameExpression
+                                result = HexDigit(current);
+                            // }}NameExpression
                             var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                             if (result.IsSuccess)
                             {
@@ -2516,7 +2871,7 @@ namespace Lipeg.Command
                             {
                                 result = Result.Success(current, current, node);
                             }
-                        }
+                        // }}OptionalExpression
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>();
@@ -2526,13 +2881,15 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes2.ToArray());
                         }
+                    // }}LiftExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -2540,33 +2897,39 @@ namespace Lipeg.Command
         public IResult CharacterClass(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(4);
-                // DropExpression:
-                    // StringLiteralExpression:
-                    var str = "[";
-                    var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{DropExpression
+                    // {{StringLiteralExpression
+                        var str = "[";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     if (result.IsSuccess)
                     {
                         result = Result.Success(result, result.Next);
                     }
+                // }}DropExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    result = Not(current);
+                    nodes.AddRange(result.Nodes);
+                    // {{NameExpression
+                        result = Not(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            // StarExpression:
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{StarExpression
                                 var start = current;
                                 var nodes2 = new List<INode>();
                                 for (;;)
                                 {
-                                    // LiftExpression:
-                                        result = ClassPart(current);
+                                    // {{LiftExpression
+                                        // {{NameExpression
+                                            result = ClassPart(current);
+                                        // }}NameExpression
                                         if (result.IsSuccess)
                                         {
                                             var nodes3 = new List<INode>();
@@ -2576,10 +2939,11 @@ namespace Lipeg.Command
                                             }
                                             result = Result.Success(result, result.Next, nodes3.ToArray());
                                         }
+                                    // }}LiftExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes2.AddRange(result.Nodes);
                                         current = result.Next;
+                                        nodes2.AddRange(result.Nodes);
                                     }
                                     else
                                     {
@@ -2589,6 +2953,7 @@ namespace Lipeg.Command
                                 var location = Location.From(start, current);
                                 var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                                 result = Result.Success(location, current, node);
+                            // }}StarExpression
                             if (result.IsSuccess)
                             {
                                 var nodes4 = new List<INode>();
@@ -2598,27 +2963,31 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes4.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
-                            // DropExpression:
-                                // StringLiteralExpression:
-                                var str2 = "]";
-                                result = this.MatchString(current, str2);
+                            nodes.AddRange(result.Nodes);
+                            // {{DropExpression
+                                // {{StringLiteralExpression
+                                    var str2 = "]";
+                                    result = this.__MatchString(current, str2);
+                                // }}StringLiteralExpression
                                 if (result.IsSuccess)
                                 {
                                     result = Result.Success(result, result.Next);
                                 }
+                            // }}DropExpression
                             if (result.IsSuccess)
                             {
-                                nodes.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes.AddRange(result.Nodes);
                                 result = Result.Success(nodes[0], current, nodes.ToArray());
                             }
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -2626,13 +2995,12 @@ namespace Lipeg.Command
         public IResult Not(IContext context)
         {
             var current = context;
-            // LiftExpression:
-                IResult result;
-                // OptionalExpression:
-                {
-                    // StringLiteralExpression:
-                    var str = "^";
-                    result = this.MatchString(current, str);
+            // {{LiftExpression
+                // {{OptionalExpression
+                    // {{StringLiteralExpression
+                        var str = "^";
+                        var result = this.__MatchString(current, str);
+                    // }}StringLiteralExpression
                     var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                     if (result.IsSuccess)
                     {
@@ -2642,7 +3010,7 @@ namespace Lipeg.Command
                     {
                         result = Result.Success(current, current, node);
                     }
-                }
+                // }}OptionalExpression
                 if (result.IsSuccess)
                 {
                     var nodes = new List<INode>();
@@ -2652,6 +3020,7 @@ namespace Lipeg.Command
                     }
                     result = Result.Success(result, result.Next, nodes.ToArray());
                 }
+            // }}LiftExpression
             return result;
         }
         
@@ -2659,12 +3028,16 @@ namespace Lipeg.Command
         public IResult ClassPart(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                var result = Range(current);
+            // {{ChoiceExpression
+                // {{NameExpression
+                    var result = Range(current);
+                // }}NameExpression
                 if (!result.IsSuccess)
                 {
-                    // LiftExpression:
-                        result = ClassChar(current);
+                    // {{LiftExpression
+                        // {{NameExpression
+                            result = ClassChar(current);
+                        // }}NameExpression
                         if (result.IsSuccess)
                         {
                             var nodes = new List<INode>();
@@ -2674,7 +3047,9 @@ namespace Lipeg.Command
                             }
                             result = Result.Success(result, result.Next, nodes.ToArray());
                         }
+                    // }}LiftExpression
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -2682,10 +3057,12 @@ namespace Lipeg.Command
         public IResult Range(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(3);
-                // LiftExpression:
-                    var result = ClassChar(current);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{LiftExpression
+                    // {{NameExpression
+                        var result = ClassChar(current);
+                    // }}NameExpression
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>();
@@ -2695,24 +3072,29 @@ namespace Lipeg.Command
                         }
                         result = Result.Success(result, result.Next, nodes2.ToArray());
                     }
+                // }}LiftExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // DropExpression:
-                        // StringLiteralExpression:
-                        var str = "-";
-                        result = this.MatchString(current, str);
+                    nodes.AddRange(result.Nodes);
+                    // {{DropExpression
+                        // {{StringLiteralExpression
+                            var str = "-";
+                            result = this.__MatchString(current, str);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Success(result, result.Next);
                         }
+                    // }}DropExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // LiftExpression:
-                            result = ClassChar(current);
+                        nodes.AddRange(result.Nodes);
+                        // {{LiftExpression
+                            // {{NameExpression
+                                result = ClassChar(current);
+                            // }}NameExpression
                             if (result.IsSuccess)
                             {
                                 var nodes3 = new List<INode>();
@@ -2722,14 +3104,16 @@ namespace Lipeg.Command
                                 }
                                 result = Result.Success(result, result.Next, nodes3.ToArray());
                             }
+                        // }}LiftExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -2737,20 +3121,29 @@ namespace Lipeg.Command
         public IResult ClassChar(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                var result = ClassVerbatim(current);
+            // {{ChoiceExpression
+                // {{NameExpression
+                    var result = ClassVerbatim(current);
+                // }}NameExpression
                 if (!result.IsSuccess)
                 {
-                    result = Escape(current);
+                    // {{NameExpression
+                        result = Escape(current);
+                    // }}NameExpression
                     if (!result.IsSuccess)
                     {
-                        result = UnicodeEscape(current);
+                        // {{NameExpression
+                            result = UnicodeEscape(current);
+                        // }}NameExpression
                         if (!result.IsSuccess)
                         {
-                            result = ByteEscape(current);
+                            // {{NameExpression
+                                result = ByteEscape(current);
+                            // }}NameExpression
                         }
                     }
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -2758,26 +3151,30 @@ namespace Lipeg.Command
         public IResult ClassVerbatim(IContext context)
         {
             var current = context;
-            IResult result;
-            // FuseExpression:
-            {
-                // SequenceExpression:
-                    var nodes = new List<INode>(2);
-                    // NotExpression:
-                        // ChoiceExpression:
-                            // StringLiteralExpression:
-                            var str = "]";
-                            result = this.MatchString(current, str);
+            // {{FuseExpression
+                // {{SequenceExpression
+                    var nodes = new List<INode>();
+                    // {{NotExpression
+                        IResult result;
+                        // {{ChoiceExpression
+                            // {{StringLiteralExpression
+                                var str = "]";
+                                result = this.__MatchString(current, str);
+                            // }}StringLiteralExpression
                             if (!result.IsSuccess)
                             {
-                                // StringLiteralExpression:
-                                var str2 = "\\";
-                                result = this.MatchString(current, str2);
+                                // {{StringLiteralExpression
+                                    var str2 = "\\";
+                                    result = this.__MatchString(current, str2);
+                                // }}StringLiteralExpression
                                 if (!result.IsSuccess)
                                 {
-                                    result = EolChar(current);
+                                    // {{NameExpression
+                                        result = EolChar(current);
+                                    // }}NameExpression
                                 }
                             }
+                        // }}ChoiceExpression
                         if (result.IsSuccess)
                         {
                             result = Result.Fail(current);
@@ -2786,12 +3183,12 @@ namespace Lipeg.Command
                         {
                             result = Result.Success(result, current);
                         }
+                    // }}NotExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // VisitAnyExpression:
-                        {
+                        nodes.AddRange(result.Nodes);
+                        // {{AnyExpression
                             if (!current.AtEnd)
                             {
                                 var next = current.Advance(1);
@@ -2803,21 +3200,22 @@ namespace Lipeg.Command
                             {
                                 result = Result.Fail(current);
                             }
-                        }
+                        // }}AnyExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
+                // }}SequenceExpression
                 if (result.IsSuccess)
                 {
                     var value = string.Join(string.Empty, result.Nodes.Select(n => n.Fuse()));
                     var node2 = Leaf.From(result, NodeSymbols.Fusion, value);
                     result = Result.Success(result, result.Next, node2);
                 }
-            }
+            // }}FuseExpression
             return result;
         }
         
@@ -2825,26 +3223,33 @@ namespace Lipeg.Command
         public IResult _(IContext context)
         {
             var current = context;
-            IResult result;
-            // StarExpression:
+            // {{StarExpression
                 var start = current;
                 var nodes = new List<INode>();
+                IResult result;
                 for (;;)
                 {
-                    // ChoiceExpression:
-                        result = Whitespace(current);
+                    // {{ChoiceExpression
+                        // {{NameExpression
+                            result = Whitespace(current);
+                        // }}NameExpression
                         if (!result.IsSuccess)
                         {
-                            result = Newline(current);
+                            // {{NameExpression
+                                result = Newline(current);
+                            // }}NameExpression
                             if (!result.IsSuccess)
                             {
-                                result = Comment(current);
+                                // {{NameExpression
+                                    result = Comment(current);
+                                // }}NameExpression
                             }
                         }
+                    // }}ChoiceExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                     }
                     else
                     {
@@ -2854,6 +3259,7 @@ namespace Lipeg.Command
                 var location = Location.From(start, current);
                 var node = NodeList.From(location, NodeSymbols.Star, nodes);
                 result = Result.Success(location, current, node);
+            // }}StarExpression
             return result;
         }
         
@@ -2861,12 +3267,17 @@ namespace Lipeg.Command
         public IResult Comment(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                var result = SingleLineComment(current);
+            // {{ChoiceExpression
+                // {{NameExpression
+                    var result = SingleLineComment(current);
+                // }}NameExpression
                 if (!result.IsSuccess)
                 {
-                    result = MultiLineComment(current);
+                    // {{NameExpression
+                        result = MultiLineComment(current);
+                    // }}NameExpression
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -2874,24 +3285,27 @@ namespace Lipeg.Command
         public IResult SingleLineComment(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(2);
-                // StringLiteralExpression:
-                var str = "//";
-                var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{StringLiteralExpression
+                    var str = "//";
+                    var result = this.__MatchString(current, str);
+                // }}StringLiteralExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // StarExpression:
+                    nodes.AddRange(result.Nodes);
+                    // {{StarExpression
                         var start = current;
                         var nodes2 = new List<INode>();
                         for (;;)
                         {
-                            // SequenceExpression:
-                                var nodes3 = new List<INode>(2);
-                                // NotExpression:
-                                    result = EolChar(current);
+                            // {{SequenceExpression
+                                var nodes3 = new List<INode>();
+                                // {{NotExpression
+                                    // {{NameExpression
+                                        result = EolChar(current);
+                                    // }}NameExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Fail(current);
@@ -2900,12 +3314,12 @@ namespace Lipeg.Command
                                     {
                                         result = Result.Success(result, current);
                                     }
+                                // }}NotExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes3.AddRange(result.Nodes);
                                     current = result.Next;
-                                    // VisitAnyExpression:
-                                    {
+                                    nodes3.AddRange(result.Nodes);
+                                    // {{AnyExpression
                                         if (!current.AtEnd)
                                         {
                                             var next = current.Advance(1);
@@ -2917,18 +3331,19 @@ namespace Lipeg.Command
                                         {
                                             result = Result.Fail(current);
                                         }
-                                    }
+                                    // }}AnyExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes3.AddRange(result.Nodes);
                                         current = result.Next;
+                                        nodes3.AddRange(result.Nodes);
                                         result = Result.Success(nodes3[0], current, nodes3.ToArray());
                                     }
                                 }
+                            // }}SequenceExpression
                             if (result.IsSuccess)
                             {
-                                nodes2.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes2.AddRange(result.Nodes);
                             }
                             else
                             {
@@ -2938,13 +3353,15 @@ namespace Lipeg.Command
                         var location = Location.From(start, current);
                         var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                         result = Result.Success(location, current, node);
+                    // }}StarExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
+                        nodes.AddRange(result.Nodes);
                         result = Result.Success(nodes[0], current, nodes.ToArray());
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -2952,26 +3369,28 @@ namespace Lipeg.Command
         public IResult MultiLineComment(IContext context)
         {
             var current = context;
-            // SequenceExpression:
-                var nodes = new List<INode>(3);
-                // StringLiteralExpression:
-                var str = "/*";
-                var result = this.MatchString(current, str);
+            // {{SequenceExpression
+                var nodes = new List<INode>();
+                // {{StringLiteralExpression
+                    var str = "/*";
+                    var result = this.__MatchString(current, str);
+                // }}StringLiteralExpression
                 if (result.IsSuccess)
                 {
-                    nodes.AddRange(result.Nodes);
                     current = result.Next;
-                    // StarExpression:
+                    nodes.AddRange(result.Nodes);
+                    // {{StarExpression
                         var start = current;
                         var nodes2 = new List<INode>();
                         for (;;)
                         {
-                            // SequenceExpression:
-                                var nodes3 = new List<INode>(2);
-                                // NotExpression:
-                                    // StringLiteralExpression:
-                                    var str2 = "*/";
-                                    result = this.MatchString(current, str2);
+                            // {{SequenceExpression
+                                var nodes3 = new List<INode>();
+                                // {{NotExpression
+                                    // {{StringLiteralExpression
+                                        var str2 = "*/";
+                                        result = this.__MatchString(current, str2);
+                                    // }}StringLiteralExpression
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Fail(current);
@@ -2980,12 +3399,12 @@ namespace Lipeg.Command
                                     {
                                         result = Result.Success(result, current);
                                     }
+                                // }}NotExpression
                                 if (result.IsSuccess)
                                 {
-                                    nodes3.AddRange(result.Nodes);
                                     current = result.Next;
-                                    // VisitAnyExpression:
-                                    {
+                                    nodes3.AddRange(result.Nodes);
+                                    // {{AnyExpression
                                         if (!current.AtEnd)
                                         {
                                             var next = current.Advance(1);
@@ -2997,18 +3416,19 @@ namespace Lipeg.Command
                                         {
                                             result = Result.Fail(current);
                                         }
-                                    }
+                                    // }}AnyExpression
                                     if (result.IsSuccess)
                                     {
-                                        nodes3.AddRange(result.Nodes);
                                         current = result.Next;
+                                        nodes3.AddRange(result.Nodes);
                                         result = Result.Success(nodes3[0], current, nodes3.ToArray());
                                     }
                                 }
+                            // }}SequenceExpression
                             if (result.IsSuccess)
                             {
-                                nodes2.AddRange(result.Nodes);
                                 current = result.Next;
+                                nodes2.AddRange(result.Nodes);
                             }
                             else
                             {
@@ -3018,21 +3438,24 @@ namespace Lipeg.Command
                         var location = Location.From(start, current);
                         var node = NodeList.From(location, NodeSymbols.Star, nodes2);
                         result = Result.Success(location, current, node);
+                    // }}StarExpression
                     if (result.IsSuccess)
                     {
-                        nodes.AddRange(result.Nodes);
                         current = result.Next;
-                        // StringLiteralExpression:
-                        var str3 = "*/";
-                        result = this.MatchString(current, str3);
+                        nodes.AddRange(result.Nodes);
+                        // {{StringLiteralExpression
+                            var str3 = "*/";
+                            result = this.__MatchString(current, str3);
+                        // }}StringLiteralExpression
                         if (result.IsSuccess)
                         {
-                            nodes.AddRange(result.Nodes);
                             current = result.Next;
+                            nodes.AddRange(result.Nodes);
                             result = Result.Success(nodes[0], current, nodes.ToArray());
                         }
                     }
                 }
+            // }}SequenceExpression
             return result;
         }
         
@@ -3040,34 +3463,19 @@ namespace Lipeg.Command
         public IResult Newline(IContext context)
         {
             var current = context;
-            // ChoiceExpression:
-                // StringLiteralExpression:
-                var str = "\n";
-                var result = this.MatchString(current, str);
+            // {{ChoiceExpression
+                // {{StringLiteralExpression
+                    var str = "\r\n";
+                    var result = this.__MatchString(current, str);
+                // }}StringLiteralExpression
                 if (!result.IsSuccess)
                 {
-                    // StringLiteralExpression:
-                    var str2 = "\r\n";
-                    result = this.MatchString(current, str2);
-                    if (!result.IsSuccess)
-                    {
-                        // StringLiteralExpression:
-                        var str3 = "\r";
-                        result = this.MatchString(current, str3);
-                        if (!result.IsSuccess)
-                        {
-                            // StringLiteralExpression:
-                            var str4 = "\u2028";
-                            result = this.MatchString(current, str4);
-                            if (!result.IsSuccess)
-                            {
-                                // StringLiteralExpression:
-                                var str5 = "\u2029";
-                                result = this.MatchString(current, str5);
-                            }
-                        }
-                    }
+                    // {{ClassExpression
+                        var values = new []{10,13,8232,8233};
+                        result = this.__MatchPredicate(current, _current => Array.IndexOf(values, _current) >= 0);
+                    // }}ClassExpression
                 }
+            // }}ChoiceExpression
             return result;
         }
         
@@ -3075,9 +3483,10 @@ namespace Lipeg.Command
         public IResult EolChar(IContext context)
         {
             var current = context;
-            // ClassExpression
-            var values = new []{10,13,8232,8233};
-            var result = this.MatchPredicate(current, (cur) => Array.IndexOf(values, cur) >= 0);
+            // {{ClassExpression
+                var values = new []{10,13,8232,8233};
+                var result = this.__MatchPredicate(current, _current => Array.IndexOf(values, _current) >= 0);
+            // }}ClassExpression
             return result;
         }
         
@@ -3085,9 +3494,10 @@ namespace Lipeg.Command
         public IResult Whitespace(IContext context)
         {
             var current = context;
-            // ClassExpression
-            var values = new []{9,11,12,32,160,5760,6158,8192,8193,8194,8195,8196,8197,8198,8199,8200,8201,8202,8239,8287,12288,65279};
-            var result = this.MatchPredicate(current, (cur) => Array.BinarySearch(values, cur) >= 0);
+            // {{ClassExpression
+                var values = new []{9,11,12,32,160,5760,6158,8192,8193,8194,8195,8196,8197,8198,8199,8200,8201,8202,8239,8287,12288,65279};
+                var result = this.__MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
+            // }}ClassExpression
             return result;
         }
     }

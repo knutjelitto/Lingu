@@ -5,7 +5,7 @@ namespace Lipeg.Runtime
 {
     public class ParserBase
     {
-        protected IResult MatchString(IContext current, string str)
+        protected IResult __MatchString(IContext current, string str)
         {
             if (current.StartsWith(str))
             {
@@ -17,7 +17,7 @@ namespace Lipeg.Runtime
             return Result.Fail(current);
         }
 
-        protected IResult MatchPredicate(IContext current, Func<int, bool> predicate)
+        protected IResult __MatchPredicate(IContext current, Func<int, bool> predicate)
         {
             if (!current.AtEnd && predicate(current.Current))
             {

@@ -1,7 +1,0 @@
-﻿grammar lipeg
-{
-    rules
-    {
-        x <= 'y';
-    }
-}

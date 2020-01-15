@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Lipeg.Boot\DebugOut\lipeg.lpg.boot.g.cs" Link="lipeg.lpg.boot.g.cs" />
+    <Compile Include="..\Lipeg.Boot\DebugOut\lipeg.lpg.boot.g.cs" Link="LipegParser.cs" />
   </ItemGroup>
 
   <ItemGroup>

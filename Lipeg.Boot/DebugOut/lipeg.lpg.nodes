@@ -810,23 +810,23 @@ grammar [identifier, *]
                             character='/'
             rule [identifier, choice]
                 identifier='newline'
-                choice [sequence, sequence, sequence, sequence, sequence]
-                    sequence [singleString]
-                        singleString [simpleEscape]
-                            simpleEscape='n'
+                choice [sequence, sequence]
                     sequence [singleString]
                         singleString [simpleEscape, simpleEscape]
                             simpleEscape='r'
                             simpleEscape='n'
-                    sequence [singleString]
-                        singleString [simpleEscape]
-                            simpleEscape='r'
-                    sequence [singleString]
-                        singleString [unicodeEscape]
-                            unicodeEscape='2028'
-                    sequence [singleString]
-                        singleString [unicodeEscape]
-                            unicodeEscape='2029'
+                    sequence [class]
+                        class [invert, *]
+                            invert=''
+                            * [single, single, single, single]
+                                single [simpleEscape]
+                                    simpleEscape='n'
+                                single [simpleEscape]
+                                    simpleEscape='r'
+                                single [unicodeEscape]
+                                    unicodeEscape='2028'
+                                single [unicodeEscape]
+                                    unicodeEscape='2029'
             rule [identifier, choice]
                 identifier='eol-char'
                 choice [sequence]
