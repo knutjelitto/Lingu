@@ -58,5 +58,10 @@ namespace Lipeg.SDK.Builders
         {
             this.writer.Block("for (;;)", body);
         }
+
+        public void ForEach(string iter, Action body)
+        {
+            this.writer.Block($"foreach ({iter})", body);
+        }
     }
 }

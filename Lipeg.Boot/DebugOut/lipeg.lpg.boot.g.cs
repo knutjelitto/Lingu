@@ -10,7 +10,7 @@ namespace Lipeg.Command
     {
         public override IResult Parse(IContext context)
         {
-            this.cache.Clear();
+            __ClearCache();
             return Start(context);
         }
         

@@ -6,9 +6,13 @@ namespace Lipeg.Runtime
     public abstract class ParserBase : IParser
     {
         protected Dictionary<Func<IContext, IResult>, Dictionary<int, IResult>> cache = new Dictionary<Func<IContext, IResult>, Dictionary<int, IResult>>();
-        protected Stack<List<INode>> lists = new Stack<List<INode>>();
 
         public abstract IResult Parse(IContext context);
+
+        protected virtual void __ClearCache()
+        {
+            this.cache.Clear();
+        }
 
         protected virtual IResult __Parse(Func<IContext, IResult> parser, IContext context)
         {
@@ -30,21 +34,6 @@ namespace Lipeg.Runtime
             parserCache[context.Offset] = result;
 
             return result;
-        }
-
-        protected List<INode> __GetList()
-        {
-            if (this.lists.Count == 0)
-            {
-                return new List<INode>();
-            }
-            return this.lists.Pop();
-        }
-
-        protected void __PutList(List<INode> list)
-        {
-            list.Clear();
-            this.lists.Push(list);
         }
 
         protected abstract IContext __SkipSpace(IContext context);

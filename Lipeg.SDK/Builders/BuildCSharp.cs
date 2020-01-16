@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-
+using Lipeg.Runtime;
 using Lipeg.Runtime.Tools;
 using Lipeg.SDK.Common;
 using Lipeg.SDK.Output;
@@ -20,6 +20,8 @@ namespace Lipeg.SDK.Builders
             public readonly bool Disable = false;
             public readonly string Namespace = "Lipeg.Command";
 
+            public readonly string IContext = nameof(Runtime.IContext);
+            public readonly string IResult = nameof(Runtime.IResult);
             public readonly string CtxName = "context";
             public readonly string CurName = "current";
 
@@ -29,6 +31,8 @@ namespace Lipeg.SDK.Builders
 
             public readonly string SkipSpace = "__SkipSpace";
             public readonly string ParseWithCache = "__Parse";
+            public readonly string ClearCache = "__ClearCache";
+
             public readonly string InterfaceParse = "Parse";
 
             private const string ParserClassNameSuffix = "Parser";
@@ -109,7 +113,7 @@ namespace Lipeg.SDK.Builders
                     CS.Line();
                     CS.Block($"public partial class {Cfg.ParserClass} : ParserBase", () =>
                     {
-                        ImplementTheParse();
+                        ImplementInterfaceParse();
                         CS.Line();
                         ImplementSkipSpace();
 
@@ -122,18 +126,18 @@ namespace Lipeg.SDK.Builders
                 });
             }
 
-            private void ImplementTheParse()
+            private void ImplementInterfaceParse()
             {
-                CS.Block($"public override IResult {Cfg.InterfaceParse}(IContext {Cfg.CtxName})", () =>
+                CS.Block($"public override {Cfg.IResult} {Cfg.InterfaceParse}({Cfg.IContext} {Cfg.CtxName})", () =>
                 {
-                    CS.Line("this.cache.Clear();");
+                    CS.Line($"{Cfg.ClearCache}();");
                     CS.Line($"return {Cfg.Capa(Grammar.Attr.Start.Identifier)}({Cfg.CtxName});");
                 });
             }
 
             private void ImplementSkipSpace()
             {
-                CS.Block($"protected override IContext {Cfg.SkipSpace}(IContext {Cfg.CtxName})", () =>
+                CS.Block($"protected override {Cfg.IContext} {Cfg.SkipSpace}({Cfg.IContext} {Cfg.CtxName})", () =>
                 {
                     CS.Line($"return {Cfg.Capa(Grammar.Attr.Spacing.Identifier)}({Cfg.CtxName}).Next;");
                 });
@@ -142,7 +146,7 @@ namespace Lipeg.SDK.Builders
             protected override void VisitRule(IRule rule)
             {
                 CS.Line($"// {rule.Identifier} -> {Cfg.Capa(rule.Identifier)}");
-                CS.Block($"protected virtual IResult {Cfg.Capa(rule.Identifier)}(IContext {Cfg.CtxName})", () =>
+                CS.Block($"protected virtual {Cfg.IResult} {Cfg.Capa(rule.Identifier)}({Cfg.IContext} {Cfg.CtxName})", () =>
                 {
                     Locals.Reset();
                     using (Locals.PrepareResult())
@@ -238,8 +242,8 @@ namespace Lipeg.SDK.Builders
                                 using (var node = Locals.Use("node"))
                                 {
                                     CS.Line($"{nodes} = new List<INode>(10);");
-                                    CS.Block(
-                                        $"foreach ({node} in {Locals.Result}.Nodes)",
+                                    CS.ForEach(
+                                        $"{node} in {Locals.Result}.Nodes",
                                         () =>
                                         {
                                             CS.Line($"{nodes}.AddRange({node}.Children);");
@@ -351,12 +355,9 @@ namespace Lipeg.SDK.Builders
             {
                 CS.IndentInOut(
                     "ChoiceExpression",
-                    () =>
-                    {
-                        AddToList(expression.Choices.ToList(), 0);
-                    });
+                    () => CheckChoices(expression.Choices.ToList(), 0));
                 
-                void AddToList(IReadOnlyList<Expression> exprs, int index)
+                void CheckChoices(IReadOnlyList<Expression> exprs, int index)
                 {
                     if (index < exprs.Count)
                     {
@@ -366,10 +367,7 @@ namespace Lipeg.SDK.Builders
                         {
                             CS.If(
                                 $"!{Locals.Result}.IsSuccess",
-                                () =>
-                                {
-                                    AddToList(exprs, index);
-                                });
+                                () => CheckChoices(exprs, index));
                         }
                     }
                 }
@@ -387,14 +385,8 @@ namespace Lipeg.SDK.Builders
                             CS.Line($"{node} = NodeList.From({Locals.Result}, NodeSymbols.Optional, {Locals.Result}.Nodes.ToArray());");
                             CS.If(
                                 $"{Locals.Result}.IsSuccess",
-                                () =>
-                                {
-                                    CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Locals.Result}.Next, {node});");
-                                },
-                                () =>
-                                {
-                                    CS.Line($"{Locals.Result} = Result.Success({Cfg.CurName}, {Cfg.CurName}, {node});");
-                                });
+                                () => CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Locals.Result}.Next, {node});"),
+                                () => CS.Line($"{Locals.Result} = Result.Success({Cfg.CurName}, {Cfg.CurName}, {node});"));
                         }
                     });
             }
@@ -403,10 +395,7 @@ namespace Lipeg.SDK.Builders
             {
                 CS.IndentInOut(
                     "InlineExpression",
-                    () =>
-                    {
-                        CS.Line($"{Locals.Result} = {Cfg.Capa(expression.Rule.Identifier)}({Cfg.CurName});");
-                    });
+                    () => CS.Line($"{Locals.Result} = {Cfg.Capa(expression.Rule.Identifier)}({Cfg.CurName});"));
             }
 
             protected override void VisitNotExpression(NotExpression expression)
@@ -419,14 +408,8 @@ namespace Lipeg.SDK.Builders
                         VisitExpression(expression.Expression);
                         CS.If(
                             $"{Locals.Result}.IsSuccess",
-                            () =>
-                            {
-                                CS.Line($"{Locals.Result} = Result.Fail({Cfg.CurName});");
-                            },
-                            () =>
-                            {
-                                CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Cfg.CurName});");
-                            });
+                            () => CS.Line($"{Locals.Result} = Result.Fail({Cfg.CurName});"),
+                            () => CS.Line($"{Locals.Result} = Result.Success({Locals.Result}, {Cfg.CurName});"));
                     });
             }
 
@@ -549,13 +532,13 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitClassRangeExpression(ClassRangeExpression expression)
             {
-                // handled higher
+                // handled by VisitClassExpression
                 throw new NotImplementedException();
             }
 
             protected override void VisitClassCharExpression(ClassCharExpression expression)
             {
-                // handled higher
+                // handled by VisitClassExpression
                 throw new NotImplementedException();
             }
 
@@ -623,7 +606,7 @@ namespace Lipeg.SDK.Builders
                 {
                     if (this.useCount == 0)
                     {
-                        writer.WriteLine($"IResult {Name};");
+                        writer.WriteLine($"{nameof(IResult)} {Name};");
                         this.useCount++;
                     }
                 }
