@@ -3,18 +3,18 @@ using System.Globalization;
 
 namespace Lipeg.Runtime
 {
-    public abstract class ParserBase : IParser
+    public abstract class ParserBase : IParser, IParserTools
     {
         protected Dictionary<Func<IContext, IResult>, Dictionary<int, IResult>> cache = new Dictionary<Func<IContext, IResult>, Dictionary<int, IResult>>();
 
         public abstract IResult Parse(IContext context);
 
-        protected virtual void __ClearCache()
+        public virtual void __ClearCache()
         {
             this.cache.Clear();
         }
 
-        protected virtual IResult __Parse(Func<IContext, IResult> parser, IContext context)
+        public virtual IResult __Parse(Func<IContext, IResult> parser, IContext context)
         {
             if (cache.TryGetValue(parser, out var parserCache))
             {
@@ -36,9 +36,9 @@ namespace Lipeg.Runtime
             return result;
         }
 
-        protected abstract IContext __SkipSpace(IContext context);
-        
-        protected virtual IResult __FinishRule(IResult result, string name)
+        public abstract IContext __SkipSpace(IContext context);
+
+        public virtual IResult __FinishRule(IResult result, string name)
         {
             if (result.IsSuccess)
             {
@@ -55,7 +55,7 @@ namespace Lipeg.Runtime
             return result;
         }
 
-        protected virtual IResult __MatchString(IContext current, string str)
+        public virtual IResult __MatchString(IContext current, string str)
         {
             if (current.StartsWith(str))
             {
@@ -67,7 +67,7 @@ namespace Lipeg.Runtime
             return Result.Fail(current);
         }
 
-        protected virtual IResult __MatchPredicate(IContext current, Func<int, bool> predicate)
+        public virtual IResult __MatchPredicate(IContext current, Func<int, bool> predicate)
         {
             if (!current.AtEnd && predicate(current.Current))
             {

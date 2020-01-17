@@ -14,7 +14,7 @@ namespace Lipeg.Command
             return Start(context);
         }
         
-        protected override IContext __SkipSpace(IContext context)
+        public override IContext __SkipSpace(IContext context)
         {
             return _(context).Next;
         }
@@ -25,16 +25,12 @@ namespace Lipeg.Command
             var current = context;
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
-                // {{NameExpression
-                    var result = __Parse(Grammar, current);
-                // }}NameExpression
+                var result = __Parse(Grammar, current);
                 if (result.IsSuccess)
                 {
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
-                    // {{NameExpression
-                        result = __Parse(Eof, current);
-                    // }}NameExpression
+                    result = __Parse(Eof, current);
                     if (result.IsSuccess)
                     {
                         current = result.Next;
@@ -67,9 +63,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     current = __SkipSpace(current);
-                    // {{NameExpression
-                        result = __Parse(Identifier, current);
-                    // }}NameExpression
+                    result = __Parse(Identifier, current);
                     if (result.IsSuccess)
                     {
                         current = result.Next;
@@ -95,19 +89,13 @@ namespace Lipeg.Command
                                     for (;;)
                                     {
                                         // {{ChoiceExpression
-                                            // {{NameExpression
-                                                result = __Parse(Options, current);
-                                            // }}NameExpression
+                                            result = __Parse(Options, current);
                                             if (!result.IsSuccess)
                                             {
-                                                // {{NameExpression
-                                                    result = __Parse(Syntax, current);
-                                                // }}NameExpression
+                                                result = __Parse(Syntax, current);
                                                 if (!result.IsSuccess)
                                                 {
-                                                    // {{NameExpression
-                                                        result = __Parse(Lexical, current);
-                                                    // }}NameExpression
+                                                    result = __Parse(Lexical, current);
                                                 }
                                             }
                                         // }}ChoiceExpression
@@ -203,9 +191,7 @@ namespace Lipeg.Command
                                 var nodes2 = new List<INode>(10);
                                 for (;;)
                                 {
-                                    // {{NameExpression
-                                        result = __Parse(Option, current);
-                                    // }}NameExpression
+                                    result = __Parse(Option, current);
                                     if (result.IsSuccess)
                                     {
                                         current = result.Next;
@@ -264,9 +250,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 current = __SkipSpace(current);
-                // {{NameExpression
-                    var result = __Parse(Identifier, current);
-                // }}NameExpression
+                var result = __Parse(Identifier, current);
                 if (result.IsSuccess)
                 {
                     current = result.Next;
@@ -285,9 +269,7 @@ namespace Lipeg.Command
                     {
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
-                        // {{NameExpression
-                            result = __Parse(OptionValue, current);
-                        // }}NameExpression
+                        result = __Parse(OptionValue, current);
                         if (result.IsSuccess)
                         {
                             current = result.Next;
@@ -319,9 +301,7 @@ namespace Lipeg.Command
         protected virtual IResult OptionValue(IContext context)
         {
             var current = context;
-            // {{NameExpression
-                var result = __Parse(QualifiedIdentifier, current);
-            // }}NameExpression
+            var result = __Parse(QualifiedIdentifier, current);
             return __FinishRule(result, "option-value");
         }
         
@@ -332,9 +312,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 current = __SkipSpace(current);
-                // {{NameExpression
-                    var result = __Parse(Identifier, current);
-                // }}NameExpression
+                var result = __Parse(Identifier, current);
                 if (result.IsSuccess)
                 {
                     current = result.Next;
@@ -362,9 +340,7 @@ namespace Lipeg.Command
                                         current = result.Next;
                                         nodes3.AddRange(result.Nodes);
                                         current = __SkipSpace(current);
-                                        // {{NameExpression
-                                            result = __Parse(Identifier, current);
-                                        // }}NameExpression
+                                        result = __Parse(Identifier, current);
                                         if (result.IsSuccess)
                                         {
                                             current = result.Next;
@@ -443,9 +419,7 @@ namespace Lipeg.Command
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
                         // {{LiftExpression
-                            // {{NameExpression
-                                result = __Parse(Rules, current);
-                            // }}NameExpression
+                            result = __Parse(Rules, current);
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>(10);
@@ -544,9 +518,7 @@ namespace Lipeg.Command
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
                         // {{LiftExpression
-                            // {{NameExpression
-                                result = __Parse(Rules, current);
-                            // }}NameExpression
+                            result = __Parse(Rules, current);
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>(10);
@@ -618,9 +590,7 @@ namespace Lipeg.Command
                 // {{OptionalExpression
                     // {{SequenceExpression
                         var nodes = new List<INode>(10);
-                        // {{NameExpression
-                            var result = __Parse(Rule, current);
-                        // }}NameExpression
+                        var result = __Parse(Rule, current);
                         if (result.IsSuccess)
                         {
                             current = result.Next;
@@ -647,9 +617,7 @@ namespace Lipeg.Command
                                             {
                                                 current = result.Next;
                                                 nodes3.AddRange(result.Nodes);
-                                                // {{NameExpression
-                                                    result = __Parse(Rule, current);
-                                                // }}NameExpression
+                                                result = __Parse(Rule, current);
                                                 if (result.IsSuccess)
                                                 {
                                                     current = result.Next;
@@ -720,9 +688,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 current = __SkipSpace(current);
-                // {{NameExpression
-                    var result = __Parse(Identifier, current);
-                // }}NameExpression
+                var result = __Parse(Identifier, current);
                 if (result.IsSuccess)
                 {
                     current = result.Next;
@@ -767,9 +733,7 @@ namespace Lipeg.Command
                             current = result.Next;
                             nodes.AddRange(result.Nodes);
                             // {{LiftExpression
-                                // {{NameExpression
-                                    result = __Parse(Expression, current);
-                                // }}NameExpression
+                                result = __Parse(Expression, current);
                                 if (result.IsSuccess)
                                 {
                                     var nodes2 = new List<INode>(10);
@@ -798,14 +762,10 @@ namespace Lipeg.Command
         {
             var current = context;
             // {{ChoiceExpression
-                // {{NameExpression
-                    var result = __Parse(Choice, current);
-                // }}NameExpression
+                var result = __Parse(Choice, current);
                 if (!result.IsSuccess)
                 {
-                    // {{NameExpression
-                        result = __Parse(Sequence, current);
-                    // }}NameExpression
+                    result = __Parse(Sequence, current);
                 }
             // }}ChoiceExpression
             return __FinishRule(result, "expression");
@@ -817,9 +777,7 @@ namespace Lipeg.Command
             var current = context;
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
-                // {{NameExpression
-                    var result = __Parse(Sequence, current);
-                // }}NameExpression
+                var result = __Parse(Sequence, current);
                 if (result.IsSuccess)
                 {
                     current = result.Next;
@@ -846,9 +804,7 @@ namespace Lipeg.Command
                                     {
                                         current = result.Next;
                                         nodes3.AddRange(result.Nodes);
-                                        // {{NameExpression
-                                            result = __Parse(Sequence, current);
-                                        // }}NameExpression
+                                        result = __Parse(Sequence, current);
                                         if (result.IsSuccess)
                                         {
                                             current = result.Next;
@@ -911,9 +867,7 @@ namespace Lipeg.Command
                     for (;;)
                     {
                         // {{LiftExpression
-                            // {{NameExpression
-                                result = __Parse(Prefix, current);
-                            // }}NameExpression
+                            result = __Parse(Prefix, current);
                             if (result.IsSuccess)
                             {
                                 var nodes2 = new List<INode>(10);
@@ -989,9 +943,7 @@ namespace Lipeg.Command
                                 if (!result.IsSuccess)
                                 {
                                     // {{LiftExpression
-                                        // {{NameExpression
-                                            result = __Parse(Suffix, current);
-                                        // }}NameExpression
+                                        result = __Parse(Suffix, current);
                                         if (result.IsSuccess)
                                         {
                                             var nodes = new List<INode>(10);
@@ -1032,9 +984,7 @@ namespace Lipeg.Command
                         if (!result.IsSuccess)
                         {
                             // {{LiftExpression
-                                // {{NameExpression
-                                    result = __Parse(Primary, current);
-                                // }}NameExpression
+                                result = __Parse(Primary, current);
                                 if (result.IsSuccess)
                                 {
                                     var nodes = new List<INode>(10);
@@ -1058,42 +1008,28 @@ namespace Lipeg.Command
             var current = context;
             // {{ChoiceExpression
                 current = __SkipSpace(current);
-                // {{NameExpression
-                    var result = __Parse(Identifier, current);
-                // }}NameExpression
+                var result = __Parse(Identifier, current);
                 if (!result.IsSuccess)
                 {
                     current = __SkipSpace(current);
-                    // {{NameExpression
-                        result = __Parse(VerbatimString, current);
-                    // }}NameExpression
+                    result = __Parse(VerbatimString, current);
                     if (!result.IsSuccess)
                     {
                         current = __SkipSpace(current);
-                        // {{NameExpression
-                            result = __Parse(String, current);
-                        // }}NameExpression
+                        result = __Parse(String, current);
                         if (!result.IsSuccess)
                         {
                             current = __SkipSpace(current);
-                            // {{NameExpression
-                                result = __Parse(CharacterClass, current);
-                            // }}NameExpression
+                            result = __Parse(CharacterClass, current);
                             if (!result.IsSuccess)
                             {
-                                // {{NameExpression
-                                    result = __Parse(Any, current);
-                                // }}NameExpression
+                                result = __Parse(Any, current);
                                 if (!result.IsSuccess)
                                 {
-                                    // {{NameExpression
-                                        result = __Parse(Epsilon, current);
-                                    // }}NameExpression
+                                    result = __Parse(Epsilon, current);
                                     if (!result.IsSuccess)
                                     {
-                                        // {{NameExpression
-                                            result = __Parse(Inline, current);
-                                        // }}NameExpression
+                                        result = __Parse(Inline, current);
                                         if (!result.IsSuccess)
                                         {
                                             // {{SequenceExpression
@@ -1113,9 +1049,7 @@ namespace Lipeg.Command
                                                     current = result.Next;
                                                     nodes.AddRange(result.Nodes);
                                                     // {{LiftExpression
-                                                        // {{NameExpression
-                                                            result = __Parse(Expression, current);
-                                                        // }}NameExpression
+                                                        result = __Parse(Expression, current);
                                                         if (result.IsSuccess)
                                                         {
                                                             var nodes2 = new List<INode>(10);
@@ -1181,9 +1115,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(Rule, current);
-                        // }}NameExpression
+                        result = __Parse(Rule, current);
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>(10);
@@ -1310,9 +1242,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(Suffix, current);
-                        // }}NameExpression
+                        result = __Parse(Suffix, current);
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>(10);
@@ -1355,9 +1285,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(Suffix, current);
-                        // }}NameExpression
+                        result = __Parse(Suffix, current);
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>(10);
@@ -1400,9 +1328,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(Suffix, current);
-                        // }}NameExpression
+                        result = __Parse(Suffix, current);
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>(10);
@@ -1445,9 +1371,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(Suffix, current);
-                        // }}NameExpression
+                        result = __Parse(Suffix, current);
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>(10);
@@ -1490,9 +1414,7 @@ namespace Lipeg.Command
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(Suffix, current);
-                        // }}NameExpression
+                        result = __Parse(Suffix, current);
                         if (result.IsSuccess)
                         {
                             var nodes2 = new List<INode>(10);
@@ -1521,9 +1443,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 // {{LiftExpression
-                    // {{NameExpression
-                        var result = __Parse(Primary, current);
-                    // }}NameExpression
+                    var result = __Parse(Primary, current);
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>(10);
@@ -1566,9 +1486,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 // {{LiftExpression
-                    // {{NameExpression
-                        var result = __Parse(Primary, current);
-                    // }}NameExpression
+                    var result = __Parse(Primary, current);
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>(10);
@@ -1611,9 +1529,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 // {{LiftExpression
-                    // {{NameExpression
-                        var result = __Parse(Primary, current);
-                    // }}NameExpression
+                    var result = __Parse(Primary, current);
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>(10);
@@ -1657,9 +1573,7 @@ namespace Lipeg.Command
                 // {{FuseExpression
                     // {{SequenceExpression
                         var nodes = new List<INode>(10);
-                        // {{NameExpression
-                            var result = __Parse(Letter, current);
-                        // }}NameExpression
+                        var result = __Parse(Letter, current);
                         if (result.IsSuccess)
                         {
                             current = result.Next;
@@ -1670,9 +1584,7 @@ namespace Lipeg.Command
                                     var nodes2 = new List<INode>(10);
                                     for (;;)
                                     {
-                                        // {{NameExpression
-                                            result = __Parse(LetterOrDigit, current);
-                                        // }}NameExpression
+                                        result = __Parse(LetterOrDigit, current);
                                         if (result.IsSuccess)
                                         {
                                             current = result.Next;
@@ -1722,9 +1634,7 @@ namespace Lipeg.Command
                                                             var nodes6 = new List<INode>(10);
                                                             for (;;)
                                                             {
-                                                                // {{NameExpression
-                                                                    result = __Parse(LetterOrDigit, current);
-                                                                // }}NameExpression
+                                                                result = __Parse(LetterOrDigit, current);
                                                                 if (result.IsSuccess)
                                                                 {
                                                                     current = result.Next;
@@ -1881,9 +1791,7 @@ namespace Lipeg.Command
                                 var nodes2 = new List<INode>(10);
                                 for (;;)
                                 {
-                                    // {{NameExpression
-                                        result = __Parse(VerbatimCharacter, current);
-                                    // }}NameExpression
+                                    result = __Parse(VerbatimCharacter, current);
                                     if (result.IsSuccess)
                                     {
                                         current = result.Next;
@@ -1959,9 +1867,7 @@ namespace Lipeg.Command
                             // }}StringLiteralExpression
                             if (!result.IsSuccess)
                             {
-                                // {{NameExpression
-                                    result = __Parse(EolChar, current);
-                                // }}NameExpression
+                                result = __Parse(EolChar, current);
                             }
                         }
                     // }}ChoiceExpression
@@ -2028,9 +1934,7 @@ namespace Lipeg.Command
                             for (;;)
                             {
                                 // {{LiftExpression
-                                    // {{NameExpression
-                                        result = __Parse(Character, current);
-                                    // }}NameExpression
+                                    result = __Parse(Character, current);
                                     if (result.IsSuccess)
                                     {
                                         var nodes3 = new List<INode>(10);
@@ -2095,24 +1999,16 @@ namespace Lipeg.Command
         {
             var current = context;
             // {{ChoiceExpression
-                // {{NameExpression
-                    var result = __Parse(StringVerbatim, current);
-                // }}NameExpression
+                var result = __Parse(StringVerbatim, current);
                 if (!result.IsSuccess)
                 {
-                    // {{NameExpression
-                        result = __Parse(Escape, current);
-                    // }}NameExpression
+                    result = __Parse(Escape, current);
                     if (!result.IsSuccess)
                     {
-                        // {{NameExpression
-                            result = __Parse(UnicodeEscape, current);
-                        // }}NameExpression
+                        result = __Parse(UnicodeEscape, current);
                         if (!result.IsSuccess)
                         {
-                            // {{NameExpression
-                                result = __Parse(ByteEscape, current);
-                            // }}NameExpression
+                            result = __Parse(ByteEscape, current);
                         }
                     }
                 }
@@ -2140,9 +2036,7 @@ namespace Lipeg.Command
                                 // }}StringLiteralExpression
                                 if (!result.IsSuccess)
                                 {
-                                    // {{NameExpression
-                                        result = __Parse(EolChar, current);
-                                    // }}NameExpression
+                                    result = __Parse(EolChar, current);
                                 }
                             }
                         // }}ChoiceExpression
@@ -2248,9 +2142,7 @@ namespace Lipeg.Command
                         {
                             current = result.Next;
                             nodes2.AddRange(result.Nodes);
-                            // {{NameExpression
-                                result = __Parse(_, current);
-                            // }}NameExpression
+                            result = __Parse(_, current);
                             if (result.IsSuccess)
                             {
                                 current = result.Next;
@@ -2268,17 +2160,13 @@ namespace Lipeg.Command
                 {
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
-                    // {{NameExpression
-                        result = __Parse(UnicodeNumber, current);
-                    // }}NameExpression
+                    result = __Parse(UnicodeNumber, current);
                     if (result.IsSuccess)
                     {
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
                         // {{DropExpression
-                            // {{NameExpression
-                                result = __Parse(_, current);
-                            // }}NameExpression
+                            result = __Parse(_, current);
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
@@ -2296,17 +2184,13 @@ namespace Lipeg.Command
                                     {
                                         // {{SequenceExpression
                                             var nodes4 = new List<INode>(10);
-                                            // {{NameExpression
-                                                result = __Parse(UnicodeNumber, current);
-                                            // }}NameExpression
+                                            result = __Parse(UnicodeNumber, current);
                                             if (result.IsSuccess)
                                             {
                                                 current = result.Next;
                                                 nodes4.AddRange(result.Nodes);
                                                 // {{DropExpression
-                                                    // {{NameExpression
-                                                        result = __Parse(_, current);
-                                                    // }}NameExpression
+                                                    result = __Parse(_, current);
                                                     if (result.IsSuccess)
                                                     {
                                                         result = Result.Success(result, result.Next);
@@ -2378,18 +2262,14 @@ namespace Lipeg.Command
             // {{FuseExpression
                 // {{SequenceExpression
                     var nodes = new List<INode>(10);
-                    // {{NameExpression
-                        var result = __Parse(HexDigit, current);
-                    // }}NameExpression
+                    var result = __Parse(HexDigit, current);
                     if (result.IsSuccess)
                     {
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
                         // {{LiftExpression
                             // {{OptionalExpression
-                                // {{NameExpression
-                                    result = __Parse(HexDigit, current);
-                                // }}NameExpression
+                                result = __Parse(HexDigit, current);
                                 var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                 if (result.IsSuccess)
                                 {
@@ -2416,9 +2296,7 @@ namespace Lipeg.Command
                             nodes.AddRange(result.Nodes);
                             // {{LiftExpression
                                 // {{OptionalExpression
-                                    // {{NameExpression
-                                        result = __Parse(HexDigit, current);
-                                    // }}NameExpression
+                                    result = __Parse(HexDigit, current);
                                     var node3 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                     if (result.IsSuccess)
                                     {
@@ -2445,9 +2323,7 @@ namespace Lipeg.Command
                                 nodes.AddRange(result.Nodes);
                                 // {{LiftExpression
                                     // {{OptionalExpression
-                                        // {{NameExpression
-                                            result = __Parse(HexDigit, current);
-                                        // }}NameExpression
+                                        result = __Parse(HexDigit, current);
                                         var node5 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                         if (result.IsSuccess)
                                         {
@@ -2474,9 +2350,7 @@ namespace Lipeg.Command
                                     nodes.AddRange(result.Nodes);
                                     // {{LiftExpression
                                         // {{OptionalExpression
-                                            // {{NameExpression
-                                                result = __Parse(HexDigit, current);
-                                            // }}NameExpression
+                                            result = __Parse(HexDigit, current);
                                             var node7 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                             if (result.IsSuccess)
                                             {
@@ -2503,9 +2377,7 @@ namespace Lipeg.Command
                                         nodes.AddRange(result.Nodes);
                                         // {{LiftExpression
                                             // {{OptionalExpression
-                                                // {{NameExpression
-                                                    result = __Parse(HexDigit, current);
-                                                // }}NameExpression
+                                                result = __Parse(HexDigit, current);
                                                 var node9 = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                                                 if (result.IsSuccess)
                                                 {
@@ -2564,9 +2436,7 @@ namespace Lipeg.Command
                         {
                             current = result.Next;
                             nodes2.AddRange(result.Nodes);
-                            // {{NameExpression
-                                result = __Parse(_, current);
-                            // }}NameExpression
+                            result = __Parse(_, current);
                             if (result.IsSuccess)
                             {
                                 current = result.Next;
@@ -2584,17 +2454,13 @@ namespace Lipeg.Command
                 {
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
-                    // {{NameExpression
-                        result = __Parse(ByteNumber, current);
-                    // }}NameExpression
+                    result = __Parse(ByteNumber, current);
                     if (result.IsSuccess)
                     {
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
                         // {{DropExpression
-                            // {{NameExpression
-                                result = __Parse(_, current);
-                            // }}NameExpression
+                            result = __Parse(_, current);
                             if (result.IsSuccess)
                             {
                                 result = Result.Success(result, result.Next);
@@ -2612,17 +2478,13 @@ namespace Lipeg.Command
                                     {
                                         // {{SequenceExpression
                                             var nodes4 = new List<INode>(10);
-                                            // {{NameExpression
-                                                result = __Parse(ByteNumber, current);
-                                            // }}NameExpression
+                                            result = __Parse(ByteNumber, current);
                                             if (result.IsSuccess)
                                             {
                                                 current = result.Next;
                                                 nodes4.AddRange(result.Nodes);
                                                 // {{DropExpression
-                                                    // {{NameExpression
-                                                        result = __Parse(_, current);
-                                                    // }}NameExpression
+                                                    result = __Parse(_, current);
                                                     if (result.IsSuccess)
                                                     {
                                                         result = Result.Success(result, result.Next);
@@ -2693,18 +2555,14 @@ namespace Lipeg.Command
             var current = context;
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
-                // {{NameExpression
-                    var result = __Parse(HexDigit, current);
-                // }}NameExpression
+                var result = __Parse(HexDigit, current);
                 if (result.IsSuccess)
                 {
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
                     // {{LiftExpression
                         // {{OptionalExpression
-                            // {{NameExpression
-                                result = __Parse(HexDigit, current);
-                            // }}NameExpression
+                            result = __Parse(HexDigit, current);
                             var node = NodeList.From(result, NodeSymbols.Optional, result.Nodes.ToArray());
                             if (result.IsSuccess)
                             {
@@ -2755,9 +2613,7 @@ namespace Lipeg.Command
                 {
                     current = result.Next;
                     nodes.AddRange(result.Nodes);
-                    // {{NameExpression
-                        result = __Parse(Not, current);
-                    // }}NameExpression
+                    result = __Parse(Not, current);
                     if (result.IsSuccess)
                     {
                         current = result.Next;
@@ -2769,9 +2625,7 @@ namespace Lipeg.Command
                                 for (;;)
                                 {
                                     // {{LiftExpression
-                                        // {{NameExpression
-                                            result = __Parse(ClassPart, current);
-                                        // }}NameExpression
+                                        result = __Parse(ClassPart, current);
                                         if (result.IsSuccess)
                                         {
                                             var nodes3 = new List<INode>(10);
@@ -2869,15 +2723,11 @@ namespace Lipeg.Command
         {
             var current = context;
             // {{ChoiceExpression
-                // {{NameExpression
-                    var result = __Parse(Range, current);
-                // }}NameExpression
+                var result = __Parse(Range, current);
                 if (!result.IsSuccess)
                 {
                     // {{LiftExpression
-                        // {{NameExpression
-                            result = __Parse(ClassChar, current);
-                        // }}NameExpression
+                        result = __Parse(ClassChar, current);
                         if (result.IsSuccess)
                         {
                             var nodes = new List<INode>(10);
@@ -2900,9 +2750,7 @@ namespace Lipeg.Command
             // {{SequenceExpression
                 var nodes = new List<INode>(10);
                 // {{LiftExpression
-                    // {{NameExpression
-                        var result = __Parse(ClassChar, current);
-                    // }}NameExpression
+                    var result = __Parse(ClassChar, current);
                     if (result.IsSuccess)
                     {
                         var nodes2 = new List<INode>(10);
@@ -2931,9 +2779,7 @@ namespace Lipeg.Command
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
                         // {{LiftExpression
-                            // {{NameExpression
-                                result = __Parse(ClassChar, current);
-                            // }}NameExpression
+                            result = __Parse(ClassChar, current);
                             if (result.IsSuccess)
                             {
                                 var nodes3 = new List<INode>(10);
@@ -2961,24 +2807,16 @@ namespace Lipeg.Command
         {
             var current = context;
             // {{ChoiceExpression
-                // {{NameExpression
-                    var result = __Parse(ClassVerbatim, current);
-                // }}NameExpression
+                var result = __Parse(ClassVerbatim, current);
                 if (!result.IsSuccess)
                 {
-                    // {{NameExpression
-                        result = __Parse(Escape, current);
-                    // }}NameExpression
+                    result = __Parse(Escape, current);
                     if (!result.IsSuccess)
                     {
-                        // {{NameExpression
-                            result = __Parse(UnicodeEscape, current);
-                        // }}NameExpression
+                        result = __Parse(UnicodeEscape, current);
                         if (!result.IsSuccess)
                         {
-                            // {{NameExpression
-                                result = __Parse(ByteEscape, current);
-                            // }}NameExpression
+                            result = __Parse(ByteEscape, current);
                         }
                     }
                 }
@@ -3006,9 +2844,7 @@ namespace Lipeg.Command
                                 // }}StringLiteralExpression
                                 if (!result.IsSuccess)
                                 {
-                                    // {{NameExpression
-                                        result = __Parse(EolChar, current);
-                                    // }}NameExpression
+                                    result = __Parse(EolChar, current);
                                 }
                             }
                         // }}ChoiceExpression
@@ -3067,19 +2903,13 @@ namespace Lipeg.Command
                 for (;;)
                 {
                     // {{ChoiceExpression
-                        // {{NameExpression
-                            result = __Parse(Whitespace, current);
-                        // }}NameExpression
+                        result = __Parse(Whitespace, current);
                         if (!result.IsSuccess)
                         {
-                            // {{NameExpression
-                                result = __Parse(Newline, current);
-                            // }}NameExpression
+                            result = __Parse(Newline, current);
                             if (!result.IsSuccess)
                             {
-                                // {{NameExpression
-                                    result = __Parse(Comment, current);
-                                // }}NameExpression
+                                result = __Parse(Comment, current);
                             }
                         }
                     // }}ChoiceExpression
@@ -3105,14 +2935,10 @@ namespace Lipeg.Command
         {
             var current = context;
             // {{ChoiceExpression
-                // {{NameExpression
-                    var result = __Parse(SingleLineComment, current);
-                // }}NameExpression
+                var result = __Parse(SingleLineComment, current);
                 if (!result.IsSuccess)
                 {
-                    // {{NameExpression
-                        result = __Parse(MultiLineComment, current);
-                    // }}NameExpression
+                    result = __Parse(MultiLineComment, current);
                 }
             // }}ChoiceExpression
             return __FinishRule(result, "comment");
@@ -3139,9 +2965,7 @@ namespace Lipeg.Command
                             // {{SequenceExpression
                                 var nodes3 = new List<INode>(10);
                                 // {{NotExpression
-                                    // {{NameExpression
-                                        result = __Parse(EolChar, current);
-                                    // }}NameExpression
+                                    result = __Parse(EolChar, current);
                                     if (result.IsSuccess)
                                     {
                                         result = Result.Fail(current);

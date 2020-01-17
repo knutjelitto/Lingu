@@ -19,23 +19,25 @@ namespace Lipeg.SDK.Builders
         {
             public readonly bool Disable = false;
             public readonly string Namespace = "Lipeg.Command";
-
-            public readonly string IContext = nameof(Runtime.IContext);
-            public readonly string IResult = nameof(Runtime.IResult);
+            public readonly string ParserClassNameSuffix = "Parser";
             public readonly string CtxName = "context";
             public readonly string CurName = "current";
 
-            public readonly string MatchString = "__MatchString";
-            public readonly string MatchPredicate = "__MatchPredicate";
-            public readonly string FinishRule = "__FinishRule";
+            public readonly string IContext = nameof(Runtime.IContext);
+            public readonly string IResult = nameof(Runtime.IResult);
 
-            public readonly string SkipSpace = "__SkipSpace";
-            public readonly string ParseWithCache = "__Parse";
-            public readonly string ClearCache = "__ClearCache";
+            public readonly string ParserBase = nameof(ParserBase);
 
-            public readonly string InterfaceParse = "Parse";
+            public readonly string MatchString = nameof(IParserTools.__MatchString);
+            public readonly string MatchPredicate = nameof(IParserTools.__MatchPredicate);
+            public readonly string FinishRule = nameof(IParserTools.__FinishRule);
 
-            private const string ParserClassNameSuffix = "Parser";
+            public readonly string SkipSpace = nameof(IParserTools.__SkipSpace);
+            public readonly string ParseWithCache = nameof(IParserTools.__Parse);
+            public readonly string ClearCache = nameof(IParserTools.__ClearCache);
+
+            public readonly string InterfaceParse = nameof(IParser.Parse);
+
 
             public Config(Grammar grammar)
             {
@@ -111,7 +113,7 @@ namespace Lipeg.SDK.Builders
                         CS.Line($"using {@using};");
                     }
                     CS.Line();
-                    CS.Block($"public partial class {Cfg.ParserClass} : ParserBase", () =>
+                    CS.Block($"public partial class {Cfg.ParserClass} : {Cfg.ParserBase}", () =>
                     {
                         ImplementInterfaceParse();
                         CS.Line();
@@ -137,7 +139,7 @@ namespace Lipeg.SDK.Builders
 
             private void ImplementSkipSpace()
             {
-                CS.Block($"protected override {Cfg.IContext} {Cfg.SkipSpace}({Cfg.IContext} {Cfg.CtxName})", () =>
+                CS.Block($"public override {Cfg.IContext} {Cfg.SkipSpace}({Cfg.IContext} {Cfg.CtxName})", () =>
                 {
                     CS.Line($"return {Cfg.Capa(Grammar.Attr.Spacing.Identifier)}({Cfg.CtxName}).Next;");
                 });
@@ -202,13 +204,7 @@ namespace Lipeg.SDK.Builders
 
             protected override void VisitNameExpression(NameExpression expression)
             {
-                CS.IndentInOut(
-                    "NameExpression",
-                    () =>
-                    {
-                        //CS.Line($"{Locals.Result} = {Cfg.Capa(expression.Identifier)}({Cfg.CurName});");
-                        CS.Line($"{Locals.Result} = {Cfg.ParseWithCache}({Cfg.Capa(expression.Identifier)}, {Cfg.CurName});");
-                    });
+                CS.Line($"{Locals.Result} = {Cfg.ParseWithCache}({Cfg.Capa(expression.Identifier)}, {Cfg.CurName});");
             }
 
             protected override void VisitDropExpression(DropExpression expression)
