@@ -1736,10 +1736,8 @@ namespace Lipeg.Command
         protected virtual IResult Letter(IContext context)
         {
             var current = context;
-            // {{ClassExpression
-                var values = new int[]{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-                var result = __MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
-            // }}ClassExpression
+            // _characterclass = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
+            var result = __MatchPredicate(current, _current => Array.BinarySearch(_characterclass, _current) >= 0);
             return __FinishRule(result, "letter");
         }
         
@@ -1747,10 +1745,8 @@ namespace Lipeg.Command
         protected virtual IResult LetterOrDigit(IContext context)
         {
             var current = context;
-            // {{ClassExpression
-                var values = new int[]{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-                var result = __MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
-            // }}ClassExpression
+            // _characterclass2 = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
+            var result = __MatchPredicate(current, _current => Array.BinarySearch(_characterclass2, _current) >= 0);
             return __FinishRule(result, "letter-or-digit");
         }
         
@@ -1758,10 +1754,8 @@ namespace Lipeg.Command
         protected virtual IResult HexDigit(IContext context)
         {
             var current = context;
-            // {{ClassExpression
-                var values = new int[]{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'};
-                var result = __MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
-            // }}ClassExpression
+            // _characterclass3 = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'}
+            var result = __MatchPredicate(current, _current => Array.BinarySearch(_characterclass3, _current) >= 0);
             return __FinishRule(result, "hex-digit");
         }
         
@@ -2104,10 +2098,8 @@ namespace Lipeg.Command
                     {
                         current = result.Next;
                         nodes.AddRange(result.Nodes);
-                        // {{ClassExpression
-                            var values = new int[]{'\'','-','0','\\',']','a','b','e','f','n','r','t','v'};
-                            result = __MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
-                        // }}ClassExpression
+                        // _characterclass4 = {'\'','-','0','\\',']','a','b','e','f','n','r','t','v'}
+                        result = __MatchPredicate(current, _current => Array.BinarySearch(_characterclass4, _current) >= 0);
                         if (result.IsSuccess)
                         {
                             current = result.Next;
@@ -3126,10 +3118,7 @@ namespace Lipeg.Command
                 // }}StringLiteralExpression
                 if (!result.IsSuccess)
                 {
-                    // {{ClassExpression
-                        var values = new int[]{'\n','\r',0x2028,0x2029};
-                        result = __MatchPredicate(current, _current => Array.IndexOf(values, _current) >= 0);
-                    // }}ClassExpression
+                    result = __Parse(EolChar, current);
                 }
             // }}ChoiceExpression
             return __FinishRule(result, "newline");
@@ -3139,10 +3128,8 @@ namespace Lipeg.Command
         protected virtual IResult EolChar(IContext context)
         {
             var current = context;
-            // {{ClassExpression
-                var values = new int[]{'\n','\r',0x2028,0x2029};
-                var result = __MatchPredicate(current, _current => Array.IndexOf(values, _current) >= 0);
-            // }}ClassExpression
+            // _characterclass5 = {'\n','\r',0x2028,0x2029}
+            var result = __MatchPredicate(current, _current => Array.IndexOf(_characterclass5, _current) >= 0);
             return __FinishRule(result, "eol-char");
         }
         
@@ -3150,11 +3137,16 @@ namespace Lipeg.Command
         protected virtual IResult Whitespace(IContext context)
         {
             var current = context;
-            // {{ClassExpression
-                var values = new int[]{'\t','\v','\f',' ',0xA0,0x1680,0x180E,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200A,0x202F,0x205F,0x3000,0xFEFF};
-                var result = __MatchPredicate(current, _current => Array.BinarySearch(values, _current) >= 0);
-            // }}ClassExpression
+            // _characterclass6 = {'\t','\v','\f',' ',0xA0,0x1680,0x180E,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200A,0x202F,0x205F,0x3000,0xFEFF}
+            var result = __MatchPredicate(current, _current => Array.BinarySearch(_characterclass6, _current) >= 0);
             return __FinishRule(result, "whitespace");
         }
+        
+        private static int[] _characterclass = new int[] {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+        private static int[] _characterclass2 = new int[] {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+        private static int[] _characterclass3 = new int[] {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','a','b','c','d','e','f'};
+        private static int[] _characterclass4 = new int[] {'\'','-','0','\\',']','a','b','e','f','n','r','t','v'};
+        private static int[] _characterclass5 = new int[] {'\n','\r',0x2028,0x2029};
+        private static int[] _characterclass6 = new int[] {'\t','\v','\f',' ',0xA0,0x1680,0x180E,0x2000,0x2001,0x2002,0x2003,0x2004,0x2005,0x2006,0x2007,0x2008,0x2009,0x200A,0x202F,0x205F,0x3000,0xFEFF};
     }
 }

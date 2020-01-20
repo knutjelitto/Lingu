@@ -611,15 +611,8 @@ start [grammar, eof]
                         string [escape, escape]
                             escape='r'
                             escape='n'
-                    sequence [character-class]
-                        character-class [not, escape, escape, unicode-escape, unicode-escape]
-                            not []
-                            escape='n'
-                            escape='r'
-                            unicode-escape [unicode-number]
-                                unicode-number='2028'
-                            unicode-escape [unicode-number]
-                                unicode-number='2029'
+                    sequence [identifier]
+                        identifier='eol-char'
             rule [identifier, sequence]
                 identifier='eol-char'
                 sequence [character-class]

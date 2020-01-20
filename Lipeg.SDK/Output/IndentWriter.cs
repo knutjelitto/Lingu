@@ -21,6 +21,8 @@ namespace Lipeg.SDK.Output
             current = null;
         }
 
+        public IEnumerable<string> Lines => this.lines;
+
         public void WriteLine(string line)
         {
             AddLine(line);
@@ -117,16 +119,6 @@ namespace Lipeg.SDK.Output
             {
                 writer.WriteLine(line);
             }
-        }
-
-        public void Write(object obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void WriteLine(object obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -815,18 +815,8 @@ grammar [identifier, *]
                         singleString [simpleEscape, simpleEscape]
                             simpleEscape='r'
                             simpleEscape='n'
-                    sequence [class]
-                        class [invert, *]
-                            invert=''
-                            * [single, single, single, single]
-                                single [simpleEscape]
-                                    simpleEscape='n'
-                                single [simpleEscape]
-                                    simpleEscape='r'
-                                single [unicodeEscape]
-                                    unicodeEscape='2028'
-                                single [unicodeEscape]
-                                    unicodeEscape='2029'
+                    sequence [identifier]
+                        identifier='eol-char'
             rule [identifier, choice]
                 identifier='eol-char'
                 choice [sequence]

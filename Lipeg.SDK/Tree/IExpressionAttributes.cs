@@ -10,5 +10,7 @@
         bool SetIsWithSpacing(bool value);
         IRule Rule { get; }
         void SetRule(IRule rule);
+        string RealStart { get; }
+        bool SetRealStart(string value);
     }
 }

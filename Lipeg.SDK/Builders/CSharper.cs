@@ -1,29 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Lipeg.SDK.Output;
 
 namespace Lipeg.SDK.Builders
 {
     public class CSharper
     {
-        private readonly CsWriter writer;
+        private readonly IndentWriter writer;
         private readonly bool withComments;
+        private readonly Dictionary<string, int> locals = new Dictionary<string, int>();
 
-        public CSharper(CsWriter writer, bool withComments = false)
+        public CSharper(IndentWriter writer, bool withComments = false)
         {
             this.writer = writer;
             this.withComments = withComments;
         }
 
-        public void Line()
+        public IEnumerable<string> Lines => writer.Lines;
+
+        public Local Local(string stem)
+        {
+            if (locals.TryGetValue(stem, out var num))
+            {
+                num += 1;
+                locals[stem] = num;
+            }
+            else
+            {
+                num = 1;
+                locals.Add(stem, num);
+            }
+            return new Local(stem, num);
+        }
+
+        public void Ln()
         {
             this.writer.WriteLine();
         }
 
-        public void Line(string line)
+        public void Ln(string line)
         {
             this.writer.WriteLine(line);
+        }
+
+        public void Ln(IEnumerable<string> lines)
+        {
+            if (lines == null) throw new ArgumentNullException(nameof(lines));
+
+            foreach (var line in lines)
+            {
+                Ln(line);
+            }
         }
 
         public void Block(string head, Action body)
@@ -35,9 +62,9 @@ namespace Lipeg.SDK.Builders
         {
             if (withComments)
             {
-                Line($"// {{{{{comment}");
+                Ln($"// {{{{{comment}");
                 this.writer.Indent(body);
-                Line($"// }}}}{comment}");
+                Ln($"// }}}}{comment}");
             }
             else
             {
@@ -45,6 +72,19 @@ namespace Lipeg.SDK.Builders
             }
         }
 
+        public void IndentInOut(bool withComments, string comment, Action body)
+        {
+            if (withComments)
+            {
+                Ln($"// {{{{{comment}");
+                this.writer.Indent(body);
+                Ln($"// }}}}{comment}");
+            }
+            else
+            {
+                body?.Invoke();
+            }
+        }
         public void If(string condition, Action thenBody, Action? elseBody = null)
         {
             writer.Block($"if ({condition})", thenBody);

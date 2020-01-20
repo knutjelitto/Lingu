@@ -221,7 +221,7 @@ grammar lipeg
         
         newline <=
             / '\r\n'
-            / [\n\r\u{2028}\u{2029}]
+            / eol-char
             ;
         
         eol-char <=
