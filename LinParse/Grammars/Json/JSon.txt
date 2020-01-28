@@ -1,0 +1,58 @@
+﻿grammar Json
+{
+    options
+    {
+        start = start;
+        spacing = _;
+    }
+
+    syntax
+    {
+        start <=
+            value eof
+            ;
+
+        value <=
+            / object
+            / array
+            / number
+            / string
+            / true-value
+            / false-value
+            / null-value
+            ;
+
+        object <=
+            '{' ( member (',' member)* )? '}'
+
+        member <=
+            string ':' value
+            ;
+
+        array <=
+            '[' (value (',' value)*)? ']'
+
+        true-value <=
+            'true'
+            ;
+
+        false-value <=
+            'false'
+            ;
+
+        null-value <=
+            'null'
+            ;
+
+        eof <= 
+            !.
+            ;
+    }
+
+    lexical
+    {
+        number <=
+            '-'? ('0' | [1-9][0-9]*) ('.' [0-9]+)? ([eE][+-]?[0-9]+))?
+            ;
+    }
+}

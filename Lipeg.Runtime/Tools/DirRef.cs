@@ -3,6 +3,7 @@ using System.Linq;
 
 using IOPath = System.IO.Path;
 using IODirectory = System.IO.Directory;
+using System.Collections.Generic;
 
 namespace Lipeg.Runtime.Tools
 {
@@ -11,7 +12,7 @@ namespace Lipeg.Runtime.Tools
         private DirRef(string path)
         {
             Path = path;
-            EnsureDirectory();
+            //EnsureDirectory();
         }
 
         public string Path { get; }
@@ -46,10 +47,20 @@ namespace Lipeg.Runtime.Tools
             return Path;
         }
 
-        private void EnsureDirectory()
+        public bool Exists => IODirectory.Exists(Path);
+
+        public IEnumerable<FileRef> Files()
+        {
+            foreach (var fileName in IODirectory.EnumerateFiles(Path))
+            {
+                yield return File(fileName);
+            }
+        }
+
+        public void Ensure()
         {
             var dirPath = Path;
-            if (!string.IsNullOrEmpty(dirPath) && !System.IO.Directory.Exists(dirPath))
+            if (!string.IsNullOrEmpty(dirPath) && !IODirectory.Exists(dirPath))
             {
                 IODirectory.CreateDirectory(dirPath);
             }
@@ -69,6 +80,5 @@ namespace Lipeg.Runtime.Tools
 
             return projectDir;
         }
-
     }
 }
